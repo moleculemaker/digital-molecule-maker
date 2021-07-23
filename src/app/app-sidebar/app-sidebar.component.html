@@ -1,0 +1,39 @@
+<!-- todo: change to data driven toggle structure -->
+<div class="toggle"
+  [class.select_0]="currentToggle == 'build'"
+  [class.select_1]="currentToggle == 'preset'"
+>
+  <div class="button" [class.selected]="currentToggle == 'build'" (click)="onChangeToggle('build')">Build your own</div>
+  <div class="button" [class.selected]="currentToggle == 'preset'" (click)="onChangeToggle('preset')">Presets</div>
+</div>
+
+<div class="block_list">
+  <div class="info">
+    <div class="count">10 Blocks Available</div>
+    <div class="filter">Filter <div class="filter_setting">Largest</div></div>
+  </div>
+
+  <div class="content">
+    <block *ngFor="let block of getBlockData()"
+      [type]="currentBlockType"
+      [label]="block.label"
+      [svgUrl]="block.svgUrl"
+
+      size="small"
+    ></block>
+  </div>
+
+  <!-- todo: change to data driven tab structure -->
+  <div class="tabs">
+    <div *ngFor="let index of getBlockDataKeys()"
+      class="button"
+      [class]="['button_' + index]"
+      [class.selected]="currentBlockType == index"
+
+      (click)="onSelectTab(index)"
+    >
+      <div class="icon"></div>
+      <div class="label">{{index}} blocks</div>
+    </div>
+  </div>
+</div>

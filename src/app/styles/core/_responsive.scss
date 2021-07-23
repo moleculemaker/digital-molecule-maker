@@ -1,0 +1,152 @@
+//**************** responsive  ******************
+
+//default settings, can override before loading this library
+$mobile: 479px !default;
+$mobile_height: $mobile !default;
+
+$desktop: 768px !default;
+$desktop_height: $desktop !default;
+
+$desktop_large: 1900px !default;
+
+$page_width: 920px !default;
+
+
+//**************** mobile ******************
+
+//device is less than mobile width
+@mixin on_mobile() {
+	@media (max-width: $mobile) {
+		@content;
+	}
+}
+
+//device is greater than mobile width
+//opposite of on_mobile()
+@mixin not_mobile() {
+	@media (min-width: $mobile + 1) {
+		@content;
+	}
+}
+
+//device is less than mobile width AND less than mobile height
+@mixin on_mobile_height() {
+	@media (max-width: $mobile), (max-height: $mobile_height) {
+		@content;
+	}
+}
+
+//device is greater than mobile width AND greater than mobile height
+//opposite of on_mobile_height()
+@mixin not_mobile_height() {
+	@media (min-width: $mobile + 1) and (min-height: $mobile_height + 1) {
+		@content;
+	}
+}
+
+
+//**************** tablet ******************
+
+//device is greater than mobile width AND less than tablet width
+@mixin on_tablet() {
+	@media (min-width: $mobile + 1) and (max-width: $desktop - 1) {
+		@content;
+	}
+}
+
+//device is less than mobile width OR greater than tablet
+//opposite of on_tablet()
+@mixin not_tablet() {
+	@media (max-width: $mobile), (min-width: $desktop) {
+		@content;
+	}
+}
+
+//device is less than tablet width OR greater than mobile height. NOTE: includes mobile width as well
+@mixin on_tablet_height() {
+	@media (max-width: $desktop - 1), (max-height: $mobile_height) {
+		@content;
+	}
+}
+
+//device is greater than tablet width OR greater than mobile height
+//opposite of on_tablet_height()
+@mixin not_tablet_height() {
+	@media (min-width: $desktop) and (min-height: $mobile_height + 1) {
+		@content;
+	}
+}
+
+
+//**************** desktop ******************
+
+//device is greater than desktop width
+@mixin on_desktop() {
+	@media (min-width: $desktop) {
+		@content;
+	}
+}
+
+//device is less than desktop width
+//opposite of on_desktop()
+@mixin not_desktop() {
+	@media (max-width: $desktop - 1) {
+		@content;
+	}
+}
+
+//device is greater than desktop width AND greater than mobile height. NOTE: switches to mobile if short browser window
+@mixin on_desktop_height() {
+	@media (min-width: $desktop) and (min-height: $mobile_height + 1) {
+		@content;
+	}
+}
+
+//device is greater than desktop width AND greater than mobile height
+//opposite of on_desktop_height()
+@mixin not_desktop_height() {
+	@media (max-width: $desktop - 1), (max-height: $mobile_height) {
+		@content;
+	}
+}
+
+
+
+//**************** desktop_large ******************
+
+//device is greater than desktop_large
+@mixin on_desktop_large() {
+	@media (min-width: $desktop_large) {
+		@content;
+	}
+}
+
+
+
+
+//**************** page_width ******************
+//used mostly to limit columns and page content that is different that mobile/tablet/desktop
+
+//greater than page width
+@mixin on_page_width() {
+	@media (min-width: $page_width) {
+		@content;
+	}
+}
+
+//less than page width
+//opposite of on_page_width()
+@mixin not_page_width() {
+	@media (max-width: $page_width - 1) {
+		@content;
+	}
+}
+
+
+//**************** print ******************
+
+@mixin on_print() {
+  @media print {
+    @content;
+  }
+}

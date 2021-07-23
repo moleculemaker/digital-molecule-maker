@@ -1,0 +1,270 @@
+/**************** block css ******************/
+
+@import '../styles/core';
+
+$toggle_button_count: 2;
+
+//**************** custom mixins ******************
+
+@mixin button_color($name) {
+  &.button_#{$name} {
+    .label {
+      color: color_variable(#{'block_' + $name});
+    }
+  }
+}
+
+
+//**************** css ******************
+
+:host {
+  display: flex;
+  flex-direction: column;
+
+  width: 420px;
+
+  padding: $padding;
+
+  .toggle {
+    display: flex;
+    position: relative;
+
+    width: 80%;
+
+    margin: {
+      right: auto;
+      left: auto;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      z-index: -50; //under everything
+
+      margin: -3px; //create a bit of padding
+
+      background: {
+        color: color_variable('button_toggle_background');
+      }
+
+      @include border-radius($interface_radius);
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0%;
+      top: 0px;
+      bottom: 0px;
+      z-index: -10; //under buttons
+
+      width: (100% / $toggle_button_count);
+
+      background: {
+        color: color_variable('button_toggle_selected');
+      }
+
+      @include border-radius($interface_radius);
+      @include transition(#{left .3s easing($ease-in-out-cubic)});
+    }
+
+    @for $i from 0 through ($toggle_button_count - 1) {
+      &.select_#{$i} {
+        &:after {
+          left: (100% / $toggle_button_count) * $i;
+        }
+      }
+    }
+
+    .button {
+      cursor: pointer;
+
+      width: 50%;
+
+      padding: ($padding / 2) ($padding);
+
+      text: {
+        align: center;
+      }
+
+      @include border-radius($interface_radius);
+      @include transition(#{color .2s easing($ease-in)});
+
+      &.selected {
+      }
+
+      &:not(.selected):hover {
+        color: color_variable('button_toggle_hover');
+        @include transition(none);
+      }
+    }
+  }
+
+  .block_list {
+    flex-grow: 1;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    margin: {
+      top: $padding;
+    }
+
+    @include shadow(10px, rgba(#000, .3), 2px, 2px);
+    @include border-radius($interface_radius);
+
+    //had to add the background color this way to avoid overlapping the block -negative indexes
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      z-index: -1000; //below everything
+
+      background: {
+        color: color_variable('background'); //just in case anything goes behind this
+      }
+    }
+
+    .info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: $padding;
+
+      .count {
+      }
+
+      .filter {
+        display: inline-flex;
+        align-items: center;
+
+        .filter_setting {
+          cursor: pointer;
+
+          margin: {
+            left: $padding / 2;
+          }
+          padding: 2px ($padding / 4);
+
+          font: {
+            size: 90%;
+          }
+          text: {
+            transform: uppercase;
+          }
+
+          border: 1px solid color_variable('interface_border');
+
+          @include border-radius($border_radius);
+        }
+      }
+    }
+
+    .content {
+      flex-grow: 1;
+      flex-basis: 0;
+
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+
+      overflow: {
+        y: scroll;
+      }
+
+      padding: ($padding) 0px;
+
+      block {
+        flex-shrink: 0;
+
+        margin: ($padding / 2) ($padding);
+        margin: {
+          right: $padding * 2;
+        }
+      }
+    }
+
+    .tabs {
+      display: flex;
+      align-items: stretch;
+
+      background: {
+        color: color_variable('interface_background_faded');
+      }
+
+      @include border-bottom-radius($interface_radius);
+
+      .button {
+        cursor: pointer;
+
+        flex-grow: 1;
+
+        padding: $padding;
+
+        text: {
+          align: center;
+        }
+
+        @include transition(#{background-color .2s easing($ease-in)});
+
+        &:first-child {
+          @include border-bottom-left-radius($interface_radius);
+        }
+
+        &:last-child {
+          @include border-bottom-right-radius($interface_radius);
+        }
+
+        &.selected {
+          background: {
+            color: color_variable('background');
+          }
+        }
+
+        &:not(.selected) {
+          &:hover {
+            background: {
+              color: color_variable('interface_hover');
+            }
+
+            @include transition(none);
+          }
+        }
+
+        @include button_color('start');
+        @include button_color('middle');
+        @include button_color('end');
+
+        .icon {
+          display: inline-block;
+
+          width: 40px;
+          height: 24px;
+
+          border: 1px solid color_variable('interface_border');
+
+          @include border-radius($border_radius);
+        }
+
+        .label {
+          font: {
+            size: 80%;
+            weight: bold;
+          }
+          text: {
+            transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+}

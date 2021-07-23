@@ -1,0 +1,176 @@
+/**************** block css ******************/
+
+@import '../styles/core';
+
+$block_border_width: 4px;
+$block_border_radius: 2px;
+
+
+//**************** custom mixins ******************
+
+@mixin block_style($name) {
+  &.block_#{$name} {
+    .block_background {
+      fill: color_variable('block_' + $name);
+    }
+
+    .block_border {
+      stroke: color_variable('block_' + $name + '_border');
+    }
+  }
+}
+
+
+//pass 2 variables
+//example: top, left
+
+//no longer needed, can remove in the future
+
+@mixin corner($corners...) {
+  //.top_left
+  .#{nth($corners, 1)}_#{nth($corners, 2)} {
+    position: absolute;
+    z-index: 100;
+
+    width: 10px;
+    height: 10px;
+
+    @include border-radius($border_radius);
+
+    @each $name in $corners {
+      #{$name}: 0px; //top: 0px
+
+      border: {
+        #{$name}: $block_border_width solid color_variable('block_border'); //top
+      }
+
+    }
+  }
+}
+
+
+//**************** css ******************
+
+.block_container {
+  position: relative;
+
+  padding: ($padding) ($padding * 1.5);
+
+  @include block_style('start');
+  @include block_style('middle');
+  @include block_style('end');
+
+/*
+  @include corner(top, left);
+  @include corner(top, right);
+  @include corner(bottom, left);
+  @include corner(bottom, right);
+*/
+
+  &:not(.dashes):hover {
+    cursor: pointer;
+
+    .block_background {
+      fill: color_variable('block_hover');
+      @include transition(none);
+    }
+
+    .block_border {
+      stroke: color_variable('block_hover_border');
+      @include transition(none);
+    }
+  }
+
+  &.dashes {
+    cursor: pointer;
+
+    .block_background {
+      fill: color_variable('background');
+    }
+
+    .block_border {
+      stroke: color_variable('block_border_dashes');
+      stroke-dasharray: 5;
+    }
+
+    &:hover {
+      .block_border {
+        stroke: color_variable('block_hover_dashes');
+        @include transition(none);
+      }
+    }
+  }
+
+  &.size_small {
+    padding: ($padding / 2) ($padding);
+
+//    @include transition(#{transform .2s easing($ease-out-back)});
+
+    .image {
+      min: {
+        width: 100px;
+        height: 76px;
+      }
+
+      svg {
+        width: 80px;
+        height: auto;
+      }
+    }
+
+    .tab_offset {
+      @include translate(0px, 16px);
+    }
+
+    &:hover {
+    }
+  }
+
+  #block_shape {
+    display: block;
+
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -10;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  #tab_right {
+    position: absolute;
+    left: calc(100% - 4px); //offset to hide the box_graphic border
+    top: 0px;
+    z-index: -5;
+  }
+
+  .block_background {
+    @include transition(#{fill .2s easing($ease-in), stroke .2s easing($ease-in)});
+  }
+
+  .block_border {
+    @include transition(#{fill .2s easing($ease-in), stroke .2s easing($ease-in)});
+  }
+
+  .tab_offset {
+    @include translate(0px, 30px);
+  }
+
+  .image {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min: {
+      width: 130px;
+      height: 90px;
+    }
+  }
+
+  .block_label {
+    font: {
+      size: 90%;
+    }
+  }
+}
