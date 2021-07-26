@@ -1,5 +1,5 @@
 /**************** app-build css ******************/
-
+@use "sass:math";
 @import '../styles/core';
 
 
@@ -67,7 +67,7 @@
 
       & + .button {
         margin: {
-          top: $padding / 2;
+          top: math.div($padding, 2);
         }
       }
 

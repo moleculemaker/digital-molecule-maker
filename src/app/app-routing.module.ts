@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppBuildComponent } from './app-build/app-build.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '',   redirectTo: '/build', pathMatch: 'full' },
   {
     path: 'build',

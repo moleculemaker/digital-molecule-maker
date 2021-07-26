@@ -1,12 +1,24 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { AppComponent } from './app.component';
+import { AppHeaderComponent } from './app-header/app-header.component';
+import { AppSidebarComponent } from './app-sidebar/app-sidebar.component';
+import { BlockComponent } from './block/block.component';
+import { routes } from './app-routing.module';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        AppHeaderComponent,
+        AppSidebarComponent,
+        BlockComponent
       ],
+      imports: [
+        RouterTestingModule.withRoutes(routes)
+      ]
     }).compileComponents();
   });
 
@@ -26,6 +38,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('digital-molecule-maker app is running!');
+    expect(compiled.querySelector('.logo_label').textContent).toContain('MoleculeMakerLab');
   });
 });

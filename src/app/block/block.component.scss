@@ -1,5 +1,6 @@
 /**************** block css ******************/
 
+@use "sass:math";
 @import '../styles/core';
 
 $block_border_width: 4px;
@@ -102,7 +103,7 @@ $block_border_radius: 2px;
   }
 
   &.size_small {
-    padding: ($padding / 2) ($padding);
+    padding: math.div($padding, 2) ($padding);
 
 //    @include transition(#{transform .2s easing($ease-out-back)});
 

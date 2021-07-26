@@ -1,5 +1,6 @@
 /**************** app-header css ******************/
 
+@use "sass:math";
 @import '../styles/core';
 
 
@@ -21,7 +22,7 @@
     display: flex;
     align-items: center; //flex-end;
 
-    padding: $padding / 2;
+    padding: math.div($padding, 2);
   }
 
   .header_separator {
@@ -38,7 +39,7 @@
   }
 
   margin: {
-    right: $padding / 4;
+    right: math.div($padding, 4);
   }
 }
 
@@ -60,7 +61,7 @@
 }
 
 input[type="text"] {
-  padding: ($padding * .57) ($padding / 2);
+  padding: ($padding * .57) math.div($padding, 2);
 
   border: 1px solid color_variable('interface_border');
 }
@@ -77,7 +78,7 @@ input[type="text"] {
 
   & + .button {
     margin: {
-      left: $padding / 2;
+      left: math.div($padding, 2);
     }
   }
 
