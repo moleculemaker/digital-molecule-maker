@@ -2,6 +2,8 @@
 
 @import '../styles/core';
 
+$analyze_panel_width: 420px;
+
 
 //**************** custom mixins ******************
 
@@ -27,6 +29,26 @@
     flex-grow: 1;
   }
 
+  .canvas_toolbar {
+    position: absolute;
+    right: $padding;
+    top: $padding;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+
+    .button {
+      padding: ($padding * .5) ($padding * .75);
+
+      & + .button {
+        margin: {
+          left: $padding * .5;
+        }
+      }
+    }
+  }
+
   .canvas {
     position: absolute;
     left: 50%;
@@ -46,30 +68,79 @@
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
 
     .button {
-      cursor: pointer;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      min: {
-        width: 32px;
-        height: 32px;
-      }
-
-      border: 1px solid color_variable('interface_border');
-
-      @include border-radius($border_radius);
-      @include transition(#{background-color .2s easing($ease-in)});
-
       & + .button {
         margin: {
-          top: $padding / 2;
+          top: $padding * .5;
         }
       }
+    }
+  }
+
+  .canvas_analyze {
+    position: absolute;
+//    left: 0px;
+    left: 100%;
+    top: 0px;
+    bottom: 0px;
+    z-index: get_index(modal);
+
+    width: 420px;
+
+    padding: $padding;
+
+    background: {
+      color: color_variable('modal_background');
+    }
+
+    border: {
+      left: 1px solid color_variable('interface_border');
+    }
+
+    @include box-sizing(border-box);
+    @include transition(#{transform .2s easing($ease-out-cubic)});
+
+    &.active {
+      @include translate(-100%, 0%);
+    }
+
+    .output {
+      margin: {
+        bottom: $padding;
+      }
+    }
+
+    .button {
+      display: inline-block;
+    }
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min: {
+      width: 36px;
+      height: 36px;
+    }
+
+    background: {
+      color: color_variable('button_background');
+    }
+
+    padding: ($padding * .5);
+
+    border: 1px solid color_variable('interface_border');
+
+    @include box-sizing(border-box);
+    @include border-radius($border_radius);
+    @include transition(#{background-color .2s easing($ease-in)});
+
+    &:not([disabled]) {
+      cursor: pointer;
 
       &:hover {
         background: {
@@ -78,6 +149,52 @@
 
         @include transition(none);
       }
+    }
+
+    &[disabled] {
+      cursor: not-allowed;
+
+      @include opacity(20);
+    }
+
+    //icon - todo change to icon class for more precise control if needed
+    svg {
+      &.inline {
+        display: inline-block;
+
+        margin: {
+          right: ($padding * .25);
+        }
+
+        @include scale(.8);
+      }
+    }
+  }
+
+  .canvas_send_to_lab {
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: get_index(modal);
+
+    padding: $padding;
+
+    background: {
+      color: color_variable('modal_background');
+    }
+
+    &.active {
+      display: flex;
+    }
+
+    .button {
+      display: inline-block;
     }
   }
 }

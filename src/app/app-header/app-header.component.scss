@@ -21,7 +21,7 @@
     display: flex;
     align-items: center; //flex-end;
 
-    padding: $padding / 2;
+    padding: $padding * .5;
   }
 
   .header_separator {
@@ -38,7 +38,7 @@
   }
 
   margin: {
-    right: $padding / 4;
+    right: $padding * .25;
   }
 }
 
@@ -60,7 +60,7 @@
 }
 
 input[type="text"] {
-  padding: ($padding * .57) ($padding / 2);
+  padding: ($padding * .57) ($padding * .5);
 
   border: 1px solid color_variable('interface_border');
 }
@@ -77,7 +77,7 @@ input[type="text"] {
 
   & + .button {
     margin: {
-      left: $padding / 2;
+      left: $padding * .5;
     }
   }
 

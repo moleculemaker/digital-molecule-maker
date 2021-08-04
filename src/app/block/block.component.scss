@@ -5,6 +5,8 @@
 $block_border_width: 4px;
 $block_border_radius: 2px;
 
+$block_icon_width: 42px;
+$block_icon_height: 36px;
 
 //**************** custom mixins ******************
 
@@ -101,10 +103,11 @@ $block_border_radius: 2px;
     }
   }
 
+  //todo - fix small size so it properly scales the image / svg...appears that the determined width / height after load causes an issue
   &.size_small {
-    padding: ($padding / 2) ($padding);
+    padding: ($padding * .5) ($padding);
 
-//    @include transition(#{transform .2s easing($ease-out-back)});
+    @include box-sizing(border-box);
 
     .image {
       min: {
@@ -119,10 +122,57 @@ $block_border_radius: 2px;
     }
 
     .tab_offset {
-      @include translate(0px, 16px);
+      @include transform(scale(.6) translate(0, 30px));
     }
 
-    &:hover {
+    #tab_right {
+      @include transform(scale(.6) translate(-6px, 0px));
+    }
+
+    .block_border {
+      stroke: {
+        width: 4px;
+      }
+    }
+  }
+
+  &.size_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: $block_icon_width;
+    height: $block_icon_height;
+
+    @include box-sizing(border-box);
+
+    .image {
+      min: {
+        width: 0px;
+        height: 0px;
+      }
+    }
+
+    .tab_offset {
+      @include transform(scale(.3) translate(0, 30px));
+    }
+
+    #tab_right {
+      @include transform(scale(.3) translate(-20px, -62px));
+    }
+
+    .block_border {
+      stroke: {
+        width: 2px;
+      }
+    }
+  }
+
+  .icon_label {
+    color: color_variable('background');
+
+    font: {
+      weight: bold;
     }
   }
 

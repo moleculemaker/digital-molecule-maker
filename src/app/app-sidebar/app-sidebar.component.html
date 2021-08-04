@@ -9,7 +9,7 @@
 
 <div class="block_list">
   <div class="info">
-    <div class="count">10 Blocks Available</div>
+    <div class="count">{{getBlockDataLength()}} Block{{(getBlockDataLength() == 1) ? '' : 's'}} Available</div>
     <div class="filter">Filter <div class="filter_setting">Largest</div></div>
   </div>
 
@@ -20,20 +20,24 @@
       [svgUrl]="block.svgUrl"
 
       size="small"
+
+      (dblclick)="selectBlock(block)"
     ></block>
   </div>
 
   <!-- todo: change to data driven tab structure -->
   <div class="tabs">
-    <div *ngFor="let index of getBlockDataKeys()"
+    <div *ngFor="let key of getBlockDataKeys(); let index = index"
       class="button"
-      [class]="['button_' + index]"
-      [class.selected]="currentBlockType == index"
+      [class]="['button_' + key]"
+      [class.selected]="currentBlockType == key"
 
-      (click)="onSelectTab(index)"
+      (click)="selectTab(key)"
     >
-      <div class="icon"></div>
-      <div class="label">{{index}} blocks</div>
+      <!-- todo, change iconlabel to better angular structure. hacking the type to make it a string -->
+      <block [type]="key" size="icon" [iconLabel]="'' + (index + 1)"></block>
+
+      <div class="label">{{key}} blocks</div>
     </div>
   </div>
 </div>

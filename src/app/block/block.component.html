@@ -8,7 +8,7 @@
   <svg id="block_shape" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%">
     <defs>
       <mask id="tab_mask">
-        <rect width="100%" height="100%" fill="white" rx="8" ry="8" /><!-- what we see, start with everything -->
+        <rect width="100%" height="100%" fill="white" [attr.rx]="borderRadius" [attr.ry]="borderRadius" /><!-- what we see, start with everything -->
 
         <!-- only mask out the tab if NOT start -->
         <path *ngIf="!isStart() && !isAddBlock()" class="tab_offset" d="M0,58.84l18.42-14.2c0.87-0.67,1.58-2.12,1.58-3.22v-24c0-1.1-0.71-2.55-1.58-3.22L0,0" />
@@ -21,12 +21,13 @@
     <!-- primary block shape -->
     <g mask="url(#tab_mask)">
       <!-- stroke is double the width since svg borders are rendered on the middle of the stroke. mask will remove the outside border -->
-      <rect width="100%" height="100%" class="block_background block_border" x="0" y="0" rx="8" ry="8" stroke-width="8" />
+      <rect width="100%" height="100%" class="block_background block_border" x="0" y="0" [attr.rx]="borderRadius" [attr.ry]="borderRadius" stroke-width="8" />
     </g>
 
     <!-- tab border. only shown if NOT start -->
+<!-- removed the vector-effect="non-scaling-stroke" and [attr.vector-effect]="(isDefaultSize()) ? 'non-scaling-stroke' : ''" for now -->
     <path *ngIf="!isStart() && !isAddBlock()" class="block_border tab_offset" style="fill:none;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;stroke-linejoin=round;" d="M1.7,58.34l17.72-13.7
-		c0.87-0.67,1.58-2.12,1.58-3.22v-24c0-1.1-0.71-2.55-1.59-3.22L1.7,0.59" vector-effect="non-scaling-stroke" />
+		c0.87-0.67,1.58-2.12,1.58-3.22v-24c0-1.1-0.71-2.55-1.59-3.22L1.7,0.59" />
 
     <!-- + add block icon -->
     <g *ngIf="isAddBlock()">
@@ -36,16 +37,19 @@
   </svg>
 
   <!-- tab_right which hangs over right side of block. only shown if NOT end -->
-  <svg id="tab_right" class="tab_offset" *ngIf="!isEnd() && svgUrl" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 82" width="24px" height="82px">
+  <svg id="tab_right" class="tab_offset" *ngIf="!isEnd() && !isAddBlock()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 82" width="24px" height="82px">
     <!-- fill -->
     <path class="block_background" d="M0,58.84L19.39,44.6c0.89-0.65,1.61-2.08,1.61-3.18v-24c0-1.1-0.73-2.53-1.61-3.18L0,0" />
 
     <!-- stroke -->
+<!-- removed the vector-effect="non-scaling-stroke" and [attr.vector-effect]="(isDefaultSize()) ? 'non-scaling-stroke' : ''" for now -->
     <path class="block_border" style="fill:none;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;stroke-linejoin=round;" d="M3.2,57.34l17-12.72
-		c0.88-0.66,1.6-2.1,1.6-3.2v-24c0-1.1-0.72-2.54-1.6-3.19L3.2,1.59" vector-effect="non-scaling-stroke" />
+		c0.88-0.66,1.6-2.1,1.6-3.2v-24c0-1.1-0.72-2.54-1.6-3.19L3.2,1.59" />
   </svg>
 
   <div class="image">
+    <div class="icon_label" *ngIf="iconLabel" [innerHTML]="iconLabel"></div>
+
     <svg #svgImage *ngIf="svgUrl"
       [attr.data-src]="svgUrl"
       [attr.width]="dimensions.width"

@@ -85,7 +85,7 @@ $toggle_button_count: 2;
 
       width: 50%;
 
-      padding: ($padding / 2) ($padding);
+      padding: ($padding * .5) ($padding);
 
       text: {
         align: center;
@@ -118,19 +118,8 @@ $toggle_button_count: 2;
     @include shadow(10px, rgba(#000, .3), 2px, 2px);
     @include border-radius($interface_radius);
 
-    //had to add the background color this way to avoid overlapping the block -negative indexes
-    &:after {
-      content: '';
-      position: absolute;
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      bottom: 0px;
-      z-index: -1000; //below everything
-
-      background: {
-        color: color_variable('background'); //just in case anything goes behind this
-      }
+    background: {
+      color: color_variable('background'); //just in case anything goes behind this
     }
 
     .info {
@@ -151,9 +140,9 @@ $toggle_button_count: 2;
           cursor: pointer;
 
           margin: {
-            left: $padding / 2;
+            left: $padding * .5;
           }
-          padding: 2px ($padding / 4);
+          padding: 2px ($padding * .25);
 
           font: {
             size: 90%;
@@ -184,9 +173,13 @@ $toggle_button_count: 2;
       padding: ($padding) 0px;
 
       block {
+        //blocks have -negative index elements that compete with the normal structure. move above the -10 index
+        position: relative;
+        z-index: 20;
+
         flex-shrink: 0;
 
-        margin: ($padding / 2) ($padding);
+        margin: ($padding * .5) ($padding);
         margin: {
           right: $padding * 2;
         }
@@ -228,6 +221,8 @@ $toggle_button_count: 2;
           background: {
             color: color_variable('background');
           }
+
+          @include transition(none);
         }
 
         &:not(.selected) {
@@ -244,15 +239,12 @@ $toggle_button_count: 2;
         @include button_color('middle');
         @include button_color('end');
 
-        .icon {
+        block {
+          //blocks have -negative index elements that compete with the normal structure. move above the -10 index
+          position: relative;
+          z-index: 20;
+
           display: inline-block;
-
-          width: 40px;
-          height: 24px;
-
-          border: 1px solid color_variable('interface_border');
-
-          @include border-radius($border_radius);
         }
 
         .label {

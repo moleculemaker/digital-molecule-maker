@@ -20,6 +20,7 @@ $colors: (
   block_hover_border: darken(#ffb800, 20%),
   block_hover_dashes: saturate(lighten(#ffb800, 10%), 20%),
 
+  button_background: #e1e1e1,
   button_border: #888,
   button_hover: #ffb800, //#c4c4c4,
 
@@ -32,7 +33,9 @@ $colors: (
   interface_background: #c4c4c4,
   interface_background_faded: #ececec,
   interface_border: #888,
-  interface_hover: darken(#ececec, 10%),
+  interface_hover: darken(#ececec, 5%),
+
+  modal_background: rgba(#ececec, .95),
 
 	text: #000000,
 );
@@ -56,7 +59,9 @@ $indexes: (
   interface: 5000,
   interface_sidebar: 6000,
 
+
   //above everything
+  modal: 10000
 );
 
 
