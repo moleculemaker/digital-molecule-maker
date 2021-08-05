@@ -7,7 +7,7 @@
 >
   <svg id="block_shape" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%">
     <defs>
-      <mask id="tab_mask">
+      <mask [id]="'tab_mask' + id">
         <rect width="100%" height="100%" fill="white" [attr.rx]="borderRadius" [attr.ry]="borderRadius" /><!-- what we see, start with everything -->
 
         <!-- only mask out the tab if NOT start -->
@@ -19,7 +19,7 @@
     </defs>
 
     <!-- primary block shape -->
-    <g mask="url(#tab_mask)">
+    <g [attr.mask]="'url(#tab_mask' + id + ')'">
       <!-- stroke is double the width since svg borders are rendered on the middle of the stroke. mask will remove the outside border -->
       <rect width="100%" height="100%" class="block_background block_border" x="0" y="0" [attr.rx]="borderRadius" [attr.ry]="borderRadius" stroke-width="8" />
     </g>
