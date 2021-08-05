@@ -50,6 +50,9 @@
     <block *ngFor="let block of blockList"
       [type]="block.type"
       [svgUrl]="block.svgUrl"
+
+      [imageWidth]="block.width"
+      [imageHeight]="block.height"
     ></block>
   </div>
 

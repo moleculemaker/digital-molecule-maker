@@ -57,7 +57,29 @@ $analyze_panel_width: 420px;
 
     display: flex;
 
-    @include translate(-50%, -50%);
+    @include translate(-50%, (-160px * .5)); //-50% use -px to keep the molecule from jumping around between short / tall blocks
+
+    block {
+      position: relative;
+
+      &:nth-child(0) {
+        z-index: 100;
+      }
+
+      &:nth-child(1) {
+        z-index: 90;
+      }
+
+      &:nth-child(2) {
+        z-index: 80;
+      }
+
+      & + block {
+        margin: {
+          left: -24px; //related to tabWidth in block.component.ts - if you adjust one, adjust the other
+        }
+      }
+    }
   }
 
   .canvas_controls {

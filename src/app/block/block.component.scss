@@ -56,7 +56,9 @@ $block_icon_height: 36px;
 .block_container {
   position: relative;
 
-  padding: ($padding) ($padding * 1.5);
+//  padding: ($padding) ($padding * 1.5);
+
+  @include box-sizing(border-box);
 
   @include block_style('start');
   @include block_style('middle');
@@ -92,7 +94,7 @@ $block_icon_height: 36px;
 
     .block_border {
       stroke: color_variable('block_border_dashes');
-      stroke-dasharray: 5;
+//      stroke-dasharray: 5;
     }
 
     &:hover {
@@ -103,11 +105,17 @@ $block_icon_height: 36px;
     }
   }
 
+  &.size_small {
+    .image {
+      svg {
+//        @include scale(.5);
+      }
+    }
+  }
+/*
   //todo - fix small size so it properly scales the image / svg...appears that the determined width / height after load causes an issue
   &.size_small {
     padding: ($padding * .5) ($padding);
-
-    @include box-sizing(border-box);
 
     .image {
       min: {
@@ -144,8 +152,6 @@ $block_icon_height: 36px;
     width: $block_icon_width;
     height: $block_icon_height;
 
-    @include box-sizing(border-box);
-
     .image {
       min: {
         width: 0px;
@@ -167,7 +173,7 @@ $block_icon_height: 36px;
       }
     }
   }
-
+*/
   .icon_label {
     color: color_variable('background');
 
@@ -175,7 +181,7 @@ $block_icon_height: 36px;
       weight: bold;
     }
   }
-
+/*
   #block_shape {
     display: block;
 
@@ -187,12 +193,17 @@ $block_icon_height: 36px;
     width: 100%;
     height: 100%;
   }
+*/
 
   #tab_right {
     position: absolute;
-    left: calc(100% - 4px); //offset to hide the box_graphic border
+    right: 0px;
+//    right: 0px;
+//    left: calc(100% - 5px); //offset to hide the box_graphic border
     top: 0px;
-    z-index: -5;
+    z-index: 100;
+
+    @include translate(20px, 20px);
   }
 
   .block_background {
@@ -204,7 +215,7 @@ $block_icon_height: 36px;
   }
 
   .tab_offset {
-    @include translate(0px, 30px);
+    @include translate(0px, 20px);
   }
 
   .image {
@@ -212,10 +223,19 @@ $block_icon_height: 36px;
     justify-content: center;
     align-items: center;
 
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 10;
+
+    @include translate(-50%, -50%);
+
+/*
     min: {
       width: 130px;
       height: 90px;
     }
+*/
   }
 
   .block_label {

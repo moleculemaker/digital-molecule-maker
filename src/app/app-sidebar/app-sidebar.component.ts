@@ -24,37 +24,51 @@ export class AppSidebarComponent implements OnInit {
       {
         type: 'start',
         label: 'Helium',
-        svgUrl: 'assets/test_svg_001.svg'
+        svgUrl: 'assets/test_svg_001.svg',
+        width: 155,
+        height: 160
       },
       {
         type: 'start',
         label: 'Sodium',
-        svgUrl: 'assets/test_svg_002.svg'
+        svgUrl: 'assets/test_svg_002.svg',
+        width: 182,
+        height: 106
       },
       {
         type: 'start',
         label: 'Oxygen',
-        svgUrl: 'assets/test_svg_003.svg'
+        svgUrl: 'assets/test_svg_003.svg',
+        width: 224,
+        height: 96
       },
       {
         type: 'start',
         label: 'Magnesium',
-        svgUrl: 'assets/test_svg_004.svg'
+        svgUrl: 'assets/test_svg_004.svg',
+        width: 88,
+        height: 43
       },
       {
         type: 'start',
         label: 'Hydrogen',
-        svgUrl: 'assets/test_svg_002.svg'
+        svgUrl: 'assets/test_svg_002.svg',
+        width: 182,
+        height: 106
       },
       {
         type: 'start',
         label: 'Zinc',
-        svgUrl: 'assets/test_svg_001.svg'
+        svgUrl: 'assets/test_svg_001.svg',
+        width: 155,
+        height: 160
       },
       {
         type: 'start',
         label: 'Ultimatium',
-        svgUrl: 'assets/test_svg_003.svg'
+        svgUrl: 'assets/test_svg_003.svg',
+        width: 224,
+        height: 96
       },
     ],
 
@@ -62,12 +76,16 @@ export class AppSidebarComponent implements OnInit {
       {
         type: 'middle',
         label: 'Oxygen',
-        svgUrl: 'assets/test_svg_003.svg'
+        svgUrl: 'assets/test_svg_003.svg',
+        width: 224,
+        height: 96
       },
       {
         type: 'middle',
         label: 'Magnesium',
-        svgUrl: 'assets/test_svg_004.svg'
+        svgUrl: 'assets/test_svg_004.svg',
+        width: 88,
+        height: 43
       },
     ],
 
@@ -75,17 +93,23 @@ export class AppSidebarComponent implements OnInit {
       {
         type: 'end',
         label: 'Magnesium',
-        svgUrl: 'assets/test_svg_004.svg'
+        svgUrl: 'assets/test_svg_004.svg',
+        width: 88,
+        height: 43
       },
       {
         type: 'end',
         label: 'Hydrogen',
-        svgUrl: 'assets/test_svg_002.svg'
+        svgUrl: 'assets/test_svg_002.svg',
+        width: 182,
+        height: 106
       },
       {
         type: 'end',
         label: 'Zinc',
-        svgUrl: 'assets/test_svg_001.svg'
+        svgUrl: 'assets/test_svg_001.svg',
+        width: 155,
+        height: 160
       },
     ],
   }));
