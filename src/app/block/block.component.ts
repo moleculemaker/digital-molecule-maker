@@ -27,12 +27,12 @@ export class BlockComponent implements OnInit {
   imageWidth: Number = 80;
 
   @Input()
-  imageHeight: Number = 68;
+  imageHeight: Number = 80;
 
   @ViewChild('svgImage') svg:any = null;
 
   padding:any = {
-    x: 20 * 3,
+    x: 20 * 4,
     y: 20 * 1.5
   };
 
@@ -40,6 +40,11 @@ export class BlockComponent implements OnInit {
   strokeDasharray:String = "";
 
   borderRadius:number = 4;
+
+  sizeSmallScale = .5;
+
+  blockWidth:number = 80;
+  blockHeight:number = 80;
 
   tabOffset:number = 20; //px down from top
   tabHeight:number = 28; //px tall (middle of tab)
@@ -79,18 +84,30 @@ export class BlockComponent implements OnInit {
 
     //change width / height if small size
     if (this.isSmall()) {
-//      this.padding.x = 8 * 3;
-//      this.padding.y = 8 * 1.5;
+      this.padding.x = 16 * 3;
+//      this.padding.y = 20 * 1.5;
 
-//      this.imageWidth = Number(this.imageWidth) * .5;
-//      this.imageHeight = Number(this.imageHeight) * .5;
+      this.tabHeight = 28 * this.sizeSmallScale;
+      this.tabOffset = 20;
+      this.tabRadius = 2 * this.sizeSmallScale;
+      this.tabWidth = 20 * this.sizeSmallScale;
+
+      this.imageWidth = Number(this.imageWidth) * this.sizeSmallScale;
+      this.imageHeight = Number(this.imageHeight) * this.sizeSmallScale;
     }
+
+    //set block dimensions
+    //track this separately than image dimensions so we can make sure the min size of block is valid
+    this.blockWidth = Number(this.imageWidth); // + this.padding.x;
+    this.blockHeight = Number(this.imageHeight); // + this.padding.y;
 
     //min width and height
     if (!this.isIcon()) {
       //believe this only happens if no svgURL was provided
-      if (this.imageWidth < 80) {this.imageWidth = 80;}
-      if (this.imageHeight < 80) {this.imageHeight = 80;}
+      let minSize = (this.isSmall()) ? 46 : 80;
+
+      if (this.blockWidth < minSize) {this.blockWidth = minSize;}
+      if (this.blockHeight < minSize) {this.blockHeight = minSize;}
     }
 
     //make dashes
@@ -114,14 +131,25 @@ export class BlockComponent implements OnInit {
   }
 
   //********************************************
+  buildImageViewbox() {
+    //will make the viewbox dimensions larger in turn shrinking the image
+    let width = (this.isSmall()) ? Number(this.imageWidth) / this.sizeSmallScale : this.imageWidth;
+    let height = (this.isSmall()) ? Number(this.imageHeight) / this.sizeSmallScale : this.imageHeight;
+
+    return '0 0 ' + width + ' ' + height;
+  }
+
+  //********************************************
   drawBlock() {
     let path = '';
-    let hasRightTab = true;
+    let hasRightTab = (!this.isEnd() && !this.isAddBlock()) ? true : false;
 
     let minX = this.strokeWidth;
     let minY = this.strokeWidth;
-    let maxX = this.imageWidth + this.padding.x - this.strokeWidth;
-    let maxY = this.imageHeight + this.padding.y - this.strokeWidth;
+//    let maxX = this.imageWidth + this.padding.x - this.strokeWidth;
+//    let maxY = this.imageHeight + this.padding.y - this.strokeWidth;
+    let maxX = this.blockWidth + this.padding.x - this.strokeWidth;
+    let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
 
     let closePath = true;
 
@@ -145,10 +173,12 @@ export class BlockComponent implements OnInit {
     coords.push({x:maxX, y:minY});
 
     //right tab (override radius)
-    coords.push({x:maxX, y:this.tabOffset, radius:this.tabRadius});
-    coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth, radius:this.tabRadius});
-    coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight, radius:this.tabRadius});
-    coords.push({x:maxX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth});
+    if (hasRightTab) {
+      coords.push({x:maxX, y:this.tabOffset, radius:this.tabRadius});
+      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth, radius:this.tabRadius});
+      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight, radius:this.tabRadius});
+      coords.push({x:maxX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth});
+    }
 
     //bottom right
     coords.push({x:maxX, y:maxY});
@@ -157,7 +187,7 @@ export class BlockComponent implements OnInit {
     coords.push({x:minX, y:maxY});
 
     //left tab (override radius)
-    if (!this.isAddBlock() && !this.isStart()) {
+    if (!this.isStart() && !this.isAddBlock()) {
       coords.push({x:minX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth, radius:this.tabRadius});
       coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight, radius:this.tabRadius});
       coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth, radius:this.tabRadius});
