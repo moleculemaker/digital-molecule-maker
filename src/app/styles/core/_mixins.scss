@@ -1,6 +1,6 @@
 //**************** mixins ******************
 //library of various mixins
-
+@use "sass:math";
 
 @mixin hide_overflow() {
 	overflow: hidden;
@@ -189,7 +189,7 @@
 
 // Opacity
 @mixin opacity($opacity) {
-	opacity: $opacity / 100;
+	opacity: math.div($opacity, 100);
 	filter: alpha(opacity=$opacity);
 }
 

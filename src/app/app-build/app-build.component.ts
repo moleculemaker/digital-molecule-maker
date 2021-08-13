@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BlockType } from '../models';
 
 @Component({
   selector: 'app-build',
@@ -6,13 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app-build.component.scss']
 })
 export class AppBuildComponent implements OnInit {
-  isShowingAnalysis:Boolean = false;
-  isShowingSendToLab:Boolean = false;
+  isShowingAnalysis = false;
+  isShowingSendToLab = false;
 
   blockList:any = [];
-  maxBlockListQuantity:Number = 3; //controls where start, middle, and end blocks can be added
+  maxBlockListQuantity = 3; //controls where start, middle, and end blocks can be added
 
-  currentTab:String = 'start';
+  currentTab = BlockType.Start;
 
   constructor() { }
 
@@ -33,12 +34,12 @@ export class AppBuildComponent implements OnInit {
   }
 
   //********************************************
-  selectTab(newTab:String) {
+  selectTab(newTab: BlockType) {
     this.currentTab = newTab;
   }
 
   //********************************************
-  addBlock(block:any, addIndex:any) {
+  addBlock(block:any, addIndex: number|null) {
     //todo - allow adding at various points in the array
 //    if (typeof addIndex == 'undefined') {addIndex = this.blockList.length;}
 
@@ -69,14 +70,14 @@ export class AppBuildComponent implements OnInit {
     //if not full yet, add a blank block at the end
     if (this.blockList.length < this.maxBlockListQuantity) {
       let blockLength = this.blockList.length;
-      let type = 'start';
+      let type = BlockType.Start;
 
       if (blockLength == 0) {
-        type = 'start';
+        type = BlockType.Start;
       } else if (blockLength > 0 && blockLength < this.maxBlockListQuantity) {
-        type = 'middle';
+        type = BlockType.Middle;
       } else {
-        type = 'end';
+        type = BlockType.End;
       }
 
       this.blockList.push({
@@ -86,11 +87,11 @@ export class AppBuildComponent implements OnInit {
       });
 
       //determine which tab should be shown
-      let newTab = 'end';
+      let newTab = BlockType.End;
       if (this.blockList.length < this.maxBlockListQuantity && this.blockList.length != 1) {
-        newTab = 'middle';
+        newTab = BlockType.Middle;
       } else if (this.blockList.length == 1) {
-        newTab = 'start';
+        newTab = BlockType.Start;
       }
 
       this.selectTab(newTab);

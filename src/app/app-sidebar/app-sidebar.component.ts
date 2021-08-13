@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Block, BlockSet, BlockType } from '../models';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,64 +8,64 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class AppSidebarComponent implements OnInit {
   @Input()
-  currentBlockType: String = 'start';
+  currentBlockType = BlockType.Start;
 //  currentBlockType:String = 'start'; //todo: need to change this to different structure like selecting the actual tab data instead of just the index
 
   @Output()
-  onSelectBlock = new EventEmitter<Object>();
+  onSelectBlock = new EventEmitter<Block>();
 
   @Output()
-  onSelectTab = new EventEmitter<String>();
+  onSelectTab = new EventEmitter<BlockType>();
 
-  currentToggle:String = 'build';
+  currentToggle = 'build';
 
   //todo: change to real data or map object
-  blockData:any = new Map(Object.entries({
-    'start': [
+  blockData = {
+    [BlockType.Start]: [
       {
-        type: 'start',
+        type: BlockType.Start,
         label: 'Helium',
         svgUrl: 'assets/test_svg_001.svg',
         width: 155,
         height: 160
       },
       {
-        type: 'start',
+        type: BlockType.Start,
         label: 'Sodium',
         svgUrl: 'assets/test_svg_002.svg',
         width: 182,
         height: 106
       },
       {
-        type: 'start',
+        type: BlockType.Start,
         label: 'Oxygen',
         svgUrl: 'assets/test_svg_003.svg',
         width: 224,
         height: 96
       },
       {
-        type: 'start',
+        type: BlockType.Start,
         label: 'Magnesium',
         svgUrl: 'assets/test_svg_004.svg',
         width: 88,
         height: 43
       },
       {
-        type: 'start',
+        type: BlockType.Start,
         label: 'Hydrogen',
         svgUrl: 'assets/test_svg_002.svg',
         width: 182,
         height: 106
       },
       {
-        type: 'start',
+        type: BlockType.Start,
         label: 'Zinc',
         svgUrl: 'assets/test_svg_001.svg',
         width: 155,
         height: 160
       },
       {
-        type: 'start',
+        type: BlockType.Start,
         label: 'Ultimatium',
         svgUrl: 'assets/test_svg_003.svg',
         width: 224,
@@ -72,16 +73,16 @@ export class AppSidebarComponent implements OnInit {
       },
     ],
 
-    'middle': [
+    [BlockType.Middle]: [
       {
-        type: 'middle',
+        type: BlockType.Middle,
         label: 'Oxygen',
         svgUrl: 'assets/test_svg_003.svg',
         width: 224,
         height: 96
       },
       {
-        type: 'middle',
+        type: BlockType.Middle,
         label: 'Magnesium',
         svgUrl: 'assets/test_svg_004.svg',
         width: 88,
@@ -89,30 +90,30 @@ export class AppSidebarComponent implements OnInit {
       },
     ],
 
-    'end': [
+    [BlockType.End]: [
       {
-        type: 'end',
+        type: BlockType.End,
         label: 'Magnesium',
         svgUrl: 'assets/test_svg_004.svg',
         width: 88,
         height: 43
       },
       {
-        type: 'end',
+        type: BlockType.End,
         label: 'Hydrogen',
         svgUrl: 'assets/test_svg_002.svg',
         width: 182,
         height: 106
       },
       {
-        type: 'end',
+        type: BlockType.End,
         label: 'Zinc',
         svgUrl: 'assets/test_svg_001.svg',
         width: 155,
         height: 160
       },
     ],
-  }));
+  } as BlockSet;
 
   constructor() { }
 
@@ -121,13 +122,13 @@ export class AppSidebarComponent implements OnInit {
   }
 
   //********************************************
-  onChangeToggle(newToggle:String) {
+  onChangeToggle(newToggle: string) {
     this.currentToggle = newToggle;
   }
 
   //********************************************
-  getBlockData() {
-    return this.blockData.get(this.currentBlockType);
+  getBlockData(): Block[] {
+    return this.blockData[this.currentBlockType];
   }
 
   //********************************************
@@ -136,21 +137,18 @@ export class AppSidebarComponent implements OnInit {
   }
 
   //********************************************
-  getBlockDataKeys() {
-    let keys = Array.from(this.blockData.keys());
-
+  getBlockDataKeys(): BlockType[] {
 //todo: fix this code so it properly returns the data keys instead of hard coding
-return ['start', 'middle', 'end'];
-//    return Array.from(this.blockData.keys());
+return [BlockType.Start, BlockType.Middle, BlockType.End];
   }
 
   //********************************************
-  selectTab(newTab:String) {
+  selectTab(newTab: BlockType) {
     this.onSelectTab.emit(newTab);
   }
 
   //********************************************
-  selectBlock(block:any) {
+  selectBlock(block: Block) {
     this.onSelectBlock.emit(block);
   }
 }
