@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+
+//import google webfont
+//@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+
+//use for base app
+body {
+  margin: 0px;
+  padding: 0px;
+
+  font: {
+    size: .9rem;
+    family: 'Open Sans', sans-serif;
+  }
+}

@@ -1,0 +1,91 @@
+/**************** app-header css ******************/
+
+@import '../styles/core';
+
+
+//**************** custom mixins ******************
+
+
+//**************** css ******************
+
+:host {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  border: {
+    bottom: 1px solid color_variable('header_border');
+  }
+
+  > div {
+    display: flex;
+    align-items: center; //flex-end;
+
+    padding: $padding * .5;
+  }
+
+  .header_separator {
+    flex-grow: 1;
+  }
+}
+
+.logo {
+  width: $padding * 2.3;
+  height: $padding * 2.3;
+
+  background: {
+    color: #3a3a3a;
+  }
+
+  margin: {
+    right: $padding * .25;
+  }
+}
+
+.logo_label {
+  margin: {
+    right: $padding;
+  }
+
+  font: {
+    weight: bold;
+    size: $font_size_min;
+  }
+  line: {
+    height: 110%;
+  }
+  text: {
+    transform: uppercase;
+  }
+}
+
+input[type="text"] {
+  padding: ($padding * .57) ($padding * .5);
+
+  border: 1px solid color_variable('interface_border');
+}
+
+.button {
+  cursor: pointer;
+
+  padding: ($padding * .4) ($padding * 1.25);
+
+  border: 1px solid color_variable('button_border');
+
+  @include border-radius($border_radius);
+  @include transition(#{background-color .2s easing($ease-in)});
+
+  & + .button {
+    margin: {
+      left: $padding * .5;
+    }
+  }
+
+  &:hover {
+    background: {
+      color: color_variable('button_hover');
+    }
+
+    @include transition(none);
+  }
+}

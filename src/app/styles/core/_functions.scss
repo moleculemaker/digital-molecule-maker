@@ -1,0 +1,28 @@
+//**************** functions ******************
+
+//map function
+@function get_map_value($name:'default', $map:$colors) {
+	@if not map-has-key($map, $name) {$name: 'default';}
+	@return map-get($map, $name);
+}
+
+//shortcuts for specific maps
+@function get_color($name:'default', $map:$colors) {@return get_map_value($name, $map);}
+@function get_index($name:'default') {@return get_map_value($name, $indexes);}
+
+//string search/replace
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+//https://www.sassmeister.com/gist/1b4f2da5527830088e4d
+
+@function str-replace($string, $search, $replace:'') {
+	$index: str-index($string, $search);
+
+	@if $index {
+		@return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+	}
+
+	@return $string;
+}

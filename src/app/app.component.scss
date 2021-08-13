@@ -1,0 +1,33 @@
+/**************** block css ******************/
+
+//@import './styles/core';
+@import './styles/styles'; //import styles directly as this will have the core css
+
+
+//**************** custom mixins ******************
+
+
+//**************** css ******************
+
+:host {
+  main {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: get_index(interface);
+
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+app-header {
+  //height: 95px; //no need to fix the height to a certain size
+}
+
+content {
+  position: relative;
+  flex-grow: 1;
+}

@@ -1,0 +1,104 @@
+//**************** sass config ******************
+
+
+//**************** colors ******************
+
+$colors: (
+	default: #1f78b4, //used if color name not specified or not found when using get_color()
+
+	background: #ffffff,
+
+  block_start: #6c88cf,
+  block_start_border: darken(#6c88cf, 20%),
+  block_middle: #2db89a,
+  block_middle_border: darken(#2db89a, 20%),
+  block_end: #2ea6df,
+  block_end_border: darken(#2ea6df, 20%),
+
+  block_border_dashes: #bbb,
+  block_hover: #ffb800,
+  block_hover_border: darken(#ffb800, 20%),
+  block_hover_dashes: saturate(lighten(#ffb800, 10%), 20%),
+
+  button_background: #e1e1e1,
+  button_border: #888,
+  button_hover: #ffb800, //#c4c4c4,
+
+  button_toggle_background: #c4c4c4,
+  button_toggle_hover: #ffffff,
+  button_toggle_selected: #ffffff, //same as background
+
+  header_border: #ececec,
+
+  interface_background: #c4c4c4,
+  interface_background_faded: #ececec,
+  interface_border: #888,
+  interface_hover: darken(#ececec, 5%),
+
+  modal_background: rgba(#ececec, .95),
+
+	text: #000000,
+);
+
+
+//**************** font ******************
+
+$font_family: 'Open Sans', sans-serif;
+$font_family_header: 'Open Sans', sans-serif;
+$font_size_min: .7rem;
+
+
+//**************** indexes ******************
+//z-index positions for positioned layers
+//set here to allow easy viewing and adjustments between all layers
+
+$indexes: (
+	default: 1000, //if no variable is specified, get_index() will return the default setting
+
+  interface_canvas: 4000,
+  interface: 5000,
+  interface_sidebar: 6000,
+
+
+  //above everything
+  modal: 10000
+);
+
+
+//**************** sizes ******************
+
+$border_radius: 4px;
+$padding: 1rem; //base value used for padding and margins
+
+//override defaults
+
+//when changing the list of categories, be sure to update this list of names and modify the color values above for category_
+//$disease_category_list: default, elevated, normal, seereports, unknown;
+
+$interface_radius: 16px;
+
+
+//**************** core ******************
+
+@import 'core/functions';
+@import 'core/inline-svg-function';
+@import 'core/mixins';
+@import 'core/responsive';
+
+@import 'core/easing';
+
+
+//**************** theme ******************
+//create a variable for every color
+//color variables will be -dash based plus -color
+// example: violation_high_hover would convert to --violation-high-hover-color
+// example of how to change these in javascript: document.documentElement.style.setProperty('--interface-color', '#00f');
+
+//creates a varible color reference, added here (instead of a mixin) since this could have custom naming schemes for each project
+@function color_variable($name:'default') {
+	@return var(#{'--' + str-replace($name, '_', '-') + '-color'}, #{get_color($name)});
+}
+
+//**************** custom ******************
+
+//load custom libraries (only sass that has variables, mixins, or custom functions)
