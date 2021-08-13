@@ -1,5 +1,6 @@
 /**************** block css ******************/
 
+@use "sass:math";
 @import '../styles/core';
 
 $toggle_button_count: 2;
@@ -62,7 +63,7 @@ $toggle_button_count: 2;
       bottom: 0px;
       z-index: -10; //under buttons
 
-      width: (100% / $toggle_button_count);
+      width: math.div(100%, $toggle-button-count);
 
       background: {
         color: color_variable('button_toggle_selected');
@@ -75,7 +76,7 @@ $toggle_button_count: 2;
     @for $i from 0 through ($toggle_button_count - 1) {
       &.select_#{$i} {
         &:after {
-          left: (100% / $toggle_button_count) * $i;
+          left: math.div(100%, $toggle-button-count) * $i;
         }
       }
     }

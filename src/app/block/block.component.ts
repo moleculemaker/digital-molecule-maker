@@ -9,47 +9,47 @@ import "external-svg-loader";
 })
 export class BlockComponent implements OnInit {
   @Input()
-  svgUrl: String = '';
+  svgUrl = '';
 
   @Input()
-  type: String = 'start'; //todo: make this enum of start, middle, end
+  type = 'start'; //todo: make this enum of start, middle, end
 
   @Input()
-  label: String = '';
+  label = '';
 
   @Input()
-  size: String = 'default'; //todo: make this enum of default, large, small, icon
+  size = 'default'; //todo: make this enum of default, large, small, icon
 
   @Input()
-  iconLabel: String = ''; //if set, then we display the entire block as a small icon
+  iconLabel = ''; //if set, then we display the entire block as a small icon
 
   @Input()
-  imageWidth: Number = 80;
+  imageWidth = 80;
 
   @Input()
-  imageHeight: Number = 80;
+  imageHeight = 80;
 
-  @ViewChild('svgImage') svg:any = null;
+  @ViewChild('svgImage') svg: ElementRef|null = null;
 
-  padding:any = {
+  padding = {
     x: 20 * 4,
     y: 20 * 1.5
   };
 
-  strokeWidth:number = 4;
-  strokeDasharray:String = "";
+  strokeWidth = 4;
+  strokeDasharray = "";
 
-  borderRadius:number = 4;
+  borderRadius = 4;
 
   sizeSmallScale = .5;
 
-  blockWidth:number = 80;
-  blockHeight:number = 80;
+  blockWidth = 80;
+  blockHeight = 80;
 
-  tabOffset:number = 20; //px down from top
-  tabHeight:number = 28; //px tall (middle of tab)
-  tabRadius:number = 2; //px rounded corners
-  tabWidth:number = 20; //px wide    related to margin-left in app-build.scss - if you adjust one, adjust the other
+  tabOffset = 20; //px down from top
+  tabHeight = 28; //px tall (middle of tab)
+  tabRadius = 2; //px rounded corners
+  tabWidth = 20; //px wide    related to margin-left in app-build.scss - if you adjust one, adjust the other
 
   constructor() { }
 
@@ -120,10 +120,10 @@ export class BlockComponent implements OnInit {
 
   //********************************************
 //can delete this load event if unable to properly calculate viewBox width and height info from loaded svg file
-  onLoadSVG(svgElement:any) {
+  onLoadSVG() {
     //todo: get rid of the setTimeout hack and properly fire the (load) event AFTER the svg has rendered on the page
     setTimeout(()=>{
-      let svg_info = this.svg.nativeElement.viewBox.baseVal;
+      let svg_info = this.svg?.nativeElement.viewBox.baseVal;
 
 //      this.imageWidth = svg_info.width;
 //      this.imageHeight = svg_info.height;
@@ -164,7 +164,7 @@ export class BlockComponent implements OnInit {
 
     //build list of coordinates
 
-    let coords:any = [];
+    let coords: Array<{x: number, y: number, radius?: number}> = [];
 
     //start upper left
     coords.push({x:minX, y:minY});
@@ -203,7 +203,7 @@ export class BlockComponent implements OnInit {
   //********************************************
   //requires an array of {x:0, y:0} coordinate pairs
   //based on https://stackoverflow.com/questions/10177985/svg-rounded-corner/65186378#65186378
-  createRoundedPath(coords:any, radius:Number=8, close:Boolean=true) {
+  createRoundedPath(coords: Array<{x: number, y: number, radius?: number}>, radius = 8, close = true) {
     let path = "";
     const length = coords.length + (close ? 1 : -1);
 
@@ -212,7 +212,7 @@ export class BlockComponent implements OnInit {
       const b = coords[(i + 1) % coords.length];
 
       //added to allow override of radius at coordinate level
-      let thisRadius = (a.radius > 0) ? a.radius : radius;
+      let thisRadius = (a.radius && a.radius > 0) ? a.radius : radius;
       const t = Math.min(Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
 //      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
 
