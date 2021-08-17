@@ -18,12 +18,9 @@
       [type]="currentBlockType"
       [label]="block.label"
       [svgUrl]="block.svgUrl"
-
       [imageWidth]="block.width"
       [imageHeight]="block.height"
-
-      size="small"
-
+      [size]="BlockSize.Small"
       (dblclick)="selectBlock(block)"
     ></block>
   </div>
@@ -38,7 +35,7 @@
       (click)="selectTab(key)"
     >
       <!-- todo, change iconlabel to better angular structure. hacking the type to make it a string -->
-      <block [type]="key" size="icon" [iconLabel]="'' + (index + 1)"></block>
+      <block [type]="key" [size]="BlockSize.Icon" [iconLabel]="'' + (index + 1)"></block>
 
       <div class="label">{{key}} blocks</div>
     </div>

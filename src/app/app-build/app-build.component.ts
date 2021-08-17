@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BlockSize } from '../block/block.component';
 import { BlockType } from '../models';
 
 @Component({
@@ -14,6 +15,7 @@ export class AppBuildComponent implements OnInit {
   maxBlockListQuantity = 3; //controls where start, middle, and end blocks can be added
 
   currentTab = BlockType.Start;
+  BlockSize = BlockSize; // for template
 
   constructor() { }
 
