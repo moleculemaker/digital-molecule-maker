@@ -43,8 +43,8 @@ export class BlockComponent implements OnInit {
   borderRadius = 4;
 
   scales = {
-    [BlockSize.Default]: 2.0,
-    [BlockSize.Small]: 1.5,
+    [BlockSize.Default]: 1.5,
+    [BlockSize.Small]: 1.0,
     [BlockSize.Large]: 3.0,
     [BlockSize.Icon]: 2.0
   };
