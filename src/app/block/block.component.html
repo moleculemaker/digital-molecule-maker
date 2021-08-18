@@ -37,11 +37,12 @@
       [attr.height]="imageHeight"
       [attr.viewBox]="buildImageViewbox()"
 
-      fill="white"
+      data-cache="disabled"
 
-      (load)="onLoadSVG()"
+      (load)="onLoadSVG($event)"
     />
   </div>
 </div>
 
-<div *ngIf="label" class="block_label" [innerHTML]="label"></div>
+<!-- hiding label for now; comp doesn't call for one -->
+<div *ngIf="false && label" class="block_label" [innerHTML]="label"></div>

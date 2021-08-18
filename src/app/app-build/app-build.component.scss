@@ -76,7 +76,7 @@ $analyze_panel_width: 420px;
 
       & + block {
         margin: {
-          left: -24px; //related to tabWidth in block.component.ts - if you adjust one, adjust the other
+          left: -44px; //related to tabWidth in block.component.ts - if you adjust one, adjust the other
         }
       }
     }

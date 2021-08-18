@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 
 import "external-svg-loader";
+import { BlockType } from '../models';
 
 @Component({
   selector: 'block',
@@ -12,13 +13,13 @@ export class BlockComponent implements OnInit {
   svgUrl = '';
 
   @Input()
-  type = 'start'; //todo: make this enum of start, middle, end
+  type = BlockType.Start;
 
   @Input()
   label = '';
 
   @Input()
-  size = 'default'; //todo: make this enum of default, large, small, icon
+  size = BlockSize.Default;
 
   @Input()
   iconLabel = ''; //if set, then we display the entire block as a small icon
@@ -41,7 +42,12 @@ export class BlockComponent implements OnInit {
 
   borderRadius = 4;
 
-  sizeSmallScale = .5;
+  scales = {
+    [BlockSize.Default]: 1.5,
+    [BlockSize.Small]: 1.0,
+    [BlockSize.Large]: 3.0,
+    [BlockSize.Icon]: 2.0
+  };
 
   blockWidth = 80;
   blockHeight = 80;
@@ -55,9 +61,6 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
-    //use base image size
-    if (!this.imageWidth) {this.imageWidth = 80;}
-    if (!this.imageHeight) {this.imageHeight = 80;}
 
     //change border size for icons
     if (this.isIcon()) {
@@ -82,29 +85,32 @@ export class BlockComponent implements OnInit {
       this.imageHeight = 24;
     }
 
-    //change width / height if small size
+    //change width / height
     if (this.isSmall()) {
       this.padding.x = 16 * 3;
 //      this.padding.y = 20 * 1.5;
-
-      this.tabHeight = 28 * this.sizeSmallScale;
-      this.tabOffset = 20;
-      this.tabRadius = 2 * this.sizeSmallScale;
-      this.tabWidth = 20 * this.sizeSmallScale;
-
-      this.imageWidth = Number(this.imageWidth) * this.sizeSmallScale;
-      this.imageHeight = Number(this.imageHeight) * this.sizeSmallScale;
     }
 
+    if (this.isSmall() || this.isDefaultSize() || this.isLarge()) {
+      const scale = this.scales[this.size];
+
+      this.tabHeight = 28 * scale;
+      this.tabOffset = 20;
+      this.tabRadius = 2 * scale;
+      this.tabWidth = 20 * scale;
+
+      this.imageHeight = this.imageHeight * scale;
+      this.imageWidth = this.imageWidth * scale;
+    }
     //set block dimensions
     //track this separately than image dimensions so we can make sure the min size of block is valid
-    this.blockWidth = Number(this.imageWidth); // + this.padding.x;
-    this.blockHeight = Number(this.imageHeight); // + this.padding.y;
+    this.blockWidth = this.imageWidth + this.padding.x;
+    this.blockHeight = this.imageHeight + this.padding.y;
 
     //min width and height
     if (!this.isIcon()) {
       //believe this only happens if no svgURL was provided
-      let minSize = (this.isSmall()) ? 46 : 80;
+      let minSize = (this.isSmall()) ? 100 : 150;
 
       if (this.blockWidth < minSize) {this.blockWidth = minSize;}
       if (this.blockHeight < minSize) {this.blockHeight = minSize;}
@@ -119,22 +125,19 @@ export class BlockComponent implements OnInit {
   }
 
   //********************************************
-//can delete this load event if unable to properly calculate viewBox width and height info from loaded svg file
-  onLoadSVG() {
-    //todo: get rid of the setTimeout hack and properly fire the (load) event AFTER the svg has rendered on the page
-    setTimeout(()=>{
-      let svg_info = this.svg?.nativeElement.viewBox.baseVal;
-
-//      this.imageWidth = svg_info.width;
-//      this.imageHeight = svg_info.height;
-    }, 150);
+  onLoadSVG(event: any) {
+    const viewBoxPieces = event.path[0].attributes.getNamedItem('viewBox').value.split(" ");
+    //const scale = this.scales[this.size];
+    //this.imageWidth = parseInt(viewBoxPieces[2], 10) * scale;
+    //this.imageHeight = parseInt(viewBoxPieces[3], 10) * scale;
   }
 
   //********************************************
   buildImageViewbox() {
     //will make the viewbox dimensions larger in turn shrinking the image
-    let width = (this.isSmall()) ? Number(this.imageWidth) / this.sizeSmallScale : this.imageWidth;
-    let height = (this.isSmall()) ? Number(this.imageHeight) / this.sizeSmallScale : this.imageHeight;
+    const scale = this.scales[this.size];
+    let width = this.imageWidth / scale;
+    let height = this.imageHeight / scale;
 
     return '0 0 ' + width + ' ' + height;
   }
@@ -238,27 +241,32 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   isStart() {
-    return (this.type == 'start') ? true : false;
+    return this.type === BlockType.Start;
   }
 
   //********************************************
   isEnd() {
-    return (this.type == 'end') ? true : false;
+    return this.type === BlockType.End;
   }
 
   //********************************************
   isDefaultSize() {
-    return (this.size == 'default') ? true : false;
+    return this.size === BlockSize.Default;
   }
 
   //********************************************
   isSmall() {
-    return (this.size == 'small') ? true : false;
+    return this.size === BlockSize.Small;
+  }
+
+  //********************************************
+  isLarge() {
+    return this.size === BlockSize.Large;
   }
 
   //********************************************
   isIcon() {
-    return (this.size == 'icon') ? true : false;
+    return this.size === BlockSize.Icon;
   }
 
   //********************************************
@@ -266,4 +274,11 @@ export class BlockComponent implements OnInit {
   isAddBlock() {
     return (!this.iconLabel && !this.svgUrl) ? true : false;
   }
+}
+
+export enum BlockSize {
+  Default = 'default',
+  Small = 'small',
+  Large = 'large',
+  Icon = 'icon'
 }
