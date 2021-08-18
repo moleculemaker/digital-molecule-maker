@@ -145,6 +145,30 @@ $block_icon_height: 36px;
     z-index: 10;
 
     @include translate(-50%, -50%);
+  
+    svg {
+      fill: white;
+
+      ::ng-deep text {
+        isolation:isolate;
+        font-size:10px;
+        font-family:Arial-BoldMT, Arial;
+        font-weight:400;
+      }
+
+      ::ng-deep .connection_out {
+        stroke: white;
+        fill: #ffb800;
+        stroke-miterlimit: 10;
+      }
+
+      ::ng-deep .connection_in {
+        stroke: white;
+        fill: #e64fff;
+        stroke-miterlimit: 10;
+      }
+
+    }
   }
 
   .block_label {
