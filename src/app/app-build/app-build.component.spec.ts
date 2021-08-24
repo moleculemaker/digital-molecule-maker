@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { AppBuildComponent } from './app-build.component';
 import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
@@ -10,6 +11,9 @@ describe('AppBuildComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule
+      ],
       declarations: [
         AppBuildComponent,
         AppSidebarComponent,
