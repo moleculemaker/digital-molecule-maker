@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+
+import { RigService } from 'src/rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType } from '../models';
 
@@ -17,7 +19,7 @@ export class AppBuildComponent implements OnInit {
   currentTab = BlockType.Start;
   BlockSize = BlockSize; // for template
 
-  constructor() { }
+  constructor(private rigService: RigService) { }
 
   //********************************************
   ngOnInit(): void {
@@ -79,6 +81,7 @@ export class AppBuildComponent implements OnInit {
   updateBlankBlocks(updatedIndex: number|null): void {
     const blankBlock = {
       // note no type field; we'll fill it in below
+      id: '',
       label: '',
       svgUrl: '', // other code looks for this value; maybe change representation
       width: 80,
@@ -134,5 +137,22 @@ export class AppBuildComponent implements OnInit {
       }
     }
     this.selectTab(newTab);
+  }
+
+  isReadyForLab(): boolean {
+    return this.blockList.length === 3 &&
+      this.blockList[0].id.length > 0 &&
+      this.blockList[1].id.length > 0 &&
+      this.blockList[2].id.length > 0;
+  }
+
+  sendToLab(): void {
+    this.rigService.submitReaction(
+      this.blockList[0],
+      this.blockList[1],
+      this.blockList[2]
+    ).subscribe(nullVal => {
+      console.log("submitted");
+    });
   }
 }

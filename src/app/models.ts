@@ -6,6 +6,7 @@ export enum BlockType {
 
 export interface Block {
     type: BlockType;
+    id: string;
     label: string;
     svgUrl: string;
     width: number;
