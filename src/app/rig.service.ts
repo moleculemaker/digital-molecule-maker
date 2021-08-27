@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
 
-import { Block } from './app/models';
+import { Block } from '../app/models';
 
 @Injectable({
   providedIn: 'root'
