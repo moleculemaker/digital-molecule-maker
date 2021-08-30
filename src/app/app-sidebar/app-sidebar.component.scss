@@ -22,7 +22,7 @@ $toggle_button_count: 2;
   display: flex;
   flex-direction: column;
 
-  width: 480px;
+  width: 460px;
 
   padding: $padding;
 
@@ -35,6 +35,11 @@ $toggle_button_count: 2;
     margin: {
       right: auto;
       left: auto;
+    }
+
+    font: {
+      family: $font_family_header;
+      size: 120%;
     }
 
     &:before {
@@ -129,6 +134,11 @@ $toggle_button_count: 2;
       justify-content: space-between;
 
       padding: $padding;
+
+      font: {
+        family: $font_family_header;
+        size: 120%;
+      }
 
       .count {
       }

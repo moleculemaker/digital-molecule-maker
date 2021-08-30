@@ -38,8 +38,18 @@ $analyze_panel_width: 420px;
     display: flex;
     align-items: center;
 
+    font: {
+      family: $font_family_header;
+      size: 120%;
+    }
+
     .button {
       padding: ($padding * .5) ($padding * .75);
+
+      font: {
+        family: $font_family_header;
+        size: 90%;
+      }
 
       & + .button {
         margin: {
@@ -217,6 +227,28 @@ $analyze_panel_width: 420px;
 
     .button {
       display: inline-block;
+    }
+  }
+
+  .modal_container {
+    background: {
+      color: color_variable('background');
+    }
+
+    padding: ($padding * 2);
+
+    border: 2px solid color_variable('interface_border');
+
+    @include border-radius($interface_radius);
+
+    .button {
+      min: {
+        width: 100px;
+      }
+
+      text: {
+        align: center;
+      }
     }
   }
 }
