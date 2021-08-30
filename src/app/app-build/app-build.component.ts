@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { RigService } from 'src/rig.service';
+import { RigService } from '../rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType } from '../models';
 
