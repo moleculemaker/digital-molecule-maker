@@ -34,6 +34,12 @@ export class AppBuildComponent implements OnInit {
   }
 
   //********************************************
+  onPanelClose():void {
+    this.toggleAnalysisPanel();
+console.log('panel is now closed');
+  }
+
+  //********************************************
   toggleSendToLabModal(): void {
     this.isShowingSendToLab = !this.isShowingSendToLab;
   }

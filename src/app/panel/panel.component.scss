@@ -1,0 +1,372 @@
+/**************** panel css ******************/
+
+@import '../styles/core';
+
+$panel_width: 320px;
+$panel_width_wide: 320px * 2;
+
+//**************** custom mixins ******************
+
+//**************** animation ******************
+
+//unable to animation rgba backgroundColor and backdropFilter using angular...moved that animation to here instead
+@include keyframes(blur_in) {
+  to {
+    background: {
+      color: rgba(#ccc, .8);
+    }
+
+    backdrop-filter: blur(4px);
+  }
+}
+
+@include keyframes(blur_out) {
+  from {
+    background: {
+      color: rgba(#ccc, .8);
+    }
+
+    backdrop-filter: blur(4px);
+  }
+
+  to {
+    background: {
+      color: rgba(#ccc, 0);
+    }
+
+    backdrop-filter: blur(0px);
+  }
+}
+
+//**************** css ******************
+
+.panel_container {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: get_index(panel);
+
+  @include animation(blur_in .3s ease-in-out 0s 1 normal both);
+
+  &.inactive {
+    @include animation(blur_out .3s ease-in-out 0s 1 normal both);
+  }
+
+  .panel {
+    width: $panel_width;
+  }
+
+  &.wide {
+    .panel {
+      width: $panel_width_wide;
+    }
+
+    .close_btn {
+      right: $panel_width_wide;
+    }
+  }
+
+  .close_btn {
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    right: $panel_width;
+    top: $padding;
+    z-index: get_index(panel) + 10;
+
+    width: 24px;
+    height: 24px;
+
+    margin: {
+      right: 70px; //offset to avoid the panels
+    }
+
+    background: {
+      color: color_variable('background');
+    }
+
+    padding: $padding;
+
+    @include border-radius(50%);
+    @include box-sizing(border-box);
+
+    &:hover {
+      background: {
+        color: color_variable('button_hover');
+      }
+    }
+  }
+}
+
+.panel {
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: get_index(panel) + 10;
+
+  overflow: {
+    y: auto;
+  }
+
+  height: calc(100% - #{$padding * 3});
+
+  margin: $padding * .5;
+  padding: ($padding * .75) ($padding * 1.5);
+
+  color: color_variable('panel_text');
+  background: {
+    color: color_variable('panel_background');
+  }
+
+  @include border-radius($interface_radius);
+
+  .icon_inline {
+    display: inline-block;
+
+    position: relative;
+    top: 2px;
+
+    width: 12px;
+    height: 12px;
+
+    margin: {
+      left: $padding * .2;
+    }
+
+    text: {
+      decoration: none;
+    }
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .panel_title {
+    padding: ($padding * 1.5) (0px);
+
+    font: {
+      family: $font_family_header;
+      size: 200%;
+    }
+  }
+
+  .preview {
+    position: relative;
+
+    height: $panel_width;
+
+    margin: {
+      right: -($padding * .75);
+      left: -($padding * .75);
+    }
+
+    background: {
+      color: color_variable('panel_preview_background');
+    }
+
+    @include border-radius($interface_radius * .5);
+
+    .icon_3d {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      position: absolute;
+      right: $padding;
+      bottom: $padding;
+      z-index: 100;
+
+      width: 30px;
+      height: 30px;
+
+      background: {
+        color: color_variable('panel_preview_icon');
+      }
+
+      pointer-events: none;
+
+      @include border-radius(50%);
+
+      svg {
+        width: 50%;
+        height: 50%;
+      }
+    }
+  }
+
+  .molecule_name {
+    padding: $padding 0px;
+
+    font: {
+      family: $font_family_header;
+    }
+
+    .icon_inline {
+      top: 0px;
+    }
+  }
+
+  .details {
+    display: flex;
+    justify-content: between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    font: {
+      family: $font_family_header;
+    }
+
+    & + .details {
+      margin: {
+        top: $padding * .25;
+      }
+    }
+
+    .label {
+      flex-grow: 1;
+
+      color: color_variable('panel_text_faded');
+    }
+
+    .value {
+      text: {
+        align: right;
+      }
+    }
+
+    .details_link {
+      width: 100%;
+
+      .link {
+        cursor: pointer;
+        display: inline-block;
+
+        color: color_variable('panel_button');
+
+        margin: {
+          top: $padding * .2;
+        }
+
+        font: {
+          family: $font_family;
+          size: $font_size_min;
+          weight: bold;
+        }
+        text: {
+          decoration: underline;
+        }
+
+        &:hover {
+          color: color_variable('panel_button_hover');
+        }
+      }
+    }
+  }
+
+  .panel_label {
+    margin: ($padding * .5) 0px;
+    margin: {
+      top: $padding * 1.5;
+    }
+
+    font: {
+      family: $font_family_header;
+      size: 130%;
+    }
+  }
+
+  .button_group {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: $padding * .5;
+
+    & + .button_group {
+      margin: {
+        top: $padding;
+      }
+    }
+
+    .panel_label {
+      margin: 0px;
+    }
+
+    button {
+      cursor: pointer;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: $padding * .5;
+
+      width: 50%;
+
+      background: none;
+      border: 0px;
+
+      background: {
+        color: color_variable('panel_button_secondary');
+      }
+
+      padding: ($padding * .5) ($padding);
+
+      @include border-radius($interface_radius * .5);
+
+      &:hover {
+        background: {
+          color: color_variable('panel_button_secondary_hover');
+        }
+      }
+
+      &.primary {
+        color: color_variable('panel_background');
+        background: {
+          color: color_variable('panel_button');
+        }
+
+        &:hover {
+          background: {
+            color: color_variable('panel_button_hover');
+          }
+        }
+      }
+
+      label {
+        cursor: inherit;
+        display: block;
+
+        flex-grow: 1;
+
+        text: {
+          align: right;
+        }
+      }
+
+      .icon {
+        flex-shrink: 0;
+
+        width: 30px;
+        height: 30px;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        & + label {
+          text: {
+            align: left;
+          }
+        }
+      }
+    }
+  }
+}

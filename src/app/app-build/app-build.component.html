@@ -22,19 +22,13 @@
         <path d="M15.692 11.3932L2.966 18.7772C1.886 19.4032 0.5 18.6452 0.5 17.3832V2.61523C0.5 1.35523 1.884 0.595231 2.966 1.22323L15.692 8.60723C15.9377 8.74748 16.1419 8.95021 16.2839 9.19485C16.426 9.43949 16.5008 9.71735 16.5008 10.0002C16.5008 10.2831 16.426 10.561 16.2839 10.8056C16.1419 11.0503 15.9377 11.253 15.692 11.3932Z" fill="#3A3A3A"/>
       </svg> Analyze
     </div>
-    <button class="button button_send_to_lab" (click)="sendToLab(); toggleSendToLabModal()" [disabled]="!isReadyForLab()">Send to Lab</button>
-    <div class="button button_advanced_mode" disabled>Advanced Mode</div>
+
+    <button class="button button_send_to_lab" (click)="toggleAnalysisPanel()" [disabled]="isReadyForLab()">Analyze</button>
+<!--    <button class="button button_send_to_lab" (click)="sendToLab(); toggleSendToLabModal()" [disabled]="!isReadyForLab()">Send to Lab</button>-->
+<!--    <div class="button button_advanced_mode" disabled>Advanced Mode</div>-->
   </div>
 
-  <div class="canvas_analyze"
-    [class.active]="isShowingAnalysis"
-  >
-    <div class="output">
-      Text analysis output. Can be set to full canvas area and changed to image in the future.
-    </div>
-
-    <div class="button" (click)="toggleAnalysisPanel()">Close panel</div>
-  </div>
+  <panel *ngIf="isShowingAnalysis" (onClose)="onPanelClose()"></panel>
 
   <div class="canvas_send_to_lab"
     [class.active]="isShowingSendToLab"

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -11,6 +12,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppSidebarComponent } from './app-sidebar/app-sidebar.component';
 
 import { BlockComponent } from './block/block.component';
+import { PanelComponent } from './panel/panel.component';
 
 @NgModule({
   declarations: [
@@ -19,10 +21,12 @@ import { BlockComponent } from './block/block.component';
     AppHeaderComponent,
     AppSidebarComponent,
 
-    BlockComponent
+    BlockComponent,
+    PanelComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
     DragDropModule
