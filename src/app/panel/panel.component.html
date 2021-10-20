@@ -17,7 +17,10 @@
     </div>
 
     <div class="molecule_name">
-      Molecule name - official or self-created
+      <inplace
+      >
+        <ng-template #display>
+          <div class="label">{{moleculeName}}
 <div class="icon_inline">
   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
@@ -27,6 +30,12 @@
     <path d="M12.2,20.7l3.6-1.4L29,6.1l-3-3L12.7,16.3l-1.4,3.5C11.1,20.4,11.7,20.9,12.2,20.7z" fill="#3A3A3A" />
   </svg>
 </div>
+          </div>
+        </ng-template>
+        <ng-template #content>
+          <input type="text" [(ngModel)]="moleculeName" placeholder="Molecule Name" />
+        </ng-template>
+      </inplace>
     </div>
 
     <div class="details">

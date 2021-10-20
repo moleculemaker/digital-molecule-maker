@@ -1,0 +1,60 @@
+/**************** panel css ******************/
+
+@import '../styles/core';
+
+
+//**************** custom mixins ******************
+
+
+//**************** css ******************
+
+.inplace {
+  min: {
+    height: 30px;
+  }
+
+  .display_block {
+//    display: inline-block;
+
+    cursor: pointer;
+
+    padding: ($padding * .25) ($padding * .5);
+
+    &:hover {
+      background: {
+        color: color_variable('interface_hover');
+      }
+    }
+  }
+
+  .content_block {
+    display: flex;
+    justify-content: betwee;
+    align-items: center;
+  }
+
+  button {
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: none;
+    border: 0px;
+
+    background: {
+      color: color_variable('interface_button');
+    }
+
+    padding: ($padding * .4) ($padding * .75);
+
+    @include border-radius($border_radius);
+
+    &:hover {
+      background: {
+        color: color_variable('interface_hover');
+      }
+    }
+  }
+}

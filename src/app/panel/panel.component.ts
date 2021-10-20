@@ -37,6 +37,9 @@ import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse
 })
 
 export class PanelComponent implements OnInit {
+  @Input()
+  moleculeName:String = 'TEST module name';
+
   @Output()
   onClose = new EventEmitter();
 

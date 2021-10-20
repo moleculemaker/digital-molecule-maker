@@ -203,14 +203,37 @@ $panel_width_wide: 320px * 2;
   }
 
   .molecule_name {
+    margin: {
+      right: -($padding * .5);
+      left: -($padding * .5);
+    }
     padding: $padding 0px;
 
     font: {
       family: $font_family_header;
     }
 
+    .label {
+      flex-grow: 1;
+    }
+
     .icon_inline {
       top: 0px;
+    }
+
+    input {
+      width: 100%;
+
+      margin: 0px;
+      padding: ($padding * .3);
+
+      font: {
+//        family: $font_family_header;
+      }
+
+      border: 1px solid color_variable('interface_border');
+
+      @include border-radius($border_radius);
     }
   }
 
@@ -369,4 +392,13 @@ $panel_width_wide: 320px * 2;
       }
     }
   }
+}
+
+.inplace {
+  min: {
+    height: 30px;
+  }
+border: 1px solid #f00;
+
+
 }
