@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BlockSet, BlockType } from './models';
 
+export type blockSetIds = '10x10x10palette' | 'pentamers';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -8,7 +10,7 @@ export class BlockService {
 
   constructor() { }
 
-  getBlockSet(blockSetId: '10x10x10palette' | 'pentamers'): BlockSet {
+  getBlockSet(blockSetId: blockSetIds): BlockSet {
     if (blockSetId === '10x10x10palette') {
       return BLOCK_SET_10x10x10_PALETTE;
     } else if (blockSetId === 'pentamers') {

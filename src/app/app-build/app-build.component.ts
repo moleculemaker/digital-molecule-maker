@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RigService } from '../rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType } from '../models';
+import { blockSetIds } from '../block.service';
 
 @Component({
   selector: 'app-build',
@@ -19,6 +20,8 @@ export class AppBuildComponent implements OnInit {
   currentTab = BlockType.Start;
   BlockSize = BlockSize; // for template
 
+  blockSetId: blockSetIds = '10x10x10palette';
+
   constructor(private rigService: RigService) { }
 
   //********************************************
@@ -31,6 +34,11 @@ export class AppBuildComponent implements OnInit {
   //********************************************
   toggleAnalysisPanel(): void {
     this.isShowingAnalysis = !this.isShowingAnalysis;
+  }
+
+  //********************************************
+  onPanelClose():void {
+    this.toggleAnalysisPanel();
   }
 
   //********************************************
@@ -146,11 +154,13 @@ export class AppBuildComponent implements OnInit {
       this.blockList[2].id.length > 0;
   }
 
-  sendToLab(): void {
+  sendToLab(moleculeName: string): void {
     this.rigService.submitReaction(
+      this.blockSetId,
       this.blockList[0],
       this.blockList[1],
-      this.blockList[2]
+      this.blockList[2],
+      moleculeName
     ).subscribe(nullVal => {
       console.log("submitted");
     });

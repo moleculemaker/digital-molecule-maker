@@ -1,0 +1,10 @@
+<div class="inplace">
+  <div class="display_block" *ngIf="!isEditing" (click)="toggleEditing()">
+    <ng-container [ngTemplateOutlet]="displayTemplate"></ng-container>
+  </div>
+
+  <div class="content_block" *ngIf="isEditing">
+    <ng-container [ngTemplateOutlet]="contentTemplate"></ng-container>
+    <button (click)="toggleEditing()">X</button>
+  </div>
+</div>

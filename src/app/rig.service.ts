@@ -1,25 +1,42 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
 
 import { Block } from '../app/models';
+import { blockSetIds } from './block.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RigService {
 
-  private RIG_URL = 'http://10.193.131.18:8001/Rig@Beckman/';
+  //private RIG_URL = 'http://128.174.226.165:8001/Rig@Beckman/';
+  private RIG_JOB_URL = '/api/v1/rig_job/';
 
   constructor(private http: HttpClient) { }
 
-  submitReaction(block1: Block, block2: Block, block3: Block): Observable<null> {
-    const url = this.RIG_URL + 'Make?Block_1=' + block1.id +
-      '&Block_2=' + block2.id +
-      '&Block_3=' + block3.id;
-    return this.http.get(url)
+  submitReaction(blockSetId: blockSetIds, block1: Block, block2: Block, block3: Block, moleculeName: string): Observable<null> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        Authorization: 'my-auth-token'
+      })
+    };
+
+    const rigJob = {
+      blockSetId,
+      blockIds: [
+        block1.id,
+        block2.id,
+        block3.id
+      ],
+      moleculeName
+    }
+
+    return this.http.post(this.RIG_JOB_URL, rigJob, httpOptions)
       .pipe(
         timeout(5000),
         map(resp => null),

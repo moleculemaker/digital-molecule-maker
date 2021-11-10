@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BlockService } from '../block.service';
+import { BlockService, blockSetIds } from '../block.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockSet, BlockType } from '../models';
 
@@ -9,6 +9,17 @@ import { Block, BlockSet, BlockType } from '../models';
   styleUrls: ['./app-sidebar.component.scss']
 })
 export class AppSidebarComponent implements OnInit {
+
+  @Input()
+  get blockSetId(): blockSetIds|null { return this._blockSetId; }
+  set blockSetId(blockSetId: blockSetIds|null) {
+    this._blockSetId = blockSetId;
+    if (blockSetId) {
+      this.blockData = this.blockService.getBlockSet(this._blockSetId!);
+    }
+  }
+  private _blockSetId: blockSetIds|null = null;
+
   @Input()
   currentBlockType = BlockType.Start;
 //  currentBlockType:String = 'start'; //todo: need to change this to different structure like selecting the actual tab data instead of just the index
@@ -30,7 +41,6 @@ export class AppSidebarComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
-    this.blockData = this.blockService.getBlockSet('10x10x10palette');
   }
 
   //********************************************

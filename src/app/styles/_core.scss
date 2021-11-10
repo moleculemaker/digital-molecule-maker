@@ -33,9 +33,20 @@ $colors: (
   interface_background: #c4c4c4,
   interface_background_faded: #ececec,
   interface_border: #888,
+  interface_button: #c4c4c4,
   interface_hover: darken(#ececec, 5%),
 
   modal_background: rgba(#ececec, .95),
+
+  panel_background: #ffffff,
+  panel_button: #7288c9,
+  panel_button_hover: darken(#7288c9, 10%),
+  panel_button_secondary: #f2f2f2,
+  panel_button_secondary_hover: darken(#f2f2f2, 20%),
+  panel_preview_background: #f2f2f2,
+  panel_preview_icon: rgba(darken(#f2f2f2, 30%), .5),
+  panel_text: #000000,
+  panel_text_faded: #c3c3c3,
 
 	text: #000000,
 );
@@ -59,6 +70,7 @@ $indexes: (
   interface: 5000,
   interface_sidebar: 6000,
 
+  panel: 9000,
 
   //above everything
   modal: 10000
