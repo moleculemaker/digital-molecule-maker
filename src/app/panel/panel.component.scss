@@ -215,6 +215,9 @@ $panel_width_wide: 320px * 2;
 
     .label {
       flex-grow: 1;
+      .placeholder {
+        color:color_variable('panel_text_faded');
+      }
     }
 
     .icon_inline {
