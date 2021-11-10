@@ -5,9 +5,10 @@
     *ngIf="step == 1"
     [@panelAnimation]="(isIncreasing) ? 'increasing' : 'decreasing'"
   >
-    <button (click)="nextStep()">Next</button>
+    <!-- disabling wizard for now <button (click)="nextStep()">Next</button> -->
     <div class="panel_title">Your Molecular Analysis</div>
 
+    <!-- disabling preview for now
     <div class="preview">
       <div class="icon_3d">
 <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -15,6 +16,7 @@
 </svg>
       </div>
     </div>
+  -->
 
     <div class="molecule_name">
       <inplace
@@ -38,6 +40,7 @@
       </inplace>
     </div>
 
+    <!-- disabling details for now
     <div class="details">
       <div class="label">Molecular Weight</div>
       <div class="value">293.1 g/mol</div>
@@ -59,7 +62,9 @@
         </div>
       </div>
     </div>
+    -->
 
+    <!-- disabling these buttons for now
     <div class="panel_label">Not quite what you wanted to make?</div>
 
     <div class="button_group">
@@ -81,11 +86,12 @@
         <label>Get in touch <span class="nowrap">with Nolan</span></label>
       </button>
     </div>
+    -->
 
-    <div class="button_group">
+    <div *ngIf="canSubmitMolecule()" class="button_group">
       <div class="panel_label">Does everything <span class="nowrap">look good?</span></div>
 
-      <button class="primary">
+      <button class="primary" (click)="submitMolecule()">
         <label>Let's make <span class="nowrap">this thing!</span></label>
 
         <div class="icon">
@@ -105,9 +111,12 @@
     *ngIf="step == 2"
     [@panelAnimation]="(isIncreasing) ? 'increasing' : 'decreasing'"
   >
-    <h3>step 2</h3>
+    <div class="panel_title">Success</div>
+    <div class="panel_label">Your molecule is being made!</div>
+    <!-- using this panel as a success message for now
     <button (click)="previousStep()">Previous</button>
     <button (click)="nextStep()">Next</button>
+    -->
   </div>
 
   <div class="panel"

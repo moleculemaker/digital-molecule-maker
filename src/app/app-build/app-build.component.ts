@@ -19,6 +19,8 @@ export class AppBuildComponent implements OnInit {
   currentTab = BlockType.Start;
   BlockSize = BlockSize; // for template
 
+  blockSetId = '10x10x10palette';
+
   constructor(private rigService: RigService) { }
 
   //********************************************
@@ -36,7 +38,6 @@ export class AppBuildComponent implements OnInit {
   //********************************************
   onPanelClose():void {
     this.toggleAnalysisPanel();
-console.log('panel is now closed');
   }
 
   //********************************************
@@ -152,11 +153,13 @@ console.log('panel is now closed');
       this.blockList[2].id.length > 0;
   }
 
-  sendToLab(): void {
+  sendToLab(moleculeName: string): void {
     this.rigService.submitReaction(
+      this.blockSetId,
       this.blockList[0],
       this.blockList[1],
-      this.blockList[2]
+      this.blockList[2],
+      moleculeName
     ).subscribe(nullVal => {
       console.log("submitted");
     });

@@ -8,6 +8,10 @@ import { Block, BlockSet, BlockType } from '../models';
   styleUrls: ['./app-sidebar.component.scss']
 })
 export class AppSidebarComponent implements OnInit {
+
+  @Input()
+  blockSetId?: string;
+
   @Input()
   currentBlockType = BlockType.Start;
 //  currentBlockType:String = 'start'; //todo: need to change this to different structure like selecting the actual tab data instead of just the index

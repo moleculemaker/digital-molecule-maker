@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ElementRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { state, trigger, transition, style, animate, AnimationEvent, useAnimation } from "@angular/animations";
 
 import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse, slideOutReverse } from './panel.animations';
@@ -37,11 +37,17 @@ import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse
 })
 
 export class PanelComponent implements OnInit {
+
+  DEFAULT_MOLECULE_NAME = 'molecule name?';
+
   @Input()
-  moleculeName:String = 'TEST module name';
+  moleculeName = this.DEFAULT_MOLECULE_NAME;
 
   @Output()
   onClose = new EventEmitter();
+
+  @Output()
+  onSubmit = new EventEmitter<string>();
 
   isPanelActive = true;
 
@@ -109,5 +115,16 @@ export class PanelComponent implements OnInit {
   onPanelAnimationEvent(e: AnimationEvent) {
     //callback
     if (e.toState == 'void') {this.onClose.emit();}
+  }
+
+  canSubmitMolecule(): boolean {
+    const workingName = this.moleculeName?.trim() || '';
+    return workingName.length > 0 && workingName !== this.DEFAULT_MOLECULE_NAME;
+  }
+
+  submitMolecule(): void {
+    this.onSubmit.emit(this.moleculeName);
+    // for now, use the second panel as the success message
+    this.nextStep();
   }
 }

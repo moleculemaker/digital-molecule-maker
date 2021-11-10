@@ -1,4 +1,5 @@
 <app-sidebar
+  [blockSetId]="blockSetId"
   [currentBlockType]="currentTab"
 
   (onSelectTab)="selectTab($event)"
@@ -23,12 +24,12 @@
       </svg> Analyze
     </div>
 
-    <button class="button button_send_to_lab" (click)="toggleAnalysisPanel()" [disabled]="isReadyForLab()">Analyze</button>
+    <button class="button button_send_to_lab" (click)="toggleAnalysisPanel()" [disabled]="!isReadyForLab()">Analyze</button>
 <!--    <button class="button button_send_to_lab" (click)="sendToLab(); toggleSendToLabModal()" [disabled]="!isReadyForLab()">Send to Lab</button>-->
 <!--    <div class="button button_advanced_mode" disabled>Advanced Mode</div>-->
   </div>
 
-  <panel *ngIf="isShowingAnalysis" (onClose)="onPanelClose()"></panel>
+  <panel *ngIf="isShowingAnalysis" (onClose)="onPanelClose()" (onSubmit)="sendToLab($event)"></panel>
 
   <div class="canvas_send_to_lab"
     [class.active]="isShowingSendToLab"
