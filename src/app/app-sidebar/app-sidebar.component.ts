@@ -30,7 +30,7 @@ export class AppSidebarComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
-    this.blockData = this.blockService.getBlockSet('');
+    this.blockData = this.blockService.getBlockSet('10x10x10palette');
   }
 
   //********************************************

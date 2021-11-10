@@ -8,10 +8,13 @@ export class BlockService {
 
   constructor() { }
 
-  getBlockSet(blockSetId: string): BlockSet {
-    // TODO: turn this into a real backend service--and until then, improve this
-    return BLOCK_SET_10x10x10_PALETTE;
-    //return BLOCK_SET_PENTAMERS;
+  getBlockSet(blockSetId: '10x10x10palette' | 'pentamers'): BlockSet {
+    if (blockSetId === '10x10x10palette') {
+      return BLOCK_SET_10x10x10_PALETTE;
+    } else if (blockSetId === 'pentamers') {
+      return BLOCK_SET_PENTAMERS;
+    }
+    throw new Error('Unknown blockSetId ' + blockSetId);
   }
 }
 
