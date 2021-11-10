@@ -38,10 +38,8 @@ import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse
 
 export class PanelComponent implements OnInit {
 
-  DEFAULT_MOLECULE_NAME = 'molecule name?';
-
   @Input()
-  moleculeName = this.DEFAULT_MOLECULE_NAME;
+  moleculeName = '';
 
   @Output()
   onClose = new EventEmitter();
@@ -54,6 +52,8 @@ export class PanelComponent implements OnInit {
   isIncreasing = true; //flag to determine if the steps are increasing or decreasing
   step = 0;
   maxSteps = 5;
+
+  moleculeNamePlaceholder = 'Molecule Name';
 
   //********************************************
   constructor() { }
@@ -119,7 +119,7 @@ export class PanelComponent implements OnInit {
 
   canSubmitMolecule(): boolean {
     const workingName = this.moleculeName?.trim() || '';
-    return workingName.length > 0 && workingName !== this.DEFAULT_MOLECULE_NAME;
+    return workingName.length > 0;
   }
 
   submitMolecule(): void {
