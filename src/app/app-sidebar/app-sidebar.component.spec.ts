@@ -20,6 +20,7 @@ describe('AppSidebarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppSidebarComponent);
     component = fixture.componentInstance;
+    component.blockSetId = '10x10x10palette';
     fixture.detectChanges();
   });
 
