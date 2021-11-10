@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RigService } from '../rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType } from '../models';
+import { blockSetIds } from '../block.service';
 
 @Component({
   selector: 'app-build',
@@ -19,7 +20,7 @@ export class AppBuildComponent implements OnInit {
   currentTab = BlockType.Start;
   BlockSize = BlockSize; // for template
 
-  blockSetId = '10x10x10palette';
+  blockSetId: blockSetIds = '10x10x10palette';
 
   constructor(private rigService: RigService) { }
 

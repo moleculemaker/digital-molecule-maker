@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
 
 import { Block } from '../app/models';
+import { blockSetIds } from './block.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class RigService {
 
   constructor(private http: HttpClient) { }
 
-  submitReaction(blockSetId: string, block1: Block, block2: Block, block3: Block, moleculeName: string): Observable<null> {
+  submitReaction(blockSetId: blockSetIds, block1: Block, block2: Block, block3: Block, moleculeName: string): Observable<null> {
 
     const httpOptions = {
       headers: new HttpHeaders({
