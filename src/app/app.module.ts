@@ -15,6 +15,7 @@ import { AppSidebarComponent } from './app-sidebar/app-sidebar.component';
 import { BlockComponent } from './block/block.component';
 import { InplaceComponent } from './inplace/inplace.component';
 import { PanelComponent } from './panel/panel.component';
+import { SplashComponent } from './splash/splash.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { PanelComponent } from './panel/panel.component';
 
     BlockComponent,
     InplaceComponent,
-    PanelComponent
+    PanelComponent,
+    SplashComponent
   ],
   imports: [
     BrowserModule,
