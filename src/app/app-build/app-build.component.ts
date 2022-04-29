@@ -20,7 +20,7 @@ export class AppBuildComponent implements OnInit {
   currentTab = BlockType.Start;
   BlockSize = BlockSize; // for template
 
-  blockSetId: blockSetIds = '10x10x10palette';
+  blockSetId: blockSetIds = 'chem237-spring22';
 
   constructor(private rigService: RigService) { }
 
