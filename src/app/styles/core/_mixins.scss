@@ -231,6 +231,11 @@
 	animation-fill-mode: $fill_mode;
 }
 
+@mixin animation-delay($delay) {
+	-webkit-animation-delay: $delay;
+	animation-delay: $delay;
+}
+
 @mixin keyframes($name) {
 	@-webkit-keyframes #{$name} {
 		@content;

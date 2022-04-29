@@ -1,0 +1,545 @@
+/**************** splash css ******************/
+
+@import '../styles/core';
+
+$splash_padding: 20px; //padding around screen
+$splash_position: 50%; //pivot position from top of screen (where title and footer meet)
+$splash_footer_height: 175px;
+
+//**************** custom mixins ******************
+
+//inspired by https://codepen.io/P1N2O/pen/pyBNzX
+@mixin gradient_background($name, $color, $speed:10s) {
+  .background_#{$name} {
+    position: absolute;
+    z-index: -10;
+
+    background-image: radial-gradient(rgba($color, .5) 20%, rgba($color, 0) 60%);
+
+    @include animation(gradient $speed ease infinite);
+    @include translate(-50%, -50%);
+
+    @content;
+  }
+}
+
+
+//**************** animations ******************
+
+@include keyframes(gradient) {
+	0% {
+	  @include opacity(100);
+	}
+	50% {
+	  @include opacity(0);
+	}
+	100% {
+	  @include opacity(100);
+	}
+}
+
+@include keyframes(slide_down) {
+	0% {
+	  @include translate(0%, -30%);
+	  @include opacity(0);
+	}
+	100% {
+	  @include translate(0%, 0%);
+	  @include opacity(100);
+	}
+}
+
+@include keyframes(slide_right) {
+	0% {
+	  @include translate(-20px, 0%);
+	  @include opacity(0);
+	}
+	100% {
+	  @include translate(0px, 0%);
+	  @include opacity(100);
+	}
+}
+
+@include keyframes(rotate) {
+	0% {
+	  @include rotate(0deg);
+	}
+	100% {
+	  @include rotate(360deg);
+	}
+}
+
+@include keyframes(floating) {
+	0% {
+	  @include rotate(0deg);
+	}
+	30% {
+	  @include rotate(2deg);
+	}
+	50% {
+	  @include rotate(-2.5deg);
+	}
+	100% {
+	  @include rotate(0deg);
+	}
+}
+
+@include keyframes(floating_opposite) {
+	0% {
+	  @include rotate(0deg);
+	}
+	30% {
+	  @include rotate(-5deg);
+	}
+	50% {
+	  @include rotate(5.5deg);
+	}
+	100% {
+	  @include rotate(0deg);
+	}
+}
+
+@include keyframes(blink) {
+	0% {
+	  @include translate(0px, -6px);
+	}
+	94% {
+	  @include translate(0px, -6px);
+	}
+	97% {
+	  @include translate(0px, 0px);
+	}
+	100% {
+	  @include translate(0px, -6px);
+	}
+}
+
+@include keyframes(moustache) {
+	0% {
+	  @include rotate(0deg);
+	}
+	80% {
+	  @include rotate(0deg);
+	}
+	90% {
+	  @include rotate(20deg);
+	}
+	100% {
+	  @include rotate(0deg);
+	}
+}
+
+@include keyframes(cape_flapping) {
+	0% {
+    transform: skew(0deg, 0deg);
+	}
+	12% {
+    transform: skew(5deg, -5deg); //15
+	}
+	22% {
+	  transform: skew(0deg, -3deg);
+	}
+	35% {
+    transform: skew(1deg, -5deg); //15
+	}
+	70% {
+	  transform: skew(-1deg, 1deg);
+	}
+	80% {
+	  transform: skew(0deg, -1deg);
+	}
+	85% {
+	  transform: skew(2deg, 2deg); //15
+	}
+	100% {
+    transform: skew(0deg, 0deg);
+	}
+}
+
+@include keyframes(raise_arms) {
+  0% {
+    transform: scale(1, -1);
+  }
+	70% {
+    transform: scale(1, -1);
+	}
+	75% {
+    transform: scale(1, 1);
+	}
+	95% {
+    transform: scale(1, 1);
+	}
+	100% {
+    transform: scale(1, -1);
+	}
+}
+
+@include keyframes(high_five) {
+  0% {
+    transform: scale(1, -1);
+  }
+	65% {
+    transform: scale(1, -1);
+	}
+	70% {
+    transform: scale(1, 1);
+	}
+	95% {
+    transform: scale(1, 1);
+	}
+	100% {
+    transform: scale(1, -1);
+	}
+}
+
+@include keyframes(molecule_red_animation) {
+  0% {
+	  right: 5%;
+	  top: 5%;
+
+	  @include opacity(0);
+  }
+	50% {
+	  display: block;
+
+	  right: 5%;
+	  top: 5%;
+
+	  @include scale(1);
+	  @include opacity(10);
+
+	  filter: none;
+	}
+	75% {
+	  @include opacity(100);
+
+	  filter: none;
+	}
+	100% {
+	  right: 70%;
+	  top: 50%;
+
+	  @include scale(4);
+	  @include opacity(0);
+//	  @include rotate(20deg);
+
+	  filter: blur(3px);
+	}
+}
+
+
+//**************** css ******************
+
+.splash {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: get_index('splash');
+
+  background: {
+    color: color_variable('background');
+  }
+
+  .splash_background {
+//    filter: blur(60px); //not needed and it really slows performance down on some browsers
+
+    //NOTE: change the animation speed slightly for each set to provide a bit more randomness. try and use prime numbers (or ones that one line up with each other very often)
+    @include gradient_background('green', #8cdcac, 10s) {
+      left: 15vw;
+      top: 30vh;
+
+      width: 150vw; //circle based on width of browser
+      height: 150vw;
+
+      @include animation-delay(0s); //offset start of animation
+
+      &.green_2 {
+        left: 85vw;
+        top: 60vh;
+
+        width: 120vw; //circle based on width of browser
+        height: 120vw;
+
+        @include animation-delay(-5s);
+      }
+    }
+
+    @include gradient_background('purple', #c8b2f7, 13s) {
+      left: 60vw;
+      top: 85vh;
+
+      width: 130vw; //circle based on width of browser
+      height: 130vw;
+
+      @include animation-delay(-2s); //offset start of animation
+
+      &.purple_2 {
+        left: 40vw;
+        top: -10vh;
+
+        width: 140vw; //circle based on width of browser
+        height: 140vw;
+
+        @include animation-delay(-7s);
+      }
+    }
+
+    @include gradient_background('blue', #549cde, 17s) {
+      left: 110vw;
+      top: 45vh;
+
+      width: 120vw; //circle based on width of browser
+      height: 120vw;
+
+      @include animation-delay(-4s); //offset start of animation
+
+      &.blue_2 {
+        left: 20vw;
+        top: 80vh;
+
+        width: 120vw; //circle based on width of browser
+        height: 120vw;
+
+        @include animation-delay(-10s);
+      }
+    }
+  }
+
+  .title_container {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom: (100% - $splash_position); //$splash_footer_height + $splash_padding;
+    z-index: 200; //above footer
+
+    @include not_desktop() {
+      left: $padding * 2;
+      right: $padding * 2;
+    }
+
+    .title_welcome {
+      font: {
+        size: 140%;
+      }
+      line: {
+        height: 120%;
+      }
+
+      @include animation(slide_down 1s easing($ease-in-out-cubic) .15s both);
+    }
+
+    .title_logo {
+      margin: {
+        top: $padding * .5;
+      }
+
+      font: {
+        size: 350%;
+        weight: bold;
+      }
+      line: {
+        height: 110%;
+      }
+
+      @include animation(slide_right 1s easing($ease-in-out-cubic) .15s both);
+    }
+
+    .button {
+      cursor: pointer;
+      display: inline-block;
+
+      color: get_color('background');
+      background: {
+        color: get_color('splash_button');
+      }
+
+      margin: {
+        top: $padding;
+        left: -($padding * 1.25);
+      }
+      padding: $padding ($padding * 1.5);
+
+      text: {
+        transform: uppercase;
+      }
+
+      @include border-radius($border_radius);
+      @include animation(floating 6s easing($ease-in-out-back) 0s both infinite);
+
+      &:hover {
+        background: {
+          color: get_color('splash_button_hover');
+        }
+      }
+    }
+  }
+
+  .molecule_red {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    z-index: 1000; //above everything
+
+//    filter: blur(2px);
+//    @include animation(molecule_red_animation 6s easing($ease-in-back) 0s both infinite);
+
+    svg {
+      @include scale(1.8);
+    }
+  }
+
+  .molecule_yellow {
+    position: absolute;
+    left: 40%;
+    top: 0px;
+    z-index: 100;
+
+    svg {
+      @include scale(1.8);
+    }
+  }
+
+  .molecule_blue {
+    svg {
+      @include scale(1.3);
+    }
+
+    .blink {
+      ellipse {
+//        @include animation-duration(6s);
+        @include animation-delay(-2s);
+      }
+    }
+
+    .molecule {
+      @include transform-origin(center -5px);
+      transform-box: fill-box;
+      @include animation(floating 6s easing($ease-in-out-back) 0s both infinite);
+    }
+
+    .legs {
+      @include transform-origin(center 0px);
+      transform-box: fill-box;
+      @include animation(floating_opposite 6s easing($ease-in-out-back) 0s both infinite);
+    }
+
+    .cape {
+      @include transform-origin(0px 0px);
+      transform-box: fill-box;
+      @include animation(cape_flapping 4s easing($ease-in-out-sine) 0s both infinite);
+    }
+  }
+
+  .eye {
+    @include translate(2px, 1.5px);
+
+    .sclera {
+      @include translate(-2px, -1.5px);
+    }
+
+    .pupil {
+      transform-box: fill-box;
+      transform: rotate(var(--deg));
+    }
+  }
+
+  .blink {
+    ellipse {
+      @include transform-origin(0px 0px);
+      transform-box: fill-box;
+      @include animation(blink 7s easing($ease-out-sine) 0s both infinite);
+    }
+  }
+
+  .moustache_left {
+    @include transform-origin(11px 2.5px);
+    transform-box: fill-box;
+    @include animation(moustache 4s easing($ease-in-out-back) 0s both infinite);
+  }
+
+  .moustache_right {
+    @include transform-origin(3px 2.5px);
+    transform-box: fill-box;
+    @include animation(moustache 4s easing($ease-in-out-back) 0s both infinite alternate-reverse);
+  }
+
+  .shadow {
+    fill: rgba(#888, .1);
+  }
+
+  .footer_container {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    top: calc(#{$splash_position} + #{$padding});
+    z-index: 100;
+
+    display: flex;
+    align-items: flex-end;
+    gap: $padding * .5;
+
+//    height: $splash_footer_height;
+
+    @include not_desktop() {
+      left: $padding * 2;
+      right: $padding * 2;
+    }
+
+    .molecule_green {
+      flex-grow: 1;
+
+      margin: {
+        left: $padding * 2;
+      }
+
+      svg {
+        @include scale(1.2);
+      }
+
+      .blink {
+        ellipse {
+          @include animation-duration(6s);
+          @include animation-delay(-5s);
+        }
+      }
+    }
+
+    .molecule_orange_light {
+      margin: {
+        right: 5px; //have hands overlap
+      }
+
+      @include scale(1.4);
+
+      .arms {
+        @include transform-origin(center 40%);
+        @include animation(raise_arms 6s easing($ease-in-out) 0s both infinite);
+      }
+
+      .arms_right {
+        @include transform-origin(center 40%);
+        @include animation(high_five 6s easing($ease-in-out) 0s both infinite);
+      }
+    }
+
+    .molecule_orange {
+//      @include animation(high_five 6s easing($ease-in-out) 0s both infinite);
+
+      @include scale(1.4);
+
+      .arms {
+        @include transform-origin(center 40%);
+        @include animation(high_five 6s easing($ease-in-out) 0s both infinite);
+      }
+
+      .blink {
+        ellipse {
+          @include animation-duration(9s);
+          @include animation-delay(-3s);
+        }
+      }
+    }
+  }
+}

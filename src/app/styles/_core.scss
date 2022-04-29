@@ -48,6 +48,9 @@ $colors: (
   panel_text: #000000,
   panel_text_faded: #c3c3c3,
 
+  splash_button: #ffb800,
+  splash_button_hover: lighten(#ffb800, 15%),
+
 	text: #000000,
 );
 
@@ -73,7 +76,8 @@ $indexes: (
   panel: 9000,
 
   //above everything
-  modal: 10000
+  modal: 10000,
+  splash: 11000
 );
 
 
