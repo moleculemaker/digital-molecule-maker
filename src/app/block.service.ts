@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BlockSet, BlockType } from './models';
 
-export type blockSetIds = '10x10x10palette' | 'pentamers';
+export type blockSetIds = '10x10x10palette' | 'pentamers' | 'chem237-spring22';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,8 @@ export class BlockService {
       return BLOCK_SET_10x10x10_PALETTE;
     } else if (blockSetId === 'pentamers') {
       return BLOCK_SET_PENTAMERS;
+    } else if (blockSetId === 'chem237-spring22') {
+      return BLOCK_SET_CHEM237_SPRING22;
     }
     throw new Error('Unknown blockSetId ' + blockSetId);
   }
@@ -374,6 +376,73 @@ export const BLOCK_SET_PENTAMERS = {
       svgUrl: 'assets/blocks/pentamers/tab3_block10.svg',
       width: 71.39,
       height: 43.24
+    }
+  ],
+} as BlockSet;
+
+export const BLOCK_SET_CHEM237_SPRING22 = {
+  [BlockType.Start]: [
+    {
+      type: BlockType.Start,
+      id: '1', // these aren't unique identifiers yet
+      label: '',
+      svgUrl: 'assets/blocks/chem237-spring22/tab1_block01.svg',
+      width: 95.31,
+      height: 28.06
+    }
+  ],
+
+  [BlockType.Middle]: [
+    {
+      type: BlockType.Middle,
+      id: '1', // these aren't unique identifiers yet
+      label: '',
+      svgUrl: 'assets/blocks/chem237-spring22/tab2_block01.svg',
+      width: 71.39,
+      height: 43.24
+    }
+  ],
+
+  [BlockType.End]: [
+    {
+      type: BlockType.End,
+      id: '1', // these aren't unique identifiers yet
+      label: '',
+      svgUrl: 'assets/blocks/chem237-spring22/tab3_block01.svg',
+      width: 59.83,
+      height: 74.63
+    },
+    {
+      type: BlockType.End,
+      id: '2', // these aren't unique identifiers yet
+      label: '',
+      svgUrl: 'assets/blocks/chem237-spring22/tab3_block02.svg',
+      width: 70.72,
+      height: 42.13
+    },
+    {
+      type: BlockType.End,
+      id: '3', // these aren't unique identifiers yet
+      label: '',
+      svgUrl: 'assets/blocks/chem237-spring22/tab3_block03.svg',
+      width: 59.94,
+      height: 33.67
+    },
+    {
+      type: BlockType.End,
+      id: '4', // these aren't unique identifiers yet
+      label: '',
+      svgUrl: 'assets/blocks/chem237-spring22/tab3_block04.svg',
+      width: 60.56,
+      height: 42.25
+    },
+    {
+      type: BlockType.End,
+      id: '5', // these aren't unique identifiers yet
+      label: '',
+      svgUrl: 'assets/blocks/chem237-spring22/tab3_block05.svg',
+      width: 60.16,
+      height: 56.94
     }
   ],
 } as BlockSet;
