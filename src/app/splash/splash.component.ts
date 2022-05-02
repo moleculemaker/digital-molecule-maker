@@ -13,6 +13,8 @@ export class SplashComponent implements OnInit {
 
   @HostListener('document:mousemove', ['$event']) onMouseMove(e:MouseEvent) {this.mouseMove(e);}
 
+  showForm: boolean = false;
+
   constructor() { }
 
   //********************************************
@@ -52,6 +54,15 @@ export class SplashComponent implements OnInit {
       var rotation = Math.atan2(mouse.x, mouse.y) * 180 / Math.PI;
 
       this.blueRightEye.nativeElement.style.setProperty('--deg', (-rotation + eyeOffset) + 'deg');
+    }
+  }
+
+  //********************************************
+  onClick(): void {
+    if (!this.showForm) {
+      this.showForm = true;
+    } else {
+      //todo: validate and process form information
     }
   }
 }
