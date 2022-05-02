@@ -1,4 +1,4 @@
-<div class="splash" >
+<div class="splash" *ngIf="showSplash">
   <div class="splash_background">
     <div class="background_green"></div>
     <div class="background_green green_2"></div>
@@ -19,7 +19,7 @@
       <input type="password" placeholder="Password" />
     </div>
 
-    <div class="button" (click)="onClick()">Get Started</div>
+    <div class="button" (click)="onGetStarted()">Get Started</div>
   </div>
 
   <div class="molecule_red">

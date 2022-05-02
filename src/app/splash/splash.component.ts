@@ -1,6 +1,4 @@
-import { Component, HostListener, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
-
-//import "external-svg-loader";
+import { Component, HostListener, OnInit, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'splash',
@@ -13,7 +11,8 @@ export class SplashComponent implements OnInit {
 
   @HostListener('document:mousemove', ['$event']) onMouseMove(e:MouseEvent) {this.mouseMove(e);}
 
-  showForm: boolean = false;
+  showForm = false;
+  showSplash = true;
 
   constructor() { }
 
@@ -31,38 +30,40 @@ export class SplashComponent implements OnInit {
     const eyeOffset = -135;
 
     if (this.blueLeftEye) {
-      var rect = this.blueLeftEye.nativeElement.getBoundingClientRect();
+      const rect = this.blueLeftEye.nativeElement.getBoundingClientRect();
 
-      var mouse = {
+      const mouse = {
         x: (rect.left + (rect.width / 2)) - e.clientX,
         y: (rect.top + (rect.height / 2)) - e.clientY
       };
 
-      var rotation = Math.atan2(mouse.x, mouse.y) * 180 / Math.PI;
+      const rotation = Math.atan2(mouse.x, mouse.y) * 180 / Math.PI;
 
       this.blueLeftEye.nativeElement.style.setProperty('--deg', (-rotation + eyeOffset) + 'deg');
     }
 
     if (this.blueRightEye) {
-      var rect = this.blueRightEye.nativeElement.getBoundingClientRect();
+      const rect = this.blueRightEye.nativeElement.getBoundingClientRect();
 
-      var mouse = {
+      const mouse = {
         x: (rect.left + (rect.width / 2)) - e.clientX,
         y: (rect.top + (rect.height / 2)) - e.clientY
       };
 
-      var rotation = Math.atan2(mouse.x, mouse.y) * 180 / Math.PI;
+      const rotation = Math.atan2(mouse.x, mouse.y) * 180 / Math.PI;
 
       this.blueRightEye.nativeElement.style.setProperty('--deg', (-rotation + eyeOffset) + 'deg');
     }
   }
 
   //********************************************
-  onClick(): void {
-    if (!this.showForm) {
-      this.showForm = true;
-    } else {
-      //todo: validate and process form information
-    }
+  onGetStarted(): void {
+    this.showForm = true;
+    // TODO once we support the login form, remove showSplash variable here and handle in the parent component
+    this.onHideSplash();
+  }
+
+  onHideSplash(): void {
+    this.showSplash = false;
   }
 }
