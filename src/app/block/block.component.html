@@ -1,7 +1,8 @@
 <!--todo - change to better test to know when div is ready to display to avoid undefined error -->
 <div class="block_container"
   *ngIf="imageWidth"
-
+  [style.height.px] = "(blockHeight + this.padding.y)"
+  [style.width.px] = "(blockWidth + this.padding.x)"
   [class]="[
     'block_' + type,
     'size_' + size
@@ -9,8 +10,8 @@
   [class.dashes]="isAddBlock()"
 >
   <svg id="block_shape" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    [attr.width]="blockWidth + this.padding.x"
-    [attr.height]="blockHeight + this.padding.y"
+    width="100%"
+    height="100%"
     [attr.viewBox]="'0 0 ' + (blockWidth + this.padding.x) + ' ' + (blockHeight + this.padding.y)"
   >
     <path class="block_background block_border" style="stroke-miterlimit:10;stoke-width:5;stroke-linejoin=round;"
@@ -27,14 +28,14 @@
     </g>
   </svg>
 
-  <div class="image">
-    <div class="icon_label" *ngIf="iconLabel" [innerHTML]="iconLabel"></div>
+  <div class="image" [style.height.%] = "50"
+  [style.width.%] = "50">
+    <!-- <div class="icon_label" *ngIf="iconLabel" [innerHTML]="iconLabel"></div> -->
 
     <svg #svgImage *ngIf="svgUrl"
       [attr.data-src]="svgUrl"
-
-      [attr.width]="imageWidth"
-      [attr.height]="imageHeight"
+      width="100%"
+      height="100%"
       [attr.viewBox]="buildImageViewbox()"
 
       data-cache="disabled"

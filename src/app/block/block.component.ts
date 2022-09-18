@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 
 import "external-svg-loader";
 import { BlockType } from '../models';
+import { SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'block',
@@ -30,6 +31,9 @@ export class BlockComponent implements OnInit {
   @Input()
   imageHeight = 80;
 
+  @Input()
+  zoomLevel = 100;
+
   @ViewChild('svgImage') svg: ElementRef|null = null;
 
   padding = {
@@ -49,6 +53,8 @@ export class BlockComponent implements OnInit {
     [BlockSize.Icon]: 2.0
   };
 
+  zoomScale = 1.0;
+
   blockWidth = 80;
   blockHeight = 80;
 
@@ -61,7 +67,8 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
-
+    console.log(this.imageHeight);
+    
     //change border size for icons
     if (this.isIcon()) {
       this.borderRadius = 1;
@@ -104,13 +111,13 @@ export class BlockComponent implements OnInit {
     }
     //set block dimensions
     //track this separately than image dimensions so we can make sure the min size of block is valid
-    this.blockWidth = this.imageWidth + this.padding.x;
-    this.blockHeight = this.imageHeight + this.padding.y;
+    this.blockWidth = this.imageWidth * this.zoomScale + this.padding.x;
+    this.blockHeight = this.imageHeight * this.zoomScale + this.padding.y;
 
     //min width and height
     if (!this.isIcon()) {
       //believe this only happens if no svgURL was provided
-      let minSize = (this.isSmall()) ? 100 : 150;
+      let minSize = (this.isSmall()) ? 100 : 0;
 
       if (this.blockWidth < minSize) {this.blockWidth = minSize;}
       if (this.blockHeight < minSize) {this.blockHeight = minSize;}
@@ -122,6 +129,24 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   ngAfterViewInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if (changes.zoomLevel) {
+      this.zoomScale = changes.zoomLevel.currentValue/100.0;
+      
+      if (this.isSmall() || this.isDefaultSize() || this.isLarge()) {
+        const scale = this.scales[this.size];
+
+        this.tabHeight = 28 * scale * this.zoomScale;
+        this.tabOffset = 20 * this.zoomScale;
+        this.tabRadius = 2 * scale * this.zoomScale;
+        this.tabWidth = 20 * scale * this.zoomScale;
+      }
+      this.blockWidth = this.imageWidth * this.zoomScale + this.padding.x;
+      this.blockHeight = this.imageHeight * this.zoomScale + this.padding.y;
+      
+    }
   }
 
   //********************************************
@@ -136,8 +161,8 @@ export class BlockComponent implements OnInit {
   buildImageViewbox() {
     //will make the viewbox dimensions larger in turn shrinking the image
     const scale = this.scales[this.size];
-    let width = this.imageWidth / scale;
-    let height = this.imageHeight / scale;
+    let width = this.imageWidth / (scale * this.zoomScale);
+    let height = this.imageHeight / (scale * this.zoomScale);
 
     return '0 0 ' + width + ' ' + height;
   }

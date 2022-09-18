@@ -17,12 +17,26 @@ import { InplaceComponent } from './inplace/inplace.component';
 import { PanelComponent } from './panel/panel.component';
 import { SplashComponent } from './splash/splash.component';
 
+import { OverlayModule } from '@angular/cdk/overlay';
+
+import { DraggableDirective } from './drag-drop-utilities/draggable/draggable.directive';
+import { DraggableHelperDirective } from './drag-drop-utilities/draggable/draggable-helper.directive';
+
+import { DroppableDirective } from './drag-drop-utilities/droppable/droppable.directive';
+import { DropZoneDirective } from './drag-drop-utilities/droppable/drop-zone.directive';
+import { DroppableService } from './drag-drop-utilities/droppable/droppable.service';
+
 @NgModule({
   declarations: [
     AppComponent,
     AppBuildComponent,
     AppHeaderComponent,
     AppSidebarComponent,
+
+    DraggableDirective,
+    DraggableHelperDirective,
+    DroppableDirective,
+    DropZoneDirective,
 
     BlockComponent,
     InplaceComponent,
@@ -35,9 +49,10 @@ import { SplashComponent } from './splash/splash.component';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    DragDropModule
+    DragDropModule,
+    OverlayModule
   ],
-  providers: [],
+  providers: [DroppableService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

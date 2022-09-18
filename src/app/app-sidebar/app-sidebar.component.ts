@@ -72,5 +72,6 @@ export class AppSidebarComponent implements OnInit {
   //********************************************
   selectBlock(block: Block) {
     this.onSelectBlock.emit(block);
+
   }
 }

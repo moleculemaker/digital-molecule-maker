@@ -183,7 +183,7 @@ $toggle_button_count: 2;
 
       padding: ($padding) 0px;
 
-      block {
+      .block-wrapper {
         //blocks have -negative index elements that compete with the normal structure. move above the -10 index
         position: relative;
         z-index: 20;

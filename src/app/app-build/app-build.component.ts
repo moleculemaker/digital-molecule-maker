@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, InjectionToken } from '@angular/core';
 
 import { RigService } from '../rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType } from '../models';
 import { blockSetIds } from '../block.service';
+import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
+
+
+export const CONTEXT_TOKEN = new InjectionToken<string>('portal-data');
 
 @Component({
   selector: 'app-build',
@@ -21,6 +25,8 @@ export class AppBuildComponent implements OnInit {
   BlockSize = BlockSize; // for template
 
   blockSetId: blockSetIds = 'chem237-spring22';
+
+  zoomLevel = 100;
 
   constructor(private rigService: RigService) { }
 
@@ -164,5 +170,22 @@ export class AppBuildComponent implements OnInit {
     ).subscribe(nullVal => {
       console.log("submitted");
     });
+  }
+
+  zoomInCanvas(): void {
+    if (this.zoomLevel < 200) {
+      this.zoomLevel += 20;
+    }
+  }
+
+  zoomOutCanvas(): void {
+    if (this.zoomLevel > 20) {
+      this.zoomLevel -= 20;
+    }
+  }
+
+  dropped(event: DroppableEvent): void {
+    this.addBlock(event.data, null);
+    event.data.selected = true;
   }
 }

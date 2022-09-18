@@ -62,6 +62,8 @@ $block_icon_height: 36px;
   @include block_style('middle');
   @include block_style('end');
 
+  z-index: get_index(modal);
+
 /*
   @include corner(top, left);
   @include corner(top, right);
@@ -145,7 +147,7 @@ $block_icon_height: 36px;
     z-index: 10;
 
     @include translate(-50%, -50%);
-  
+
     svg {
       fill: white;
 
