@@ -22,6 +22,12 @@ export class AppBuildComponent implements OnInit {
 
   blockSetId: blockSetIds = '10x10x10palette';
 
+  molecules = [
+    { name: 'one', position: { x: 50, y: 50 } },
+    { name: 'two', position: { x: 350, y: 350 } }
+  ];
+  zoomAndPanMatrix = [1, 0, 0, 1, 0, 0];
+
   constructor(private rigService: RigService) { }
 
   //********************************************
@@ -164,5 +170,17 @@ export class AppBuildComponent implements OnInit {
     ).subscribe(nullVal => {
       console.log("submitted");
     });
+  }
+
+  onZoomIn(): void {
+    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map(val => val * 1.1);
+  }
+  onZoomOut(): void {
+    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map(val => val * 0.9);
+  }
+  onPan(dx: number, dy: number): void {
+    this.zoomAndPanMatrix = [...this.zoomAndPanMatrix];
+    this.zoomAndPanMatrix[4] += dx;
+    this.zoomAndPanMatrix[5] += dy;
   }
 }

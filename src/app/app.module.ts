@@ -16,6 +16,7 @@ import { BlockComponent } from './block/block.component';
 import { InplaceComponent } from './inplace/inplace.component';
 import { PanelComponent } from './panel/panel.component';
 import { SplashComponent } from './splash/splash.component';
+import { MoleculeComponent } from './molecule/molecule.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SplashComponent } from './splash/splash.component';
     BlockComponent,
     InplaceComponent,
     PanelComponent,
-    SplashComponent
+    SplashComponent,
+    MoleculeComponent
   ],
   imports: [
     BrowserModule,
