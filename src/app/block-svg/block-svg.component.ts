@@ -37,6 +37,8 @@ export class BlockSvgComponent implements OnInit {
   tabHeight = 28; //px tall (middle of tab)
   tabWidth = 20; //px wide tab
 
+  imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 40];
+
   constructor() { }
 
   ngOnInit(): void {
@@ -59,9 +61,18 @@ export class BlockSvgComponent implements OnInit {
     // let minY = this.strokeWidth;
     // let maxX = this.blockWidth + this.padding.x - this.strokeWidth;
     // let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
-    let minX = 0
+    let minX = 0;
     let minY = 0;
-    let maxX = this.blockWidth + this.padding.x;
+
+    if(this.isMiddle()){
+      minX += this.blockWidth + this.padding.x;
+      this.imageZoomAndPanMatrix[4] = minX + 60;
+    } else if(this.isEnd()){
+      minX += 2 * (this.blockWidth + this.padding.x);
+      this.imageZoomAndPanMatrix[4] = minX + 60;
+    }
+
+    let maxX = this.blockWidth + this.padding.x + minX;
     let maxY = this.blockHeight + this.padding.y;
 
     let closePath = true;
@@ -156,6 +167,11 @@ export class BlockSvgComponent implements OnInit {
   // check if it's a starting block
   isStart() {
     return this.type === BlockType.Start;
+  }
+
+  // check if it's a middle block
+  isMiddle() {
+    return this.type === BlockType.Middle;
   }
 
   // check if it's an ending block

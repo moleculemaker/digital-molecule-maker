@@ -9,7 +9,7 @@
       [attr.stroke-dasharray]="strokeDasharray"
       [attr.stroke-width]="strokeWidth"
     ></path></g>
-    <g transform="matrix(1 0 0 1 60 40)" class="image">
+    <g [attr.transform]="'matrix(' + imageZoomAndPanMatrix.join(' ') + ')'" class="image">
       <g #svgImage *ngIf="svgUrl"
         [attr.data-src]="svgUrl"
         width="100%"
