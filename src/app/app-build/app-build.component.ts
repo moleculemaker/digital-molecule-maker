@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, InjectionToken } from '@angular/core';
 
 import { RigService } from '../rig.service';
 import { BlockSize } from '../block/block.component';
-import { Block, BlockType } from '../models';
+import { Block, BlockType, Molecule, Coordinates } from '../models';
 import { blockSetIds } from '../block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 
@@ -27,6 +27,19 @@ export class AppBuildComponent implements OnInit {
   blockSetId: blockSetIds = 'chem237-spring22';
 
   zoomLevel = 100;
+
+  molecules = [
+    { name: 'one', position: { x: 50, y: 50 } },
+    { name: 'two', position: { x: 350, y: 350 } }
+  ];
+
+  moleculePosition = "350, 350"
+
+  zoomAndPanMatrix = [1, 0, 0, 1, 0, 0];
+
+  moleculeList: Molecule[] = [];
+
+  hoveredMolecule?: number = undefined;
 
   constructor(private rigService: RigService) { }
 
@@ -172,20 +185,65 @@ export class AppBuildComponent implements OnInit {
     });
   }
 
-  zoomInCanvas(): void {
-    if (this.zoomLevel < 200) {
-      this.zoomLevel += 20;
-    }
+  onZoomIn(): void {
+    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map(val => val * 1.1);
+    this.moleculeList.forEach(molecule => {
+      molecule.position.x /= 1.1
+      molecule.position.y /= 1.1
+    })
+
+  }
+  onZoomOut(): void {
+    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map(val => val * 0.9);
+    this.moleculeList.forEach(molecule => {
+      molecule.position.x /= 0.9
+      molecule.position.y /= 0.9
+    })
   }
 
-  zoomOutCanvas(): void {
-    if (this.zoomLevel > 20) {
-      this.zoomLevel -= 20;
-    }
+  onPan(dx: number, dy: number): void {
+    this.zoomAndPanMatrix = [...this.zoomAndPanMatrix];
+    this.zoomAndPanMatrix[4] += dx;
+    this.zoomAndPanMatrix[5] += dy;
   }
 
   dropped(event: DroppableEvent): void {
-    this.addBlock(event.data, null);
+    var _dragElement = event.nativeEvent.target as HTMLElement;
+
+    const rect = _dragElement.getBoundingClientRect();
+
+    var relX = event.nativeEvent.clientX - rect.left
+    var relY = event.nativeEvent.clientY - rect.top
+
+    if (this.hoveredMolecule != undefined) {
+      this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
+    } else{
+      if (event.data.type == BlockType.Start) {
+        var newBlockList: Block[] = [event.data];
+        relX /= this.zoomAndPanMatrix[0];
+        relY /= this.zoomAndPanMatrix[0];
+        var positionCoordinates = new Coordinates(relX, relY);
+        var newMolecule = new Molecule(positionCoordinates, newBlockList);
+        this.moleculeList.push(newMolecule);
+      }
+    }
+
+
+    console.log(this.moleculeList);
+
+    // this.addBlock(event.data, null);
     event.data.selected = true;
+  }
+
+  onMouseEnter(moleculeId: number){
+    // const target = event.target as HTMLElement;
+    // target.classList.toggle('molecule_hover');
+    this.hoveredMolecule = moleculeId;
+  }
+
+  onMouseLeave(moleculeId: number){
+    // const target = event.target as HTMLElement;
+    // target.classList.toggle('molecule_hover');
+    this.hoveredMolecule = undefined;
   }
 }

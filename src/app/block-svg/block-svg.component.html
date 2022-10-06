@@ -1,0 +1,21 @@
+<ng-template #childComponentTemplate>
+  <svg width="100%" height="100%" class="block_container"
+  [class]="[
+    'block_' + type
+  ]"
+  [class.dashes]="isAddBlock()">
+    <g><path class="block_background block_border" style="stroke-miterlimit:10;stoke-width:5;stroke-linejoin=round;"
+      [attr.d]="drawBlock()"
+      [attr.stroke-dasharray]="strokeDasharray"
+      [attr.stroke-width]="strokeWidth"
+    ></path></g>
+    <g transform="matrix(1 0 0 1 60 40)" class="image">
+      <g #svgImage *ngIf="svgUrl"
+        [attr.data-src]="svgUrl"
+        width="100%"
+        height="100%"
+        data-cache="disabled"
+      />
+    </g>
+  </svg>
+</ng-template>

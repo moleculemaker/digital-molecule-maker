@@ -67,7 +67,7 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
-    console.log(this.imageHeight);
+    // console.log(this.imageHeight);
     
     //change border size for icons
     if (this.isIcon()) {

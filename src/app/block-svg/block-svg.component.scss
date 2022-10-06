@@ -1,0 +1,105 @@
+//**************** custom mixins ******************
+@import '../styles/core';
+
+@mixin block_style($name) {
+  &.block_#{$name} {
+    .block_background {
+      fill: color_variable('block_' + $name);
+    }
+
+    .block_border {
+      stroke: color_variable('block_' + $name + '_border');
+    }
+  }
+}
+
+
+.block_container {
+  position: relative;
+
+  // @include box-sizing(border-box);
+
+  @include block_style('start');
+  @include block_style('middle');
+  @include block_style('end');
+
+  // z-index: get_index(modal);
+
+  &:hover {
+    cursor: pointer;
+
+    .block_background {
+      fill: color_variable('block_hover');
+      @include transition(none);
+    }
+
+    .block_border {
+      stroke: color_variable('block_hover_border');
+      @include transition(none);
+    }
+  }
+
+  // &.dashes {
+  //   cursor: pointer;
+
+  //   .block_background {
+  //     fill: color_variable('background');
+  //   }
+
+  //   .block_border {
+  //     stroke: color_variable('block_border_dashes');
+  //   }
+
+  //   &:hover {
+  //     .block_border {
+  //       stroke: color_variable('block_hover_dashes');
+  //       @include transition(none);
+  //     }
+  //   }
+  // }
+
+  .block_background {
+    @include transition(#{fill .2s easing($ease-in), stroke .2s easing($ease-in)});
+  }
+
+  .block_border {
+    @include transition(#{fill .2s easing($ease-in), stroke .2s easing($ease-in)});
+  }
+
+  g.image {
+    // display: inline-flex;
+    // justify-content: center;
+    // align-items: center;
+
+    // position: absolute;
+    // left: 50%;
+    // top: 50%;
+    // z-index: 10;
+
+    // @include translate(-50%, -50%);
+
+    g {
+      fill: white;
+
+      ::ng-deep text {
+        isolation:isolate;
+        font-size:10px;
+        font-family:Arial-BoldMT, Arial;
+        font-weight:400;
+      }
+
+      ::ng-deep .connection_out {
+        stroke: white;
+        fill: #ffb800;
+        stroke-miterlimit: 10;
+      }
+
+      ::ng-deep .connection_in {
+        stroke: white;
+        fill: #e64fff;
+        stroke-miterlimit: 10;
+      }
+
+    }
+  }
+}
