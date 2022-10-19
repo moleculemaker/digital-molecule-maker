@@ -1,3 +1,5 @@
+// Based on https://stackblitz.com/edit/cdk-drag-drop?file=app%2Fapp.component.html
+
 import { Directive, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { GlobalPositionStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortal } from '@angular/cdk/portal';

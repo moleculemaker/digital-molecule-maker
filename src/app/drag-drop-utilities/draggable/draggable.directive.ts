@@ -1,3 +1,5 @@
+// Based on https://stackblitz.com/edit/cdk-drag-drop?file=app%2Fapp.component.html
+
 import {
   ContentChild,
   Directive,
@@ -62,7 +64,7 @@ export class DraggableDirective implements OnDestroy {
       this.dragging = true;
       this.helper?.onDragStart(event);
       this.dragStart.next(event);
-    }, 200);
+    }, 5);
   }
 
   @HostListener('document:pointermove', ['$event'])

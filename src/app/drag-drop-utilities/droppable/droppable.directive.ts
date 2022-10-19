@@ -1,3 +1,5 @@
+// Based on https://stackblitz.com/edit/cdk-drag-drop?file=app%2Fapp.component.html
+
 import { Directive, Input, OnInit, OnDestroy } from '@angular/core';
 import { DraggableDirective } from '../draggable/draggable.directive';
 import { DroppableService } from './droppable.service';

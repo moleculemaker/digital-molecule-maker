@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, InjectionToken } from '@angular/core';
+import { Component, OnInit, Injector, InjectionToken, ChangeDetectorRef } from '@angular/core';
 
 import { RigService } from '../rig.service';
 import { BlockSize } from '../block/block.component';
@@ -41,7 +41,11 @@ export class AppBuildComponent implements OnInit {
 
   hoveredMolecule?: number = undefined;
 
-  constructor(private rigService: RigService) { }
+  panning = false;
+  private _initialPosition!:  { x: number, y: number };
+  private _panElement!: HTMLElement;
+
+  constructor(private rigService: RigService, private changeDetector: ChangeDetectorRef) { }
 
   //********************************************
   ngOnInit(): void {
@@ -190,7 +194,7 @@ export class AppBuildComponent implements OnInit {
     this.moleculeList.forEach(molecule => {
       molecule.position.x /= 1.1
       molecule.position.y /= 1.1
-    })
+    });
 
   }
   onZoomOut(): void {
@@ -198,11 +202,11 @@ export class AppBuildComponent implements OnInit {
     this.moleculeList.forEach(molecule => {
       molecule.position.x /= 0.9
       molecule.position.y /= 0.9
-    })
+    });
   }
 
-  onPan(dx: number, dy: number): void {
-    this.zoomAndPanMatrix = [...this.zoomAndPanMatrix];
+  onCenter(dx: number, dy: number): void {
+    // this.zoomAndPanMatrix = [...this.zoomAndPanMatrix];
     this.zoomAndPanMatrix[4] += dx;
     this.zoomAndPanMatrix[5] += dy;
   }
@@ -222,14 +226,17 @@ export class AppBuildComponent implements OnInit {
         var newBlockList: Block[] = [event.data];
         relX /= this.zoomAndPanMatrix[0];
         relY /= this.zoomAndPanMatrix[0];
+        relX -= this.zoomAndPanMatrix[4];
+        relY -= this.zoomAndPanMatrix[5];
         var positionCoordinates = new Coordinates(relX, relY);
         var newMolecule = new Molecule(positionCoordinates, newBlockList);
         this.moleculeList.push(newMolecule);
       }
+
     }
+    this.changeDetector.detectChanges();
 
-
-    console.log(this.moleculeList);
+    // console.log(this.moleculeList);
 
     // this.addBlock(event.data, null);
     event.data.selected = true;
@@ -245,5 +252,31 @@ export class AppBuildComponent implements OnInit {
     // const target = event.target as HTMLElement;
     // target.classList.toggle('molecule_hover');
     this.hoveredMolecule = undefined;
+  }
+
+  onPanStart(event: MouseEvent){
+    this.panning = true;
+    this._panElement = event.target as HTMLElement;
+
+    event.stopPropagation();
+
+    this._initialPosition = {
+      x: event.pageX - this.zoomAndPanMatrix[4],
+      y: event.pageY - this.zoomAndPanMatrix[5],
+    };
+  }
+
+  onPan(event: MouseEvent){
+    if (this.panning) {
+      let dx = (event.pageX - this._initialPosition.x);
+      let dy = (event.pageY - this._initialPosition.y);
+
+      this.zoomAndPanMatrix[4] = dx;
+      this.zoomAndPanMatrix[5] = dy;
+    }
+  }
+
+  onPanStop(event: MouseEvent){
+    this.panning = false;
   }
 }

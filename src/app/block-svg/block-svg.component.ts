@@ -61,8 +61,8 @@ export class BlockSvgComponent implements OnInit {
     // let minY = this.strokeWidth;
     // let maxX = this.blockWidth + this.padding.x - this.strokeWidth;
     // let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
-    let minX = 0;
-    let minY = 0;
+    let minX = this.strokeWidth;
+    let minY = this.strokeWidth;
 
     if(this.isMiddle()){
       minX += this.blockWidth + this.padding.x;

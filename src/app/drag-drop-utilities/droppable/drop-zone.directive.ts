@@ -1,3 +1,5 @@
+// Based on https://stackblitz.com/edit/cdk-drag-drop?file=app%2Fapp.component.html
+
 import { Directive, Input, HostBinding, HostListener, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { DroppableService, DroppableEvent } from './droppable.service';
 import { Subject } from 'rxjs';

@@ -1,3 +1,5 @@
+// Based on https://stackblitz.com/edit/cdk-drag-drop?file=app%2Fapp.component.html
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
