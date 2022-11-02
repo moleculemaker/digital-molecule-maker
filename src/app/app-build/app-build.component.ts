@@ -205,10 +205,11 @@ export class AppBuildComponent implements OnInit {
     });
   }
 
-  onCenter(dx: number, dy: number): void {
+  onCenter(): void {
     // this.zoomAndPanMatrix = [...this.zoomAndPanMatrix];
-    this.zoomAndPanMatrix[4] += dx;
-    this.zoomAndPanMatrix[5] += dy;
+    this.zoomAndPanMatrix[4] = 0;
+    this.zoomAndPanMatrix[5] = 0;
+
   }
 
   dropped(event: DroppableEvent): void {
