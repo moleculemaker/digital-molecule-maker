@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 
 import "external-svg-loader";
 import { BlockType } from '../models';
-import { SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'block',
@@ -62,7 +61,6 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
-    // console.log(this.imageHeight);
 
     //change border size for icons
     if (this.isIcon()) {
@@ -112,7 +110,7 @@ export class BlockComponent implements OnInit {
     //min width and height
     if (!this.isIcon()) {
       //believe this only happens if no svgURL was provided
-      let minSize = (this.isSmall()) ? 100 : 0;
+      let minSize = (this.isSmall()) ? 100 : 150;
 
       if (this.blockWidth < minSize) {this.blockWidth = minSize;}
       if (this.blockHeight < minSize) {this.blockHeight = minSize;}
