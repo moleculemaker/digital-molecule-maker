@@ -1,13 +1,10 @@
-import { Component, OnInit, Injector, InjectionToken, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { RigService } from '../rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType, Molecule, Coordinates } from '../models';
 import { blockSetIds } from '../block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
-
-
-export const CONTEXT_TOKEN = new InjectionToken<string>('portal-data');
 
 @Component({
   selector: 'app-build',
@@ -221,6 +218,7 @@ export class AppBuildComponent implements OnInit {
     var relY = event.nativeEvent.clientY - rect.top
 
     if (this.hoveredMolecule != undefined) {
+      this.moleculeList[this.hoveredMolecule].blockList = this.moleculeList[this.hoveredMolecule].blockList.filter(block => block.type != event.data.type);
       this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
     } else{
       if (event.data.type == BlockType.Start) {
@@ -236,10 +234,6 @@ export class AppBuildComponent implements OnInit {
 
     }
     this.changeDetector.detectChanges();
-
-    // console.log(this.moleculeList);
-
-    // this.addBlock(event.data, null);
     event.data.selected = true;
   }
 

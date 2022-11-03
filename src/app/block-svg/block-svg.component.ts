@@ -48,19 +48,9 @@ export class BlockSvgComponent implements OnInit {
     alert(this.type);
   }
 
-  // onLoadSVG(event: any) {
-  //   const viewBoxPieces = event.path[0].attributes.getNamedItem('viewBox').value.split(" ");
-  // }
-
   drawBlock() {
     let path = '';
     let hasRightTab = (!this.isEnd() && !this.isAddBlock()) ? true : false;
-
-
-    // let minX = this.strokeWidth;
-    // let minY = this.strokeWidth;
-    // let maxX = this.blockWidth + this.padding.x - this.strokeWidth;
-    // let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
     let minX = this.strokeWidth;
     let minY = this.strokeWidth;
 
@@ -76,15 +66,6 @@ export class BlockSvgComponent implements OnInit {
     let maxY = this.blockHeight + this.padding.y;
 
     let closePath = true;
-
-    //adjust max if right tab
-    // if (hasRightTab) {maxX = maxX - this.tabWidth;}
-
-    // //no need to show left border
-    // if (this.isAddBlock() && !this.isStart()) {
-    //   closePath = false;
-    //   this.tabRadius = 1;
-    // }
 
     //build list of coordinates
     let coords: Array<{x: number, y: number, radius?: number}> = [];

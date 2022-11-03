@@ -39,25 +39,6 @@
     }
   }
 
-  // &.dashes {
-  //   cursor: pointer;
-
-  //   .block_background {
-  //     fill: color_variable('background');
-  //   }
-
-  //   .block_border {
-  //     stroke: color_variable('block_border_dashes');
-  //   }
-
-  //   &:hover {
-  //     .block_border {
-  //       stroke: color_variable('block_hover_dashes');
-  //       @include transition(none);
-  //     }
-  //   }
-  // }
-
   .block_background {
     @include transition(#{fill .2s easing($ease-in), stroke .2s easing($ease-in)});
   }
@@ -67,17 +48,6 @@
   }
 
   g.image {
-    // display: inline-flex;
-    // justify-content: center;
-    // align-items: center;
-
-    // position: absolute;
-    // left: 50%;
-    // top: 50%;
-    // z-index: 10;
-
-    // @include translate(-50%, -50%);
-
     g {
       fill: white;
 
