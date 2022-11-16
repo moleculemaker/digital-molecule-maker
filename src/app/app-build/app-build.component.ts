@@ -23,8 +23,6 @@ export class AppBuildComponent implements OnInit {
 
   blockSetId: blockSetIds = 'chem237-spring22';
 
-  zoomLevel = 100;
-
   molecules = [
     { name: 'one', position: { x: 50, y: 50 } },
     { name: 'two', position: { x: 350, y: 350 } }
@@ -210,25 +208,25 @@ export class AppBuildComponent implements OnInit {
   }
 
   dropped(event: DroppableEvent): void {
-    var _dragElement = event.nativeEvent.target as HTMLElement;
+    const _dragElement = event.nativeEvent.target as HTMLElement;
 
     const rect = _dragElement.getBoundingClientRect();
 
-    var relX = event.nativeEvent.clientX - rect.left
-    var relY = event.nativeEvent.clientY - rect.top
+    let relX = event.nativeEvent.clientX - rect.left
+    let relY = event.nativeEvent.clientY - rect.top
 
     if (this.hoveredMolecule != undefined) {
       this.moleculeList[this.hoveredMolecule].blockList = this.moleculeList[this.hoveredMolecule].blockList.filter(block => block.type != event.data.type);
       this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
     } else{
       if (event.data.type == BlockType.Start) {
-        var newBlockList: Block[] = [event.data];
+        const newBlockList: Block[] = [event.data];
         relX /= this.zoomAndPanMatrix[0];
         relY /= this.zoomAndPanMatrix[0];
         relX -= this.zoomAndPanMatrix[4];
         relY -= this.zoomAndPanMatrix[5];
-        var positionCoordinates = new Coordinates(relX, relY);
-        var newMolecule = new Molecule(positionCoordinates, newBlockList);
+        const positionCoordinates = new Coordinates(relX, relY);
+        const newMolecule = new Molecule(positionCoordinates, newBlockList);
         this.moleculeList.push(newMolecule);
       }
 
@@ -238,14 +236,10 @@ export class AppBuildComponent implements OnInit {
   }
 
   onMouseEnter(moleculeId: number){
-    // const target = event.target as HTMLElement;
-    // target.classList.toggle('molecule_hover');
     this.hoveredMolecule = moleculeId;
   }
 
-  onMouseLeave(moleculeId: number){
-    // const target = event.target as HTMLElement;
-    // target.classList.toggle('molecule_hover');
+  onMouseLeave(){
     this.hoveredMolecule = undefined;
   }
 

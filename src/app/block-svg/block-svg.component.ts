@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges} from '@angular/core';
 import { BlockType } from '../models';
 
 @Component({
@@ -18,11 +18,9 @@ export class BlockSvgComponent implements OnInit {
   @Input()
   type = BlockType.Start;
 
-  // ToDO
   blockWidth = 100;
   blockHeight = 100;
 
-  // ToDO
   padding = {
     x: 20 * 4,
     y: 20 * 1.5
@@ -39,9 +37,17 @@ export class BlockSvgComponent implements OnInit {
 
   imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 40];
 
+  path = "";
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.svgUrl){
+      this.path = this.drawBlock();
+    }
   }
 
   onClick(): void {

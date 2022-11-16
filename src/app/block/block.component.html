@@ -9,12 +9,10 @@
   ]"
   [class.dashes]="isAddBlock()"
 >
-  <svg id="block_shape" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    width="100%"
-    height="100%"
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
     [attr.viewBox]="'0 0 ' + (blockWidth + this.padding.x) + ' ' + (blockHeight + this.padding.y)"
   >
-    <path class="block_background block_border" style="stroke-miterlimit:10;stoke-width:5;stroke-linejoin=round;"
+    <path class="block_background block_border"
       [attr.d]="drawBlock()"
 
       [attr.stroke-dasharray]="strokeDasharray"

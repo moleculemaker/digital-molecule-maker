@@ -4,16 +4,14 @@
     'block_' + type
   ]"
   [class.dashes]="isAddBlock()">
-    <g><path class="block_background block_border" style="stroke-miterlimit:10;stoke-width:5;stroke-linejoin=round;"
-      [attr.d]="drawBlock()"
+    <g><path class="block_background block_border"
+      [attr.d]="path"
       [attr.stroke-dasharray]="strokeDasharray"
       [attr.stroke-width]="strokeWidth"
     ></path></g>
     <g [attr.transform]="'matrix(' + imageZoomAndPanMatrix.join(' ') + ')'" class="image">
       <g #svgImage *ngIf="svgUrl"
         [attr.data-src]="svgUrl"
-        width="100%"
-        height="100%"
         data-cache="disabled"
       />
     </g>
