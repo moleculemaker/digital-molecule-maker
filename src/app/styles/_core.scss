@@ -19,6 +19,9 @@ $colors: (
   block_hover: #ffb800,
   block_hover_border: darken(#ffb800, 20%),
   block_hover_dashes: saturate(lighten(#ffb800, 10%), 20%),
+  block_connection_in: #e64fff,
+  block_connection_out: #ffb800,
+  block_stroke: #fff,
 
   button_background: #e1e1e1,
   button_border: #888,
@@ -74,6 +77,8 @@ $indexes: (
   interface_sidebar: 6000,
 
   panel: 9000,
+
+  dragging: 9500,
 
   //above everything
   modal: 10000,
