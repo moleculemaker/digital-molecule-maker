@@ -53,7 +53,12 @@ $block_icon_height: 36px;
 
 //**************** css ******************
 
+:host {
+  display: block;
+}
+
 .block_container {
+//  cursor: pointer;
   position: relative;
 
   @include box-sizing(border-box);
@@ -72,8 +77,6 @@ $block_icon_height: 36px;
 */
 
   &:not(.dashes):hover {
-    cursor: pointer;
-
     .block_background {
       fill: color_variable('block_hover');
       @include transition(none);
@@ -86,8 +89,6 @@ $block_icon_height: 36px;
   }
 
   &.dashes {
-    cursor: pointer;
-
     .block_background {
       fill: color_variable('background');
     }
@@ -152,21 +153,24 @@ $block_icon_height: 36px;
       fill: white;
 
       ::ng-deep text {
-        isolation:isolate;
-        font-size:10px;
-        font-family:Arial-BoldMT, Arial;
-        font-weight:400;
-      }
+        isolation: isolate;
 
-      ::ng-deep .connection_out {
-        stroke: white;
-        fill: #ffb800;
-        stroke-miterlimit: 10;
+        font: {
+          family: $font_family;
+          size: $font_size_min;
+          weight: bold;
+        }
       }
 
       ::ng-deep .connection_in {
-        stroke: white;
-        fill: #e64fff;
+        stroke: color_variable('block_stroke');
+        fill: color_variable('block_connection_in');
+        stroke-miterlimit: 10;
+      }
+
+      ::ng-deep .connection_out {
+        stroke: color_variable('block_stroke');
+        fill: color_variable('block_connection_out');
         stroke-miterlimit: 10;
       }
 
