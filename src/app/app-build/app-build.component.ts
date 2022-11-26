@@ -23,13 +23,6 @@ export class AppBuildComponent implements OnInit {
 
   blockSetId: blockSetIds = 'chem237-spring22';
 
-  molecules = [
-    { name: 'one', position: { x: 50, y: 50 } },
-    { name: 'two', position: { x: 350, y: 350 } }
-  ];
-
-  moleculePosition = "350, 350"
-
   zoomAndPanMatrix = [1, 0, 0, 1, 0, 0];
 
   moleculeList: Molecule[] = [];
@@ -186,22 +179,12 @@ export class AppBuildComponent implements OnInit {
 
   onZoomIn(): void {
     this.zoomAndPanMatrix = this.zoomAndPanMatrix.map(val => val * 1.1);
-    this.moleculeList.forEach(molecule => {
-      molecule.position.x /= 1.1
-      molecule.position.y /= 1.1
-    });
-
   }
   onZoomOut(): void {
     this.zoomAndPanMatrix = this.zoomAndPanMatrix.map(val => val * 0.9);
-    this.moleculeList.forEach(molecule => {
-      molecule.position.x /= 0.9
-      molecule.position.y /= 0.9
-    });
   }
 
   onCenter(): void {
-    // this.zoomAndPanMatrix = [...this.zoomAndPanMatrix];
     this.zoomAndPanMatrix[4] = 0;
     this.zoomAndPanMatrix[5] = 0;
 

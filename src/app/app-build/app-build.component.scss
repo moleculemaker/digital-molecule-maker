@@ -251,4 +251,10 @@ $analyze_panel_width: 420px;
       }
     }
   }
+
+  .svg_workspace{
+    g{
+      transform-origin: 50% 50%;
+    }
+  }
 }
