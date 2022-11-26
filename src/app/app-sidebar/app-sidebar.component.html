@@ -14,16 +14,27 @@
   </div>
 
   <div class="content">
-    <block *ngFor="let block of getBlockData()"
-      [type]="currentBlockType"
-      [label]="block.label"
-      [svgUrl]="block.svgUrl"
-      [imageWidth]="block.width"
-      [imageHeight]="block.height"
-      [size]="BlockSize.Small"
+    <div *ngFor="let block of getBlockData()" dfDroppable [dfDroppableData]="block" class="block-wrapper">
+      <block
+        [type]="currentBlockType"
+        [label]="block.label"
+        [svgUrl]="block.svgUrl"
+        [imageWidth]="block.width"
+        [imageHeight]="block.height"
+        [size]="BlockSize.Small"
+      ></block>
 
-      (click)="selectBlock(block)"
-    ></block>
+      <div *dfDraggableHelper class="dragging_helper">
+        <block
+          [type]="currentBlockType"
+          [label]="block.label"
+          [svgUrl]="block.svgUrl"
+          [imageWidth]="block.width"
+          [imageHeight]="block.height"
+          [size]="BlockSize.Small"
+        ></block>
+      </div>
+    </div>
   </div>
 
   <!-- todo: change to data driven tab structure -->

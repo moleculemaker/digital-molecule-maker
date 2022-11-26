@@ -183,7 +183,7 @@ $toggle_button_count: 2;
 
       padding: ($padding) 0px;
 
-      block {
+      .block-wrapper {
         //blocks have -negative index elements that compete with the normal structure. move above the -10 index
         position: relative;
         z-index: 20;
@@ -194,6 +194,20 @@ $toggle_button_count: 2;
         margin: {
           right: $padding * 2;
         }
+
+        &.draggable {
+          ::ng-deep .block_container {
+            cursor: grab;
+          }
+        }
+
+/*
+        &.dragging {
+          ::ng-deep .block_container {
+            cursor: grabbing;
+          }
+        }
+*/
       }
     }
 
@@ -268,6 +282,30 @@ $toggle_button_count: 2;
           }
         }
       }
+    }
+  }
+}
+
+::ng-deep .cdk-overlay-container {
+  .cdk-overlay-pane {
+    position: absolute !important; //position static doesn't work here (not sure if this breaks other cdk-overlay panels)
+    left: 0px;
+    top: 0px;
+    z-index: get_index(dragging);
+  }
+
+  .dragging_helper {
+//todo: unable to get this to work...the grabbing icon changes, however, then the block won't drop into the workspace with pointer-events enabled
+//    cursor: grabbing !important;
+//    pointer-events: auto !important;
+
+    display: inline-block; //don't let it get full width
+
+    @include opacity(60);
+
+    ::ng-deep block {
+        .block_container {
+        }
     }
   }
 }
