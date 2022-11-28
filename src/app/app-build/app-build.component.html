@@ -40,17 +40,25 @@
     </div>
   </div>
 
-  <svg class="svg_workspace" style="height: 100%; width: 100%" (mousedown)="onPanStart($event)" (mousemove)="onPan($event)" (mouseup)="onPanStop($event)">
+  <svg id="svg_workspace" class="svg_workspace" style="height: 100%; width: 100%" (mousedown)="onPanStart($event)" (mousemove)="onPan($event)" (mouseup)="onPanStop($event)">
     <!-- this outer-level group applies the zoom and pan -->
     <g [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'">
-      <g (mouseenter) ="onMouseEnter(moleculeId)"  (mouseleave) ="onMouseLeave()" *ngFor="let molecule of moleculeList; let moleculeId = index" [attr.transform]="'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'">
+      <g (mouseenter) ="onMouseEnter($event, moleculeId)"  (mouseleave) ="onMouseLeave()" *ngFor="let molecule of moleculeList; let moleculeId = index" [attr.transform]="'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'">
+        <rect (click)="onMoleculeClick($event, moleculeId, popup_wrapper.childComponentTemplate)" (mouseleave)="onMoleculeLeave()" x="-10" y="-10" width="570" height="156" rx="10"></rect>
         <g *ngFor="let block of molecule.blockList">
           <dmm-block-svg #wrapper [svgUrl]="block.svgUrl" [type]="block.type"></dmm-block-svg>
           <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
         </g>
+        <dmm-info-popup #popup_wrapper></dmm-info-popup>
+        <ng-content *ngTemplateOutlet="popup_wrapper.childComponentTemplate"></ng-content>
       </g>
     </g>
   </svg>
+
+  <!-- <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="overlayOrigin" [cdkConnectedOverlayOpen]="true">
+    <section>test</section>
+  </ng-template> -->
+  <!-- <ng-container  cdkConnectedOverlay [cdkConnectedOverlayOrigin]="overlayOrigin" [cdkConnectedOverlayOpen]="isOpen"></ng-container> -->
 
   <div class="canvas_controls">
     <div class="button zoom_in" (click)="onZoomIn()" >

@@ -1,0 +1,50 @@
+@import '../styles/core';
+
+.popup_container{
+  width: 900px;
+  @include shadow(10px, rgba(#000, .3), 2px, 2px);
+}
+
+.info_container{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 10px;
+
+  button{
+    border-radius: 9999px;
+    background-color: #DEDEDE;
+    font-size: smaller;
+  }
+}
+
+.properties_container{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 50px;
+}
+
+.property_container{
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+}
+
+.property_name{
+  color: #8E8E8E;
+  font-size: 12px;
+}
+
+.property_value{
+  font-size: 16px;
+  height: 19px;
+  font-weight: 600;
+
+  svg{
+    top: 2px;
+    left: 2px;
+  }
+}

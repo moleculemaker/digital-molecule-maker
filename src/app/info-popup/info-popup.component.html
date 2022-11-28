@@ -1,0 +1,44 @@
+<ng-template #childComponentTemplate>
+  <mat-card class="popup_container">
+    <mat-card-header>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-grid-list cols="4" rowHeight="30px">
+        <mat-grid-tile [colspan]="1" [rowspan]="4">
+            <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="1">
+          <div class="info_container">
+            <button mat-flat-button *ngFor="let tag of tags"> Used in {{tag}}</button>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="2">
+          <div class="properties_container">
+            <div *ngFor="let property of properties">
+              <div class="property_container">
+                <div class="property_name">
+                  {{property.name}}
+                </div>
+                <div class="property_value">
+                  {{property.value}}
+                  <svg *ngIf="property.name == 'ID' && verified" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.26698 1.45498C4.91024 1.40362 5.52089 1.15061 6.01198 0.731982C6.56664 0.259573 7.27141 0.00012207 7.99998 0.00012207C8.72856 0.00012207 9.43332 0.259573 9.98798 0.731982C10.4791 1.15061 11.0897 1.40362 11.733 1.45498C12.4594 1.51304 13.1414 1.82794 13.6567 2.34325C14.172 2.85855 14.4869 3.54055 14.545 4.26698C14.596 4.90998 14.849 5.52098 15.268 6.01198C15.7404 6.56664 15.9998 7.27141 15.9998 7.99998C15.9998 8.72856 15.7404 9.43332 15.268 9.98798C14.8494 10.4791 14.5963 11.0897 14.545 11.733C14.4869 12.4594 14.172 13.1414 13.6567 13.6567C13.1414 14.172 12.4594 14.4869 11.733 14.545C11.0897 14.5963 10.4791 14.8494 9.98798 15.268C9.43332 15.7404 8.72856 15.9998 7.99998 15.9998C7.27141 15.9998 6.56664 15.7404 6.01198 15.268C5.52089 14.8494 4.91024 14.5963 4.26698 14.545C3.54055 14.4869 2.85855 14.172 2.34325 13.6567C1.82794 13.1414 1.51304 12.4594 1.45498 11.733C1.40362 11.0897 1.15061 10.4791 0.731982 9.98798C0.259573 9.43332 0.00012207 8.72856 0.00012207 7.99998C0.00012207 7.27141 0.259573 6.56664 0.731982 6.01198C1.15061 5.52089 1.40362 4.91024 1.45498 4.26698C1.51304 3.54055 1.82794 2.85855 2.34325 2.34325C2.85855 1.82794 3.54055 1.51304 4.26698 1.45498V1.45498ZM11.707 6.70698C11.8891 6.51838 11.9899 6.26578 11.9877 6.00358C11.9854 5.74138 11.8802 5.49057 11.6948 5.30516C11.5094 5.11976 11.2586 5.01459 10.9964 5.01231C10.7342 5.01003 10.4816 5.11082 10.293 5.29298L6.99998 8.58598L5.70698 7.29298C5.51838 7.11082 5.26578 7.01003 5.00358 7.01231C4.74138 7.01459 4.49057 7.11976 4.30516 7.30516C4.11976 7.49057 4.01459 7.74138 4.01231 8.00358C4.01003 8.26578 4.11082 8.51838 4.29298 8.70698L6.29298 10.707C6.48051 10.8945 6.73482 10.9998 6.99998 10.9998C7.26515 10.9998 7.51945 10.8945 7.70698 10.707L11.707 6.70698V6.70698Z" fill="#31509E"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="1">
+          <div class="info_container ">
+            > More {{popupType}} properties
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-raised-button href="https://www.google.com/" target="_blank">Cited by 15</a>
+      <button mat-raised-button color="primary">Add to cart</button>
+    </mat-card-actions>
+  </mat-card>
+</ng-template>

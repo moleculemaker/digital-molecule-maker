@@ -4,6 +4,11 @@ export enum BlockType {
     End = 'end'
 }
 
+export enum PopupType {
+    Molecule = 'molecule',
+    Block = 'block'
+}
+
 export interface Block {
     type: BlockType;
     id: string;

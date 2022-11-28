@@ -1,10 +1,14 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ViewContainerRef } from '@angular/core';
 
 import { RigService } from '../rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType, Molecule, Coordinates } from '../models';
 import { blockSetIds } from '../block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
+import { InfoPopupComponent } from '../info-popup/info-popup.component';
+import { TypeofExpr } from '@angular/compiler';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
   selector: 'app-build',
@@ -33,7 +37,9 @@ export class AppBuildComponent implements OnInit {
   private _initialPosition!:  { x: number, y: number };
   private _panElement!: HTMLElement;
 
-  constructor(private rigService: RigService, private changeDetector: ChangeDetectorRef) { }
+  overlayRef: any;
+
+  constructor(private rigService: RigService, private changeDetector: ChangeDetectorRef, private overlay: Overlay, private viewContainerRef:ViewContainerRef) { }
 
   //********************************************
   ngOnInit(): void {
@@ -218,7 +224,7 @@ export class AppBuildComponent implements OnInit {
     event.data.selected = true;
   }
 
-  onMouseEnter(moleculeId: number){
+  onMouseEnter(event: MouseEvent, moleculeId: number){
     this.hoveredMolecule = moleculeId;
   }
 
@@ -226,10 +232,35 @@ export class AppBuildComponent implements OnInit {
     this.hoveredMolecule = undefined;
   }
 
+  onMoleculeClick(event: MouseEvent, moleculeId: number, popup_wrapper:any){
+    const targetElement = event.target as HTMLElement;
+    const { top, right, bottom, left } = targetElement.getBoundingClientRect();
+
+    // const middle = (left + right)/2
+    this.overlayRef = this.overlay.create({
+
+      positionStrategy: this.overlay
+        .position()
+        .global()
+        .left((left - 180) + 'px')
+        .top((bottom + 10) + 'px')
+    });
+    const template = new TemplatePortal(popup_wrapper, this.viewContainerRef);
+    // console.log(template);
+    const componentRef = this.overlayRef.attach(template);
+    // this.overlayRef.backdropClick().subscribe(() => this.overlayRef.detach());
+  }
+
+  onMoleculeLeave(){
+    // this.overlayRef.detach();
+  }
+
   onPanStart(event: MouseEvent){
+    if(this.overlayRef)
+    this.overlayRef.dispose();
     this.panning = true;
     this._panElement = event.target as HTMLElement;
-
+    this._panElement.style.cursor = 'grab';
     event.stopPropagation();
 
     this._initialPosition = {
@@ -250,5 +281,7 @@ export class AppBuildComponent implements OnInit {
 
   onPanStop(event: MouseEvent){
     this.panning = false;
+    if(this._panElement)
+    this._panElement.style.cursor = 'unset';
   }
 }

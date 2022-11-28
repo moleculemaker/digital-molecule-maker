@@ -26,6 +26,11 @@ import { DroppableDirective } from './drag-drop-utilities/droppable/droppable.di
 import { DropZoneDirective } from './drag-drop-utilities/droppable/drop-zone.directive';
 import { DroppableService } from './drag-drop-utilities/droppable/droppable.service';
 import { BlockSvgComponent } from './block-svg/block-svg.component';
+import { InfoPopupComponent } from './info-popup/info-popup.component';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -43,7 +48,8 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
     InplaceComponent,
     PanelComponent,
     SplashComponent,
-    BlockSvgComponent
+    BlockSvgComponent,
+    InfoPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +58,10 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
     HttpClientModule,
     AppRoutingModule,
     DragDropModule,
-    OverlayModule
+    OverlayModule,
+    MatCardModule,
+    MatButtonModule,
+    MatGridListModule
   ],
   providers: [DroppableService],
   bootstrap: [AppComponent]

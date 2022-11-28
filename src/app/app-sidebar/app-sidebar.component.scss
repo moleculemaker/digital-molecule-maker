@@ -287,6 +287,7 @@ $toggle_button_count: 2;
 }
 
 ::ng-deep .cdk-overlay-container {
+  z-index: get_index(dragging);
   .cdk-overlay-pane {
     position: absolute !important; //position static doesn't work here (not sure if this breaks other cdk-overlay panels)
     left: 0px;

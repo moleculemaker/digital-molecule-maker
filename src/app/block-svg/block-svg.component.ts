@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges} from '@angular/core';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
+import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, ViewContainerRef, ChangeDetectorRef} from '@angular/core';
+import { InfoPopupComponent } from '../info-popup/info-popup.component';
 import { BlockType } from '../models';
 
 @Component({
@@ -38,8 +41,9 @@ export class BlockSvgComponent implements OnInit {
   imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 40];
 
   path = "";
+  overlayRef: any;
 
-  constructor() { }
+  constructor(private overlay: Overlay, private viewContainerRef:ViewContainerRef, private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
@@ -47,6 +51,8 @@ export class BlockSvgComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges){
     if(changes.svgUrl){
       this.path = this.drawBlock();
+      this.changeDetector.detectChanges();
+
     }
   }
 
@@ -166,6 +172,24 @@ export class BlockSvgComponent implements OnInit {
     return this.type === BlockType.End;
   }
 
+  onBlockClick(event: MouseEvent, popup_wrapper: any){
+    const targetElement = event.target as HTMLElement;
+    const { top, right, bottom, left } = targetElement.getBoundingClientRect();
 
+    // const middle = (left + right)/2
+    this.overlayRef = this.overlay.create({
+
+      positionStrategy: this.overlay
+        .position()
+        .global()
+        .left(left + 'px')
+        .top((bottom + 5) + 'px')
+    });
+    const template = new TemplatePortal(popup_wrapper, this.viewContainerRef);
+    console.log(this.overlayRef);
+    const componentRef = this.overlayRef.attach(template);
+    this.overlayRef.backdropClick().subscribe(() => this.overlayRef.detach());
+
+  }
 }
 

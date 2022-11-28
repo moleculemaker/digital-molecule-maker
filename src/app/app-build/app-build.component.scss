@@ -255,6 +255,17 @@ $analyze_panel_width: 420px;
   .svg_workspace{
     g{
       transform-origin: 50% 50%;
+
+      g{
+        rect{
+          fill: white;
+          fill-opacity: 0.4;
+          &:hover{
+            stroke: #6C88CF;
+            stroke-width: 2;
+          }
+        }
+      }
     }
   }
 }
