@@ -9,6 +9,7 @@ import { InfoPopupComponent } from '../info-popup/info-popup.component';
 import { TypeofExpr } from '@angular/compiler';
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-build',
@@ -38,6 +39,8 @@ export class AppBuildComponent implements OnInit {
   private _panElement!: HTMLElement;
 
   overlayRef: any;
+
+  closeOverlay: Subject<void> = new Subject<void>();
 
   constructor(private rigService: RigService, private changeDetector: ChangeDetectorRef, private overlay: Overlay, private viewContainerRef:ViewContainerRef) { }
 
@@ -233,6 +236,7 @@ export class AppBuildComponent implements OnInit {
   }
 
   onMoleculeClick(event: MouseEvent, moleculeId: number, popup_wrapper:any){
+    this.closeOverlay.next();
     const targetElement = event.target as HTMLElement;
     const { top, right, bottom, left } = targetElement.getBoundingClientRect();
 
@@ -242,7 +246,7 @@ export class AppBuildComponent implements OnInit {
       positionStrategy: this.overlay
         .position()
         .global()
-        .left((left - 180) + 'px')
+        .left((left - 95) + 'px')
         .top((bottom + 10) + 'px')
     });
     const template = new TemplatePortal(popup_wrapper, this.viewContainerRef);
@@ -258,6 +262,7 @@ export class AppBuildComponent implements OnInit {
   onPanStart(event: MouseEvent){
     if(this.overlayRef)
     this.overlayRef.dispose();
+    this.closeOverlay.next();
     this.panning = true;
     this._panElement = event.target as HTMLElement;
     this._panElement.style.cursor = 'grab';

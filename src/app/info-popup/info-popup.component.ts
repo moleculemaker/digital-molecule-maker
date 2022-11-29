@@ -1,3 +1,4 @@
+import { OverlayRef } from '@angular/cdk/overlay';
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PopupType } from '../models';
 
@@ -12,6 +13,9 @@ export class InfoPopupComponent implements OnInit {
   @Input()
   popupType = PopupType.Molecule;
 
+  @Input()
+  overlayRef?: OverlayRef;
+
   tags = ["High Luninance", "Medical"];
 
   properties = [
@@ -20,6 +24,13 @@ export class InfoPopupComponent implements OnInit {
     {name: "Molecular Weight", value: "267.4 g/mol"},
   ];
 
+  metrics = [
+    {name: "Predicted Yield", value: "50-60%"},
+    {name: "Innovation Score", value: "90"}
+  ]
+
+  isMolecule = (this.popupType == PopupType.Molecule);
+
   verified = true;
 
   constructor() { }
@@ -27,4 +38,8 @@ export class InfoPopupComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  closePopup(){
+    if(this.overlayRef)
+    this.overlayRef.detach();
+  }
 }

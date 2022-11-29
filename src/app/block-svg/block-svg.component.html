@@ -16,6 +16,6 @@
       />
     </g>
   </svg>
-  <dmm-info-popup #popup_wrapper></dmm-info-popup>
+  <dmm-info-popup #popup_wrapper [overlayRef]="overlayRef"></dmm-info-popup>
   <ng-content *ngTemplateOutlet="popup_wrapper.childComponentTemplate"></ng-content>
 </ng-template>

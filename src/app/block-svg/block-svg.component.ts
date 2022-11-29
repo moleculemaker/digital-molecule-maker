@@ -1,6 +1,7 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, ViewContainerRef, ChangeDetectorRef} from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { InfoPopupComponent } from '../info-popup/info-popup.component';
 import { BlockType } from '../models';
 
@@ -20,6 +21,9 @@ export class BlockSvgComponent implements OnInit {
 
   @Input()
   type = BlockType.Start;
+
+  @Input()
+  closeOverlayObservable?: Observable<void>;
 
   blockWidth = 100;
   blockHeight = 100;
@@ -43,9 +47,17 @@ export class BlockSvgComponent implements OnInit {
   path = "";
   overlayRef: any;
 
+  _eventsSubscription?: Subscription;
+
   constructor(private overlay: Overlay, private viewContainerRef:ViewContainerRef, private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+
+  }
+
+  ngOnDestroy(){
+    if(this._eventsSubscription)
+    this._eventsSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -176,19 +188,31 @@ export class BlockSvgComponent implements OnInit {
     const targetElement = event.target as HTMLElement;
     const { top, right, bottom, left } = targetElement.getBoundingClientRect();
 
-    // const middle = (left + right)/2
+    let overlayLeft = left;
+    if(this.type === BlockType.Start){
+      overlayLeft -= 95;
+    } else if(this.type === BlockType.Middle){
+      overlayLeft -= 275;
+    } else if(this.type === BlockType.End) {
+      overlayLeft -= 455;
+    }
+
     this.overlayRef = this.overlay.create({
 
       positionStrategy: this.overlay
         .position()
         .global()
-        .left(left + 'px')
-        .top((bottom + 5) + 'px')
+        .left(overlayLeft + 'px')
+        .top((bottom + 20) + 'px')
     });
     const template = new TemplatePortal(popup_wrapper, this.viewContainerRef);
-    console.log(this.overlayRef);
     const componentRef = this.overlayRef.attach(template);
     this.overlayRef.backdropClick().subscribe(() => this.overlayRef.detach());
+    if(this.closeOverlayObservable && this.overlayRef){
+      this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
+        this.overlayRef.detach();
+      });
+    }
 
   }
 }
