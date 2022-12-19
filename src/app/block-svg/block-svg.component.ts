@@ -39,6 +39,8 @@ export class BlockSvgComponent implements OnInit {
 
   path = "";
 
+  isInfoPanelOpen = false;
+
   constructor() { }
 
   ngOnInit(): void {

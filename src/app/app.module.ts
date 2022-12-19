@@ -18,6 +18,7 @@ import { PanelComponent } from './panel/panel.component';
 import { SplashComponent } from './splash/splash.component';
 
 import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayComponent } from './overlay/overlay.component';
 
 import { DraggableDirective } from './drag-drop-utilities/draggable/draggable.directive';
 import { DraggableHelperDirective } from './drag-drop-utilities/draggable/draggable-helper.directive';
@@ -43,7 +44,8 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
     InplaceComponent,
     PanelComponent,
     SplashComponent,
-    BlockSvgComponent
+    BlockSvgComponent,
+    OverlayComponent
   ],
   imports: [
     BrowserModule,

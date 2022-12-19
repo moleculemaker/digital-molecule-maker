@@ -253,6 +253,9 @@ $analyze_panel_width: 420px;
   }
 
   .svg_workspace{
+    height: 100%;
+    width: 100%;
+
     g{
       transform-origin: 50% 50%;
     }

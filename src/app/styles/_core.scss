@@ -41,6 +41,16 @@ $colors: (
 
   modal_background: rgba(#ececec, .95),
 
+  overlay_background: #fff,
+  overlay_button_background: #31509e,
+  overlay_button_border: #dedede,
+  overlay_button_hover: lighten(#31509e, 10%),
+  overlay_image_background: #f8f8f8,
+  overlay_label: #aaa,
+  overlay_outline: #f1f1f1,
+  overlay_primary: #31509e,
+  overlay_tag_background: #dedede,
+
   panel_background: #ffffff,
   panel_button: #7288c9,
   panel_button_hover: darken(#7288c9, 10%),
