@@ -28,7 +28,7 @@ example: document.documentElement.style.setProperty('--text-color', '#ff0000');
 @import 'core/reset';
 
 //load custom css for common elements
-//@import 'custom/loading';
+@import 'tags';
 
 
 //**************** css ******************

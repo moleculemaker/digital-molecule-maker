@@ -22,91 +22,167 @@ $toggle_button_count: 2;
   display: flex;
   flex-direction: column;
 
-  width: 460px;
+  width: 500px;
 
-  padding: $padding;
+  border: {
+    right: 2px solid color_variable('interface_border');
+  }
 
-  .toggle {
+  .tabs {
     display: flex;
-    position: relative;
 
-    width: 80%;
-
-    margin: {
-      right: auto;
-      left: auto;
+    border: {
+      bottom: 1px solid color_variable('interface_border');
     }
+
+    .tab {
+      cursor: pointer;
+      flex-grow: 1;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: color_variable('interface_button');
+
+      padding: ($padding) $padding;
+
+      border: {
+        bottom: 5px solid transparent;
+      }
+
+      @include box-sizing(border-box);
+
+      &:hover {
+        border: {
+          bottom: {
+            color: #aaa; //color_variable('interface_tab_selected');
+          }
+        }
+      }
+
+      &.selected {
+        color: color_variable('interface_tab_selected');
+
+        font: {
+          weight: bold;
+        }
+
+        border: {
+          bottom: {
+            color: color_variable('interface_tab_selected');
+          }
+        }
+      }
+    }
+  }
+
+  .filters {
+    padding: $padding;
+
+    border: {
+      bottom: 1px solid color_variable('interface_border');
+    }
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: $padding * .2;
+
+    background: {
+      color: color_variable('interface_search_background');
+    }
+
+    padding: ($padding * .2);
 
     font: {
-      family: $font_family_header;
-      size: 120%;
+      size: .8rem;
     }
 
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      bottom: 0px;
-      z-index: -50; //under everything
+    border: 1px solid color_variable('interface_border');
 
-      margin: -3px; //create a bit of padding
+    @include border-radius($border_radius);
 
-      background: {
-        color: color_variable('button_toggle_background');
+    .search_icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      svg {
+        @include scale(.65);
+      }
+    }
+
+    .molecules_like {
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      gap: $padding * .2;
+
+      font: {
+        size: .65rem;
       }
 
-      @include border-radius($interface_radius);
-    }
+      &:hover {
+        .search_icon,
+        .remove_btn {
+          color: color_variable('button_hover');
+        }
 
-    &:after {
-      content: '';
-      position: absolute;
-      left: 0%;
-      top: 0px;
-      bottom: 0px;
-      z-index: -10; //under buttons
-
-      width: math.div(100%, $toggle-button-count);
-
-      background: {
-        color: color_variable('button_toggle_selected');
+        .molecule {
+          background: {
+            color: color_variable('button_hover');
+          }
+        }
       }
 
-      @include border-radius($interface_radius);
-      @include transition(#{left .3s easing($ease-in-out-cubic)});
-    }
+      .molecule {
+        display: flex;
+        align-items: center;
+        gap: $padding * .2;
 
-    @for $i from 0 through ($toggle_button_count - 1) {
-      &.select_#{$i} {
-        &:after {
-          left: math.div(100%, $toggle-button-count) * $i;
+        background: {
+          color: color_variable('interface_background');
+        }
+
+        padding: ($padding * .2) ($padding * .25);
+
+        font: {
+          weight: bold;
+        }
+
+        @include border-radius($border_radius);
+
+        svg {
+          @include scale(.8);
+        }
+      }
+
+      .remove_btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          @include scale(.65);
         }
       }
     }
 
-    .button {
-      cursor: pointer;
+    .search_field {
+      flex-grow: 1;
 
-      width: 50%;
+      background: none;
 
-      padding: ($padding * .5) ($padding);
+      padding: ($padding * .2) ($padding * .25);
 
-      text: {
-        align: center;
+      font: {
+        size: .8rem;
       }
 
-      @include border-radius($interface_radius);
-      @include transition(#{color .2s easing($ease-in)});
-
-      &.selected {
-      }
-
-      &:not(.selected):hover {
-        color: color_variable('button_toggle_hover');
-        @include transition(none);
-      }
+      border: 0px;
     }
   }
 
@@ -118,15 +194,108 @@ $toggle_button_count: 2;
     flex-direction: column;
 
     margin: {
-      top: $padding;
+//      top: $padding;
     }
 
-    @include shadow(10px, rgba(#000, .3), 2px, 2px);
+//    @include shadow(10px, rgba(#000, .3), 2px, 2px);
     @include border-radius($interface_radius);
 
     background: {
       color: color_variable('background'); //just in case anything goes behind this
     }
+
+    .content {
+      flex-grow: 1;
+      flex-basis: 0;
+
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+
+      overflow: {
+        y: scroll;
+      }
+
+      padding: ($padding) 0px;
+
+      .item {
+        //blocks have -negative index elements that compete with the normal structure. move above the -10 index
+        position: relative;
+        z-index: 20;
+
+        width: calc(50% - #{$padding * 4});
+
+        flex-shrink: 0;
+
+        margin: ($padding * .5) ($padding);
+        margin: {
+          right: $padding * 2;
+        }
+
+        border: 1px solid color_variable('interface_border');
+
+        @include border-radius($border_radius * 2);
+
+        &.draggable {
+          ::ng-deep .block_container {
+            cursor: grab;
+          }
+        }
+
+/*
+        &.dragging {
+          ::ng-deep .block_container {
+            cursor: grabbing;
+          }
+        }
+*/
+      }
+    }
+
+    .preview {
+      position: relative;
+
+      background: {
+        color: color_variable('interface_background_faded');
+      }
+
+      padding: ($padding * .5);
+
+      .star_btn {
+        position: absolute;
+        right: $padding * .5;
+        top: $padding * .5;
+        z-index: 100;
+      }
+    }
+
+    .info {
+      padding: ($padding * .5);
+      padding: {
+        bottom: $padding * .75;
+      }
+
+      .formula {
+        font: {
+          weight: bold;
+        }
+      }
+
+      .weight {
+        color: #aaa; // color_variable('');
+
+        font: {
+          size: .85rem;
+        }
+      }
+    }
+
+    .block_wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+/*
 
     .info {
       display: flex;
@@ -200,7 +369,7 @@ $toggle_button_count: 2;
             cursor: grab;
           }
         }
-
+*/
 /*
         &.dragging {
           ::ng-deep .block_container {
@@ -208,9 +377,11 @@ $toggle_button_count: 2;
           }
         }
 */
+/*
       }
     }
-
+*/
+/*
     .tabs {
       display: flex;
       align-items: stretch;
@@ -283,6 +454,7 @@ $toggle_button_count: 2;
         }
       }
     }
+*/
   }
 }
 
