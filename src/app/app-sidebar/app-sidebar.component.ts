@@ -47,7 +47,7 @@ export class AppSidebarComponent implements OnInit {
 
   searchPlaceholder = 'Search';
   moleculeSearch = [
-    {name: 'C15H14BN04S'}
+    {name: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S'}
   ]; //array of molecules to search by
 
   typeFilter:any[] = []; //array of types to filter by (only used in showing the blocks?)

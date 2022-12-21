@@ -37,24 +37,18 @@ $analyze_panel_width: 420px;
 
     display: flex;
     align-items: center;
-
-    font: {
-      family: $font_family_header;
-      size: 120%;
-    }
+    gap: $padding * .5;
 
     .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: $padding * .25;
+
       padding: ($padding * .5) ($padding * .75);
 
       font: {
-        family: $font_family_header;
-        size: 90%;
-      }
-
-      & + .button {
-        margin: {
-          left: $padding * .5;
-        }
+        size: .75rem;
       }
     }
   }
@@ -175,6 +169,7 @@ $analyze_panel_width: 420px;
       cursor: pointer;
 
       &:hover {
+        color: color_variable('background');
         background: {
           color: color_variable('button_hover');
         }
