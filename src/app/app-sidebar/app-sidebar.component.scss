@@ -4,6 +4,8 @@
 @import '../styles/core';
 
 $toggle_button_count: 2;
+$sidebar_width: 500px;
+
 
 //**************** custom mixins ******************
 
@@ -15,17 +17,107 @@ $toggle_button_count: 2;
   }
 }
 
+@mixin type_color($name) {
+  &.type_#{$name} {
+    .molecule_svg {
+      path {
+        fill: color_variable(#{'block_' + $name});
+        stroke: color_variable(#{'block_' + $name + '_border'});
+      }
+    }
+  }
+}
+
 
 //**************** css ******************
 
 :host {
+  width: $sidebar_width;
+
+  @include transition(#{width .2s easing($ease-in-out-cubic)});
+
+  &.collapsed {
+    width: 0px;
+
+    .sidebar_container {
+      @include translate(-$sidebar_width, 0%);
+    }
+
+    .sidebar_toggle {
+      svg {
+        @include rotate(180deg);
+      }
+    }
+  }
+}
+
+.sidebar_container {
+  position: relative;
   display: flex;
   flex-direction: column;
 
-  width: 500px;
+  width: $sidebar_width;
+  height: 100%;
+
+  @include translate(0%, 0%);
+  @include transition(#{transform .2s easing($ease-in-out-cubic)});
 
   border: {
     right: 2px solid color_variable('interface_border');
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 0px;
+    bottom: 0px;
+    z-index: 100;
+
+    width: 4px;
+
+    background: {
+      color: color_variable('interface_border');
+    }
+  }
+
+  .sidebar_toggle {
+    cursor: pointer;
+
+    position: absolute;
+    left: 100%;
+    top: $padding;
+    z-index: get_index(interface);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min: {
+      height: 5rem;
+    }
+
+    background: {
+      color: color_variable('background');
+    }
+
+    margin: {
+      left: 4px; //don't cover up the border
+    }
+    padding: ($padding * .5) ($padding * .65);
+
+    border: 1px solid color_variable('interface_border');
+    border: {
+      left: 0px;
+    }
+
+    @include border-right-radius($border_radius * 2);
+
+    &:hover {
+      background: {
+        color: color_variable('interface_hover');
+      }
+    }
   }
 
   .tabs {
@@ -79,9 +171,178 @@ $toggle_button_count: 2;
 
   .filters {
     padding: $padding;
+    padding: {
+      bottom: 0px; //the toggle button addes extra padding
+    }
 
     border: {
       bottom: 1px solid color_variable('interface_border');
+    }
+
+    .control_bar {
+      display: flex;
+      align-items: center;
+      gap: $padding * .25;
+
+      margin: {
+        top: $padding * .5;
+      }
+
+      .type {
+        cursor: pointer;
+        position: relative;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: $padding * .25;
+
+        height: 1.5rem;
+
+        padding: ($padding * .25) ($padding * .5);
+
+        border: 1px solid color_variable('interface_border');
+
+        @include border-radius($border_radius);
+
+        &.has_selected_type {
+          &:not(.selected) {
+            &:not(:hover) {
+              color: color_variable('text_faded');
+
+              @include opacity(50);
+
+              .molecule_svg {
+                path {
+                  fill: #ccc;
+                  stroke: #888;
+                }
+              }
+            }
+          }
+        }
+
+        &.selected {
+          border: {
+            color: color_variable('button_selected');
+          }
+        }
+
+        &:hover {
+          border: {
+            color: color_variable('button_hover');
+          }
+
+          @include opacity(100);
+        }
+
+        @include type_color('start');
+        @include type_color('middle');
+        @include type_color('end');
+
+        .label {
+          font: {
+            size: .75rem;
+          }
+          text: {
+            transform: uppercase;
+          }
+        }
+      }
+
+      .spacer {
+        flex-grow: 1;
+      }
+    }
+
+    .toggle_filters_btn {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: color_variable('interface_faded');
+
+      padding: {
+        top: $padding * .5;
+        bottom: $padding * .5;
+      }
+
+      &:hover {
+        color: color_variable('button_hover');
+      }
+
+      &.expanded {
+        svg {
+          @include rotate(-90deg);
+        }
+      }
+
+      svg {
+        @include rotate(90deg);
+      }
+    }
+
+    .extra_filters {
+      overflow: hidden;
+
+      .container {
+        padding: {
+          top: $padding;
+        }
+      }
+
+      .tags {
+        .tag {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: $padding * .2;
+
+          background: none;
+          border: 1px solid color_variable('tag_background');
+
+          svg {
+            .star {
+              fill: color_variable('primary');
+              stroke-width: 0px;
+            }
+          }
+
+          &.selected {
+            color: color_variable('background');
+            background: {
+              color: color_variable('interface_selected');
+            }
+
+            border: {
+              color: color_variable('interface_selected');
+            }
+
+            svg {
+              .star {
+                fill: color_variable('background');
+              }
+            }
+
+            &:hover {
+              background: {
+                color: color_variable('button_hover');
+              }
+
+              border: {
+                color: color_variable('button_hover');
+              }
+            }
+          }
+
+          &:hover {
+            background: {
+              color: color_variable('interface_hover');
+            }
+          }
+        }
+      }
     }
   }
 
@@ -109,12 +370,13 @@ $toggle_button_count: 2;
       justify-content: center;
       align-items: center;
 
-      svg {
-        @include scale(.65);
+      margin: {
+        right: $padding * .2;
+        left: $padding * .35;
       }
     }
 
-    .molecules_like {
+    .molecule_search {
       cursor: pointer;
 
       display: flex;
@@ -126,15 +388,14 @@ $toggle_button_count: 2;
       }
 
       &:hover {
-        .search_icon,
-        .remove_btn {
-          color: color_variable('button_hover');
-        }
-
         .molecule {
           background: {
-            color: color_variable('button_hover');
+            color: color_variable('interface_search_hover');
           }
+        }
+
+        .remove_btn {
+          @include opacity(100);
         }
       }
 
@@ -144,19 +405,29 @@ $toggle_button_count: 2;
         gap: $padding * .2;
 
         background: {
-          color: color_variable('interface_background');
+          color: color_variable('interface_border');
         }
 
-        padding: ($padding * .2) ($padding * .25);
+        padding: ($padding * .2) ($padding * .35);
 
         font: {
-          weight: bold;
+          weight: 500; //semibold if the webfont has it
         }
 
         @include border-radius($border_radius);
 
-        svg {
-          @include scale(.8);
+        .molecule_svg {
+          margin: {
+            right: $padding * .2;
+            left: $padding * .25;
+          }
+/*
+//override colors based on molecule type? or use generic color scheme? or leave as the default green for all?
+          path {
+            fill: #bbb;
+            stroke: #888;
+          }
+*/
         }
       }
 
@@ -164,6 +435,8 @@ $toggle_button_count: 2;
         display: flex;
         justify-content: center;
         align-items: center;
+
+        @include opacity(20);
 
         svg {
           @include scale(.65);
@@ -176,14 +449,19 @@ $toggle_button_count: 2;
 
       background: none;
 
-      padding: ($padding * .2) ($padding * .25);
+      padding: ($padding * .5) ($padding * .25);
 
       font: {
         size: .8rem;
       }
 
       border: 0px;
+
+      &:focus {
+        outline: none;
+      }
     }
+
   }
 
   .block_list {
@@ -193,11 +471,6 @@ $toggle_button_count: 2;
     display: flex;
     flex-direction: column;
 
-    margin: {
-//      top: $padding;
-    }
-
-//    @include shadow(10px, rgba(#000, .3), 2px, 2px);
     @include border-radius($interface_radius);
 
     background: {
@@ -211,37 +484,61 @@ $toggle_button_count: 2;
       display: flex;
       flex-wrap: wrap;
       align-content: flex-start;
+      gap: $padding * .5;
 
       overflow: {
         y: scroll;
       }
 
-      padding: ($padding) 0px;
+      padding: {
+        top: $padding;
+        right: $padding * .5;
+        bottom: $padding;
+        left: $padding;
+      }
 
       .item {
         //blocks have -negative index elements that compete with the normal structure. move above the -10 index
         position: relative;
         z-index: 20;
 
-        width: calc(50% - #{$padding * 4});
+        display: flex;
+        flex-direction: column;
+
+        width: calc(50% - #{$padding * .5});
 
         flex-shrink: 0;
 
-        margin: ($padding * .5) ($padding);
-        margin: {
-          right: $padding * 2;
-        }
+        border: 2px solid color_variable('interface_border');
 
-        border: 1px solid color_variable('interface_border');
-
+        @include box-sizing(border-box);
         @include border-radius($border_radius * 2);
 
-        &.draggable {
-          ::ng-deep .block_container {
-            cursor: grab;
+        &:hover {
+          background: {
+//            color: color_variable('interface_sidebar_background_hover');
+          }
+
+          border-color: color_variable('button_hover');
+
+          .preview {
+            background: {
+//              color: color_variable('interface_sidebar_background_hover');
+            }
           }
         }
 
+        &.draggable {
+          cursor: grab;
+
+          ::ng-deep .block_container {
+//            cursor: grab;
+          }
+        }
+
+        &.dragging {
+          cursor: grabbing;
+        }
 /*
         &.dragging {
           ::ng-deep .block_container {
@@ -254,19 +551,61 @@ $toggle_button_count: 2;
 
     .preview {
       position: relative;
+      flex-grow: 1;
 
       background: {
-        color: color_variable('interface_background_faded');
+        color: color_variable('interface_sidebar_block_background');
       }
 
       padding: ($padding * .5);
 
+      @include border-top-radius($border_radius * 2);
+
       .star_btn {
+        cursor: pointer;
+
         position: absolute;
         right: $padding * .5;
         top: $padding * .5;
         z-index: 100;
+
+        width: 1.25rem;
+        height: 1.25rem;
+
+        color: color_variable('interface_button');
+
+        &:hover {
+          color: color_variable('button_border');
+        }
+
+        &.is_favorite {
+          color: color_variable('primary');
+
+          svg {
+            .star {
+              fill: color_variable('primary');
+            }
+          }
+        }
       }
+    }
+
+    .block_wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      margin: {
+//        top: $padding * .25;
+        bottom: -($padding * .5); //tighten up the spacing a bit given the block scale
+      }
+
+      block {
+        @include scale(.75);
+      }
+    }
+
+    .tags {
     }
 
     .info {
@@ -276,24 +615,22 @@ $toggle_button_count: 2;
       }
 
       .formula {
+        display: flex;
+        align-items: center;
+        gap: $padding * .5;
+
         font: {
           weight: bold;
         }
       }
 
       .weight {
-        color: #aaa; // color_variable('');
+        color: color_variable('interface_tab_text');
 
         font: {
           size: .85rem;
         }
       }
-    }
-
-    .block_wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 /*
 

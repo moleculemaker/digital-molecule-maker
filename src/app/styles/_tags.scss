@@ -10,9 +10,21 @@
     right: $padding * 2; //leave room for close_btn and star
   }
 
+  &.condensed {
+    gap: $padding * .25;
+
+    .tag {
+      padding: 2px ($padding * .5);
+
+      font: {
+        size: .55rem;
+      }
+    }
+  }
+
   .tag {
     background: {
-      color: color_variable('overlay_tag_background');
+      color: color_variable('tag_background');
     }
 
     padding: ($padding * .2) ($padding * .75);
