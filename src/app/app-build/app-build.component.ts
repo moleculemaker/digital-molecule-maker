@@ -13,7 +13,7 @@ import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.servi
 })
 export class AppBuildComponent implements OnInit {
   isShowingSendToLab = false;
-  isShowingCart = true;
+  isShowingCart = false;
 
   blockList: Block[] = [];
   maxBlockListQuantity = 3; //controls where start, middle, and end blocks can be added
