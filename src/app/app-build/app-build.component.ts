@@ -6,6 +6,8 @@ import { Block, BlockType, Molecule, Coordinates } from '../models';
 import { blockSetIds } from '../block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 
+import { Subject } from 'rxjs';
+
 @Component({
   selector: 'app-build',
   templateUrl: './app-build.component.html',
@@ -30,8 +32,10 @@ export class AppBuildComponent implements OnInit {
   hoveredMolecule?: number = undefined;
 
   panning = false;
+  isInfoPanelOpen = false;
   private _initialPosition!:  { x: number, y: number };
   private _panElement!: HTMLElement;
+  closeOverlay: Subject<void> = new Subject<void>();
 
   constructor(private rigService: RigService, private changeDetector: ChangeDetectorRef) { }
 
@@ -229,6 +233,7 @@ export class AppBuildComponent implements OnInit {
   onPanStart(event: MouseEvent){
     this.panning = true;
     this._panElement = event.target as HTMLElement;
+    this.closeOverlay.next();
 
     event.stopPropagation();
 

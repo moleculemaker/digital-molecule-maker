@@ -1,4 +1,6 @@
+import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges} from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { BlockType } from '../models';
 
 @Component({
@@ -18,6 +20,9 @@ export class BlockSvgComponent implements OnInit {
   @Input()
   type = BlockType.Start;
 
+  @Input()
+  closeOverlayObservable?: Observable<void>;
+
   blockWidth = 100;
   blockHeight = 100;
 
@@ -30,20 +35,54 @@ export class BlockSvgComponent implements OnInit {
   strokeDasharray = "";
 
   borderRadius = 4;
+  borderOffset = 15;
 
   tabOffset = 20; //px down from top
   tabHeight = 28; //px tall (middle of tab)
   tabWidth = 20; //px wide tab
 
-  imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 40];
+  imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 40 + this.borderOffset];
 
   path = "";
 
   isInfoPanelOpen = false;
+  _eventsSubscription?: Subscription;
 
-  constructor() { }
+  popupoffsetX = 0;
+
+  positionPairs!: ConnectionPositionPair[];
+
+  constructor() {
+
+  }
 
   ngOnInit(): void {
+    if(this.closeOverlayObservable){
+        this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
+            this.isInfoPanelOpen = false;
+        });
+    }
+
+    if(this.type == BlockType.Middle){
+        this.popupoffsetX = -1 * (this.blockWidth + this.padding.x)
+    } else if(this.type == BlockType.End){
+        this.popupoffsetX = -2 * (this.blockWidth + this.padding.x)
+    }
+
+    this.positionPairs = [
+        {
+          offsetX: this.popupoffsetX,
+          offsetY: 10,
+          originX: 'start',
+          originY: 'bottom',
+          overlayX: 'start',
+          overlayY: 'top'
+        },
+      ];
+  }
+
+  ngOnDestroy(){
+    if(this._eventsSubscription) this._eventsSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -59,8 +98,8 @@ export class BlockSvgComponent implements OnInit {
   drawBlock() {
     let path = '';
     let hasRightTab = (!this.isEnd() && !this.isAddBlock()) ? true : false;
-    let minX = this.strokeWidth;
-    let minY = this.strokeWidth;
+    let minX = this.strokeWidth + this.borderOffset;
+    let minY = this.strokeWidth + this.borderOffset;
 
     if(this.isMiddle()){
       minX += this.blockWidth + this.padding.x;
@@ -71,7 +110,7 @@ export class BlockSvgComponent implements OnInit {
     }
 
     let maxX = this.blockWidth + this.padding.x + minX;
-    let maxY = this.blockHeight + this.padding.y;
+    let maxY = this.blockHeight + this.padding.y + this.borderOffset;
 
     let closePath = true;
 
@@ -86,10 +125,10 @@ export class BlockSvgComponent implements OnInit {
 
     //right tab (override radius)
     if (hasRightTab) {
-      coords.push({x:maxX, y:this.tabOffset});
-      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth});
-      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight});
-      coords.push({x:maxX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth});
+      coords.push({x:maxX, y:this.tabOffset+this.borderOffset});
+      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth+this.borderOffset});
+      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight+this.borderOffset});
+      coords.push({x:maxX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth+this.borderOffset});
     }
 
     //bottom right
@@ -100,10 +139,10 @@ export class BlockSvgComponent implements OnInit {
 
     // //left tab (override radius)
     if (!this.isStart() && !this.isAddBlock()) {
-      coords.push({x:minX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth});
-      coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight});
-      coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth});
-      coords.push({x:minX, y:this.tabOffset});
+      coords.push({x:minX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth+this.borderOffset});
+      coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight+this.borderOffset});
+      coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth+this.borderOffset});
+      coords.push({x:minX, y:this.tabOffset+this.borderOffset});
     }
 
     //generate rounded corner path
@@ -167,7 +206,5 @@ export class BlockSvgComponent implements OnInit {
   isEnd() {
     return this.type === BlockType.End;
   }
-
-
 }
 

@@ -61,6 +61,7 @@
         }
 
         &.expanded {
+          margin-top: 10px;
           svg {
             @include rotate(-90deg);
           }
@@ -236,6 +237,11 @@
     }
   }
 
+  .extended_properties{
+    display: grid;
+    grid-template-columns: 1.5fr 2.5fr 1fr
+  }
+
   ::ng-deep sub {
     font: {
       size: .6rem;
@@ -264,7 +270,7 @@
     }
 
     @include box-sizing(border-box);
-    @include border-radius($border_radius);
+    @include border-radius($border_radius*2);
 
     &.text_button {
       color: color_variable('text');

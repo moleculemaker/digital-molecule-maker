@@ -1,0 +1,13 @@
+svg{
+    rect{
+        fill: white;
+        fill-opacity: 0.4;
+        &:hover{
+          stroke: #6C88CF;
+          fill:  #D9E2F9;
+          stroke-width: 2;
+        }
+    }
+
+}
+

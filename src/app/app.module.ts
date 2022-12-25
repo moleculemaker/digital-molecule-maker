@@ -27,6 +27,7 @@ import { DroppableDirective } from './drag-drop-utilities/droppable/droppable.di
 import { DropZoneDirective } from './drag-drop-utilities/droppable/drop-zone.directive';
 import { DroppableService } from './drag-drop-utilities/droppable/droppable.service';
 import { BlockSvgComponent } from './block-svg/block-svg.component';
+import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
     PanelComponent,
     SplashComponent,
     BlockSvgComponent,
-    OverlayComponent
+    OverlayComponent,
+    MoleculeSvgComponent
   ],
   imports: [
     BrowserModule,

@@ -44,10 +44,8 @@
     <!-- this outer-level group applies the zoom and pan -->
     <g [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'">
       <g (mouseenter) ="onMouseEnter(moleculeId)"  (mouseleave) ="onMouseLeave()" *ngFor="let molecule of moleculeList; let moleculeId = index" [attr.transform]="'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'">
-        <g *ngFor="let block of molecule.blockList">
-          <dmm-block-svg #wrapper [svgUrl]="block.svgUrl" [type]="block.type"></dmm-block-svg>
-          <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
-        </g>
+        <dmm-molecule-svg #wrapper [molecule]="molecule" [closeOverlayObservable]="closeOverlay.asObservable()"></dmm-molecule-svg>
+        <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
       </g>
     </g>
   </svg>

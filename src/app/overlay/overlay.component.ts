@@ -1,4 +1,4 @@
-import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
@@ -15,6 +15,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ],
 })
 export class OverlayComponent implements OnInit {
+  @ViewChild('childComponentTemplate') childComponentTemplate: TemplateRef<any>|null = null;
+
   @Input()
   label = 'block'; //or molecule
 
