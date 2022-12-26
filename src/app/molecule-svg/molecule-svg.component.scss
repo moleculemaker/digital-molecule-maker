@@ -1,10 +1,12 @@
+@import '../styles/core';
+
 svg{
     rect{
-        fill: white;
+        fill: color_variable('background');
         fill-opacity: 0.4;
         &:hover{
-          stroke: #6C88CF;
-          fill:  #D9E2F9;
+          stroke: color_variable('molecule_hover_border');
+          fill:  color_variable('molecule_hover_fill');
           stroke-width: 2;
         }
     }
