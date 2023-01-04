@@ -1,15 +1,21 @@
 @import '../styles/core';
 
-svg{
-    rect{
-        fill: color_variable('background');
-        fill-opacity: 0.4;
-        &:hover{
-          stroke: color_variable('molecule_hover_border');
-          fill:  color_variable('molecule_hover_fill');
-          stroke-width: 2;
-        }
+svg {
+  cursor: pointer;
+
+  &:hover {
+    .outside_border {
+      fill: color_variable('molecule_hover_fill');
+      fill-opacity: 0.4;
+
+      stroke: color_variable('molecule_hover_border');
     }
+  }
 
+  .outside_border {
+    fill: color_variable('background');
+    fill-opacity: 0.01; //
+
+    stroke-width: 2;
+  }
 }
-

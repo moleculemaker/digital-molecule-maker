@@ -1,6 +1,7 @@
 <ng-template #childComponentTemplate>
-    <svg>
-        <rect cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="isInfoPanelOpen = !isInfoPanelOpen" x="5" y="5" width="570" height="156" rx="10"></rect>
+    <svg (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+        <rect class="outside_border" cdkOverlayOrigin #trigger="cdkOverlayOrigin" x="5" y="5" width="570" height="156" rx="10"></rect>
+
         <g *ngFor="let block of molecule?.blockList">
             <dmm-block-svg #wrapper [svgUrl]="block.svgUrl" [type]="block.type" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
             <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
@@ -49,3 +50,4 @@
   </ng-template>
 
   </ng-template>
+

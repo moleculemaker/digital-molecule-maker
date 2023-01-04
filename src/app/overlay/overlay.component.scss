@@ -49,6 +49,24 @@
         top: $padding;
       }
 
+      .tag {
+        display: flex;
+        align-items: flex-start;
+        gap: $padding * .25;
+
+        .label {
+          order: 2;
+
+          margin: {
+            top: .17rem;
+          }
+        }
+
+        .value {
+          order: 1;
+        }
+      }
+
       .more_button {
         cursor: pointer;
 
@@ -62,6 +80,7 @@
 
         &.expanded {
           margin-top: 10px;
+
           svg {
             @include rotate(-90deg);
           }
@@ -76,11 +95,12 @@
       .more_properties {
         overflow: hidden;
 
-        padding: {
-//          left: $padding;
-        }
-
         .properties {
+          display: block;
+          columns: 2;
+
+          gap: 0px;
+
           margin: {
             top: 0px;
           }
@@ -238,8 +258,8 @@
   }
 
   .extended_properties{
-    display: grid;
-    grid-template-columns: 1.5fr 2.5fr 1fr
+//    display: grid;
+//    grid-template-columns: 1.5fr 2.5fr 1fr
   }
 
   ::ng-deep sub {

@@ -47,5 +47,13 @@ export class MoleculeSvgComponent implements OnInit {
     if(this._eventsSubscription) this._eventsSubscription.unsubscribe();
   }
 
+  onMouseEnter() {
+//todo: eventually, we will try to support hover (instead of click) to show the overlay panel. note that the molecule AND individual blocks will show slightly different information (see designs). when we make this change, the overlay panel will need to have the position adjusted so the mouse can stay on the svg the entire time (or determine if we need to adjust the template completely (simple show/hide of a div instead of the cdkOverlay since it's positioned at the base of the DOM structure)
+//    this.isInfoPanelOpen = true;
+  }
+
+  onMouseLeave() {
+//    this.isInfoPanelOpen = false;
+  }
 }
 
