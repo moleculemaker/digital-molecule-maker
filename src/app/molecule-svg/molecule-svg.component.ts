@@ -18,8 +18,11 @@ export class MoleculeSvgComponent implements OnInit {
   closeOverlayObservable?: Observable<void>;
 
   isInfoPanelOpen = false;
+  isEditNamePanelOpen = false;
+
   _eventsSubscription?: Subscription;
   positionPairs!: ConnectionPositionPair[];
+  positionEditName!: ConnectionPositionPair[];
 
   constructor(private changeDetector: ChangeDetectorRef) { }
 
@@ -28,15 +31,27 @@ export class MoleculeSvgComponent implements OnInit {
     if(this.closeOverlayObservable){
         this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
             this.isInfoPanelOpen = false;
+            this.isEditNamePanelOpen = false;
         });
     }
 
     this.positionPairs = [
         {
-          offsetX: 0,
-          offsetY: 10,
+          offsetX: -15,
+          offsetY: 20,
           originX: 'start',
           originY: 'bottom',
+          overlayX: 'start',
+          overlayY: 'top'
+        },
+    ];
+
+    this.positionEditName = [
+        {
+          offsetX: 0,
+          offsetY: -22,
+          originX: 'start',
+          originY: 'top',
           overlayX: 'start',
           overlayY: 'top'
         },
@@ -54,6 +69,10 @@ export class MoleculeSvgComponent implements OnInit {
 
   onMouseLeave() {
 //    this.isInfoPanelOpen = false;
+  }
+
+  showEditName() {
+    this.isEditNamePanelOpen = true;
   }
 }
 

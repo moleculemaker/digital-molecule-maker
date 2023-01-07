@@ -1,21 +1,129 @@
 @import '../styles/core';
 
-svg {
+$molecule_width: 570px; //fixed right now (to match html template). will need to revisit this when 3+ blocks
+$edit_name_height: 20px;
+
+.molecule {
   cursor: pointer;
 
   &:hover {
     .outside_border {
       fill: color_variable('molecule_hover_fill');
-      fill-opacity: 0.4;
 
       stroke: color_variable('molecule_hover_border');
     }
   }
 
   .outside_border {
-    fill: color_variable('background');
-    fill-opacity: 0.01; //
+    fill: color_variable('molecule_background');
+    fill-opacity: 0.4;
 
-    stroke-width: 2;
+    stroke: color_variable('molecule_border');
+    stroke-width: 1;
+  }
+
+  .name {
+    font: {
+      family: $font_family_header;
+      size: .8rem;
+      weight: 700;
+    }
+
+    fill: color_variable('text');
+
+    pointer-events: bounding-box;
+
+    &:hover {
+      fill: color_variable('molecule_hover_text');
+
+      .edit_name_button {
+        display: inline;
+      }
+    }
+  }
+
+  .invisible {
+//    outline: solid 1px #f00;
+
+    pointer-events: none;
+  }
+
+  .edit_name_button {
+    display: none;
+
+    color: color_variable('molecule_hover_text');
+  }
+
+  .blocks {
+    .block_container {
+      top: 10px;
+      border: 2px solid #f00;
+      stroke: #f00;
+      stroke-width: 4;
+    }
+  }
+}
+
+.edit_panel {
+  display: flex;
+  align-items: center;
+
+  width: $molecule_width;
+
+  background: {
+//    color: color_variable('background');
+  }
+
+  input {
+    flex-grow: 1;
+
+    height: $edit_name_height;
+
+    background: {
+      color: color_variable('background_faded');
+    }
+
+    padding: ($padding * .2) ($padding);
+
+    border: 0px;
+    border: {
+      top: 1px solid color_variable('interface_border');
+    }
+
+    @include box-sizing(border-box);
+    @include border-left-radius($border_radius);
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .button {
+    cursor: pointer;
+
+    height: $edit_name_height;
+
+    color: color_variable('background');
+    background: {
+      color: color_variable('interface_border'); //button_background
+    }
+
+    padding: ($padding * .2) ($padding * .5);
+
+    font: {
+      size: .75rem;
+    }
+    text: {
+      transform: uppercase;
+    }
+
+    @include box-sizing(border-box);
+    @include border-right-radius($border_radius);
+
+    &:hover {
+      background: {
+        color: color_variable('button_hover');
+      }
+    }
   }
 }

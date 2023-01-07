@@ -1,13 +1,25 @@
 <ng-template #childComponentTemplate>
-    <svg (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-        <rect class="outside_border" cdkOverlayOrigin #trigger="cdkOverlayOrigin" x="5" y="5" width="570" height="156" rx="10"></rect>
+    <svg class="molecule" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+      <rect class="outside_border" cdkOverlayOrigin #trigger="cdkOverlayOrigin" x="5" y="15" width="570" height="156" rx="10"></rect>
 
-        <g *ngFor="let block of molecule?.blockList">
-            <dmm-block-svg #wrapper [svgUrl]="block.svgUrl" [type]="block.type" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
-            <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
-        </g>
+      <g class="name" *ngIf="!isEditNamePanelOpen" (click)="showEditName()">
+        <!-- invisible rectangle to fake padding -->
+        <rect class="invisible" x="0" y="0" width="570" height="16" fill="none"></rect>
+
+        <svg class="edit_name_button" width="17" height="11" x="3" y="0" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.0001 18H2.00005C1.73484 18 1.48048 18.1053 1.29295 18.2929C1.10541 18.4804 1.00005 18.7348 1.00005 19C1.00005 19.2652 1.10541 19.5196 1.29295 19.7071C1.48048 19.8946 1.73484 20 2.00005 20H16.0001C16.2653 20 16.5196 19.8946 16.7072 19.7071C16.8947 19.5196 17.0001 19.2652 17.0001 19C17.0001 18.7348 16.8947 18.4804 16.7072 18.2929C16.5196 18.1053 16.2653 18 16.0001 18ZM2.00005 16H2.09005L6.26005 15.62C6.71685 15.5745 7.14409 15.3732 7.47005 15.05L16.4701 6.04998C16.8194 5.68095 17.0082 5.18849 16.995 4.68052C16.9819 4.17254 16.768 3.69049 16.4001 3.33998L13.6601 0.59998C13.3024 0.264076 12.8338 0.0713388 12.3434 0.058432C11.8529 0.0455252 11.3748 0.213349 11.0001 0.52998L2.00005 9.52998C1.67682 9.85594 1.47556 10.2832 1.43005 10.74L1.00005 14.91C0.986582 15.0564 1.00559 15.2041 1.05571 15.3424C1.10584 15.4806 1.18585 15.6062 1.29005 15.71C1.38349 15.8027 1.49431 15.876 1.61615 15.9258C1.73798 15.9755 1.86845 16.0007 2.00005 16ZM12.2701 1.99998L15.0001 4.72998L13.0001 6.67998L10.3201 3.99998L12.2701 1.99998Z" fill="currentColor" />
+        </svg>
+
+        <text x="20" y="10">Batch2_Thread2_Subby1</text>
+      </g>
+
+      <g class="blocks" *ngFor="let block of molecule?.blockList">
+        <dmm-block-svg #wrapper [svgUrl]="block.svgUrl" [type]="block.type" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
+        <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
+      </g>
     </svg>
 
+    <!-- info panel -->
     <ng-template
     cdkConnectedOverlay
     [cdkConnectedOverlayOrigin]="trigger"
@@ -49,5 +61,18 @@
 
   </ng-template>
 
+
+    <!-- edit name panel -->
+    <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="isEditNamePanelOpen"
+    [cdkConnectedOverlayPositions]="positionEditName"
+  >
+    <div class="edit_panel">
+      <input type="text" value="Batch2_Thread2_Subby1" placeholder="Enter Molecule Name" />
+      <div class="button">Update</div>
+    </div>
   </ng-template>
 
+</ng-template>
