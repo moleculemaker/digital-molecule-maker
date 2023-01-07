@@ -12,6 +12,10 @@ $edit_name_height: 20px;
 
       stroke: color_variable('molecule_hover_border');
     }
+
+    .delete_molecule_button {
+      display: inline;
+    }
   }
 
   .outside_border {
@@ -61,6 +65,35 @@ $edit_name_height: 20px;
       stroke: #f00;
       stroke-width: 4;
     }
+  }
+
+  .delete_molecule_button {
+    display: none;
+    cursor: pointer;
+
+    .outline {
+      fill: color_variable('background');
+
+      stroke: color_variable('molecule_border');
+      stroke-width: 2px;
+    }
+
+    .icon {
+      color: color_variable('molecule_border');
+    }
+
+    &:hover {
+      .outline {
+        stroke: color_variable('molecule_hover_text');
+      }
+
+      .icon {
+        color: color_variable('molecule_hover_text');
+      }
+    }
+  }
+
+  .delete_block_button {
   }
 }
 

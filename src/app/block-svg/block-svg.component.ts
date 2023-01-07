@@ -206,5 +206,24 @@ export class BlockSvgComponent implements OnInit {
   isEnd() {
     return this.type === BlockType.End;
   }
+
+  calculateDeletePositionX() {
+    let minX = this.strokeWidth + this.borderOffset;
+
+    if(this.isMiddle()){
+      minX += this.blockWidth + this.padding.x;
+    } else if(this.isEnd()){
+      minX += 2 * (this.blockWidth + this.padding.x);
+    }
+
+    return ((this.blockWidth + this.padding.x) / 2) + minX;
+  }
+
+  calculateDeletePositionY() {
+    return this.blockHeight + this.padding.y;
+  }
+
+  removeBlock() {
+  }
 }
 

@@ -74,5 +74,9 @@ export class MoleculeSvgComponent implements OnInit {
   showEditName() {
     this.isEditNamePanelOpen = true;
   }
+
+  removeMolecule() {
+
+  }
 }
 
