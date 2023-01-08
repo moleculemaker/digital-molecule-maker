@@ -50,7 +50,7 @@ export class AppSidebarComponent implements OnInit {
     {name: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S'}
   ]; //array of molecules to search by
 
-  typeFilter:any[] = []; //array of types to filter by (only used in showing the blocks?)
+  typeFilter:string[] = []; //array of types to filter by (only used in showing the blocks?)
   allTypeFilters = ['all', 'start', 'middle', 'end'];
 
   isSidebarExpanded = true;
@@ -76,7 +76,15 @@ export class AppSidebarComponent implements OnInit {
 
   //********************************************
   getBlockData(): Block[] {
-    return this.blockData![this.currentBlockType];
+    const blockTypes = this.typeFilter.length == 0 ? this.allTypeFilters : this.typeFilter;
+    let blocks: any[] = [];
+    blockTypes.forEach(blockType => {
+        const blockTypeEnum = this.getKeyByValue(blockType);
+        if(blockTypeEnum){
+            this.blockData![blockTypeEnum].forEach(block => blocks.push(block));
+        }
+    });
+    return blocks;
   }
 
   //********************************************
@@ -129,5 +137,12 @@ export class AppSidebarComponent implements OnInit {
   removeMoleculeFromSearch(molecule:any) {
     //todo: remove the specific molecule from the search, for now, just clear off the last one
     this.moleculeSearch.pop();
+  }
+
+  getKeyByValue(value: string) {
+    const indexOfS = Object.values(BlockType).indexOf(value as unknown as BlockType);
+    const key = Object.keys(BlockType)[indexOfS];
+    const enumKey : BlockType = (<any>BlockType)[key]
+    return enumKey;
   }
 }
