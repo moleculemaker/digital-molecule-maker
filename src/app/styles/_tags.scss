@@ -1,0 +1,43 @@
+//**************** tags ******************
+
+::ng-deep .tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ($padding * .25) ($padding * .5);
+
+  margin: {
+    right: $padding * 2; //leave room for close_btn and star
+  }
+
+  &.condensed {
+    gap: $padding * .25;
+
+    .tag {
+      padding: 2px ($padding * .5);
+
+      font: {
+        size: .55rem;
+      }
+    }
+  }
+
+  .tag {
+    background: {
+      color: color_variable('tag_background');
+    }
+
+    padding: ($padding * .2) ($padding * .75);
+
+    font: {
+      size: .65rem;
+    }
+
+    @include border-left-radius(2000px);
+    @include border-right-radius(2000px);
+  }
+
+  .spacer {
+    flex-grow: 1;
+  }
+}

@@ -26,9 +26,10 @@ $colors: (
   molecule_hover_border: #6c88cf,
   molecule_hover_fill: #D9E2F9,
 
+  button: #1f78b4, //same as default
   button_background: #e1e1e1,
   button_border: #888,
-  button_hover: #ffb800, //#c4c4c4,
+  button_hover: lighten(#1f78b4, 20%), //#ffb800, //#c4c4c4,
 
   button_toggle_background: #c4c4c4,
   button_toggle_hover: #ffffff,
@@ -38,9 +39,17 @@ $colors: (
 
   interface_background: #c4c4c4,
   interface_background_faded: #ececec,
-  interface_border: #888,
-  interface_button: #c4c4c4,
+  interface_border: #dedede, //#888,
+  interface_button: #aaa, //#c4c4c4,
   interface_hover: darken(#ececec, 5%),
+  interface_search_background: #f8f8f8,
+  interface_search_hover: #ccc,
+  interface_selected: #1f78b4,
+  interface_sidebar_background_hover: darken(#f8f8f8, 2%),
+  interface_sidebar_block_background: #f8f8f8,
+  interface_tab_text: #aaa,
+  interface_tab_selected: #31509e,
+  interface_faded: #ccc,
 
   modal_background: rgba(#ececec, .95),
 
@@ -53,6 +62,7 @@ $colors: (
   overlay_outline: #f1f1f1,
   overlay_primary: #31509e,
   overlay_tag_background: #dedede,
+  tag_background: #dedede,
 
   panel_background: #ffffff,
   panel_button: #7288c9,
@@ -68,6 +78,7 @@ $colors: (
   splash_button_hover: #ffb800,
 
 	text: #000000,
+	text_faded: lighten(#000, 40%)
 );
 
 
