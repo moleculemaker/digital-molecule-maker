@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BlockService, blockSetIds } from '../block.service';
+import { BlockService, blockSetIds } from '../services/block.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockSet, BlockType } from '../models';
 

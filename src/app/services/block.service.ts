@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BlockSet, BlockType } from './models';
+import { BlockSet, BlockType } from '../models';
 
 export type blockSetIds = '10x10x10palette' | 'pentamers' | 'chem237-spring22';
 

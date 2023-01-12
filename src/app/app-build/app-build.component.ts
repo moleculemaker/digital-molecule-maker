@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
-import { RigService } from '../rig.service';
+import { RigService } from '../services/rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType, Molecule, Coordinates } from '../models';
-import { blockSetIds } from '../block.service';
+import { blockSetIds } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 
 @Component({
