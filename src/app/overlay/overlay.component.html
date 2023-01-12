@@ -1,0 +1,142 @@
+<div class="overlay">
+  <!-- <div class="close_btn" (click)="onClose()">
+    <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="5.93529" y1="5.41895" x2="15.0465" y2="14.5302" stroke="#434343" stroke-width="3" stroke-linecap="round"/>
+      <line x1="6.04751" y1="14.7812" x2="14.7369" y2="5.26683" stroke="#434343" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </div> -->
+
+  <div class="overlay_container">
+<!-- todo: confirm that we are actually showing this in this version. if not, hide this code -->
+    <div class="overlay_preview">
+      <div class="overlay_image">[{{label}} svg]</div>
+    </div>
+
+    <div class="overlay_content">
+      <div class="tags" *ngIf="tags">
+        <div class="tag" *ngFor="let tag of tags">{{tag.label}}</div>
+      </div>
+
+      <div class="properties" *ngIf="properties.length > 0">
+        <div class="tag" *ngFor="let property of properties">
+          <div class="label" [innerHtml]="property.label"></div>
+          <div class="value">
+            <span [innerHtml]="property.value"></span>
+
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="property.hasCheckMark">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M4.2671 1.45486C4.91036 1.4035 5.52102 1.15049 6.0121 0.73186C6.56677 0.259451 7.27153 0 8.0001 0C8.72868 0 9.43344 0.259451 9.9881 0.73186C10.4792 1.15049 11.0898 1.4035 11.7331 1.45486C12.4595 1.51292 13.1415 1.82782 13.6568 2.34313C14.1721 2.85843 14.487 3.54043 14.5451 4.26686C14.5961 4.90986 14.8491 5.52086 15.2681 6.01186C15.7405 6.56652 16 7.27129 16 7.99986C16 8.72843 15.7405 9.4332 15.2681 9.98786C14.8495 10.4789 14.5965 11.0896 14.5451 11.7329C14.487 12.4593 14.1721 13.1413 13.6568 13.6566C13.1415 14.1719 12.4595 14.4868 11.7331 14.5449C11.0898 14.5962 10.4792 14.8492 9.9881 15.2679C9.43344 15.7403 8.72868 15.9997 8.0001 15.9997C7.27153 15.9997 6.56677 15.7403 6.0121 15.2679C5.52102 14.8492 4.91036 14.5962 4.2671 14.5449C3.54067 14.4868 2.85867 14.1719 2.34337 13.6566C1.82807 13.1413 1.51316 12.4593 1.4551 11.7329C1.40375 11.0896 1.15073 10.4789 0.732104 9.98786C0.259695 9.4332 0.000244141 8.72843 0.000244141 7.99986C0.000244141 7.27129 0.259695 6.56652 0.732104 6.01186C1.15073 5.52077 1.40375 4.91012 1.4551 4.26686C1.51316 3.54043 1.82807 2.85843 2.34337 2.34313C2.85867 1.82782 3.54067 1.51292 4.2671 1.45486ZM11.7071 6.70686C11.8893 6.51826 11.9901 6.26566 11.9878 6.00346C11.9855 5.74126 11.8803 5.49045 11.6949 5.30504C11.5095 5.11963 11.2587 5.01446 10.9965 5.01219C10.7343 5.00991 10.4817 5.1107 10.2931 5.29286L7.0001 8.58586L5.7071 7.29286C5.5185 7.1107 5.2659 7.00991 5.0037 7.01219C4.74151 7.01446 4.49069 7.11963 4.30529 7.30504C4.11988 7.49045 4.01471 7.74126 4.01243 8.00346C4.01015 8.26566 4.11095 8.51826 4.2931 8.70686L6.2931 10.7069C6.48063 10.8943 6.73494 10.9996 7.0001 10.9996C7.26527 10.9996 7.51958 10.8943 7.7071 10.7069L11.7071 6.70686Z" fill="#31509E"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="additional_properties" *ngIf="templateAdditionalProperties || (additionalProperties && additionalProperties.length > 0)">
+        <div class="more_properties" [@overlayPropExpand]="isOverlayPropExpanded ? 'expanded' : 'collapsed'">
+          <div class="properties extended_properties" *ngIf="additionalProperties.length > 0">
+            <div class="tag" *ngFor="let property of additionalProperties">
+              <div class="label" [innerHtml]="property.label"></div>
+              <div class="value">
+                <span [innerHtml]="property.value"></span>
+
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="property.hasCheckMark">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.2671 1.45486C4.91036 1.4035 5.52102 1.15049 6.0121 0.73186C6.56677 0.259451 7.27153 0 8.0001 0C8.72868 0 9.43344 0.259451 9.9881 0.73186C10.4792 1.15049 11.0898 1.4035 11.7331 1.45486C12.4595 1.51292 13.1415 1.82782 13.6568 2.34313C14.1721 2.85843 14.487 3.54043 14.5451 4.26686C14.5961 4.90986 14.8491 5.52086 15.2681 6.01186C15.7405 6.56652 16 7.27129 16 7.99986C16 8.72843 15.7405 9.4332 15.2681 9.98786C14.8495 10.4789 14.5965 11.0896 14.5451 11.7329C14.487 12.4593 14.1721 13.1413 13.6568 13.6566C13.1415 14.1719 12.4595 14.4868 11.7331 14.5449C11.0898 14.5962 10.4792 14.8492 9.9881 15.2679C9.43344 15.7403 8.72868 15.9997 8.0001 15.9997C7.27153 15.9997 6.56677 15.7403 6.0121 15.2679C5.52102 14.8492 4.91036 14.5962 4.2671 14.5449C3.54067 14.4868 2.85867 14.1719 2.34337 13.6566C1.82807 13.1413 1.51316 12.4593 1.4551 11.7329C1.40375 11.0896 1.15073 10.4789 0.732104 9.98786C0.259695 9.4332 0.000244141 8.72843 0.000244141 7.99986C0.000244141 7.27129 0.259695 6.56652 0.732104 6.01186C1.15073 5.52077 1.40375 4.91012 1.4551 4.26686C1.51316 3.54043 1.82807 2.85843 2.34337 2.34313C2.85867 1.82782 3.54067 1.51292 4.2671 1.45486ZM11.7071 6.70686C11.8893 6.51826 11.9901 6.26566 11.9878 6.00346C11.9855 5.74126 11.8803 5.49045 11.6949 5.30504C11.5095 5.11963 11.2587 5.01446 10.9965 5.01219C10.7343 5.00991 10.4817 5.1107 10.2931 5.29286L7.0001 8.58586L5.7071 7.29286C5.5185 7.1107 5.2659 7.00991 5.0037 7.01219C4.74151 7.01446 4.49069 7.11963 4.30529 7.30504C4.11988 7.49045 4.01471 7.74126 4.01243 8.00346C4.01015 8.26566 4.11095 8.51826 4.2931 8.70686L6.2931 10.7069C6.48063 10.8943 6.73494 10.9996 7.0001 10.9996C7.26527 10.9996 7.51958 10.8943 7.7071 10.7069L11.7071 6.70686Z" fill="#31509E"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- ************************ additional ************************ -->
+          <ng-container
+            *ngIf="templateAdditionalProperties"
+
+            [ngTemplateOutlet]="templateAdditionalProperties"
+            [ngTemplateOutletContext]="{
+              $implicit: this
+            }"
+          ></ng-container>
+        </div>
+
+        <div class="more_button"
+          [class.expanded]="isOverlayPropExpanded"
+          (click)="isOverlayPropExpanded = !isOverlayPropExpanded"
+        >
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.49995 8L1.99995 15.5L0.949951 14.45L7.39995 8L0.949951 1.55L1.99995 0.5L9.49995 8Z" fill="black"/>
+          </svg>
+
+          <ng-container *ngIf="isOverlayPropExpanded">Show less</ng-container>
+          <ng-container *ngIf="!isOverlayPropExpanded">More {{label}} properties</ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay_footer" *ngIf="templateFooter">
+    <!-- ************************ footer ************************ -->
+
+<!-- //left here to show how the alternative layout could be setup. refer to figma for visual reference on which buttons show up on the block / molecule overlays -->
+
+
+    <!-- <div *ngIf="label=='block'" class="outline">Found in <span class="emphasis">20 molecules</span></div> -->
+    <button *ngIf="label=='block'" class="button outline_button">Found in <span class="emphasis">20 molecules</span></button>
+
+    <div  *ngIf="label=='molecule'" class="icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g filter="url(#filter0_b_1205_10369)">
+            <circle cx="16" cy="16" r="14" fill="#F8F8F8"/>
+          </g>
+          <path d="M7 21.5L17.5 25L20 10.5" stroke="#B3B3B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="7.2439" cy="21.4631" r="6.2439" fill="#8ED295"/>
+          <circle cx="17.5122" cy="24.5122" r="3.5122" fill="#2EA6DF"/>
+          <circle cx="19.9756" cy="9.97561" r="8.97561" fill="#92A7DE"/>
+          <defs>
+            <filter id="filter0_b_1205_10369" x="-13" y="-13" width="58" height="58" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+              <feGaussianBlur in="BackgroundImageFix" stdDeviation="7.5"/>
+              <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_1205_10369"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_1205_10369" result="shape"/>
+            </filter>
+          </defs>
+        </svg>
+      </div>
+
+      <div  *ngIf="label=='molecule'" class="stat">
+        <div class="value">50-60%</div>
+        <div class="label">Predicted Yield</div>
+      </div>
+
+      <div  *ngIf="label=='molecule'" class="stat">
+        <div class="value">90</div>
+        <div class="label">Innovation Score</div>
+      </div>
+
+      <button  *ngIf="label=='molecule'" class="button text_button">
+        <div class="info_icon">
+          <svg width="2" height="10" viewBox="0 0 2 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 2H2V0H0V2ZM0 10H2V4H0V10Z" fill="currentColor"/>
+          </svg>
+        </div>
+      </button>
+
+      <div class="spacer"></div>
+
+      <button class="button text_button">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 16C10 14.8954 9.10457 14 8 14C6.89543 14 6 14.8954 6 16C6 17.1046 6.89543 18 8 18C9.10457 18 10 17.1046 10 16Z" fill="currentColor"/>
+          <path d="M18 16C18 14.8954 17.1046 14 16 14C14.8954 14 14 14.8954 14 16C14 17.1046 14.8954 18 16 18C17.1046 18 18 17.1046 18 16Z" fill="currentColor"/>
+          <path d="M26 16C26 14.8954 25.1046 14 24 14C22.8954 14 22 14.8954 22 16C22 17.1046 22.8954 18 24 18C25.1046 18 26 17.1046 26 16Z" fill="currentColor"/>
+        </svg>
+      </button>
+
+      <button class="button outline_button">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M13.3333 7.33333C13.1565 7.33333 12.987 7.40357 12.8619 7.5286C12.7369 7.65362 12.6667 7.82319 12.6667 8V12C12.6667 12.1768 12.5964 12.3464 12.4714 12.4714C12.3464 12.5964 12.1768 12.6667 12 12.6667H4C3.82319 12.6667 3.65362 12.5964 3.5286 12.4714C3.40357 12.3464 3.33333 12.1768 3.33333 12V4C3.33333 3.82319 3.40357 3.65362 3.5286 3.5286C3.65362 3.40357 3.82319 3.33333 4 3.33333H8C8.17681 3.33333 8.34638 3.2631 8.4714 3.13807C8.59643 3.01305 8.66667 2.84348 8.66667 2.66667C8.66667 2.48986 8.59643 2.32029 8.4714 2.19526C8.34638 2.07024 8.17681 2 8 2H4C3.46957 2 2.96086 2.21071 2.58579 2.58579C2.21071 2.96086 2 3.46957 2 4V12C2 12.5304 2.21071 13.0391 2.58579 13.4142C2.96086 13.7893 3.46957 14 4 14H12C12.5304 14 13.0391 13.7893 13.4142 13.4142C13.7893 13.0391 14 12.5304 14 12V8C14 7.82319 13.9298 7.65362 13.8047 7.5286C13.6797 7.40357 13.5101 7.33333 13.3333 7.33333Z" fill="currentColor"/>
+  <path d="M10.6668 3.33333H11.7201L7.52679 7.52C7.4643 7.58197 7.41471 7.65571 7.38086 7.73695C7.34702 7.81819 7.32959 7.90532 7.32959 7.99333C7.32959 8.08134 7.34702 8.16848 7.38086 8.24972C7.41471 8.33096 7.4643 8.40469 7.52679 8.46667C7.58876 8.52915 7.6625 8.57875 7.74374 8.61259C7.82498 8.64644 7.91211 8.66387 8.00012 8.66387C8.08813 8.66387 8.17527 8.64644 8.25651 8.61259C8.33775 8.57875 8.41148 8.52915 8.47346 8.46667L12.6668 4.28V5.33333C12.6668 5.51014 12.737 5.67971 12.8621 5.80474C12.9871 5.92976 13.1566 6 13.3335 6C13.5103 6 13.6798 5.92976 13.8049 5.80474C13.9299 5.67971 14.0001 5.51014 14.0001 5.33333V2.66667C14.0001 2.48986 13.9299 2.32029 13.8049 2.19526C13.6798 2.07024 13.5103 2 13.3335 2H10.6668C10.49 2 10.3204 2.07024 10.1954 2.19526C10.0704 2.32029 10.0001 2.48986 10.0001 2.66667C10.0001 2.84348 10.0704 3.01305 10.1954 3.13807C10.3204 3.2631 10.49 3.33333 10.6668 3.33333Z" fill="currentColor"/>
+  </svg>
+
+        Cited by <span class="emphasis">15</span>
+      </button>
+
+      <button class="button button_add_to_cart">Add to cart</button>
+  </div>
+</div>

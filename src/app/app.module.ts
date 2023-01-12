@@ -18,6 +18,7 @@ import { PanelComponent } from './panel/panel.component';
 import { SplashComponent } from './splash/splash.component';
 
 import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayComponent } from './overlay/overlay.component';
 
 import { DraggableDirective } from './drag-drop-utilities/draggable/draggable.directive';
 import { DraggableHelperDirective } from './drag-drop-utilities/draggable/draggable-helper.directive';
@@ -26,6 +27,7 @@ import { DroppableDirective } from './drag-drop-utilities/droppable/droppable.di
 import { DropZoneDirective } from './drag-drop-utilities/droppable/drop-zone.directive';
 import { DroppableService } from './drag-drop-utilities/droppable/droppable.service';
 import { BlockSvgComponent } from './block-svg/block-svg.component';
+import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
     InplaceComponent,
     PanelComponent,
     SplashComponent,
-    BlockSvgComponent
+    BlockSvgComponent,
+    OverlayComponent,
+    MoleculeSvgComponent
   ],
   imports: [
     BrowserModule,
