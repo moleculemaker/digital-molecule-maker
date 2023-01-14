@@ -13,7 +13,9 @@ export class CanActivateSurveyCode implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean|UrlTree>|Promise<boolean|UrlTree>|boolean|UrlTree {
-    // if the current route expects a code, return true if and only if we have a code
+    // if the current route expects a code, return true if we have a code, else redirect to the
+    // code-entry page
+    // otherwise, if the current route doesn't expect a code, return true
     return this.userService.getUser().pipe(
       map(user => {
         let ok = false;
