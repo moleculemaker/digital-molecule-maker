@@ -77,9 +77,11 @@ function initializeAppFactory(): () => Observable<null> {
   providers: [
     DroppableService,
     {
+      // we need an APP_INITIALIZER in order to force the TrackingService constructor
+      // to run immediately. that'll ensure we're recording all changes of route.
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,
-      deps: [TrackingService], // ensures the TrackingService constructor runs immediately
+      deps: [TrackingService],
       multi: true
     }
   ],
