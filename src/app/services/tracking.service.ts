@@ -134,7 +134,7 @@ export class TrackingService {
   */
 }
 
-/**
+/** Prajakt's original request
  * All mouse activity-related frequency and coordinate-data
 More specifically; 
 	Number of clicks
