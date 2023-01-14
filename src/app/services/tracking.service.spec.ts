@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 import { TrackingService } from './tracking.service';
 
@@ -7,7 +9,14 @@ describe('TrackingService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: []
+      imports: [
+        RouterTestingModule,
+        NgxMatomoTrackerModule.forRoot({
+          siteId: 1,
+          trackerUrl: 'https://moleculemaker.matomo.cloud/',
+          disabled: true
+        })
+      ]
     });
     service = TestBed.inject(TrackingService);
   });

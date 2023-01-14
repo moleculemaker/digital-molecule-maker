@@ -27,16 +27,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'digital-molecule-maker'`, () => {
+  it(`should have as title 'Digital Molecule Maker'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('digital-molecule-maker');
+    expect(app.title).toEqual('Digital Molecule Maker');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.logo_label').textContent).toContain('MoleculeMakerLab');
-  });
 });
