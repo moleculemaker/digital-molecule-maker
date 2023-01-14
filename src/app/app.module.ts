@@ -28,7 +28,6 @@ import { DraggableHelperDirective } from './drag-drop-utilities/draggable/dragga
 
 import { DroppableDirective } from './drag-drop-utilities/droppable/droppable.directive';
 import { DropZoneDirective } from './drag-drop-utilities/droppable/drop-zone.directive';
-import { DroppableService } from './drag-drop-utilities/droppable/droppable.service';
 import { BlockSvgComponent } from './block-svg/block-svg.component';
 import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
@@ -75,7 +74,6 @@ function initializeAppFactory(): () => Observable<null> {
     OverlayModule
   ],
   providers: [
-    DroppableService,
     {
       // we need an APP_INITIALIZER in order to force the TrackingService constructor
       // to run immediately. that'll ensure we're recording all changes of route.
