@@ -46,6 +46,12 @@ export class AppBuildComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
+    // WorkspaceService will check for data from a previous session and, if found,
+    // will provide us with the restored moleculeList
+    // TODO: eventually, might want to ask the user whether to restore, especially
+    // if a restored value arrives after the user has begun populating a fresh
+    // moleculeList in the current session (which becomes a more interesting case
+    // once sessions are persisted on the backend instead of in localStorage)
     this.workspaceService.getMoleculeList().pipe(
       untilDestroyed(this),
       filter(moleculeList => !!moleculeList)
