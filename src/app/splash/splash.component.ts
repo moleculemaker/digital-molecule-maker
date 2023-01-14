@@ -7,6 +7,7 @@ import { UserService } from '../services/user.service';
 
 export enum PromptType {
   Code = 'Code',
+  // TODO: will username and password be entered here, or will we redirect to another screen?
   UsernameAndPassword = 'UsernameAndPassword',
   None = 'None'
 };
@@ -77,6 +78,7 @@ export class SplashComponent implements OnInit {
   //********************************************
 
   onEnterCode(code: string): void {
+    // TODO: validate code and display any error messages in template
     this.userService.setUser({ surveyCode: code.trim() });
     this.navigateToBuild(true);
   }
