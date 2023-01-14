@@ -35,6 +35,8 @@ import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 import { TrackingService } from './services/tracking.service';
 
 // placeholder implementation
+// change this as needed; nothing relies on the current behavior (but
+// then delete this comment!)
 function initializeAppFactory(): () => Observable<null> {
   return () => of(null);
  }
