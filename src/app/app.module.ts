@@ -1,9 +1,12 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { Observable, of } from 'rxjs';
+
+import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -28,6 +31,13 @@ import { DropZoneDirective } from './drag-drop-utilities/droppable/drop-zone.dir
 import { DroppableService } from './drag-drop-utilities/droppable/droppable.service';
 import { BlockSvgComponent } from './block-svg/block-svg.component';
 import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
+
+import { TrackingService } from './services/tracking.service';
+
+// placeholder implementation
+function initializeAppFactory(): () => Observable<null> {
+  return () => of(null);
+ }
 
 @NgModule({
   declarations: [
@@ -55,10 +65,22 @@ import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    NgxMatomoTrackerModule.forRoot({
+      siteId: 1,
+      trackerUrl: 'https://moleculemaker.matomo.cloud/'
+    }),
     DragDropModule,
     OverlayModule
   ],
-  providers: [DroppableService],
+  providers: [
+    DroppableService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAppFactory,
+      deps: [TrackingService], // ensures the TrackingService constructor runs immediately
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

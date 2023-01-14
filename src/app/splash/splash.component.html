@@ -1,4 +1,4 @@
-<div class="splash" *ngIf="showSplash">
+<div class="splash">
   <div class="splash_background">
     <div class="background_green"></div>
     <div class="background_green green_2"></div>
@@ -14,12 +14,25 @@
     <div #welcome class="title_welcome">Welcome to the</div>
     <div #logo class="title_logo">Digital Molecule Maker</div>
 
-    <div class="form" [class.active]="showForm">
-      <input type="text" placeholder="Login" />
-      <input type="password" placeholder="Password" />
-    </div>
+    <ng-container [ngSwitch]="promptType$ | async">
+      <!-- TODO: username/password login isn't supported yet -->
+      <ng-container *ngSwitchCase="PromptType.UsernameAndPassword">
+        <div class="form active">
+          <input type="text" placeholder="Login" />
+          <input type="password" placeholder="Password" />
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="PromptType.Code">
+        <div class="form active">
+          <input type="text" placeholder="Survey Code" #codeInput (keyup.enter)="onEnterCode(codeInput.value)" />
+        </div>
+        <div class="button" (click)="onEnterCode(codeInput.value)">Get Started</div>
+      </ng-container>
+      <ng-container *ngSwitchCase="PromptType.None">
+        <div class="button" (click)="navigateToBuild()">Get Started</div>
+      </ng-container>
+    </ng-container>
 
-    <div class="button" (click)="onGetStarted()">Get Started</div>
   </div>
 
   <div class="molecule_red">

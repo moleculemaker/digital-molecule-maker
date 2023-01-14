@@ -3,6 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
+import { DroppableDirective } from './drag-drop-utilities/droppable/droppable.directive';
+import { SplashComponent } from './splash/splash.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -12,7 +14,9 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        AppHeaderComponent
+        AppHeaderComponent,
+        DroppableDirective,
+        SplashComponent
       ],
     }).compileComponents();
   });

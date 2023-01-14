@@ -1,4 +1,15 @@
 import { Component, HostListener, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { UserService } from '../services/user.service';
+
+export enum PromptType {
+  Code = 'Code',
+  UsernameAndPassword = 'UsernameAndPassword',
+  None = 'None'
+};
 
 @Component({
   selector: 'splash',
@@ -11,10 +22,17 @@ export class SplashComponent implements OnInit {
 
   @HostListener('document:mousemove', ['$event']) onMouseMove(e:MouseEvent) {this.mouseMove(e);}
 
-  showForm = false;
-  showSplash = true;
+  promptType$: Observable<PromptType>;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService
+  ) {
+    this.promptType$ = this.route.data.pipe(
+      map(data => data?.promptType || PromptType.None)
+    );
+  }
 
   //********************************************
   ngOnInit(): void {
@@ -57,13 +75,18 @@ export class SplashComponent implements OnInit {
   }
 
   //********************************************
-  onGetStarted(): void {
-    this.showForm = true;
-    // TODO once we support the login form, remove showSplash variable here and handle in the parent component
-    this.onHideSplash();
+
+  onEnterCode(code: string): void {
+    this.userService.setUser({ surveyCode: code.trim() });
+    this.navigateToBuild(true);
   }
 
-  onHideSplash(): void {
-    this.showSplash = false;
+  navigateToBuild(code = false): void {
+    this.router.navigate(['build'], { queryParams: { code } });
+  }
+
+  // accessor to allow using the PromptType enum in the template
+  public get PromptType() {
+    return PromptType;
   }
 }
