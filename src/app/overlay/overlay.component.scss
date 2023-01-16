@@ -1,0 +1,390 @@
+//**************** css ******************
+@import '../styles/core';
+
+.overlay {
+  width: 650px;
+
+  background: {
+    color: color_variable('overlay_background');
+  }
+
+  padding: $padding;
+
+  @include shadow(15px, rgba(#000, .25), 0px, 0px);
+  @include border-radius($border_radius * 3);
+  @include box-sizing(border-box);
+
+  .overlay_container {
+    display: flex;
+    gap: $padding;
+  }
+
+  .overlay_preview {
+    flex-shrink: 0;
+
+    width: 170px;
+
+    .overlay_image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      min: {
+        height: 120px;
+      }
+
+      background: {
+        color: color_variable('overlay_image_background');
+      }
+
+      @include border-radius($border_radius);
+    }
+  }
+
+  .overlay_content {
+    flex-grow: 1;
+
+    .additional_properties {
+      margin: {
+        top: $padding;
+      }
+
+      .tag {
+        display: flex;
+        align-items: flex-start;
+        gap: $padding * .25;
+
+        .label {
+          order: 2;
+
+          margin: {
+            top: .17rem;
+          }
+        }
+
+        .value {
+          order: 1;
+        }
+      }
+
+      .more_button {
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        gap: $padding * .5;
+
+        &:hover {
+          color: color_variable('button_hover');
+        }
+
+        &.expanded {
+          margin-top: 10px;
+
+          svg {
+            @include rotate(-90deg);
+          }
+        }
+
+        svg {
+          @include rotate(90deg);
+          @include transition(#{transform .2s easing($ease-in-out-cubic)});
+        }
+      }
+
+      .more_properties {
+        overflow: hidden;
+
+        .properties {
+          display: block;
+          columns: 2;
+
+          gap: 0px;
+
+          margin: {
+            top: 0px;
+          }
+        }
+      }
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $padding * .5;
+
+    margin: {
+      right: $padding * 2; //leave room for close_btn
+    }
+
+    .tag {
+      background: {
+        color: color_variable('overlay_tag_background');
+      }
+
+      padding: ($padding * .2) ($padding * .75);
+
+      font: {
+        size: .65rem;
+      }
+
+      @include border-left-radius(2000px);
+      @include border-right-radius(2000px);
+    }
+  }
+
+  ::ng-deep .overlay_footer {
+    display: flex;
+    align-items: center;
+    gap: $padding * .5;
+
+    width: 100%;
+
+    margin: {
+      top: $padding;
+    }
+
+    .spacer {
+      flex-grow: 1;
+    }
+
+    .outline {
+      display: flex;
+      justify-content: center;
+      gap: $padding * .2;
+
+      padding: ($padding * .5) ($padding * .5);
+
+      font: {
+        size: .8rem;
+      }
+
+      border: 1px solid color_variable('overlay_outline');
+
+      @include border-radius($border_radius);
+    }
+
+    .stat {
+      & + .stat {
+         padding: {
+          left: $padding * .5;
+        }
+
+        border: {
+          left: 1px solid #eee;
+        }
+      }
+
+      .label {
+        font: {
+          size: .65rem;
+        }
+      }
+
+      .value {
+        color: color_variable('overlay_primary');
+
+        font: {
+          size: 1.1rem;
+          weight: bold;
+        }
+      }
+    }
+  }
+
+  .close_btn {
+    cursor: pointer;
+    position: absolute;
+    right: $padding;
+    top: $padding;
+    z-index: 100;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 1.25rem;
+    height: 1.25rem;
+
+    @include border-radius(50%);
+    @include opacity(30);
+
+    &:hover {
+      background: {
+        color: color_variable('overlay_tag_background');
+      }
+
+      @include opacity(100);
+    }
+  }
+
+  .properties {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ($padding * .5) ($padding * 1.5);
+
+    margin: {
+      top: $padding;
+    }
+
+    .property {
+    }
+
+    .label {
+      color: color_variable('overlay_label');
+
+      font: {
+        size: .7rem;
+      }
+    }
+
+    .value {
+      display: flex;
+      align-items: center;
+      gap: $padding * .2;
+
+      font: {
+        weight: bold;
+      }
+
+      ::ng-deep .value_label {
+        font: {
+          weight: normal;
+        }
+      }
+    }
+  }
+
+  .extended_properties{
+//    display: grid;
+//    grid-template-columns: 1.5fr 2.5fr 1fr
+  }
+
+  ::ng-deep sub {
+    font: {
+      size: .6rem;
+    }
+  }
+
+  .emphasis {
+    font: {
+      weight: bold;
+    }
+  }
+
+  ::ng-deep .button {
+    display: flex;
+    align-items: center;
+    gap: $padding * .2;
+
+    background: none;
+
+    padding: ($padding * .65) ($padding);
+
+    border: 0px;
+
+    text: {
+      align: initial;
+    }
+
+    @include box-sizing(border-box);
+    @include border-radius($border_radius*2);
+
+    &.text_button {
+      color: color_variable('text');
+
+      padding: ($padding * .2) ($padding * .25);
+
+      @include transition(#{color .2s easing($ease-in)});
+    }
+
+    &.outline_button {
+      color: color_variable('text');
+
+      border: 1px solid color_variable('overlay_button_border');
+
+      @include transition(#{color .2s easing($ease-in), border-color .2s easing($ease-in)});
+    }
+
+    &:not(.outline_button):not(.text_button) {
+      color: color_variable('background');
+      background: {
+        color: color_variable('overlay_button_background');
+      }
+
+      @include transition(#{color .2s easing($ease-in), background-color .2s easing($ease-in)});
+    }
+
+    &:not([disabled]) {
+      cursor: pointer;
+
+      &.text_button {
+        &:hover {
+          color: color_variable('overlay_button_hover');
+
+          @include transition(none);
+
+          .info_icon {
+            color: color_variable('background');
+            background: {
+              color: color_variable('overlay_button_hover');
+            }
+
+            border: {
+              color: color_variable('overlay_button_hover');
+            }
+          }
+        }
+      }
+
+      &.outline_button {
+        &:hover {
+          color: color_variable('overlay_button_hover');
+
+          border: {
+            color: color_variable('overlay_button_hover');
+          }
+
+          @include transition(none);
+        }
+      }
+
+      &:not(.outline_button):not(.text_button) {
+        &:hover {
+          background: {
+            color: color_variable('overlay_button_hover');
+          }
+
+          @include transition(none);
+        }
+      }
+    }
+
+    &[disabled] {
+      cursor: not-allowed;
+
+      @include opacity(20);
+    }
+
+    .info_icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 1.3rem;
+      height: 1.3rem;
+
+//      color: color_variable('text');
+
+      background: {
+        color: #eee;
+      }
+
+      border: 1px solid color_variable('overlay_button_border');
+
+      @include border-radius(50%);
+    }
+  }
+}
