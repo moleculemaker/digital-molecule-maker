@@ -71,7 +71,7 @@ export class BlockSvgComponent implements OnInit {
 
     this.positionPairs = [
         {
-          offsetX: this.popupoffsetX,
+          offsetX: this.popupoffsetX - 40 - 15, //need to convert this numeric approach to a formula based on the width of the overlay
           offsetY: 10,
           originX: 'start',
           originY: 'bottom',

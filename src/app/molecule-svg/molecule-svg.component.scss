@@ -20,9 +20,9 @@ $edit_name_height: 20px;
 
   &.selected {
     .outside_border {
-      fill: color_variable('molecule_hover_fill');
+      fill: color_variable('molecule_selected_fill');
 
-      stroke: color_variable('molecule_hover_border');
+      stroke: color_variable('molecule_selected_border');
     }
   }
 

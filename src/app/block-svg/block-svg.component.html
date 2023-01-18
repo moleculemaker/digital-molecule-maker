@@ -3,6 +3,8 @@
     [class]="[
       'block_' + type
     ]"
+    [class.selected]="isInfoPanelOpen"
+    [class.not_selected]="!isInfoPanelOpen && false"
     [class.dashes]="isAddBlock()"
 
     cdkOverlayOrigin

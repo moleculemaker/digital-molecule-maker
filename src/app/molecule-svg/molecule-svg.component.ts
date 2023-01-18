@@ -37,8 +37,8 @@ export class MoleculeSvgComponent implements OnInit {
 
     this.positionPairs = [
         {
-          offsetX: -15,
-          offsetY: 20,
+          offsetX: -40, //need to convert this numeric approach to a formula based on the width of the overlay
+          offsetY: 5,
           originX: 'start',
           originY: 'bottom',
           overlayX: 'start',
