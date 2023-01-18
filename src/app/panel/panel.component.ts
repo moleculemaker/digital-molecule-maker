@@ -118,6 +118,7 @@ export class PanelComponent implements OnInit {
   }
 
   canSubmitMolecule(): boolean {
+return true;
     const workingName = this.moleculeName?.trim() || '';
     return workingName.length > 0;
   }

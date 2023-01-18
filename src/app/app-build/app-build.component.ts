@@ -14,8 +14,8 @@ import { Subject } from 'rxjs';
   styleUrls: ['./app-build.component.scss']
 })
 export class AppBuildComponent implements OnInit {
-  isShowingAnalysis = false;
   isShowingSendToLab = false;
+  isShowingCart = false;
 
   blockList: Block[] = [];
   maxBlockListQuantity = 3; //controls where start, middle, and end blocks can be added
@@ -47,13 +47,13 @@ export class AppBuildComponent implements OnInit {
   }
 
   //********************************************
-  toggleAnalysisPanel(): void {
-    this.isShowingAnalysis = !this.isShowingAnalysis;
+  toggleCartPanel(): void {
+    this.isShowingCart = !this.isShowingCart;
   }
 
   //********************************************
   onPanelClose():void {
-    this.toggleAnalysisPanel();
+    this.toggleCartPanel();
   }
 
   //********************************************
@@ -87,8 +87,8 @@ export class AppBuildComponent implements OnInit {
     this.updateBlankBlocks(addIndex);
     this.updateSidebarTab(addIndex);
 
-    //make sure isShowingAnalysis is closed
-    if (this.isShowingAnalysis) {this.toggleAnalysisPanel();}
+    //make sure isShowingCart is closed
+    if (this.isShowingCart) {this.toggleCartPanel();}
   }
 
   blockTypeForIndex(index: number): BlockType {

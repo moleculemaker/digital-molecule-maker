@@ -1,6 +1,6 @@
 <ng-template #childComponentTemplate>
-    <svg class="molecule" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" [class.selected]="isInfoPanelOpen">
-      <rect class="outside_border" cdkOverlayOrigin #trigger="cdkOverlayOrigin" x="5" y="15" width="570" height="156" rx="10"></rect>
+    <svg (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+        <rect class="outside_border" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="isInfoPanelOpen = !isInfoPanelOpen" x="5" y="5" width="570" height="156" rx="10"></rect>
 
       <g class="name" *ngIf="!isEditNamePanelOpen" (click)="showEditName()">
         <!-- invisible rectangle to fake padding -->
