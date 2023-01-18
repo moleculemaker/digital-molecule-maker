@@ -1,5 +1,5 @@
 <ng-template #childComponentTemplate>
-    <svg class="molecule" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+    <svg class="molecule" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" [class.selected]="isInfoPanelOpen">
       <rect class="outside_border" cdkOverlayOrigin #trigger="cdkOverlayOrigin" x="5" y="15" width="570" height="156" rx="10"></rect>
 
       <g class="name" *ngIf="!isEditNamePanelOpen" (click)="showEditName()">
