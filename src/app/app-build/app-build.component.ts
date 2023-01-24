@@ -42,7 +42,6 @@ export class AppBuildComponent implements OnInit {
   //********************************************
   ngOnInit(): void {
     //start with a blank block
-    this.updateBlankBlocks(null);
     this.updateSidebarTab(null);
   }
 
@@ -67,29 +66,6 @@ export class AppBuildComponent implements OnInit {
   }
 
   //********************************************
-  addBlock(block: Block, addIndex: number|null): void {
-    //todo - allow adding at various points in the array
-//    if (typeof addIndex == 'undefined') {addIndex = this.blockList.length;}
-
-//for now, only allow data in the 3 different spots in the array
-    if (block.type == BlockType.Start) {
-      addIndex = 0;
-    } else if (block.type == BlockType.Middle) {
-      addIndex = 1;
-    } else {
-      addIndex = 2;
-    }
-
-    //update the current block
-    this.blockList[addIndex] = block;
-
-    //if inserted, and not at the end, then add the next block
-    this.updateBlankBlocks(addIndex);
-    this.updateSidebarTab(addIndex);
-
-    //make sure isShowingCart is closed
-    if (this.isShowingCart) {this.toggleCartPanel();}
-  }
 
   blockTypeForIndex(index: number): BlockType {
     let returnVal = BlockType.Middle;
@@ -99,44 +75,6 @@ export class AppBuildComponent implements OnInit {
       returnVal = BlockType.End;
     }
     return returnVal;
-  }
-  //********************************************
-  updateBlankBlocks(updatedIndex: number|null): void {
-    const blankBlock = {
-      // note no type field; we'll fill it in below
-      id: '',
-      label: '',
-      svgUrl: '', // other code looks for this value; maybe change representation
-      width: 80,
-      height: 80
-    };
-    if (updatedIndex === null) {
-      // we have nothing yet; add a blank start block
-      this.blockList.push({
-        ...blankBlock,
-        type: this.blockTypeForIndex(0)
-      });
-    } else {
-      // if there's room for another block to the right, add a blank to the right
-      if (updatedIndex < this.maxBlockListQuantity - 1 && this.blockList[updatedIndex + 1] === undefined) {
-        this.blockList.push({
-          ...blankBlock,
-          type: this.blockTypeForIndex(updatedIndex+1)
-        });
-      }
-      // if there are unfilled elements of the array, fill them with blanks
-      // (this happens, e.g., if the user adds an end block before adding start or middle blocks)
-      if (updatedIndex > 1) {
-        for (let i = 0; i < updatedIndex; i++) {
-          if (this.blockList[i] === undefined) {
-            this.blockList[i] = {
-              ...blankBlock,
-              type: this.blockTypeForIndex(i)
-            };
-          }
-        }
-      }
-    }
   }
 
   updateSidebarTab(updatedIndex: number|null): void {

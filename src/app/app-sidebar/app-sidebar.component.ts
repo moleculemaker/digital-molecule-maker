@@ -25,7 +25,24 @@ export class AppSidebarComponent implements OnInit {
   set blockSetId(blockSetId: blockSetIds|null) {
     this._blockSetId = blockSetId;
     if (blockSetId) {
-      this.blockData = this.blockService.getBlockSet(this._blockSetId!);
+        this.blockService.getBlockSet(this._blockSetId!).subscribe(response => {
+            let startBlocks : Block[] = [], middleBlocks : Block[] = [], endBlocks: Block[] = [];
+            response.forEach((block: Block) => {
+                 if(block.type == BlockType.Start){
+                    startBlocks.push(block);
+                 } else if (block.type == BlockType.Middle) {
+                     middleBlocks.push(block);
+                 } else {
+                     endBlocks.push(block);
+                 }
+            });
+            const blockSet : BlockSet = {
+                 [BlockType.Start]: startBlocks,
+                 [BlockType.Middle] : middleBlocks,
+                 [BlockType.End] : endBlocks
+            };
+            this.blockData = blockSet;
+         });
     }
   }
   private _blockSetId: blockSetIds|null = null;
@@ -80,7 +97,7 @@ export class AppSidebarComponent implements OnInit {
     let blocks: any[] = [];
     blockTypes.forEach(blockType => {
         const blockTypeEnum = this.getKeyByValue(blockType);
-        if(blockTypeEnum){
+        if(blockTypeEnum && this.blockData){
             this.blockData![blockTypeEnum].forEach(block => blocks.push(block));
         }
     });

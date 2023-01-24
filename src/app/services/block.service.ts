@@ -1,5 +1,8 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BlockSet, BlockType } from '../models';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Block, BlockSet, BlockType } from '../models';
 
 export type blockSetIds = '10x10x10palette' | 'pentamers' | 'chem237-spring22';
 
@@ -8,18 +11,34 @@ export type blockSetIds = '10x10x10palette' | 'pentamers' | 'chem237-spring22';
 })
 export class BlockService {
 
-  constructor() { }
+  _jsonURL = 'assets/blocks/blocks.json';
 
-  getBlockSet(blockSetId: blockSetIds): BlockSet {
-    if (blockSetId === '10x10x10palette') {
-      return BLOCK_SET_10x10x10_PALETTE;
-    } else if (blockSetId === 'pentamers') {
-      return BLOCK_SET_PENTAMERS;
-    } else if (blockSetId === 'chem237-spring22') {
-      return BLOCK_SET_CHEM237_SPRING22;
-    }
-    throw new Error('Unknown blockSetId ' + blockSetId);
+  constructor(private http: HttpClient) {
+
   }
+
+  getBlockSet(blockSetId: blockSetIds) : Observable<any> {
+
+  const httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type':  'application/json',
+            Authorization: 'my-auth-token'
+        })
+    };
+
+    // if (blockSetId === '10x10x10palette') {
+    //   return BLOCK_SET_10x10x10_PALETTE;
+    // } else if (blockSetId === 'pentamers') {
+    //   return BLOCK_SET_PENTAMERS;
+    // } else if (blockSetId === 'chem237-spring22') {
+    //   return BLOCK_SET_CHEM237_SPRING22;
+    // }
+    // throw new Error('Unknown blockSetId ' + blockSetId);
+
+    return this.http.get<Block[]>(this._jsonURL, httpOptions);
+  }
+
+
 }
 
 export const BLOCK_SET_10x10x10_PALETTE = {

@@ -2,7 +2,6 @@
   [blockSetId]="blockSetId"
   [currentBlockType]="currentTab"
   (onSelectTab)="selectTab($event)"
-  (onSelectBlock)="addBlock($event, null)"
 ></app-sidebar>
 
 <div class="canvas_container" dfDropZone (drop)="dropped($event)">

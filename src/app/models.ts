@@ -11,6 +11,23 @@ export interface Block {
     svgUrl: string;
     width: number;
     height: number;
+    chemicalFormula: string;
+    molecularWeight: number;
+    tags: string[];
+    foundInCount: number;
+    citedByCount: number;
+    solvationFreeEnergy: number;
+    solvationSurfaceCharge: number;
+    HOMOMinus1: number;
+    radiusOfGyration: number;
+    HBondDonors: number;
+    HOMO: number;
+    Asphericity: number;
+    octanolWaterPartitionCoefficient: number;
+    LUMO: number;
+    conjugatedBonds: number;
+    solvationChargeCorrection: number;
+    LUMOPlus1: number;
 }
 
 export interface BlockSet {

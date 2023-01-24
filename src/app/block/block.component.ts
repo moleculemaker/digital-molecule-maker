@@ -126,7 +126,7 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   onLoadSVG(event: any) {
-    const viewBoxPieces = event.path[0].attributes.getNamedItem('viewBox').value.split(" ");
+    // const viewBoxPieces = event.path[0].attributes.getNamedItem('viewBox').value.split(" ");
     //const scale = this.scales[this.size];
     //this.imageWidth = parseInt(viewBoxPieces[2], 10) * scale;
     //this.imageHeight = parseInt(viewBoxPieces[3], 10) * scale;
