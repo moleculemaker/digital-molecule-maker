@@ -1,7 +1,7 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { BlockType } from '../models';
+import { Block, BlockType } from '../models';
 
 @Component({
   selector: 'dmm-block-svg',
@@ -12,13 +12,10 @@ export class BlockSvgComponent implements OnInit {
   @ViewChild('childComponentTemplate') childComponentTemplate: TemplateRef<any>|null = null;
 
   @Input()
-  svgUrl = '';
-
-  @Input()
   iconLabel = ''; //if set, then we display the entire block as a small icon
 
   @Input()
-  type = BlockType.Start;
+  block! : Block;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
@@ -63,9 +60,9 @@ export class BlockSvgComponent implements OnInit {
         });
     }
 
-    if(this.type == BlockType.Middle){
+    if(this.block.type == BlockType.Middle){
         this.popupoffsetX = -1 * (this.blockWidth + this.padding.x)
-    } else if(this.type == BlockType.End){
+    } else if(this.block.type == BlockType.End){
         this.popupoffsetX = -2 * (this.blockWidth + this.padding.x)
     }
 
@@ -86,13 +83,13 @@ export class BlockSvgComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if(changes.svgUrl){
+    if(changes.block){
       this.path = this.drawBlock();
     }
   }
 
   onClick(): void {
-    alert(this.type);
+    alert(this.block.type);
   }
 
   drawBlock() {
@@ -189,22 +186,22 @@ export class BlockSvgComponent implements OnInit {
 
   // Check if the block is placeholder for another block
   isAddBlock() {
-    return (!this.iconLabel && !this.svgUrl) ? true : false;
+    return (!this.iconLabel && !this.block.svgUrl) ? true : false;
   }
 
   // check if it's a starting block
   isStart() {
-    return this.type === BlockType.Start;
+    return this.block.type === BlockType.Start;
   }
 
   // check if it's a middle block
   isMiddle() {
-    return this.type === BlockType.Middle;
+    return this.block.type === BlockType.Middle;
   }
 
   // check if it's an ending block
   isEnd() {
-    return this.type === BlockType.End;
+    return this.block.type === BlockType.End;
   }
 }
 

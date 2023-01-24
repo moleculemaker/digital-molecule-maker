@@ -1,7 +1,7 @@
 <ng-template #childComponentTemplate (blur)="closeOverlay()">
   <svg width="100%" height="100%" class="block_container"
     [class]="[
-      'block_' + type
+      'block_' + block.type
     ]"
     [class.dashes]="isAddBlock()"
 
@@ -16,8 +16,8 @@
       [attr.stroke-width]="strokeWidth"
     ></path></g>
     <g [attr.transform]="'matrix(' + imageZoomAndPanMatrix.join(' ') + ')'" class="image">
-      <g #svgImage *ngIf="svgUrl"
-        [attr.data-src]="svgUrl"
+      <g #svgImage *ngIf="block.svgUrl"
+        [attr.data-src]="block.svgUrl"
         data-cache="disabled"
       />
     </g>
@@ -31,25 +31,25 @@
   >
     <dmm-overlay
       [label]='"block"'
-      [tags]='[{label: "High Luminance"}, {label: "Medical"}]'
+      [tags]='["High Luminance", "Medical"]'
       [properties]='[
-        {label: "ID", value: "DB_24", hasCheckMark: true},
-        {label: "Chemical Formula", value: "C<sub>6</sub>H<sub>2</sub>O<sub>2</sub>"},
-        {label: "Molecular Weight", value: "45.3 <span class=\"value_label\">g/mol</span>"}
+        {label: "ID", value: block.id, hasCheckMark: true},
+        {label: "Chemical Formula", value: block.chemicalFormula},
+        {label: "Molecular Weight", value: block.molecularWeight}
       ]'
       [additionalProperties]='[
-        {label: "Charge Energy", value: "0"},
-        {label: "Solvation Surface Charge", value: "0"},
-        {label: "HOMO-1", value: "0.0"},
-        {label: "Radius of Gyration", value: "0"},
-        {label: "# of H-Bond Donors", value: "1"},
-        {label: "HOMO", value: "0.0"},
-        {label: "Asphericity", value: "0"},
-        {label: "Octanol-Water Partition Coefficient", value: "0"},
-        {label: "LUMO", value: "0.0"},
-        {label: "# of Conjugated Bonds", value: "2"},
-        {label: "Charge Correction", value: "0"},
-        {label: "LUMO+1", value: "0.0"}
+        {label: "Solvation Free Energy", value: block.solvationFreeEnergy},
+        {label: "Solvation Surface Charge", value: block.solvationSurfaceCharge},
+        {label: "HOMO-1", value: block.HOMOMinus1},
+        {label: "Radius of Gyration", value: block.radiusOfGyration},
+        {label: "# of H-Bond Donors", value: block.HBondDonors},
+        {label: "HOMO", value: block.HOMO},
+        {label: "Asphericity", value: block.Asphericity},
+        {label: "Octanol-Water Partition Coefficient", value: block.octanolWaterPartitionCoefficient},
+        {label: "LUMO", value: block.LUMO},
+        {label: "# of Conjugated Bonds", value: block.conjugatedBonds},
+        {label: "Solvation Charge Correction", value: block.solvationChargeCorrection},
+        {label: "LUMO+1", value: block.LUMOPlus1}
       ]'
 
       (close)="isInfoPanelOpen = !isInfoPanelOpen"
