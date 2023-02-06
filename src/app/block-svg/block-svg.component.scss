@@ -3,6 +3,17 @@
 
 @mixin block_style($name) {
   &.block_#{$name} {
+    &.not_selected:not(:hover) {
+      .block_background {
+        fill: color_variable('block_' + $name + '_notselected');
+      }
+
+      .block_border {
+        stroke: color_variable('block_' + $name + '_notselected_border');
+      }
+
+    }
+
     .block_background {
       fill: color_variable('block_' + $name);
       stroke-miterlimit: 10;
@@ -40,6 +51,20 @@
       stroke: color_variable('block_hover_border');
       @include transition(none);
     }
+
+    .delete_block_button {
+      display: inline;
+    }
+  }
+
+  &.selected:not(:hover) {
+    .block_background {
+      fill: color_variable('block_hover');
+    }
+
+    .block_border {
+      stroke: color_variable('block_hover_border');
+    }
   }
 
   .block_background {
@@ -48,6 +73,32 @@
 
   .block_border {
     @include transition(#{fill .2s easing($ease-in), stroke .2s easing($ease-in)});
+  }
+
+  .delete_block_button {
+    display: none;
+    cursor: pointer;
+
+    .outline {
+      fill: color_variable('background');
+
+      stroke: color_variable('molecule_border');
+      stroke-width: 2px;
+    }
+
+    .icon {
+      color: color_variable('molecule_border');
+    }
+
+    &:hover {
+      .outline {
+        stroke: color_variable('molecule_hover_text');
+      }
+
+      .icon {
+        color: color_variable('molecule_hover_text');
+      }
+    }
   }
 
   g.image {
