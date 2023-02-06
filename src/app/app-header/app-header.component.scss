@@ -76,6 +76,19 @@
   }
 }
 
+.code {
+  color: color_variable('default');
+
+  margin: {
+    right: $padding * .5;
+  }
+
+  font: {
+    size: .85rem;
+    weight: bold;
+  }
+}
+
 input[type="text"] {
   padding: ($padding * .35) ($padding * .5);
 
