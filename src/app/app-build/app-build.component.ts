@@ -1,13 +1,17 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { RigService } from '../services/rig.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockType, Molecule, Coordinates } from '../models';
+
 import { blockSetIds } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
+import { RigService } from '../services/rig.service';
+import { WorkspaceService } from '../services/workspace.service';
 
-import { Subject } from 'rxjs';
-
+@UntilDestroy()
 @Component({
   selector: 'app-build',
   templateUrl: './app-build.component.html',
@@ -16,9 +20,6 @@ import { Subject } from 'rxjs';
 export class AppBuildComponent implements OnInit {
   isShowingSendToLab = false;
   isShowingCart = false;
-
-  blockList: Block[] = [];
-  maxBlockListQuantity = 3; //controls where start, middle, and end blocks can be added
 
   currentTab = BlockType.Start;
   BlockSize = BlockSize; // for template
@@ -37,13 +38,27 @@ export class AppBuildComponent implements OnInit {
   private _panElement!: HTMLElement;
   closeOverlay: Subject<void> = new Subject<void>();
 
-  constructor(private rigService: RigService, private changeDetector: ChangeDetectorRef) { }
+  constructor(
+    private rigService: RigService,
+    private workspaceService: WorkspaceService,
+    private changeDetector: ChangeDetectorRef
+  ) { }
 
   //********************************************
   ngOnInit(): void {
-    //start with a blank block
-    this.updateBlankBlocks(null);
-    this.updateSidebarTab(null);
+    // WorkspaceService will check for data from a previous session and, if found,
+    // will provide us with the restored moleculeList
+    // TODO: eventually, might want to ask the user whether to restore, especially
+    // if a restored value arrives after the user has begun populating a fresh
+    // moleculeList in the current session (which becomes a more interesting case
+    // once sessions are persisted on the backend instead of in localStorage)
+    this.workspaceService.getMoleculeList().pipe(
+      untilDestroyed(this),
+      filter(moleculeList => !!moleculeList)
+    ).subscribe(moleculeList => {
+      this.moleculeList = moleculeList;
+      this.changeDetector.detectChanges();
+    })
   }
 
   //********************************************
@@ -62,114 +77,11 @@ export class AppBuildComponent implements OnInit {
   }
 
   //********************************************
-  selectTab(newTab: BlockType): void {
-    this.currentTab = newTab;
-  }
-
-  //********************************************
-  addBlock(block: Block, addIndex: number|null): void {
-    //todo - allow adding at various points in the array
-//    if (typeof addIndex == 'undefined') {addIndex = this.blockList.length;}
-
-//for now, only allow data in the 3 different spots in the array
-    if (block.type == BlockType.Start) {
-      addIndex = 0;
-    } else if (block.type == BlockType.Middle) {
-      addIndex = 1;
-    } else {
-      addIndex = 2;
-    }
-
-    //update the current block
-    this.blockList[addIndex] = block;
-
-    //if inserted, and not at the end, then add the next block
-    this.updateBlankBlocks(addIndex);
-    this.updateSidebarTab(addIndex);
-
-    //make sure isShowingCart is closed
-    if (this.isShowingCart) {this.toggleCartPanel();}
-  }
-
-  blockTypeForIndex(index: number): BlockType {
-    let returnVal = BlockType.Middle;
-    if (index === 0) {
-      returnVal = BlockType.Start;
-    } else if (index === this.maxBlockListQuantity - 1) {
-      returnVal = BlockType.End;
-    }
-    return returnVal;
-  }
-  //********************************************
-  updateBlankBlocks(updatedIndex: number|null): void {
-    const blankBlock = {
-      // note no type field; we'll fill it in below
-      id: '',
-      label: '',
-      svgUrl: '', // other code looks for this value; maybe change representation
-      width: 80,
-      height: 80
-    };
-    if (updatedIndex === null) {
-      // we have nothing yet; add a blank start block
-      this.blockList.push({
-        ...blankBlock,
-        type: this.blockTypeForIndex(0)
-      });
-    } else {
-      // if there's room for another block to the right, add a blank to the right
-      if (updatedIndex < this.maxBlockListQuantity - 1 && this.blockList[updatedIndex + 1] === undefined) {
-        this.blockList.push({
-          ...blankBlock,
-          type: this.blockTypeForIndex(updatedIndex+1)
-        });
-      }
-      // if there are unfilled elements of the array, fill them with blanks
-      // (this happens, e.g., if the user adds an end block before adding start or middle blocks)
-      if (updatedIndex > 1) {
-        for (let i = 0; i < updatedIndex; i++) {
-          if (this.blockList[i] === undefined) {
-            this.blockList[i] = {
-              ...blankBlock,
-              type: this.blockTypeForIndex(i)
-            };
-          }
-        }
-      }
-    }
-  }
-
-  updateSidebarTab(updatedIndex: number|null): void {
-    // determine which tab should be shown
-    let newTab: BlockType;
-    // if we're initializing, start with the first tab
-    if (updatedIndex === null) {
-      newTab = BlockType.Start;
-    } else {
-      // typically move left to right through the tabs
-      if (updatedIndex < this.maxBlockListQuantity - 1) {
-        newTab = this.blockTypeForIndex(updatedIndex + 1);
-      } else {
-        // we're already at the far right
-        // if there are blanks to the left, return to the tab corresponding to the first blank
-        // otherwise stay on the last tab
-        // note blockList should by this point be fully populated
-        // with real blocks and/or blank blocks
-        const firstBlankIndex = this.blockList.findIndex(block => block.svgUrl === '');
-        newTab = firstBlankIndex !== -1 ? this.blockTypeForIndex(firstBlankIndex) : BlockType.End;
-      }
-    }
-    this.selectTab(newTab);
-  }
-
-  isReadyForLab(): boolean {
-    return this.blockList.length === 3 &&
-      this.blockList[0].id.length > 0 &&
-      this.blockList[1].id.length > 0 &&
-      this.blockList[2].id.length > 0;
-  }
 
   sendToLab(moleculeName: string): void {
+    // disabled for now
+    // should use a molecule instead of this.blockList[i]
+    /*
     this.rigService.submitReaction(
       this.blockSetId,
       this.blockList[0],
@@ -179,6 +91,7 @@ export class AppBuildComponent implements OnInit {
     ).subscribe(nullVal => {
       console.log("submitted");
     });
+    */
   }
 
   onZoomIn(): void {
@@ -218,6 +131,9 @@ export class AppBuildComponent implements OnInit {
       }
 
     }
+    // todo: clean up state management a bit; currently modifying the object in place, passing the
+    // object to the service, and then subscribing to the service for updates
+    this.workspaceService.updateMoleculeList(this.moleculeList);
     this.changeDetector.detectChanges();
     event.data.selected = true;
   }
