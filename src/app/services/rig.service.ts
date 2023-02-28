@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
 
-import { Block } from '../app/models';
+import { Block } from '../models';
 import { blockSetIds } from './block.service';
 
 @Injectable({
