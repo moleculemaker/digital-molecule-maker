@@ -7,13 +7,20 @@ $colors: (
 	default: #1f78b4, //used if color name not specified or not found when using get_color()
 
 	background: #ffffff,
+	background_faded: rgba(#fff, .4),
 
   block_start: #6c88cf,
   block_start_border: darken(#6c88cf, 20%),
+  block_start_notselected: desaturate(#6c88cf, 60%),
+  block_start_notselected_border: darken(desaturate(#6c88cf, 60%), 10%),
   block_middle: #2db89a,
   block_middle_border: darken(#2db89a, 20%),
+  block_middle_notselected: desaturate(#2db89a, 60%),
+  block_middle_notselected_border: darken(desaturate(#2db89a, 60%), 10%),
   block_end: #2ea6df,
   block_end_border: darken(#2ea6df, 20%),
+  block_end_notselected: desaturate(#2ea6df, 60%),
+  block_end_notselected_border: darken(desaturate(#2ea6df, 60%), 10%),
 
   block_border_dashes: #bbb,
   block_hover: #ffb800,
@@ -22,9 +29,16 @@ $colors: (
   block_connection_in: #e64fff,
   block_connection_out: #ffb800,
   block_stroke: #fff,
+  block_notselected_background: #ccc,
+  block_notselected_border: #bbb,
 
+  molecule_background: #eee,
+  molecule_border: #c1c1c1,
+  molecule_hover_text: #6c88cf,
   molecule_hover_border: #6c88cf,
-  molecule_hover_fill: #D9E2F9,
+  molecule_hover_fill: #d9e2f9,
+  molecule_selected_border: #ffb800, //same as block_hover
+  molecule_selected_fill: #ffb800,
 
   button: #1f78b4, //same as default
   button_background: #e1e1e1,
@@ -84,8 +98,8 @@ $colors: (
 
 //**************** font ******************
 
-$font_family: 'Montserrat', sans-serif;
-$font_family_header: 'Bebas Neue', cursive;
+$font_family: 'Inter', 'Open Sans', sans-serif;
+$font_family_header: $font_family; //'Bebas Neue', cursive;
 $font_size_min: .7rem;
 
 

@@ -71,7 +71,7 @@ export class BlockSvgComponent implements OnInit {
 
     this.positionPairs = [
         {
-          offsetX: this.popupoffsetX,
+          offsetX: this.popupoffsetX - 40 - 15, //need to convert this numeric approach to a formula based on the width of the overlay
           offsetY: 10,
           originX: 'start',
           originY: 'bottom',
@@ -205,6 +205,25 @@ export class BlockSvgComponent implements OnInit {
   // check if it's an ending block
   isEnd() {
     return this.type === BlockType.End;
+  }
+
+  calculateDeletePositionX() {
+    let minX = this.strokeWidth + this.borderOffset;
+
+    if(this.isMiddle()){
+      minX += this.blockWidth + this.padding.x;
+    } else if(this.isEnd()){
+      minX += 2 * (this.blockWidth + this.padding.x);
+    }
+
+    return ((this.blockWidth + this.padding.x) / 2) + minX;
+  }
+
+  calculateDeletePositionY() {
+    return this.blockHeight + this.padding.y;
+  }
+
+  removeBlock() {
   }
 }
 
