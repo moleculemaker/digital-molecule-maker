@@ -10,7 +10,9 @@ export interface DroppableEvent {
   data: any;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DroppableService {
 
   dragStart$: Observable<DroppableEvent>;

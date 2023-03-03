@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Block, BlockSet, BlockType } from '../models';
 
+
 export type blockSetIds = '10x10x10palette' | 'pentamers' | 'chem237-spring22';
 
 @Injectable({
@@ -37,7 +38,6 @@ export class BlockService {
 
     return this.http.get<Block[]>(this._jsonURL, httpOptions);
   }
-
 
 }
 

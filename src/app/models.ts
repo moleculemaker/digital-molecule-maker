@@ -40,3 +40,8 @@ export class Molecule {
     this.blockList = blockList;
   }
 }
+
+export interface User {
+  surveyCode: string;
+  // later: token(s), etc.
+}

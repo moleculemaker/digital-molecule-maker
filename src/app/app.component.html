@@ -1,9 +1,7 @@
 <main>
-  <splash></splash>
+  <app-header *ngIf="showHeader$ | async"></app-header>
 
-  <app-header></app-header>
-
-  <content>
+  <div class="content">
     <router-outlet></router-outlet>
-  </content>
+  </div>
 </main>

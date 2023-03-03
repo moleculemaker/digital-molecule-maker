@@ -58,12 +58,6 @@ export class AppSidebarComponent implements OnInit {
   currentBlockType = BlockType.Start;
 //  currentBlockType:String = 'start'; //todo: need to change this to different structure like selecting the actual tab data instead of just the index
 
-  @Output()
-  onSelectBlock = new EventEmitter<Block>();
-
-  @Output()
-  onSelectTab = new EventEmitter<BlockType>();
-
   currentToggle = 'build';
   BlockSize = BlockSize; // for use in template
 
@@ -125,16 +119,6 @@ export class AppSidebarComponent implements OnInit {
   getBlockDataKeys(): BlockType[] {
     //todo: fix this code so it properly returns the data keys instead of hard coding
     return [BlockType.Start, BlockType.Middle, BlockType.End];
-  }
-
-  //********************************************
-  selectTab(newTab: BlockType) {
-    this.onSelectTab.emit(newTab);
-  }
-
-  //********************************************
-  selectBlock(block: Block) {
-    this.onSelectBlock.emit(block);
   }
 
   //********************************************
