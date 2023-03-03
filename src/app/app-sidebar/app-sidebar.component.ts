@@ -2,7 +2,7 @@ import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@an
 import { BlockService, blockSetIds } from '../services/block.service';
 import { BlockSize } from '../block/block.component';
 import { Block, BlockSet, BlockType } from '../models';
-
+import Fuse from 'fuse.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -18,6 +18,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ],
 })
 export class AppSidebarComponent implements OnInit {
+  chemicalFormulaeList:string[] = [];
+  fuse!:Fuse<string>;
+
   @HostBinding('class') sidebarClasses:string = 'expanded';
 
   @Input()
@@ -35,7 +38,11 @@ export class AppSidebarComponent implements OnInit {
                  } else {
                      endBlocks.push(block);
                  }
+                 this.chemicalFormulaeList.push(block.chemicalFormula)
+                 block.chemicalFormula = block.chemicalFormula.replace(/(\d+)/g, "<sub>$1</sub>");
             });
+            this.fuse = new Fuse(this.chemicalFormulaeList, {includeScore: true})
+            this.chemicalFormulaeList.forEach(e => this.filteredBlocks.push(e.replace(/(\d+)/g, "<sub>$1</sub>")))
             const blockSet : BlockSet = {
                  [BlockType.Start]: startBlocks,
                  [BlockType.Middle] : middleBlocks,
@@ -61,10 +68,11 @@ export class AppSidebarComponent implements OnInit {
   BlockSize = BlockSize; // for use in template
 
   blockData?: BlockSet;
+  filteredBlocks: string[] = [];
 
   searchPlaceholder = 'Search';
   moleculeSearch = [
-    {name: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S'}
+    {chemicalFormula: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S'}
   ]; //array of molecules to search by
 
   typeFilter:string[] = []; //array of types to filter by (only used in showing the blocks?)
@@ -98,7 +106,11 @@ export class AppSidebarComponent implements OnInit {
     blockTypes.forEach(blockType => {
         const blockTypeEnum = this.getKeyByValue(blockType);
         if(blockTypeEnum && this.blockData){
-            this.blockData![blockTypeEnum].forEach(block => blocks.push(block));
+
+            this.blockData![blockTypeEnum].forEach(block => {
+              if(this.filteredBlocks.filter(e => e === block.chemicalFormula).length > 0)
+              blocks.push(block);
+            });
         }
     });
     return blocks;
@@ -161,5 +173,20 @@ export class AppSidebarComponent implements OnInit {
     const key = Object.keys(BlockType)[indexOfS];
     const enumKey : BlockType = (<any>BlockType)[key]
     return enumKey;
+  }
+
+  searchBlock(event: any) {
+    try {
+      this.filteredBlocks.length = 0;
+      if(event.target.value == ''){
+        this.chemicalFormulaeList.forEach(e => this.filteredBlocks.push(e.replace(/(\d+)/g, "<sub>$1</sub>")))
+        return
+      }
+      const results = this.fuse.search(event.target.value);
+      results.forEach(result => this.filteredBlocks.push(result.item.replace(/(\d+)/g, "<sub>$1</sub>")));
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 }

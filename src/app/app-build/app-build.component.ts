@@ -139,7 +139,6 @@ export class AppBuildComponent implements OnInit {
 
     let relX = event.nativeEvent.clientX - rect.left
     let relY = event.nativeEvent.clientY - rect.top
-
     if (this.hoveredMolecule != undefined) {
       this.moleculeList[this.hoveredMolecule].blockList = this.moleculeList[this.hoveredMolecule].blockList.filter(block => block.type != event.data.type);
       this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
@@ -193,5 +192,10 @@ export class AppBuildComponent implements OnInit {
 
   onPanStop(event: MouseEvent){
     this.panning = false;
+  }
+
+  onRemoveMolecule(moleculeId: number){
+    this.hoveredMolecule = undefined;
+    this.moleculeList.splice(moleculeId, 1);
   }
 }

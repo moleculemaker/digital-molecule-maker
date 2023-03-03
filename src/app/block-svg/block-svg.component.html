@@ -49,18 +49,8 @@
         {label: "Molecular Weight", value: block.molecularWeight}
       ]'
       [additionalProperties]='[
-        {label: "Solvation Free Energy", value: block.solvationFreeEnergy},
-        {label: "Solvation Surface Charge", value: block.solvationSurfaceCharge},
-        {label: "HOMO-1", value: block.HOMOMinus1},
-        {label: "Radius of Gyration", value: block.radiusOfGyration},
         {label: "# of H-Bond Donors", value: block.HBondDonors},
-        {label: "HOMO", value: block.HOMO},
-        {label: "Asphericity", value: block.Asphericity},
-        {label: "Octanol-Water Partition Coefficient", value: block.octanolWaterPartitionCoefficient},
-        {label: "LUMO", value: block.LUMO},
-        {label: "# of Conjugated Bonds", value: block.conjugatedBonds},
-        {label: "Solvation Charge Correction", value: block.solvationChargeCorrection},
-        {label: "LUMO+1", value: block.LUMOPlus1}
+        {label: "IUPAC Name", value: block.IUPACName}
       ]'
 
       (close)="isInfoPanelOpen = !isInfoPanelOpen"

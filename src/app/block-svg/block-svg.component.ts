@@ -1,5 +1,5 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
-import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges} from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, Output, EventEmitter} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, BlockType } from '../models';
 
@@ -19,6 +19,9 @@ export class BlockSvgComponent implements OnInit {
 
   @Input()
   closeOverlayObservable?: Observable<void>;
+
+  @Output()
+  deleteBlock = new EventEmitter<BlockType>();
 
   blockWidth = 100;
   blockHeight = 100;
@@ -221,6 +224,7 @@ export class BlockSvgComponent implements OnInit {
   }
 
   removeBlock() {
+    this.deleteBlock.emit(this.block.type);
   }
 }
 

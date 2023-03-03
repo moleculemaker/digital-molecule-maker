@@ -13,7 +13,7 @@
       </g>
 
       <g class="blocks" *ngFor="let block of molecule?.blockList">
-        <dmm-block-svg #wrapper [block]="block" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
+        <dmm-block-svg #wrapper [block]="block" (deleteBlock)="onRemoveBlock($event)" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
         <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
       </g>
 
