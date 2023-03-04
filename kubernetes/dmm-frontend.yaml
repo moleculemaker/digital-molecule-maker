@@ -1,0 +1,54 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dmm-frontend
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: dmm.localhost
+    http:
+      paths:
+      - backend:
+          service:
+            name: dmm-frontend
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
+---
+# Enables the pods in a deployment to be accessible from outside the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: dmm-frontend
+spec:
+  selector:
+    app: dmm-frontend
+  type: LoadBalancer
+  ports:
+    - protocol: "TCP"
+      port: 80
+---
+# Defines the deployment of the app running in a pod on any worker node
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dmm-frontend
+  labels:
+    app: dmm-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dmm-frontend
+  template:
+    metadata:
+      labels:
+        app: dmm-frontend
+    spec:
+      containers:
+        - name: dmm-frontend
+          image: bodom0015/dmm
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
