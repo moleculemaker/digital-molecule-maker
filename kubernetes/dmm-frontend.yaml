@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: dmm-frontend
-          image: bodom0015/dmm
+          image: moleculemaker/dmm-frontend
           ports:
             - containerPort: 80
           imagePullPolicy: Always
