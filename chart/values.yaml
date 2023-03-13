@@ -1,5 +1,5 @@
 ingress:
-  hostname: dmm.fastapi.localhost
+  hostname: dmm.frontend.localhost
   tls: false
   annotations: {}
 
