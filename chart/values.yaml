@@ -1,0 +1,8 @@
+ingress:
+  hostname: dmm.fastapi.localhost
+  tls: false
+  annotations: {}
+
+controller:
+  image: moleculemaker/dmm-fastapi-image
+
