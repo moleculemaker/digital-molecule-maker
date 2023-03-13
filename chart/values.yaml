@@ -4,5 +4,5 @@ ingress:
   annotations: {}
 
 controller:
-  image: moleculemaker/dmm-fastapi-image
+  image: moleculemaker/dmm-frontend-image
 
