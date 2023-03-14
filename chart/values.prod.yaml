@@ -1,8 +1,8 @@
 ingress:
-  hostname: dmm.mmli1.ncsa.illinois.edu
+  hostname: dmm.frontend.mmli1.ncsa.illinois.edu
   tls: true
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/router.tls: "true"
 

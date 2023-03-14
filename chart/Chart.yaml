@@ -1,9 +1,4 @@
 apiVersion: v2
-description: "Digital Molecule Maker FastAPI"
-name: dmm-fastapi
+description: "Digital Molecule Maker Frontend"
+name: dmm-frontend
 version: 1.0.0
-dependencies:
-- name: postgresql
-  version: ~12.2.2
-  repository: "https://charts.bitnami.com/bitnami"
-  condition: postgresql.enabled
