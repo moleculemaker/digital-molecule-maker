@@ -1,0 +1,8 @@
+ingress:
+  hostname: dmm.frontend.localhost
+  tls: false
+  annotations: {}
+
+controller:
+  image: moleculemaker/dmm-frontend-image
+

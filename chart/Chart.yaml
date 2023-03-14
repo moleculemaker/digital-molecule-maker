@@ -1,0 +1,4 @@
+apiVersion: v2
+description: "Digital Molecule Maker Frontend"
+name: dmm-frontend
+version: 1.0.0
