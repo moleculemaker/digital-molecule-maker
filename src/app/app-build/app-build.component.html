@@ -40,8 +40,8 @@
   <svg class="svg_workspace" (mousedown)="onPanStart($event)" (mousemove)="onPan($event)" (mouseup)="onPanStop($event)">
     <!-- this outer-level group applies the zoom and pan -->
     <g [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'">
-      <g (mouseenter) ="onMouseEnter(moleculeId)"  (mouseleave) ="onMouseLeave()" *ngFor="let molecule of moleculeList; let moleculeId = index" [attr.transform]="'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'">
-        <dmm-molecule-svg #wrapper [molecule]="molecule" [closeOverlayObservable]="closeOverlay.asObservable()"></dmm-molecule-svg>
+      <g (mouseenter) ="onMouseEnter(moleculeId)" (mouseleave) ="onMouseLeave()" *ngFor="let molecule of moleculeList; let moleculeId = index" [attr.transform]="'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'">
+        <dmm-molecule-svg #wrapper [molecule]="molecule" (deleteMolecule)="onRemoveMolecule(moleculeId)" [closeOverlayObservable]="closeOverlay.asObservable()"></dmm-molecule-svg>
         <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
       </g>
     </g>

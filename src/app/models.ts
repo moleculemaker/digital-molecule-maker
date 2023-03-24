@@ -11,6 +11,10 @@ export interface Block {
     svgUrl: string;
     width: number;
     height: number;
+    chemicalFormula: string;
+    molecularWeight: number;
+    HBondDonors: number;
+    IUPACName: string;
 }
 
 export interface BlockSet {

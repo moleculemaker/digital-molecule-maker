@@ -1,7 +1,6 @@
 <ng-template #childComponentTemplate>
     <svg class="molecule" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" [class.selected]="isInfoPanelOpen">
       <rect class="outside_border" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="isInfoPanelOpen = !isInfoPanelOpen" x="5" y="15" width="570" height="156" rx="10"></rect>
-
       <g class="name" *ngIf="!isEditNamePanelOpen" (click)="showEditName()">
         <!-- invisible rectangle to fake padding -->
         <rect class="invisible" x="0" y="0" width="570" height="16" fill="none"></rect>
@@ -14,7 +13,7 @@
       </g>
 
       <g class="blocks" *ngFor="let block of molecule?.blockList">
-        <dmm-block-svg #wrapper [svgUrl]="block.svgUrl" [type]="block.type" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
+        <dmm-block-svg #wrapper [block]="block" (deleteBlock)="onRemoveBlock($event)" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
         <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
       </g>
 

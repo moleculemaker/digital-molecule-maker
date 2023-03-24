@@ -1,5 +1,5 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
-import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, ChangeDetectorRef, Output, EventEmitter} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, BlockType, Molecule, Coordinates } from '../models';
 
@@ -16,6 +16,10 @@ export class MoleculeSvgComponent implements OnInit {
 
   @Input()
   closeOverlayObservable?: Observable<void>;
+
+  @Output()
+  deleteMolecule = new EventEmitter();
+
 
   isInfoPanelOpen = false;
   isEditNamePanelOpen = false;
@@ -76,7 +80,12 @@ export class MoleculeSvgComponent implements OnInit {
   }
 
   removeMolecule() {
+    this.deleteMolecule.emit()
+  }
 
+  onRemoveBlock(type: BlockType){
+    if(this.molecule)
+    this.molecule.blockList = this.molecule?.blockList.filter(block => block.type != type);
   }
 }
 
