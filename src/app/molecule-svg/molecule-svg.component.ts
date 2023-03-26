@@ -12,7 +12,7 @@ export class MoleculeSvgComponent implements OnInit {
   @ViewChild('childComponentTemplate') childComponentTemplate: TemplateRef<any>|null = null;
 
   @Input()
-  molecule : Molecule | undefined;
+  molecule?: Molecule;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
@@ -20,6 +20,8 @@ export class MoleculeSvgComponent implements OnInit {
   @Output()
   deleteMolecule = new EventEmitter();
 
+  @Output()
+  addToCart = new EventEmitter();
 
   isInfoPanelOpen = false;
   isEditNamePanelOpen = false;
@@ -27,6 +29,7 @@ export class MoleculeSvgComponent implements OnInit {
   _eventsSubscription?: Subscription;
   positionPairs!: ConnectionPositionPair[];
   positionEditName!: ConnectionPositionPair[];
+  newMoleculeName:string = '';
 
   constructor(private changeDetector: ChangeDetectorRef) { }
 
@@ -60,6 +63,9 @@ export class MoleculeSvgComponent implements OnInit {
           overlayY: 'top'
         },
     ];
+
+    this.newMoleculeName = this.molecule!.label;
+
   }
 
   ngOnDestroy(){
@@ -80,12 +86,21 @@ export class MoleculeSvgComponent implements OnInit {
   }
 
   removeMolecule() {
-    this.deleteMolecule.emit()
+    this.deleteMolecule.emit();
   }
 
   onRemoveBlock(type: BlockType){
     if(this.molecule)
     this.molecule.blockList = this.molecule?.blockList.filter(block => block.type != type);
+  }
+
+  updateMoleculeLabel(){
+    console.log(this.newMoleculeName);
+    this.molecule!.label = this.newMoleculeName;
+  }
+
+  addMoleculeToCart(){
+    this.addToCart.emit();
   }
 }
 

@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { state, trigger, transition, style, animate, AnimationEvent, useAnimation } from "@angular/animations";
 
 import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse, slideOutReverse } from './panel.animations';
+import { Molecule } from '../models';
 
 @Component({
   selector: 'panel',
@@ -39,13 +40,16 @@ import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse
 export class PanelComponent implements OnInit {
 
   @Input()
-  moleculeName = '';
+  cartMoleculeList: Molecule[] = []
 
   @Output()
   onClose = new EventEmitter();
 
   @Output()
   onSubmit = new EventEmitter<string>();
+
+  @Output()
+  onSendBackToWorkspace = new EventEmitter<string>();
 
   isPanelActive = true;
 
@@ -56,7 +60,7 @@ export class PanelComponent implements OnInit {
   moleculeNamePlaceholder = 'Molecule Name';
 
   //********************************************
-  constructor() { }
+  constructor( ) { }
 
   //********************************************
   ngOnInit(): void {
@@ -119,13 +123,17 @@ export class PanelComponent implements OnInit {
 
   canSubmitMolecule(): boolean {
 return true;
-    const workingName = this.moleculeName?.trim() || '';
-    return workingName.length > 0;
+    // const workingName = this.moleculeName?.trim() || '';
+    // return workingName.length > 0;
   }
 
   submitMolecule(): void {
-    this.onSubmit.emit(this.moleculeName);
+    // this.onSubmit.emit(this.moleculeName);
     // for now, use the second panel as the success message
     this.nextStep();
+  }
+
+  sendBackToWorkspace(moleculeId: number){
+    this.onSendBackToWorkspace.emit(moleculeId.toString());
   }
 }
