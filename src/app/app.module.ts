@@ -67,8 +67,8 @@ function initializeAppFactory(): () => Observable<null> {
     HttpClientModule,
     AppRoutingModule,
     NgxMatomoTrackerModule.forRoot({
-      siteId: 1,
-      trackerUrl: 'https://moleculemaker.matomo.cloud/'
+      siteId: 2,
+      trackerUrl: 'https://matomo.mmli1.ncsa.illinois.edu/'
     }),
     DragDropModule,
     OverlayModule
