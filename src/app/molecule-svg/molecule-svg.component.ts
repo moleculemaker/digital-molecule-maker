@@ -29,7 +29,6 @@ export class MoleculeSvgComponent implements OnInit {
   _eventsSubscription?: Subscription;
   positionPairs!: ConnectionPositionPair[];
   positionEditName!: ConnectionPositionPair[];
-  newMoleculeName:string = '';
 
   constructor(private changeDetector: ChangeDetectorRef) { }
 
@@ -64,8 +63,6 @@ export class MoleculeSvgComponent implements OnInit {
         },
     ];
 
-    this.newMoleculeName = this.molecule!.label;
-
   }
 
   ngOnDestroy(){
@@ -94,9 +91,16 @@ export class MoleculeSvgComponent implements OnInit {
     this.molecule.blockList = this.molecule?.blockList.filter(block => block.type != type);
   }
 
-  updateMoleculeLabel(){
-    console.log(this.newMoleculeName);
-    this.molecule!.label = this.newMoleculeName;
+  onEnterInput(event: Event, newMoleculeName: string){
+    const keyboardEvent = event as KeyboardEvent;
+    if (keyboardEvent.key === "Enter") {
+      this.updateMoleculeLabel(newMoleculeName)
+    }
+  }
+
+  updateMoleculeLabel(newMoleculeName: string){
+    this.isEditNamePanelOpen = false;
+    this.molecule!.label = newMoleculeName;
   }
 
   addMoleculeToCart(){

@@ -79,8 +79,8 @@
     [cdkConnectedOverlayPositions]="positionEditName"
   >
     <div class="edit_panel">
-      <input type="text" [(ngModel)]="newMoleculeName" placeholder="Enter Molecule Name" />
-      <div class="button" (click)="updateMoleculeLabel()">Update</div>
+      <input type="text" #nameInput (keyup.enter)="onEnterInput($event, nameInput.value)" placeholder="Enter Molecule Name" />
+      <div class="button" (click)="updateMoleculeLabel(nameInput.value)">Update</div>
     </div>
   </ng-template>
 

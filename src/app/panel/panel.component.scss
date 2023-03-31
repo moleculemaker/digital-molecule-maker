@@ -472,6 +472,11 @@ $panel_width_wide: 460px; //320px * 2;
       size: 130%;
     }
   }
+
+  .disable_submit{
+    pointer-events: none;
+    background-color: color_variable('interface_button')
+  }
 /*
   .button_group {
     display: flex;
