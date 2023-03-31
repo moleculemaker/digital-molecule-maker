@@ -10,6 +10,7 @@ import { blockSetIds } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
+import { CartService } from '../services/cart.service';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +30,7 @@ export class AppBuildComponent implements OnInit {
   zoomAndPanMatrix = [1, 0, 0, 1, 0, 0];
 
   moleculeList: Molecule[] = [];
+  cartMoleculeList: Molecule[] = [];
 
   hoveredMolecule?: number = undefined;
 
@@ -41,6 +43,7 @@ export class AppBuildComponent implements OnInit {
   constructor(
     private rigService: RigService,
     private workspaceService: WorkspaceService,
+    private cartService: CartService,
     private changeDetector: ChangeDetectorRef
   ) { }
 
@@ -57,6 +60,14 @@ export class AppBuildComponent implements OnInit {
       filter(moleculeList => !!moleculeList)
     ).subscribe(moleculeList => {
       this.moleculeList = moleculeList;
+      this.changeDetector.detectChanges();
+    })
+
+    this.cartService.getMoleculeList().pipe(
+      untilDestroyed(this),
+      filter(moleculeList => !!moleculeList)
+    ).subscribe(moleculeList => {
+      this.cartMoleculeList = moleculeList;
       this.changeDetector.detectChanges();
     })
   }
@@ -135,6 +146,7 @@ export class AppBuildComponent implements OnInit {
     this.workspaceService.updateMoleculeList(this.moleculeList);
     this.changeDetector.detectChanges();
     event.data.selected = true;
+    this.closeOverlay.next();
   }
 
   onMouseEnter(moleculeId: number){
@@ -175,5 +187,22 @@ export class AppBuildComponent implements OnInit {
   onRemoveMolecule(moleculeId: number){
     this.hoveredMolecule = undefined;
     this.moleculeList.splice(moleculeId, 1);
+  }
+
+  addMoleculeToCart(moleculeId: number){
+    let moleculeToAdd = this.moleculeList.splice(moleculeId, 1);
+    this.cartMoleculeList.push(moleculeToAdd[0]);
+    this.closeOverlay.next();
+    this.workspaceService.updateMoleculeList(this.moleculeList);
+    this.cartService.updateMoleculeList(this.cartMoleculeList);
+  }
+
+  addToWorkSpace(moleculeIdString: string){
+    let moleculeId: number = +moleculeIdString;
+    let moleculeToAdd = this.cartMoleculeList.splice(moleculeId, 1);
+    this.moleculeList.push(moleculeToAdd[0]);
+    this.changeDetector.detectChanges();
+    this.workspaceService.updateMoleculeList(this.moleculeList);
+    this.cartService.updateMoleculeList(this.cartMoleculeList);
   }
 }
