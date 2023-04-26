@@ -37,12 +37,24 @@ export class AppBuildComponent implements OnInit {
   private _initialPosition!:  { x: number, y: number };
   private _panElement!: HTMLElement;
   closeOverlay: Subject<void> = new Subject<void>();
+  isDragging: boolean | undefined;
+  draggedMolecule: any;
+  //startingMousePosition?: { x: number; y: number; } = undefined;
+  svgWorkspace: any;
+  startingMousePosition: { x: number; y: number; } = { x: 0, y: 0 };
+  draggedMoleculeIndex: number | undefined;
 
+
+
+  
   constructor(
     private rigService: RigService,
     private workspaceService: WorkspaceService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
   ) { }
+
+  
+  
 
   //********************************************
   ngOnInit(): void {
@@ -52,6 +64,8 @@ export class AppBuildComponent implements OnInit {
     // if a restored value arrives after the user has begun populating a fresh
     // moleculeList in the current session (which becomes a more interesting case
     // once sessions are persisted on the backend instead of in localStorage)
+  
+    this.svgWorkspace = document.querySelector('.svg_workspace');
     this.workspaceService.getMoleculeList().pipe(
       untilDestroyed(this),
       filter(moleculeList => !!moleculeList)
@@ -146,34 +160,77 @@ export class AppBuildComponent implements OnInit {
   }
 
   onPanStart(event: MouseEvent){
-    this.panning = true;
-    this._panElement = event.target as HTMLElement;
-    this.closeOverlay.next();
+    // console.log(event);
+    // this.panning = true;
+    // this._panElement = event.target as HTMLElement;
+    // this.closeOverlay.next();
 
-    event.stopPropagation();
+    // event.stopPropagation();
 
-    this._initialPosition = {
-      x: event.pageX - this.zoomAndPanMatrix[4],
-      y: event.pageY - this.zoomAndPanMatrix[5],
-    };
+    // this._initialPosition = {
+    //   x: event.pageX - this.zoomAndPanMatrix[4],
+    //   y: event.pageY - this.zoomAndPanMatrix[5],
+    // };
   }
 
-  onPan(event: MouseEvent){
-    if (this.panning) {
-      let dx = (event.pageX - this._initialPosition.x);
-      let dy = (event.pageY - this._initialPosition.y);
+  
+  onPanS(molecule:any){
+    console.log(molecule)
+   }
 
-      this.zoomAndPanMatrix[4] = dx;
-      this.zoomAndPanMatrix[5] = dy;
-    }
+  onPan(event: MouseEvent){
+    // if (this.panning) {
+    //   let dx = (event.pageX - this._initialPosition.x);
+    //   let dy = (event.pageY - this._initialPosition.y);
+      
+    //   this.zoomAndPanMatrix[4] = dx;
+    //   this.zoomAndPanMatrix[5] = dy;
+    // }
   }
 
   onPanStop(event: MouseEvent){
-    this.panning = false;
+    // this.panning = false;
   }
 
   onRemoveMolecule(moleculeId: number){
     this.hoveredMolecule = undefined;
     this.moleculeList.splice(moleculeId, 1);
   }
+
+  onMoveStart(event: MouseEvent, moleculeIndex: number) {
+    this.isDragging = true;
+    this.draggedMoleculeIndex = moleculeIndex;
+    this.startingMousePosition = this.getMousePosition(event);
+  }
+  
+  onMove(event: MouseEvent) {
+    if (this.isDragging && typeof this.draggedMoleculeIndex !== 'undefined') {
+      const mousePosition = this.getMousePosition(event);
+      const dx = mousePosition.x - this.startingMousePosition.x;
+      const dy = mousePosition.y - this.startingMousePosition.y;
+  
+      this.moleculeList[this.draggedMoleculeIndex].position.x += dx / this.zoomAndPanMatrix[0];
+      this.moleculeList[this.draggedMoleculeIndex].position.y += dy / this.zoomAndPanMatrix[3];
+  
+      this.startingMousePosition = mousePosition;
+    }
+  }
+  
+  onMoveStop(event: MouseEvent) {
+    console.log('Move stop');
+    this.isDragging = false;
+    this.draggedMoleculeIndex = undefined;
+  }
+  
+  
+  getMousePosition(event: MouseEvent) {
+    const CTM = this.svgWorkspace.getScreenCTM();
+    return {
+      x: (event.clientX - CTM.e) / CTM.a,
+      y: (event.clientY - CTM.f) / CTM.d,
+    };
+  }
+  
+  
+
 }
