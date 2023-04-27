@@ -1,6 +1,6 @@
 # Use official node image as the base image
 # Node 14 is the most recent version compatible with Angular 12
-FROM node:16 as build
+FROM --platform=$BUILDPLATFORM node:16 as build
 
 # Set the working directory
 WORKDIR /usr/local/app
