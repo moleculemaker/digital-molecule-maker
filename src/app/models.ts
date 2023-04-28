@@ -34,10 +34,12 @@ export class Coordinates {
 
 export class Molecule {
   position: Coordinates;
+  label: string;
   blockList: Block[];
   constructor(position: Coordinates, blockList: Block[]) {
     this.position = position;
     this.blockList = blockList;
+    this.label = "NewMolecule"
   }
 }
 

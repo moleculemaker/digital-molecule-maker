@@ -32,8 +32,14 @@ export class OverlayComponent implements OnInit {
   @Input()
   isExpanded = false;
 
+  @Input()
+  enableAddToCart = false;
+
   @Output()
   close = new EventEmitter<void>();
+
+  @Output()
+  addToCart = new EventEmitter<void>();
 
   @ContentChild('templateAdditionalProperties') templateAdditionalProperties:TemplateRef<HTMLElement>|null = null;
   @ContentChild('templateFooter') templateFooter:TemplateRef<HTMLElement>|null = null;
@@ -43,9 +49,14 @@ export class OverlayComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
   onClose():void {
     this.close.emit();
+  }
+
+  onAddToCart(){
+    this.addToCart.emit();
   }
 }

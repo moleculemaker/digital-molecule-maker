@@ -8,7 +8,7 @@ import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class WorkspaceService {
+export class CartService {
 
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
 
@@ -58,6 +58,6 @@ export class WorkspaceService {
   }
 
   private getLocalStorageKey(user: User | null): string {
-    return 'WORKSPACE_' + user?.surveyCode;
+    return 'CART_' + user?.surveyCode;
   }
 }
