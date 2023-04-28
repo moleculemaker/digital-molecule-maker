@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -33,6 +33,7 @@ export class AppBuildComponent implements OnInit {
   cartMoleculeList: Molecule[] = [];
 
   hoveredMolecule?: number = undefined;
+  spacebarPressed = false;
 
   panning = false;
   isInfoPanelOpen = false;
@@ -172,26 +173,22 @@ export class AppBuildComponent implements OnInit {
   }
 
   onPanStart(event: MouseEvent){
-    // console.log(event);
-    // this.panning = true;
-    // this._panElement = event.target as HTMLElement;
-    // this.closeOverlay.next();
+    this.panning = true;
+    this._panElement = event.target as HTMLElement;
+    this.closeOverlay.next();
 
-    // event.stopPropagation();
+    event.stopPropagation();
 
-    // this._initialPosition = {
-    //   x: event.pageX - this.zoomAndPanMatrix[4],
-    //   y: event.pageY - this.zoomAndPanMatrix[5],
-    // };
+    this._initialPosition = {
+      x: event.pageX - this.zoomAndPanMatrix[4],
+      y: event.pageY - this.zoomAndPanMatrix[5],
+    };
   }
 
-
-  onPanS(molecule:any){
-    console.log(molecule)
-   }
-
   onPan(event: MouseEvent){
-    // if (this.panning) {
+    // if (this.panning && this.spacebarPressed) {
+    //   console.log(this.spacebarPressed);
+
     //   let dx = (event.pageX - this._initialPosition.x);
     //   let dy = (event.pageY - this._initialPosition.y);
 
@@ -201,7 +198,7 @@ export class AppBuildComponent implements OnInit {
   }
 
   onPanStop(event: MouseEvent){
-    // this.panning = false;
+    this.panning = false;
   }
 
   onRemoveMolecule(moleculeId: number){
@@ -213,16 +210,18 @@ export class AppBuildComponent implements OnInit {
     this.isDragging = true;
     this.draggedMoleculeIndex = moleculeIndex;
     this.startingMousePosition = this.getMousePosition(event);
+    this.closeOverlay.next();
   }
 
   onMove(event: MouseEvent) {
-    if (this.isDragging && typeof this.draggedMoleculeIndex !== 'undefined') {
+    if (this.isDragging && typeof this.draggedMoleculeIndex !== 'undefined' && !this.spacebarPressed) {
+      console.log(this.spacebarPressed);
       const mousePosition = this.getMousePosition(event);
       const dx = mousePosition.x - this.startingMousePosition.x;
       const dy = mousePosition.y - this.startingMousePosition.y;
 
-      this.moleculeList[this.draggedMoleculeIndex].position.x += dx / this.zoomAndPanMatrix[0];
-      this.moleculeList[this.draggedMoleculeIndex].position.y += dy / this.zoomAndPanMatrix[3];
+      this.moleculeList[this.draggedMoleculeIndex].position.x += dx;
+      this.moleculeList[this.draggedMoleculeIndex].position.y += dy;
 
       this.startingMousePosition = mousePosition;
     }
