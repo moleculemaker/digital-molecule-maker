@@ -46,10 +46,6 @@ export class AppBuildComponent implements OnInit {
   svgWorkspace: any;
   startingMousePosition: { x: number; y: number; } = { x: 0, y: 0 };
   draggedMoleculeIndex: number | undefined;
-
-
-
-
   constructor(
     private rigService: RigService,
     private workspaceService: WorkspaceService,
@@ -85,6 +81,20 @@ export class AppBuildComponent implements OnInit {
       this.cartMoleculeList = moleculeList;
       this.changeDetector.detectChanges();
     })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'Space') {
+        this.spacebarPressed = true;
+        event.preventDefault();
+      }
+    });
+
+    document.addEventListener('keyup', (event) => {
+      if (event.code === 'Space') {
+        this.spacebarPressed = false;
+        event.preventDefault();
+      }
+    });
   }
 
   //********************************************
@@ -153,6 +163,7 @@ export class AppBuildComponent implements OnInit {
         const positionCoordinates = new Coordinates(relX, relY);
         const newMolecule = new Molecule(positionCoordinates, newBlockList);
         this.moleculeList.push(newMolecule);
+      
       }
 
     }
@@ -172,30 +183,69 @@ export class AppBuildComponent implements OnInit {
     this.hoveredMolecule = undefined;
   }
 
+  // onPanStart(event: MouseEvent){
+  //   this.panning = true;
+  //   this._panElement = event.target as HTMLElement;
+  //   this.closeOverlay.next();
+
+  //   event.stopPropagation();
+
+  //   this._initialPosition = {
+  //     x: event.pageX - this.zoomAndPanMatrix[4],
+  //     y: event.pageY - this.zoomAndPanMatrix[5],
+  //   };
+  // }
+
+  // onPan(event: MouseEvent){
+  //   // if (this.panning && this.spacebarPressed) {
+  //   //   console.log(this.spacebarPressed);
+
+  //   //   let dx = (event.pageX - this._initialPosition.x);
+  //   //   let dy = (event.pageY - this._initialPosition.y);
+
+  //   //   this.zoomAndPanMatrix[4] = dx;
+  //   //   this.zoomAndPanMatrix[5] = dy;
+  //   // }
+  // }
+
   onPanStart(event: MouseEvent){
-    this.panning = true;
-    this._panElement = event.target as HTMLElement;
-    this.closeOverlay.next();
+    if (this.spacebarPressed) {
+      this.panning = true;
+      this._panElement = event.target as HTMLElement;
+      this.closeOverlay.next();
 
-    event.stopPropagation();
+      event.stopPropagation();
 
-    this._initialPosition = {
-      x: event.pageX - this.zoomAndPanMatrix[4],
-      y: event.pageY - this.zoomAndPanMatrix[5],
-    };
+      this._initialPosition = {
+        x: event.pageX - this.zoomAndPanMatrix[4],
+        y: event.pageY - this.zoomAndPanMatrix[5],
+      };
+    }
   }
-
+  
   onPan(event: MouseEvent){
-    // if (this.panning && this.spacebarPressed) {
-    //   console.log(this.spacebarPressed);
+    if (this.panning && this.spacebarPressed) {
+      let dx = (event.pageX - this._initialPosition.x);
+      let dy = (event.pageY - this._initialPosition.y);
 
-    //   let dx = (event.pageX - this._initialPosition.x);
-    //   let dy = (event.pageY - this._initialPosition.y);
+      this.zoomAndPanMatrix[4] = dx;
+      this.zoomAndPanMatrix[5] = dy;
+    } else {
+      // Original code for single molecule movement
+      const moleculeIndex = this.hoveredMolecule;
+      if (this.isDragging && typeof moleculeIndex !== 'undefined' && !this.spacebarPressed) {
+        const mousePosition = this.getMousePosition(event);
+        const dx = mousePosition.x - this.startingMousePosition.x;
+        const dy = mousePosition.y - this.startingMousePosition.y;
 
-    //   this.zoomAndPanMatrix[4] = dx;
-    //   this.zoomAndPanMatrix[5] = dy;
-    // }
+        this.moleculeList[moleculeIndex].position.x += dx;
+        this.moleculeList[moleculeIndex].position.y += dy;
+
+        this.startingMousePosition = mousePosition;
+      }
+    }
   }
+  
 
   onPanStop(event: MouseEvent){
     this.panning = false;
@@ -213,9 +263,9 @@ export class AppBuildComponent implements OnInit {
     this.closeOverlay.next();
   }
 
+
   onMove(event: MouseEvent) {
     if (this.isDragging && typeof this.draggedMoleculeIndex !== 'undefined' && !this.spacebarPressed) {
-      console.log(this.spacebarPressed);
       const mousePosition = this.getMousePosition(event);
       const dx = mousePosition.x - this.startingMousePosition.x;
       const dy = mousePosition.y - this.startingMousePosition.y;
