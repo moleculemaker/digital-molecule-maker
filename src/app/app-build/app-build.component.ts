@@ -42,7 +42,6 @@ export class AppBuildComponent implements OnInit {
   closeOverlay: Subject<void> = new Subject<void>();
   isDragging: boolean | undefined;
   draggedMolecule: any;
-  //startingMousePosition?: { x: number; y: number; } = undefined;
   svgWorkspace: any;
   startingMousePosition: { x: number; y: number; } = { x: 0, y: 0 };
   draggedMoleculeIndex: number | undefined;
@@ -182,31 +181,6 @@ export class AppBuildComponent implements OnInit {
   onMouseLeave(){
     this.hoveredMolecule = undefined;
   }
-
-  // onPanStart(event: MouseEvent){
-  //   this.panning = true;
-  //   this._panElement = event.target as HTMLElement;
-  //   this.closeOverlay.next();
-
-  //   event.stopPropagation();
-
-  //   this._initialPosition = {
-  //     x: event.pageX - this.zoomAndPanMatrix[4],
-  //     y: event.pageY - this.zoomAndPanMatrix[5],
-  //   };
-  // }
-
-  // onPan(event: MouseEvent){
-  //   // if (this.panning && this.spacebarPressed) {
-  //   //   console.log(this.spacebarPressed);
-
-  //   //   let dx = (event.pageX - this._initialPosition.x);
-  //   //   let dy = (event.pageY - this._initialPosition.y);
-
-  //   //   this.zoomAndPanMatrix[4] = dx;
-  //   //   this.zoomAndPanMatrix[5] = dy;
-  //   // }
-  // }
 
   onPanStart(event: MouseEvent){
     if (this.spacebarPressed) {
