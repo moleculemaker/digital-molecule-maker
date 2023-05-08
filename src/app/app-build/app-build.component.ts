@@ -183,7 +183,11 @@ export class AppBuildComponent implements OnInit {
   }
 
   onPanStart(event: MouseEvent){
+    this.closeOverlay.next();
+
+      event.stopPropagation();
     if (this.spacebarPressed) {
+      
       this.panning = true;
       this._panElement = event.target as HTMLElement;
       this.closeOverlay.next();
@@ -230,13 +234,25 @@ export class AppBuildComponent implements OnInit {
     this.moleculeList.splice(moleculeId, 1);
   }
 
+  // onMoveStart(event: MouseEvent, moleculeIndex: number) {
+  //   this.isDragging = true;
+  //   this.draggedMoleculeIndex = moleculeIndex;
+  //   this.startingMousePosition = this.getMousePosition(event);
+  //   this.closeOverlay.next();
+    
+  // }
+
+  closeMoleculePopup() {
+    this.closeOverlay.next();
+  }
+
   onMoveStart(event: MouseEvent, moleculeIndex: number) {
     this.isDragging = true;
     this.draggedMoleculeIndex = moleculeIndex;
     this.startingMousePosition = this.getMousePosition(event);
-    this.closeOverlay.next();
+    this.closeMoleculePopup(); 
   }
-
+  
 
   onMove(event: MouseEvent) {
     if (this.isDragging && typeof this.draggedMoleculeIndex !== 'undefined' && !this.spacebarPressed) {
@@ -250,7 +266,7 @@ export class AppBuildComponent implements OnInit {
       this.startingMousePosition = mousePosition;
     }
   }
-
+  
   onMoveStop(event: MouseEvent) {
     console.log('Move stop');
     this.isDragging = false;
