@@ -84,16 +84,16 @@ export class AppBuildComponent implements OnInit {
     document.addEventListener('keydown', (event) => {
       if (event.code === 'Space') {
         this.spacebarPressed = true;
-        event.preventDefault();
       }
     });
 
     document.addEventListener('keyup', (event) => {
       if (event.code === 'Space') {
         this.spacebarPressed = false;
-        event.preventDefault();
       }
     });
+
+    document.addEventListener('mouseup', (event) => this.onMoveStop(event));
   }
 
   //********************************************
@@ -162,7 +162,7 @@ export class AppBuildComponent implements OnInit {
         const positionCoordinates = new Coordinates(relX, relY);
         const newMolecule = new Molecule(positionCoordinates, newBlockList);
         this.moleculeList.push(newMolecule);
-      
+
       }
 
     }
@@ -185,14 +185,12 @@ export class AppBuildComponent implements OnInit {
   onPanStart(event: MouseEvent){
     this.closeOverlay.next();
 
-      event.stopPropagation();
     if (this.spacebarPressed) {
-      
+
       this.panning = true;
       this._panElement = event.target as HTMLElement;
       this.closeOverlay.next();
 
-      event.stopPropagation();
 
       this._initialPosition = {
         x: event.pageX - this.zoomAndPanMatrix[4],
@@ -200,7 +198,7 @@ export class AppBuildComponent implements OnInit {
       };
     }
   }
-  
+
   onPan(event: MouseEvent){
     if (this.panning && this.spacebarPressed) {
       let dx = (event.pageX - this._initialPosition.x);
@@ -223,7 +221,7 @@ export class AppBuildComponent implements OnInit {
       }
     }
   }
-  
+
 
   onPanStop(event: MouseEvent){
     this.panning = false;
@@ -239,7 +237,7 @@ export class AppBuildComponent implements OnInit {
   //   this.draggedMoleculeIndex = moleculeIndex;
   //   this.startingMousePosition = this.getMousePosition(event);
   //   this.closeOverlay.next();
-    
+
   // }
 
   closeMoleculePopup() {
@@ -250,9 +248,9 @@ export class AppBuildComponent implements OnInit {
     this.isDragging = true;
     this.draggedMoleculeIndex = moleculeIndex;
     this.startingMousePosition = this.getMousePosition(event);
-    this.closeMoleculePopup(); 
+    this.closeMoleculePopup();
   }
-  
+
 
   onMove(event: MouseEvent) {
     if (this.isDragging && typeof this.draggedMoleculeIndex !== 'undefined' && !this.spacebarPressed) {
@@ -266,11 +264,16 @@ export class AppBuildComponent implements OnInit {
       this.startingMousePosition = mousePosition;
     }
   }
-  
+
   onMoveStop(event: MouseEvent) {
-    console.log('Move stop');
-    this.isDragging = false;
-    this.draggedMoleculeIndex = undefined;
+    if (this.isDragging) {
+      this.isDragging = false;
+      this.draggedMoleculeIndex = undefined;
+      // FIXME quick hack to close the overlay after the move interaction ends
+      // not attempting a better fix now because the overlay will soon be triggered from an info icon, which'll make
+      // it easier to distinguish between the move mouseup and the icon click
+      setTimeout(() => this.closeOverlay.next(), 0);
+    }
   }
 
 
