@@ -100,7 +100,10 @@ export class MoleculeSvgComponent implements OnInit {
 
   updateMoleculeLabel(newMoleculeName: string){
     this.isEditNamePanelOpen = false;
-    this.molecule!.label = newMoleculeName;
+    const trimmedName = newMoleculeName.trim();
+    if (trimmedName.length > 0) {
+      this.molecule!.label = newMoleculeName;
+    }
   }
 
   addMoleculeToCart(){
