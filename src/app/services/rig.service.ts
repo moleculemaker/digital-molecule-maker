@@ -4,8 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
 
-import { Block } from '../models';
-import { blockSetIds } from './block.service';
+import { Block, BlockSet } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +16,7 @@ export class RigService {
 
   constructor(private http: HttpClient) { }
 
-  submitReaction(blockSetId: blockSetIds, block1: Block, block2: Block, block3: Block, moleculeName: string): Observable<null> {
+  submitReaction(blockSet: BlockSet, block1: Block, block2: Block, block3: Block, moleculeName: string): Observable<null> {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -27,7 +26,7 @@ export class RigService {
     };
 
     const rigJob = {
-      blockSetId,
+      blockSetId: blockSet.id,
       blockIds: [
         block1.id,
         block2.id,

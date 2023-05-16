@@ -161,8 +161,8 @@ $block_icon_height: 36px;
         isolation: isolate;
 
         font: {
+          // TODO determine best way to handle font size (had been size: $font_size_min, but best size depends on svg dimensions; now setting directly in svgs)
           family: $font_family;
-          size: $font_size_min;
           weight: bold;
         }
       }

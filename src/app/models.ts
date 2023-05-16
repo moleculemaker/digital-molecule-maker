@@ -5,22 +5,25 @@ export enum BlockType {
 }
 
 export interface Block {
-    type: BlockType;
-    id: string;
-    label: string;
-    svgUrl: string;
-    width: number;
-    height: number;
-    chemicalFormula: string;
-    molecularWeight: number;
-    HBondDonors: number;
-    IUPACName: string;
+  type: BlockType;
+  id: string;
+  label: string;
+  svgUrl: string;
+  width: number;
+  height: number;
+  chemicalFormula: string;
+  molecularWeight: number;
+  smiles: string;
+  otherProperties: { label: string, value: any }[];
 }
 
 export interface BlockSet {
+  id: string;
+  blocks: {
     [BlockType.Start]: Block[];
     [BlockType.Middle]: Block[];
     [BlockType.End]: Block[];
+  }
 }
 
 export class Coordinates {
@@ -46,4 +49,16 @@ export class Molecule {
 export interface User {
   surveyCode: string;
   // later: token(s), etc.
+}
+
+export function getBlockSetScale(blockSet: BlockSet, target: number): number {
+  const maxHeightOrWidth = Math.max(
+    ...blockSet.blocks[BlockType.Start].map(block => block.height),
+    ...blockSet.blocks[BlockType.Middle].map(block => block.height),
+    ...blockSet.blocks[BlockType.End].map(block => block.height),
+    ...blockSet.blocks[BlockType.Start].map(block => block.width),
+    ...blockSet.blocks[BlockType.Middle].map(block => block.width),
+    ...blockSet.blocks[BlockType.End].map(block => block.width)
+  );
+  return target / maxHeightOrWidth;
 }

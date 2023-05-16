@@ -20,6 +20,9 @@ export class BlockSvgComponent implements OnInit {
   @Input()
   closeOverlayObservable?: Observable<void>;
 
+  @Input()
+  scale = 1;
+
   @Output()
   deleteBlock = new EventEmitter<BlockType>();
 

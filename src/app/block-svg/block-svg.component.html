@@ -1,4 +1,4 @@
-<ng-template #childComponentTemplate (blur)="closeOverlay()">
+<ng-template #childComponentTemplate>
   <svg width="100%" height="100%" y="11" class="block_container"
     [class]="[
       'block_' + block.type
@@ -20,7 +20,7 @@
 
     <g [attr.transform]="'matrix(' + imageZoomAndPanMatrix.join(' ') + ')'" class="image">
       <g #svgImage *ngIf="block.svgUrl"
-        [attr.data-src]="block.svgUrl"
+        [attr.data-src]="block.svgUrl" [attr.transform]="'scale(' + scale + ')'"
         data-cache="disabled"
       />
     </g>
@@ -42,16 +42,13 @@
   >
     <dmm-overlay
       [label]='"block"'
-      [tags]='["High Luminance", "Medical"]'
+      [tags]='[]'
       [properties]='[
-        {label: "ID", value: block.id, hasCheckMark: true},
-        {label: "Chemical Formula", value: block.chemicalFormula},
+        {label: "ID", value: block.id, hasCheckMark: false},
+        {label: "Chemical Formula", value: block.chemicalFormula | chemicalFormula},
         {label: "Molecular Weight", value: block.molecularWeight}
       ]'
-      [additionalProperties]='[
-        {label: "# of H-Bond Donors", value: block.HBondDonors},
-        {label: "IUPAC Name", value: block.IUPACName}
-      ]'
+      [additionalProperties]='block.otherProperties'
 
       (close)="isInfoPanelOpen = !isInfoPanelOpen"
     >

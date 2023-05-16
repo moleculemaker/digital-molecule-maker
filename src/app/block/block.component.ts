@@ -30,6 +30,9 @@ export class BlockComponent implements OnInit {
   @Input()
   imageHeight = 80;
 
+  @Input()
+  blockLevelScale = 1;
+
   @ViewChild('svgImage') svg: ElementRef|null = null;
 
   padding = {
@@ -99,13 +102,17 @@ export class BlockComponent implements OnInit {
       this.tabRadius = 2 * scale;
       this.tabWidth = 20 * scale;
 
+      /* TODO reconsider scaling of images and blocks
       this.imageHeight = this.imageHeight * scale;
       this.imageWidth = this.imageWidth * scale;
+       */
     }
+    /* TODO reconsider scaling of images and blocks
     //set block dimensions
     //track this separately than image dimensions so we can make sure the min size of block is valid
     this.blockWidth = this.imageWidth + this.padding.x;
     this.blockHeight = this.imageHeight + this.padding.y;
+     */
 
     //min width and height
     if (!this.isIcon()) {
@@ -135,7 +142,10 @@ export class BlockComponent implements OnInit {
   //********************************************
   buildImageViewbox() {
     //will make the viewbox dimensions larger in turn shrinking the image
+    /* TODO reconsider scaling of images and blocks
     const scale = this.scales[this.size];
+     */
+    const scale = this.blockLevelScale;
     let width = this.imageWidth / scale;
     let height = this.imageHeight / scale;
 

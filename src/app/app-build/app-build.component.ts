@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { BlockSize } from '../block/block.component';
-import { Block, BlockType, Molecule, Coordinates } from '../models';
+import { Block, BlockSet, BlockType, Coordinates, getBlockSetScale, Molecule } from '../models';
 
-import { blockSetIds } from '../services/block.service';
+import { BlockService, BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
@@ -24,8 +24,9 @@ export class AppBuildComponent implements OnInit {
 
   currentTab = BlockType.Start;
   BlockSize = BlockSize; // for template
+  svgScale = 1;
 
-  blockSetId: blockSetIds = 'chem237-spring22';
+  blockSet: BlockSet|null = null;
 
   zoomAndPanMatrix = [1, 0, 0, 1, 0, 0];
 
@@ -46,6 +47,7 @@ export class AppBuildComponent implements OnInit {
   startingMousePosition: { x: number; y: number; } = { x: 0, y: 0 };
   draggedMoleculeIndex: number | undefined;
   constructor(
+    private blockService: BlockService,
     private rigService: RigService,
     private workspaceService: WorkspaceService,
     private cartService: CartService,
@@ -64,6 +66,7 @@ export class AppBuildComponent implements OnInit {
     // moleculeList in the current session (which becomes a more interesting case
     // once sessions are persisted on the backend instead of in localStorage)
 
+    this.setBlockSet(BlockSetId.ColorWheel);
     this.svgWorkspace = document.querySelector('.svg_workspace');
     this.workspaceService.getMoleculeList().pipe(
       untilDestroyed(this),
@@ -96,6 +99,13 @@ export class AppBuildComponent implements OnInit {
     document.addEventListener('mouseup', (event) => this.onMoveStop(event));
   }
 
+  setBlockSet(blockSetId: BlockSetId): void {
+    this.blockService.getBlockSet(blockSetId).subscribe(blockSet => {
+      this.blockSet = blockSet;
+      this.svgScale = getBlockSetScale(blockSet, 70);
+    });
+  }
+
   //********************************************
   toggleCartPanel(): void {
     this.isShowingCart = !this.isShowingCart;
@@ -118,7 +128,7 @@ export class AppBuildComponent implements OnInit {
     // should use a molecule instead of this.blockList[i]
     /*
     this.rigService.submitReaction(
-      this.blockSetId,
+      this.blockSet,
       this.blockList[0],
       this.blockList[1],
       this.blockList[2],
@@ -232,14 +242,6 @@ export class AppBuildComponent implements OnInit {
     this.moleculeList.splice(moleculeId, 1);
   }
 
-  // onMoveStart(event: MouseEvent, moleculeIndex: number) {
-  //   this.isDragging = true;
-  //   this.draggedMoleculeIndex = moleculeIndex;
-  //   this.startingMousePosition = this.getMousePosition(event);
-  //   this.closeOverlay.next();
-
-  // }
-
   closeMoleculePopup() {
     this.closeOverlay.next();
   }
@@ -269,10 +271,6 @@ export class AppBuildComponent implements OnInit {
     if (this.isDragging) {
       this.isDragging = false;
       this.draggedMoleculeIndex = undefined;
-      // FIXME quick hack to close the overlay after the move interaction ends
-      // not attempting a better fix now because the overlay will soon be triggered from an info icon, which'll make
-      // it easier to distinguish between the move mouseup and the icon click
-      setTimeout(() => this.closeOverlay.next(), 0);
     }
   }
 
