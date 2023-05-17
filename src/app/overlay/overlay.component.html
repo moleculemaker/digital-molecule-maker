@@ -9,7 +9,16 @@
   <div class="overlay_container">
 <!-- todo: confirm that we are actually showing this in this version. if not, hide this code -->
     <div class="overlay_preview">
-      <div class="overlay_image">[{{label}} svg]</div>
+      <div  class="overlay_image">
+        <svg *ngIf="getMode() === 'block'" viewBox="0 0 300 300">
+          <dmm-block-svg #wrapper [scale]="0.4" [block]="$any(blockOrMolecule)"></dmm-block-svg>
+          <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
+        </svg>
+        <svg *ngIf="getMode() === 'molecule'" viewBox="0 0 600 200">
+          <dmm-molecule-svg #wrapper [scale]="0.4" [molecule]="$any(blockOrMolecule)"></dmm-molecule-svg>
+          <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
+        </svg>
+      </div>
     </div>
 
     <div class="overlay_content">
@@ -65,7 +74,7 @@
           </svg>
 
           <ng-container *ngIf="isOverlayPropExpanded">Show less</ng-container>
-          <ng-container *ngIf="!isOverlayPropExpanded">More {{label}} properties</ng-container>
+          <ng-container *ngIf="!isOverlayPropExpanded">More {{getMode()}} properties</ng-container>
         </div>
       </div>
     </div>
@@ -134,6 +143,6 @@
         Cited by <span class="emphasis">15</span>
       </button> -->
 
-      <button *ngIf="label=='molecule'" [disabled]="!enableAddToCart" class="button button_add_to_cart" (click) = "onAddToCart()" >Add to cart</button>
+      <button *ngIf="getMode() === 'molecule'" [disabled]="!enableAddToCart" class="button button_add_to_cart" (click) = "onAddToCart()" >Add to cart</button>
   </div>
 </div>

@@ -38,17 +38,22 @@
 
         <div class="molecule_content">
           <!-- todo: add molecule preview here -->
-          <div class="preview">[molecule svg]</div>
+          <div class="preview">
+            <svg viewBox="0 0 600 200">
+              <dmm-molecule-svg #wrapper [scale]="0.4" [molecule]="molecule"></dmm-molecule-svg>
+              <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
+            </svg>
+          </div>
 
           <div class="info">
             <div class="chemical_formula">
               <div class="label">Chemical Formula</div>
-              <div class="value" [innerHtml]="'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S'"></div>
+              <div class="value" [innerHtml]="getFormula(molecule) | chemicalFormula"></div>
             </div>
 
             <div class="weight">
               <div class="label">Molecular Weight</div>
-              <div class="value" [innerHtml]="'283.3 g/mol'"></div>
+              <div class="value" [innerHtml]="getWeight(molecule) + ' g/mol'"></div>
             </div>
 
 <!-- todo: add remove from cart functionality -->

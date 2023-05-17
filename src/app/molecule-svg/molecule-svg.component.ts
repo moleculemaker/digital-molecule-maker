@@ -1,7 +1,7 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, ChangeDetectorRef, Output, EventEmitter} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Block, BlockType, Molecule, Coordinates } from '../models';
+import { Block, BlockType, Molecule, Coordinates, getMoleculeFormula, getMoleculeWeight } from '../models';
 
 @Component({
   selector: 'dmm-molecule-svg',
@@ -111,6 +111,13 @@ export class MoleculeSvgComponent implements OnInit {
 
   addMoleculeToCart(){
     this.addToCart.emit();
+  }
+
+  getFormula(): string {
+    return this.molecule ? getMoleculeFormula(this.molecule) : '';
+  }
+  getWeight(): number {
+    return this.molecule ? getMoleculeWeight(this.molecule) : 0;
   }
 }
 

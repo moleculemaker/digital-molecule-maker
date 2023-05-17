@@ -62,3 +62,11 @@ export function getBlockSetScale(blockSet: BlockSet, target: number): number {
   );
   return target / maxHeightOrWidth;
 }
+
+export function getMoleculeFormula(molecule: Molecule): string {
+  return molecule.blockList.map(block => block.chemicalFormula).join('');
+}
+
+export function getMoleculeWeight(molecule: Molecule): number {
+  return molecule.blockList.map(block => block.molecularWeight).reduce((acc, cur) => acc + cur, 0);
+}

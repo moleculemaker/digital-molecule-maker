@@ -34,9 +34,11 @@
     [cdkConnectedOverlayPositions]="positionPairs"
   >
     <dmm-overlay
-      [label] = '"molecule"'
+      [blockOrMolecule]="molecule || null"
       [tags]='[]'
       [properties]='[
+        {label: "Chemical Formula", value: getFormula() | chemicalFormula},
+        {label: "Molecular Weight", value: getWeight() }
       ]'
       [additionalProperties]='[
       ]'
@@ -45,9 +47,10 @@
       (close)="isInfoPanelOpen = !isInfoPanelOpen"
       (addToCart)="addMoleculeToCart()"
     >
+      <!--
       <ng-template let-overlay #templateAdditionalProperties>
-        <!-- <p>testing that this will show up</p> -->
       </ng-template>
+      -->
 
       <ng-template let-overlay #templateFooter>
 

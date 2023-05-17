@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { state, trigger, transition, style, animate, AnimationEvent, useAnimation } from "@angular/animations";
 
 import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse, slideOutReverse } from './panel.animations';
-import { Molecule } from '../models';
+import { getMoleculeFormula, getMoleculeWeight, Molecule } from '../models';
 
 @Component({
   selector: 'panel',
@@ -135,5 +135,12 @@ return true;
 
   sendBackToWorkspace(moleculeId: number){
     this.onSendBackToWorkspace.emit(moleculeId.toString());
+  }
+
+  getFormula(molecule: Molecule): string {
+    return getMoleculeFormula(molecule);
+  }
+  getWeight(molecule: Molecule): number {
+    return getMoleculeWeight(molecule);
   }
 }

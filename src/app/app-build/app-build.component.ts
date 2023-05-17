@@ -125,7 +125,6 @@ export class AppBuildComponent implements OnInit {
 
   sendToLab(moleculeList: Molecule[]): void {
     // disabled for now
-    // should use a molecule instead of this.blockList[i]
     /*
     this.moleculeList.forEach(molecule => {
       this.rigService.submitReaction(
