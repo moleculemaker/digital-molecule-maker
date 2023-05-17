@@ -46,7 +46,7 @@ export class PanelComponent implements OnInit {
   onClose = new EventEmitter();
 
   @Output()
-  onSubmit = new EventEmitter<string>();
+  onSubmit = new EventEmitter<Molecule[]>();
 
   @Output()
   onSendBackToWorkspace = new EventEmitter<string>();
@@ -127,8 +127,8 @@ return true;
     // return workingName.length > 0;
   }
 
-  submitMolecule(): void {
-    // this.onSubmit.emit(this.moleculeName);
+  submitMolecules(): void {
+    this.onSubmit.emit(this.cartMoleculeList);
     // for now, use the second panel as the success message
     this.nextStep();
   }

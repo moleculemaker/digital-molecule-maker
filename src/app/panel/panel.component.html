@@ -63,7 +63,7 @@
       <div *ngIf="cartMoleculeList.length > 0" class="panel_label">Does everything <span class="nowrap">look good?</span></div>
       <div *ngIf="cartMoleculeList.length === 0" class="panel_label">There are no molecules in your cart. Add a molecule by connecting a start, middle, and end block, clicking on the molecule, and then pressing the "Add to Cart" button.</div>
 
-      <div class="button" [class.disable_submit]="cartMoleculeList.length === 0"  (click)="submitMolecule()">
+      <div class="button" [class.disable_submit]="cartMoleculeList.length === 0"  (click)="submitMolecules()">
         <div class="label">Let's make <span class="nowrap">this thing!</span></div>
         <div class="icon">
           <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

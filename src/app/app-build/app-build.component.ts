@@ -123,20 +123,22 @@ export class AppBuildComponent implements OnInit {
 
   //********************************************
 
-  sendToLab(moleculeName: string): void {
+  sendToLab(moleculeList: Molecule[]): void {
     // disabled for now
     // should use a molecule instead of this.blockList[i]
     /*
-    this.rigService.submitReaction(
-      this.blockSet,
-      this.blockList[0],
-      this.blockList[1],
-      this.blockList[2],
-      moleculeName
-    ).subscribe(nullVal => {
-      console.log("submitted");
+    this.moleculeList.forEach(molecule => {
+      this.rigService.submitReaction(
+        this.blockSet!,
+        molecule.blockList[0],
+        molecule.blockList[1],
+        molecule.blockList[2],
+        molecule.label
+      ).subscribe(nullVal => {
+        console.log("submitted", molecule);
+      });
     });
-    */
+     */
   }
 
   onZoomIn(): void {
