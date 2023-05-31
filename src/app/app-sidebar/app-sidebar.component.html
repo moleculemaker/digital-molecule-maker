@@ -157,16 +157,16 @@
           </div>
         </div>
 
-        <div class="info">
+        <div *ngIf="blockSet" class="info">
           <div class="formula">
-            <div *ngIf="blockSet" class="formula_label" [innerHTML]="block.properties[blockSet.labelProperty.key] | chemicalProperty:blockSet.labelProperty.displayStrategy"></div>
+            <div *ngIf="block.properties[blockSet.labelProperty.key] | chemicalProperty:blockSet.labelProperty.displayStrategy; let label" class="formula_label" [title]="label" [innerHTML]="label.length > 20 ? label.substring(0, 20) + '…' : label"></div>
 
   <!-- todo: test to see if checkmark should be shown -->
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="false">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M4.2671 1.45486C4.91036 1.4035 5.52102 1.15049 6.0121 0.73186C6.56677 0.259451 7.27153 0 8.0001 0C8.72868 0 9.43344 0.259451 9.9881 0.73186C10.4792 1.15049 11.0898 1.4035 11.7331 1.45486C12.4595 1.51292 13.1415 1.82782 13.6568 2.34313C14.1721 2.85843 14.487 3.54043 14.5451 4.26686C14.5961 4.90986 14.8491 5.52086 15.2681 6.01186C15.7405 6.56652 16 7.27129 16 7.99986C16 8.72843 15.7405 9.4332 15.2681 9.98786C14.8495 10.4789 14.5965 11.0896 14.5451 11.7329C14.487 12.4593 14.1721 13.1413 13.6568 13.6566C13.1415 14.1719 12.4595 14.4868 11.7331 14.5449C11.0898 14.5962 10.4792 14.8492 9.9881 15.2679C9.43344 15.7403 8.72868 15.9997 8.0001 15.9997C7.27153 15.9997 6.56677 15.7403 6.0121 15.2679C5.52102 14.8492 4.91036 14.5962 4.2671 14.5449C3.54067 14.4868 2.85867 14.1719 2.34337 13.6566C1.82807 13.1413 1.51316 12.4593 1.4551 11.7329C1.40375 11.0896 1.15073 10.4789 0.732104 9.98786C0.259695 9.4332 0.000244141 8.72843 0.000244141 7.99986C0.000244141 7.27129 0.259695 6.56652 0.732104 6.01186C1.15073 5.52077 1.40375 4.91012 1.4551 4.26686C1.51316 3.54043 1.82807 2.85843 2.34337 2.34313C2.85867 1.82782 3.54067 1.51292 4.2671 1.45486ZM11.7071 6.70686C11.8893 6.51826 11.9901 6.26566 11.9878 6.00346C11.9855 5.74126 11.8803 5.49045 11.6949 5.30504C11.5095 5.11963 11.2587 5.01446 10.9965 5.01219C10.7343 5.00991 10.4817 5.1107 10.2931 5.29286L7.0001 8.58586L5.7071 7.29286C5.5185 7.1107 5.2659 7.00991 5.0037 7.01219C4.74151 7.01446 4.49069 7.11963 4.30529 7.30504C4.11988 7.49045 4.01471 7.74126 4.01243 8.00346C4.01015 8.26566 4.11095 8.51826 4.2931 8.70686L6.2931 10.7069C6.48063 10.8943 6.73494 10.9996 7.0001 10.9996C7.26527 10.9996 7.51958 10.8943 7.7071 10.7069L11.7071 6.70686Z" fill="#31509E"/>
             </svg>
           </div>
-          <div *ngIf="blockSet" class="weight">{{blockSet.primaryProperty.label}}: {{block.properties[blockSet.primaryProperty.key]}}</div>
+          <div class="weight">{{blockSet.primaryProperty.label}}: {{block.properties[blockSet.primaryProperty.key]}}</div>
         </div>
 
         <div *dfDraggableHelper class="dragging_helper">
