@@ -159,7 +159,7 @@
 
         <div *ngIf="blockSet" class="info">
           <div class="formula">
-            <div *ngIf="block.properties[blockSet.labelProperty.key] | chemicalProperty:blockSet.labelProperty.displayStrategy; let label" class="formula_label" [title]="label" [innerHTML]="label.length > 20 ? label.substring(0, 20) + '…' : label"></div>
+            <div *ngIf="block.properties[blockSet.labelProperty.key] | chemicalProperty:blockSet.labelProperty.displayStrategy; let label" class="formula_label" [title]="label" [innerHTML]="label.length > 16 ? label.substring(0, 16) + '…' : label"></div>
 
   <!-- todo: test to see if checkmark should be shown -->
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="false">
