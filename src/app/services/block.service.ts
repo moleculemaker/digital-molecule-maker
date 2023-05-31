@@ -16,7 +16,8 @@ export enum BlockSetId {
 export class BlockService {
 
   urls = new Map<BlockSetId, string>([
-    [BlockSetId.ColorWheel, 'assets/blocks/10x10x10palette/blocks.json']
+    [BlockSetId.ColorWheel, 'assets/blocks/10x10x10palette/blocks.json'],
+    [BlockSetId.OPV, 'assets/blocks/opv/blocks.json']
   ]);
 
   constructor(private http: HttpClient) {

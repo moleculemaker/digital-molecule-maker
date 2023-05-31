@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <panel *ngIf="isShowingCart" [cartMoleculeList]="cartMoleculeList" (onClose)="onPanelClose()" (onSubmit)="sendToLab($event)" (onSendBackToWorkspace)="addToWorkSpace($event)"></panel>
+  <panel *ngIf="isShowingCart && blockSet" [cartMoleculeList]="cartMoleculeList" [blockSet]="blockSet" (onClose)="onPanelClose()" (onSubmit)="sendToLab($event)" (onSendBackToWorkspace)="addToWorkSpace($event)"></panel>
 
   <div class="canvas_send_to_lab"
     [class.active]="isShowingSendToLab"
@@ -39,9 +39,9 @@
 
   <svg class="svg_workspace" (mousedown)="onPanStart($event)" (mousemove)="onPan($event); onMove($event)" (mouseup)="onPanStop($event)">
     <!-- this outer-level group applies the zoom and pan -->
-    <g [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'">
+    <g *ngIf="blockSet" [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'">
       <g (mouseenter)="onMouseEnter(moleculeId)" (mousedown)="onMoveStart($event, moleculeId)" (mouseleave)="onMouseLeave()" *ngFor="let molecule of moleculeList; let moleculeId = index" [attr.transform]="'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'">
-        <dmm-molecule-svg #wrapper [molecule]="molecule" [scale]="svgScale" (deleteMolecule)="onRemoveMolecule(moleculeId)" (addToCart)="addMoleculeToCart(moleculeId)" [closeOverlayObservable]="closeOverlay.asObservable()"></dmm-molecule-svg>
+        <dmm-molecule-svg #wrapper [molecule]="molecule" [blockSet]="blockSet" [scale]="svgScale" (deleteMolecule)="onRemoveMolecule(moleculeId)" (addToCart)="addMoleculeToCart(moleculeId)" [closeOverlayObservable]="closeOverlay.asObservable()"></dmm-molecule-svg>
         <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
       </g>
     </g>

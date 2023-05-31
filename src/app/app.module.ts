@@ -32,7 +32,7 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
 import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 import { TrackingService } from './services/tracking.service';
-import { ChemicalFormulaPipe } from './pipes/chemical-formula.pipe';
+import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 
 // placeholder implementation
 // change this as needed; nothing relies on the current behavior (but
@@ -53,7 +53,7 @@ function initializeAppFactory(): () => Observable<null> {
     DroppableDirective,
     DropZoneDirective,
 
-    ChemicalFormulaPipe,
+    ChemicalPropertyPipe,
 
     BlockComponent,
     InplaceComponent,

@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -51,7 +52,8 @@ export class AppBuildComponent implements OnInit {
     private rigService: RigService,
     private workspaceService: WorkspaceService,
     private cartService: CartService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private route: ActivatedRoute
   ) { }
 
 
@@ -66,7 +68,13 @@ export class AppBuildComponent implements OnInit {
     // moleculeList in the current session (which becomes a more interesting case
     // once sessions are persisted on the backend instead of in localStorage)
 
-    this.setBlockSet(BlockSetId.ColorWheel);
+    this.route.queryParamMap.subscribe(queryParamMap => {
+      let blockSet = BlockSetId.ColorWheel;
+      if (Object.values(BlockSetId).includes(queryParamMap.get('blockSet') as BlockSetId)) {
+        blockSet = queryParamMap.get('blockSet')! as BlockSetId;
+      }
+      this.setBlockSet(blockSet);
+    });
     this.svgWorkspace = document.querySelector('.svg_workspace');
     this.workspaceService.getMoleculeList().pipe(
       untilDestroyed(this),

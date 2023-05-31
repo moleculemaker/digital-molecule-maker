@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { state, trigger, transition, style, animate, AnimationEvent, useAnimation } from "@angular/animations";
 
 import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse, slideOutReverse } from './panel.animations';
-import { getMoleculeFormula, getMoleculeWeight, Molecule } from '../models';
+import { aggregateProperty, BlockPropertyDefinition, BlockSet, Molecule } from '../models';
 
 @Component({
   selector: 'panel',
@@ -41,6 +41,9 @@ export class PanelComponent implements OnInit {
 
   @Input()
   cartMoleculeList: Molecule[] = []
+
+  @Input()
+  blockSet?: BlockSet;
 
   @Output()
   onClose = new EventEmitter();
@@ -137,10 +140,7 @@ return true;
     this.onSendBackToWorkspace.emit(moleculeId.toString());
   }
 
-  getFormula(molecule: Molecule): string {
-    return getMoleculeFormula(molecule);
-  }
-  getWeight(molecule: Molecule): number {
-    return getMoleculeWeight(molecule);
+  getAggregateProperty(molecule: Molecule, property: BlockPropertyDefinition): any {
+    return aggregateProperty(molecule, property);
   }
 }

@@ -1,7 +1,7 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, Output, EventEmitter} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Block, BlockType } from '../models';
+import { Block, BlockSet, BlockType } from '../models';
 
 @Component({
   selector: 'dmm-block-svg',
@@ -16,6 +16,9 @@ export class BlockSvgComponent implements OnInit {
 
   @Input()
   block! : Block;
+
+  @Input()
+  blockSet? : BlockSet;
 
   @Input()
   closeOverlayObservable?: Observable<void>;

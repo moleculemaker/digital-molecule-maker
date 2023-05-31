@@ -13,7 +13,7 @@
       </g>
 
       <g class="blocks" *ngFor="let block of molecule?.blockList">
-        <dmm-block-svg #wrapper [block]="block" [scale]="scale" (deleteBlock)="onRemoveBlock($event)" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
+        <dmm-block-svg #wrapper [block]="block" [blockSet]="blockSet" [scale]="scale" (deleteBlock)="onRemoveBlock($event)" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
         <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
       </g>
 
@@ -34,14 +34,10 @@
     [cdkConnectedOverlayPositions]="positionPairs"
   >
     <dmm-overlay
-      [blockOrMolecule]="molecule || null"
+      *ngIf="blockSet && molecule"
+      [blockOrMolecule]="molecule"
+      [blockSet]="blockSet"
       [tags]='[]'
-      [properties]='[
-        {label: "Chemical Formula", value: getFormula() | chemicalFormula},
-        {label: "Molecular Weight", value: getWeight() }
-      ]'
-      [additionalProperties]='[
-      ]'
       [enableAddToCart]="molecule?.blockList?.length==3"
 
       (close)="isInfoPanelOpen = !isInfoPanelOpen"

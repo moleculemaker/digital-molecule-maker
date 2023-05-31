@@ -45,15 +45,15 @@
             </svg>
           </div>
 
-          <div class="info">
+          <div *ngIf="blockSet" class="info">
             <div class="chemical_formula">
-              <div class="label">Chemical Formula</div>
-              <div class="value" [innerHtml]="getFormula(molecule) | chemicalFormula"></div>
+              <div class="label">{{blockSet.labelProperty.label}}</div>
+              <div class="value" [innerHtml]="getAggregateProperty(molecule, blockSet.labelProperty) | chemicalProperty:blockSet.labelProperty.displayStrategy"></div>
             </div>
 
             <div class="weight">
-              <div class="label">Molecular Weight</div>
-              <div class="value" [innerHtml]="getWeight(molecule) + ' g/mol'"></div>
+              <div class="label">{{blockSet.primaryProperty.label}}</div>
+              <div class="value" [innerHtml]="getAggregateProperty(molecule, blockSet.primaryProperty) | chemicalProperty:blockSet.primaryProperty.displayStrategy"></div>
             </div>
 
 <!-- todo: add remove from cart functionality -->

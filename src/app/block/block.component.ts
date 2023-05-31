@@ -16,9 +16,6 @@ export class BlockComponent implements OnInit {
   type = BlockType.Start;
 
   @Input()
-  label = '';
-
-  @Input()
   size = BlockSize.Default;
 
   @Input()

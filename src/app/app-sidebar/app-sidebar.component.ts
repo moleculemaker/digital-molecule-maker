@@ -17,7 +17,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ],
 })
 export class AppSidebarComponent implements OnInit {
-  chemicalFormulaeList:string[] = [];
+  labelList:string[] = [];
   fuse!:Fuse<string>;
 
   @HostBinding('class') sidebarClasses:string = 'expanded';
@@ -27,13 +27,13 @@ export class AppSidebarComponent implements OnInit {
   set blockSet(blockSet: BlockSet|null) {
     if (blockSet) {
       const processBlockArray = (blocks: Block[]) => blocks.forEach(block => {
-        this.chemicalFormulaeList.push(block.chemicalFormula)
+        this.labelList.push(block.properties[blockSet.labelProperty.key]);
       });
       processBlockArray(blockSet.blocks[BlockType.Start]);
       processBlockArray(blockSet.blocks[BlockType.Middle]);
       processBlockArray(blockSet.blocks[BlockType.End]);
-      this.fuse = new Fuse(this.chemicalFormulaeList, {includeScore: true})
-      this.filteredBlocks = this.chemicalFormulaeList.slice();
+      this.fuse = new Fuse(this.labelList, {includeScore: true})
+      this.filteredBlocks = this.labelList.slice();
       this.blockData = blockSet;
       this.blockLevelScale = getBlockSetScale(blockSet, 200);
     }
@@ -82,16 +82,18 @@ export class AppSidebarComponent implements OnInit {
   getBlockData(): Block[] {
     const blockTypes = this.typeFilter.length == 0 ? this.allTypeFilters : this.typeFilter;
     let blocks: Block[] = [];
-    blockTypes.forEach(blockType => {
-      const blockTypeEnum = this.getKeyByValue(blockType);
-      if (blockTypeEnum) {
-        this.blockData?.blocks[blockTypeEnum].forEach(block => {
-          if (this.filteredBlocks.some(e => e === block.chemicalFormula)) {
-            blocks.push(block);
-          }
-        });
-      }
-    });
+    if (this.blockSet) {
+      blockTypes.forEach(blockType => {
+        const blockTypeEnum = this.getKeyByValue(blockType);
+        if (blockTypeEnum) {
+          this.blockData?.blocks[blockTypeEnum].forEach(block => {
+            if (this.filteredBlocks.some(e => e === block.properties[this.blockSet!.labelProperty.key])) {
+              blocks.push(block);
+            }
+          });
+        }
+      });
+    }
     return blocks;
   }
 
@@ -148,7 +150,7 @@ export class AppSidebarComponent implements OnInit {
     try {
       this.filteredBlocks.length = 0;
       if(event.target.value == ''){
-        this.chemicalFormulaeList.forEach(e => this.filteredBlocks.push(e.replace(/(\d+)/g, "<sub>$1</sub>")))
+        this.labelList.forEach(e => this.filteredBlocks.push(e.replace(/(\d+)/g, "<sub>$1</sub>")))
         return
       }
       const results = this.fuse.search(event.target.value);

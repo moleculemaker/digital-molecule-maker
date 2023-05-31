@@ -41,14 +41,10 @@
     [cdkConnectedOverlayPositions]="positionPairs"
   >
     <dmm-overlay
-      [blockOrMolecule]='block'
-      [tags]='[]'
-      [properties]='[
-        {label: "ID", value: block.id, hasCheckMark: false},
-        {label: "Chemical Formula", value: block.chemicalFormula | chemicalFormula},
-        {label: "Molecular Weight", value: block.molecularWeight}
-      ]'
-      [additionalProperties]='block.otherProperties'
+      *ngIf="block && blockSet"
+      [blockOrMolecule]="block"
+      [blockSet]="blockSet"
+      [tags]="[]"
 
       (close)="isInfoPanelOpen = !isInfoPanelOpen"
     >
