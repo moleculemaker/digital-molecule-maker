@@ -46,7 +46,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   tabHeight = 28; //px tall (middle of tab)
   tabWidth = 20; //px wide tab
 
-  imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 40 + this.borderOffset];
+  imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 20 + this.borderOffset];
 
   path = "";
 
