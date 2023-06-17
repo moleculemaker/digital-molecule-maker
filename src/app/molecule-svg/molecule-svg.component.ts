@@ -20,9 +20,6 @@ export class MoleculeSvgComponent implements OnInit {
   @Input()
   closeOverlayObservable?: Observable<void>;
 
-  @Input()
-  scale = 1;
-
   @Output()
   deleteMolecule = new EventEmitter();
 

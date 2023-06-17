@@ -11,11 +11,11 @@
     <div class="overlay_preview">
       <div  class="overlay_image">
         <svg *ngIf="getMode() === 'block'" viewBox="0 0 300 300">
-          <dmm-block-svg #wrapper [scale]="0.4" [block]="$any(blockOrMolecule)"></dmm-block-svg>
+          <dmm-block-svg #wrapper [block]="$any(blockOrMolecule)" [asIcon]="true"></dmm-block-svg>
           <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
         </svg>
         <svg *ngIf="getMode() === 'molecule'" viewBox="0 0 600 200">
-          <dmm-molecule-svg #wrapper [scale]="0.4" [molecule]="$any(blockOrMolecule)"></dmm-molecule-svg>
+          <dmm-molecule-svg #wrapper [molecule]="$any(blockOrMolecule)"></dmm-molecule-svg>
           <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
         </svg>
       </div>

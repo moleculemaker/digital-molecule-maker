@@ -41,7 +41,7 @@
     <!-- this outer-level group applies the zoom and pan -->
     <g *ngIf="blockSet" [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'">
       <g (mouseenter)="onMouseEnter(moleculeId)" (mousedown)="onMoveStart($event, moleculeId)" (mouseleave)="onMouseLeave()" *ngFor="let molecule of moleculeList; let moleculeId = index" [attr.transform]="'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'">
-        <dmm-molecule-svg #wrapper [molecule]="molecule" [blockSet]="blockSet" [scale]="svgScale" (deleteMolecule)="onRemoveMolecule(moleculeId)" (addToCart)="addMoleculeToCart(moleculeId)" [closeOverlayObservable]="closeOverlay.asObservable()"></dmm-molecule-svg>
+        <dmm-molecule-svg #wrapper [molecule]="molecule" [blockSet]="blockSet" (deleteMolecule)="onRemoveMolecule(moleculeId)" (addToCart)="addMoleculeToCart(moleculeId)" [closeOverlayObservable]="closeOverlay.asObservable()"></dmm-molecule-svg>
         <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
       </g>
     </g>

@@ -27,9 +27,6 @@ export class BlockComponent implements OnInit {
   @Input()
   imageHeight = 80;
 
-  @Input()
-  blockLevelScale = 1;
-
   @ViewChild('svgImage') svg: ElementRef|null = null;
 
   padding = {
@@ -139,10 +136,7 @@ export class BlockComponent implements OnInit {
   //********************************************
   buildImageViewbox() {
     //will make the viewbox dimensions larger in turn shrinking the image
-    /* TODO reconsider scaling of images and blocks
     const scale = this.scales[this.size];
-     */
-    const scale = this.blockLevelScale;
     let width = this.imageWidth / scale;
     let height = this.imageHeight / scale;
 
