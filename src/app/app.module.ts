@@ -19,6 +19,7 @@ import { BlockComponent } from './block/block.component';
 import { InplaceComponent } from './inplace/inplace.component';
 import { PanelComponent } from './panel/panel.component';
 import { SplashComponent } from './splash/splash.component';
+import { TutorialComponent } from './tutorial/tutorial.component';
 
 import { OverlayModule } from '@angular/cdk/overlay';
 import { OverlayComponent } from './overlay/overlay.component';
@@ -59,6 +60,7 @@ function initializeAppFactory(): () => Observable<null> {
     InplaceComponent,
     PanelComponent,
     SplashComponent,
+    TutorialComponent,
     BlockSvgComponent,
     OverlayComponent,
     MoleculeSvgComponent

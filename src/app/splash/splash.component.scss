@@ -40,6 +40,15 @@ $splash_form_field_width: 240px;
 	}
 }
 
+@include keyframes(fade_in) {
+	0% {
+	  @include opacity(0);
+	}
+	100% {
+	  @include opacity(100);
+	}
+}
+
 @include keyframes(slide_down) {
 	0% {
 	  @include translate(0%, -40%);
@@ -652,13 +661,29 @@ $splash_form_field_width: 240px;
 
       font: {
         size: 350%;
-        weight: bold;
+        weight: 900;
+      }
+      text: {
+        transform: uppercase;
       }
       line: {
         height: 110%;
       }
 
       @include animation(slide_right 1s easing($ease-in-out-cubic) .15s both);
+    }
+
+    .title_tagline {
+      margin: {
+        top: $padding * .2;
+        bottom: $padding * .5;
+      }
+
+      line: {
+        height: 140%;
+      }
+
+      @include animation(fade_in 1s easing($ease-in-out-cubic) .75s both);
     }
 
     .form {

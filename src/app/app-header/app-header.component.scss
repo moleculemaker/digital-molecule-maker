@@ -105,6 +105,10 @@ input[type="text"] {
 
   padding: ($padding * .4) ($padding * 1.25);
 
+  font: {
+    size: .75rem;
+  }
+
   border: 1px solid color_variable('button_border');
 
   @include border-radius($border_radius);
@@ -117,7 +121,12 @@ input[type="text"] {
   }
 
   &:hover {
+    color: color_variable('background');
     background: {
+      color: color_variable('button_hover');
+    }
+
+    border: {
       color: color_variable('button_hover');
     }
 

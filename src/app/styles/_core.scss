@@ -92,13 +92,15 @@ $colors: (
   splash_button_hover: #ffb800,
 
 	text: #000000,
-	text_faded: lighten(#000, 40%)
+	text_faded: lighten(#000, 40%),
+
+  tutorial_background: rgba(#d9d9d9, .6)
 );
 
 
 //**************** font ******************
 
-$font_family: 'Inter', 'Open Sans', sans-serif;
+$font_family: 'Montserrat', 'Open Sans', sans-serif; //'Inter', 'Open Sans', sans-serif;
 $font_family_header: $font_family; //'Bebas Neue', cursive;
 $font_size_min: .7rem;
 
@@ -120,7 +122,9 @@ $indexes: (
 
   //above everything
   modal: 10000,
-  splash: 11000
+  splash: 11000,
+
+  tutorial: 12000
 );
 
 
