@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <svg class="svg_workspace" (mousedown)="onPanStart($event)" (mousemove)="onPan($event); onMove($event)" (mouseup)="onPanStop($event)">
+  <svg #workspace class="svg_workspace" (mousedown)="onPanStart($event)" (mousemove)="onPan($event); onMove($event)" (mouseup)="onPanStop($event)">
     <!-- this outer-level group applies the zoom and pan -->
     <g *ngIf="blockSet" [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'">
       <g (mouseenter)="onMouseEnter(moleculeId)" (mousedown)="onMoveStart($event, moleculeId)" (mouseleave)="onMouseLeave()" *ngFor="let molecule of moleculeList; let moleculeId = index" [attr.transform]="'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'">

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -20,6 +20,8 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./app-build.component.scss']
 })
 export class AppBuildComponent implements OnInit {
+  @ViewChild('workspace') svgWorkspace: ElementRef<SVGGraphicsElement> | null = null;
+
   isShowingSendToLab = false;
   isShowingCart = false;
 
@@ -44,7 +46,6 @@ export class AppBuildComponent implements OnInit {
   closeOverlay: Subject<void> = new Subject<void>();
   isDragging: boolean | undefined;
   draggedMolecule: any;
-  svgWorkspace: any;
   startingMousePosition: { x: number; y: number; } = { x: 0, y: 0 };
   draggedMoleculeIndex: number | undefined;
   constructor(
@@ -56,7 +57,7 @@ export class AppBuildComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
-
+  
 
 
   //********************************************
@@ -75,7 +76,7 @@ export class AppBuildComponent implements OnInit {
       }
       this.setBlockSet(blockSet);
     });
-    this.svgWorkspace = document.querySelector('.svg_workspace');
+
     this.workspaceService.getMoleculeList().pipe(
       untilDestroyed(this),
       filter(moleculeList => !!moleculeList)
@@ -161,27 +162,42 @@ export class AppBuildComponent implements OnInit {
 
   }
 
+  /**
+   * Invert transforms to recover block-set coordinates from on-screen coordinates:
+   * 1. Undo `zoomAndPanMatrix`
+   * 2. Subtract the top left corner `(-originX, -originY)`.
+   * @param x on-screen x coordinate (in SVG user units)
+   * @param y on-screen y coordinate (in SVG user units)
+   */
+  private invertTransforms(x: number, y: number): Coordinates {
+    const svgElement = this.svgWorkspace!.nativeElement;
+    const rect = svgElement.getBoundingClientRect();
+    const CTM = svgElement.getScreenCTM()!;
+    // When inverting the transforms, the origin must be placed at the center
+    // because of the CSS declaration `transform-origin: 50% 50%`
+    const originX = (0.5 * rect.width) / CTM.a;
+    const originY = (0.5 * rect.height) / CTM.d;
+    const xAfterTransform = x - originX;
+    const yAfterTransform = y - originY;
+    return new Coordinates(
+      (xAfterTransform - this.zoomAndPanMatrix[4]) / this.zoomAndPanMatrix[0] + originX,
+      (yAfterTransform - this.zoomAndPanMatrix[5]) / this.zoomAndPanMatrix[3] + originY
+    );
+  }
+
   dropped(event: DroppableEvent): void {
-    const _dragElement = event.nativeEvent.target as HTMLElement;
-
-    const rect = _dragElement.getBoundingClientRect();
-
-    let relX = event.nativeEvent.clientX - rect.left
-    let relY = event.nativeEvent.clientY - rect.top
     if (this.hoveredMolecule != undefined) {
       this.moleculeList[this.hoveredMolecule].blockList = this.moleculeList[this.hoveredMolecule].blockList.filter(block => block.type != event.data.type);
       this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
     } else{
       if (event.data.type == BlockType.Start) {
         const newBlockList: Block[] = [event.data];
-        relX /= this.zoomAndPanMatrix[0];
-        relY /= this.zoomAndPanMatrix[0];
-        relX -= this.zoomAndPanMatrix[4];
-        relY -= this.zoomAndPanMatrix[5];
-        const positionCoordinates = new Coordinates(relX, relY);
+        const pos = this.getMousePosition(event.nativeEvent);
+        const { x, y } = this.invertTransforms(pos.x, pos.y);
+        const positionCoordinates = new Coordinates(x, y);
         const newMolecule = new Molecule(positionCoordinates, newBlockList);
         this.moleculeList.push(newMolecule);
-
+        
       }
 
     }
@@ -230,8 +246,8 @@ export class AppBuildComponent implements OnInit {
       const moleculeIndex = this.hoveredMolecule;
       if (this.isDragging && typeof moleculeIndex !== 'undefined' && !this.spacebarPressed) {
         const mousePosition = this.getMousePosition(event);
-        const dx = mousePosition.x - this.startingMousePosition.x;
-        const dy = mousePosition.y - this.startingMousePosition.y;
+        const dx = (mousePosition.x - this.startingMousePosition.x) / this.zoomAndPanMatrix[0];
+        const dy = (mousePosition.y - this.startingMousePosition.y) / this.zoomAndPanMatrix[3];
 
         this.moleculeList[moleculeIndex].position.x += dx;
         this.moleculeList[moleculeIndex].position.y += dy;
@@ -266,8 +282,8 @@ export class AppBuildComponent implements OnInit {
   onMove(event: MouseEvent) {
     if (this.isDragging && typeof this.draggedMoleculeIndex !== 'undefined' && !this.spacebarPressed) {
       const mousePosition = this.getMousePosition(event);
-      const dx = mousePosition.x - this.startingMousePosition.x;
-      const dy = mousePosition.y - this.startingMousePosition.y;
+      const dx = (mousePosition.x - this.startingMousePosition.x) / this.zoomAndPanMatrix[0];
+      const dy = (mousePosition.y - this.startingMousePosition.y) / this.zoomAndPanMatrix[3];
 
       this.moleculeList[this.draggedMoleculeIndex].position.x += dx;
       this.moleculeList[this.draggedMoleculeIndex].position.y += dy;
@@ -285,7 +301,7 @@ export class AppBuildComponent implements OnInit {
 
 
   getMousePosition(event: MouseEvent) {
-    const CTM = this.svgWorkspace.getScreenCTM();
+    const CTM = this.svgWorkspace!.nativeElement.getScreenCTM()!;
     return {
       x: (event.clientX - CTM.e) / CTM.a,
       y: (event.clientY - CTM.f) / CTM.d,
