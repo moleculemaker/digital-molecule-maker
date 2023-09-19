@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { state, trigger, transition, style, animate, AnimationEvent, useAnimation } from "@angular/animations";
 
 import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse, slideOutReverse } from './panel.animations';
-import { Molecule } from '../models';
+import { aggregateProperty, BlockPropertyDefinition, BlockSet, Molecule } from '../models';
 
 @Component({
   selector: 'panel',
@@ -42,11 +42,14 @@ export class PanelComponent implements OnInit {
   @Input()
   cartMoleculeList: Molecule[] = []
 
+  @Input()
+  blockSet?: BlockSet;
+
   @Output()
   onClose = new EventEmitter();
 
   @Output()
-  onSubmit = new EventEmitter<string>();
+  onSubmit = new EventEmitter<Molecule[]>();
 
   @Output()
   onSendBackToWorkspace = new EventEmitter<string>();
@@ -127,13 +130,17 @@ return true;
     // return workingName.length > 0;
   }
 
-  submitMolecule(): void {
-    // this.onSubmit.emit(this.moleculeName);
+  submitMolecules(): void {
+    this.onSubmit.emit(this.cartMoleculeList);
     // for now, use the second panel as the success message
     this.nextStep();
   }
 
   sendBackToWorkspace(moleculeId: number){
     this.onSendBackToWorkspace.emit(moleculeId.toString());
+  }
+
+  getAggregateProperty(molecule: Molecule, property: BlockPropertyDefinition): any {
+    return aggregateProperty(molecule, property);
   }
 }

@@ -13,7 +13,7 @@
       </g>
 
       <g class="blocks" *ngFor="let block of molecule?.blockList">
-        <dmm-block-svg #wrapper [block]="block" (deleteBlock)="onRemoveBlock($event)" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
+        <dmm-block-svg #wrapper [block]="block" [blockSet]="blockSet" (deleteBlock)="onRemoveBlock($event)" [closeOverlayObservable]="closeOverlayObservable"></dmm-block-svg>
         <ng-container *ngTemplateOutlet="wrapper.childComponentTemplate"></ng-container>
       </g>
 
@@ -34,34 +34,19 @@
     [cdkConnectedOverlayPositions]="positionPairs"
   >
     <dmm-overlay
-      [label] = '"molecule"'
-      [tags]='[{label: "High Luminance"}, {label: "Medical"}]'
-      [properties]='[
-        {label: "Chemical Formula", value: "C<sub>6</sub>H<sub>2</sub>O<sub>2</sub>"},
-        {label: "Molecular Weight", value: "45.3 <span class=\"value_label\">g/mol</span>"}
-      ]'
-      [additionalProperties]='[
-        {label: "Charge Energy", value: "0"},
-        {label: "Solvation Surface Charge", value: "0"},
-        {label: "HOMO-1", value: "0.0"},
-        {label: "Radius of Gyration", value: "0"},
-        {label: "# of H-Bond Donors", value: "1"},
-        {label: "HOMO", value: "0.0"},
-        {label: "Asphericity", value: "0"},
-        {label: "Octanol-Water Partition Coefficient", value: "0"},
-        {label: "LUMO", value: "0.0"},
-        {label: "# of Conjugated Bonds", value: "2"},
-        {label: "Charge Correction", value: "0"},
-        {label: "LUMO+1", value: "0.0"}
-      ]'
+      *ngIf="blockSet && molecule"
+      [blockOrMolecule]="molecule"
+      [blockSet]="blockSet"
+      [tags]='[]'
       [enableAddToCart]="molecule?.blockList?.length==3"
 
       (close)="isInfoPanelOpen = !isInfoPanelOpen"
       (addToCart)="addMoleculeToCart()"
     >
+      <!--
       <ng-template let-overlay #templateAdditionalProperties>
-        <!-- <p>testing that this will show up</p> -->
       </ng-template>
+      -->
 
       <ng-template let-overlay #templateFooter>
 

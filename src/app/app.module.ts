@@ -19,6 +19,7 @@ import { BlockComponent } from './block/block.component';
 import { InplaceComponent } from './inplace/inplace.component';
 import { PanelComponent } from './panel/panel.component';
 import { SplashComponent } from './splash/splash.component';
+import { TutorialComponent } from './tutorial/tutorial.component';
 
 import { OverlayModule } from '@angular/cdk/overlay';
 import { OverlayComponent } from './overlay/overlay.component';
@@ -32,6 +33,7 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
 import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 import { TrackingService } from './services/tracking.service';
+import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 
 // placeholder implementation
 // change this as needed; nothing relies on the current behavior (but
@@ -52,10 +54,13 @@ function initializeAppFactory(): () => Observable<null> {
     DroppableDirective,
     DropZoneDirective,
 
+    ChemicalPropertyPipe,
+
     BlockComponent,
     InplaceComponent,
     PanelComponent,
     SplashComponent,
+    TutorialComponent,
     BlockSvgComponent,
     OverlayComponent,
     MoleculeSvgComponent

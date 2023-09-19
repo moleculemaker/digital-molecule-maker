@@ -16,9 +16,6 @@ export class BlockComponent implements OnInit {
   type = BlockType.Start;
 
   @Input()
-  label = '';
-
-  @Input()
   size = BlockSize.Default;
 
   @Input()
@@ -99,13 +96,17 @@ export class BlockComponent implements OnInit {
       this.tabRadius = 2 * scale;
       this.tabWidth = 20 * scale;
 
+      /* TODO reconsider scaling of images and blocks
       this.imageHeight = this.imageHeight * scale;
       this.imageWidth = this.imageWidth * scale;
+       */
     }
+    /* TODO reconsider scaling of images and blocks
     //set block dimensions
     //track this separately than image dimensions so we can make sure the min size of block is valid
     this.blockWidth = this.imageWidth + this.padding.x;
     this.blockHeight = this.imageHeight + this.padding.y;
+     */
 
     //min width and height
     if (!this.isIcon()) {

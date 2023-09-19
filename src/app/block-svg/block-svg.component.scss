@@ -109,7 +109,7 @@
 
       ::ng-deep text {
         isolation:isolate;
-        font-size:10px;
+        // TODO determine best way to handle font size (had been font-size:10px, but best size depends on the svg dimensions; currently setting directly in the svgs)
         font-family:Arial-BoldMT, Arial;
         font-weight:400;
       }

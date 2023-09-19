@@ -1,21 +1,25 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
-import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, Output, EventEmitter} from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, Output, EventEmitter} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Block, BlockType } from '../models';
+import { Block, BlockSet, BlockType } from '../models';
 
 @Component({
   selector: 'dmm-block-svg',
   templateUrl: './block-svg.component.html',
   styleUrls: ['./block-svg.component.scss']
 })
-export class BlockSvgComponent implements OnInit {
+export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('childComponentTemplate') childComponentTemplate: TemplateRef<any>|null = null;
 
   @Input()
-  iconLabel = ''; //if set, then we display the entire block as a small icon
+  asIcon = false; // currently using this just to control x offset when rendering inside the properties overlay
+                  // consider handling that offset in the parent component, in the containing <g>
 
   @Input()
   block! : Block;
+
+  @Input()
+  blockSet? : BlockSet;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
@@ -25,6 +29,7 @@ export class BlockSvgComponent implements OnInit {
 
   blockWidth = 100;
   blockHeight = 100;
+  scale = 1;
 
   padding = {
     x: 20 * 4,
@@ -41,7 +46,7 @@ export class BlockSvgComponent implements OnInit {
   tabHeight = 28; //px tall (middle of tab)
   tabWidth = 20; //px wide tab
 
-  imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 40 + this.borderOffset];
+  imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 20 + this.borderOffset];
 
   path = "";
 
@@ -96,15 +101,16 @@ export class BlockSvgComponent implements OnInit {
   }
 
   drawBlock() {
+    this.scale = Math.min(this.blockHeight / this.block.height, this.blockWidth / this.block.width);
     let path = '';
     let hasRightTab = (!this.isEnd() && !this.isAddBlock()) ? true : false;
     let minX = this.strokeWidth + this.borderOffset;
     let minY = this.strokeWidth + this.borderOffset;
 
-    if(this.isMiddle()){
+    if (!this.asIcon && this.isMiddle()) {
       minX += this.blockWidth + this.padding.x;
       this.imageZoomAndPanMatrix[4] = minX + 60;
-    } else if(this.isEnd()){
+    } else if (!this.asIcon && this.isEnd()) {
       minX += 2 * (this.blockWidth + this.padding.x);
       this.imageZoomAndPanMatrix[4] = minX + 60;
     }
@@ -189,7 +195,7 @@ export class BlockSvgComponent implements OnInit {
 
   // Check if the block is placeholder for another block
   isAddBlock() {
-    return (!this.iconLabel && !this.block.svgUrl) ? true : false;
+    return (!this.asIcon && !this.block.svgUrl) ? true : false;
   }
 
   // check if it's a starting block

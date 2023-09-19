@@ -6,11 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app-header.component.scss']
 })
 export class AppHeaderComponent implements OnInit {
-
   constructor() { }
 
   //********************************************
   ngOnInit(): void {
   }
 
+  onShowTutorial() {
+//todo: hook this up to the tutorial 
+  }
 }

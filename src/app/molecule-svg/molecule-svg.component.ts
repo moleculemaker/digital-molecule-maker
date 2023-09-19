@@ -1,7 +1,7 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Component, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, ChangeDetectorRef, Output, EventEmitter} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Block, BlockType, Molecule, Coordinates } from '../models';
+import { aggregateProperty, BlockSet, BlockType, Molecule, Coordinates, BlockPropertyDefinition } from '../models';
 
 @Component({
   selector: 'dmm-molecule-svg',
@@ -13,6 +13,9 @@ export class MoleculeSvgComponent implements OnInit {
 
   @Input()
   molecule?: Molecule;
+
+  @Input()
+  blockSet?: BlockSet;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
@@ -100,11 +103,18 @@ export class MoleculeSvgComponent implements OnInit {
 
   updateMoleculeLabel(newMoleculeName: string){
     this.isEditNamePanelOpen = false;
-    this.molecule!.label = newMoleculeName;
+    const trimmedName = newMoleculeName.trim();
+    if (trimmedName.length > 0) {
+      this.molecule!.label = newMoleculeName;
+    }
   }
 
   addMoleculeToCart(){
     this.addToCart.emit();
+  }
+
+  getAggregateProperty(molecule: Molecule, property: BlockPropertyDefinition): any {
+    return aggregateProperty(molecule, property);
   }
 }
 

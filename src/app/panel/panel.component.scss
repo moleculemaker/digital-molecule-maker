@@ -305,6 +305,10 @@ $panel_width_wide: 460px; //320px * 2;
       margin: 0px;
       padding: ($padding * .25) ($padding * .5);
 
+      font: {
+        family: $font_family;
+      }
+
       border: 1px solid color_variable('interface_border');
 
       @include border-left-radius($border_radius);
@@ -469,7 +473,7 @@ $panel_width_wide: 460px; //320px * 2;
 
     font: {
       family: $font_family_header;
-      size: 130%;
+      size: 110%;
     }
   }
 

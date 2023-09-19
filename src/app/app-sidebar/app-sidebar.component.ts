@@ -1,7 +1,6 @@
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
-import { BlockService, blockSetIds } from '../services/block.service';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { BlockSize } from '../block/block.component';
-import { Block, BlockSet, BlockType } from '../models';
+import { Block, BlockSet, BlockType, getBlockSetScale } from '../models';
 import Fuse from 'fuse.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
@@ -18,41 +17,27 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ],
 })
 export class AppSidebarComponent implements OnInit {
-  chemicalFormulaeList:string[] = [];
+  labelList:string[] = [];
   fuse!:Fuse<string>;
 
   @HostBinding('class') sidebarClasses:string = 'expanded';
 
   @Input()
-  get blockSetId(): blockSetIds|null { return this._blockSetId; }
-  set blockSetId(blockSetId: blockSetIds|null) {
-    this._blockSetId = blockSetId;
-    if (blockSetId) {
-        this.blockService.getBlockSet(this._blockSetId!).subscribe(response => {
-            let startBlocks : Block[] = [], middleBlocks : Block[] = [], endBlocks: Block[] = [];
-            response.forEach((block: Block) => {
-                 if(block.type == BlockType.Start){
-                    startBlocks.push(block);
-                 } else if (block.type == BlockType.Middle) {
-                     middleBlocks.push(block);
-                 } else {
-                     endBlocks.push(block);
-                 }
-                 this.chemicalFormulaeList.push(block.chemicalFormula)
-                 block.chemicalFormula = block.chemicalFormula.replace(/(\d+)/g, "<sub>$1</sub>");
-            });
-            this.fuse = new Fuse(this.chemicalFormulaeList, {includeScore: true})
-            this.chemicalFormulaeList.forEach(e => this.filteredBlocks.push(e.replace(/(\d+)/g, "<sub>$1</sub>")))
-            const blockSet : BlockSet = {
-                 [BlockType.Start]: startBlocks,
-                 [BlockType.Middle] : middleBlocks,
-                 [BlockType.End] : endBlocks
-            };
-            this.blockData = blockSet;
-         });
+  get blockSet(): BlockSet|null { return this.blockData; }
+  set blockSet(blockSet: BlockSet|null) {
+    if (blockSet) {
+      const processBlockArray = (blocks: Block[]) => blocks.forEach(block => {
+        this.labelList.push(block.properties[blockSet.labelProperty.key]);
+      });
+      processBlockArray(blockSet.blocks[BlockType.Start]);
+      processBlockArray(blockSet.blocks[BlockType.Middle]);
+      processBlockArray(blockSet.blocks[BlockType.End]);
+      this.fuse = new Fuse(this.labelList, {includeScore: true})
+      this.filteredBlocks = this.labelList.slice();
+      this.blockData = blockSet;
+      this.blockLevelScale = getBlockSetScale(blockSet, 200);
     }
   }
-  private _blockSetId: blockSetIds|null = null;
 
   @Input()
   currentBlockType = BlockType.Start;
@@ -60,8 +45,9 @@ export class AppSidebarComponent implements OnInit {
 
   currentToggle = 'build';
   BlockSize = BlockSize; // for use in template
+  blockLevelScale = 1;
 
-  blockData?: BlockSet;
+  blockData: BlockSet|null = null;
   filteredBlocks: string[] = [];
 
   searchPlaceholder = 'Search';
@@ -76,7 +62,6 @@ export class AppSidebarComponent implements OnInit {
   isShowingFilters = false;
 
   constructor(
-    private blockService: BlockService
   ) { }
 
   //********************************************
@@ -96,17 +81,19 @@ export class AppSidebarComponent implements OnInit {
   //********************************************
   getBlockData(): Block[] {
     const blockTypes = this.typeFilter.length == 0 ? this.allTypeFilters : this.typeFilter;
-    let blocks: any[] = [];
-    blockTypes.forEach(blockType => {
+    let blocks: Block[] = [];
+    if (this.blockSet) {
+      blockTypes.forEach(blockType => {
         const blockTypeEnum = this.getKeyByValue(blockType);
-        if(blockTypeEnum && this.blockData){
-
-            this.blockData![blockTypeEnum].forEach(block => {
-              if(this.filteredBlocks.filter(e => e === block.chemicalFormula).length > 0)
+        if (blockTypeEnum) {
+          this.blockData?.blocks[blockTypeEnum].forEach(block => {
+            if (this.filteredBlocks.some(e => e === block.properties[this.blockSet!.labelProperty.key])) {
               blocks.push(block);
-            });
+            }
+          });
         }
-    });
+      });
+    }
     return blocks;
   }
 
@@ -163,7 +150,7 @@ export class AppSidebarComponent implements OnInit {
     try {
       this.filteredBlocks.length = 0;
       if(event.target.value == ''){
-        this.chemicalFormulaeList.forEach(e => this.filteredBlocks.push(e.replace(/(\d+)/g, "<sub>$1</sub>")))
+        this.labelList.forEach(e => this.filteredBlocks.push(e.replace(/(\d+)/g, "<sub>$1</sub>")))
         return
       }
       const results = this.fuse.search(event.target.value);

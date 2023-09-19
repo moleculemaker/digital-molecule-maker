@@ -1,6 +1,7 @@
 import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { aggregateProperty, Block, BlockPropertyDefinition, BlockSet, Molecule } from "../models";
 
 @Component({
   selector: 'dmm-overlay',
@@ -18,13 +19,10 @@ export class OverlayComponent implements OnInit {
   @ViewChild('childComponentTemplate') childComponentTemplate: TemplateRef<any>|null = null;
 
   @Input()
-  label = 'block'; //or molecule
+  blockOrMolecule: Block|Molecule|null = null;
 
   @Input()
-  properties:any[] = [];
-
-  @Input()
-  additionalProperties:any[] = [];
+  blockSet: BlockSet|null = null;
 
   @Input()
   tags:any[] = [];
@@ -58,5 +56,21 @@ export class OverlayComponent implements OnInit {
 
   onAddToCart(){
     this.addToCart.emit();
+  }
+
+  getMode(): 'block'|'molecule'|null {
+    let returnVal: 'block'|'molecule'|null = null;
+    if (this.blockOrMolecule) {
+      if ('blockList' in this.blockOrMolecule) {
+        returnVal = 'molecule';
+      } else {
+        returnVal = 'block';
+      }
+    }
+    return returnVal;
+  }
+
+  getAggregateProperty(molecule: Molecule, property: BlockPropertyDefinition): any {
+    return aggregateProperty(molecule, property);
   }
 }
