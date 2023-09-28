@@ -13,7 +13,9 @@
         <svg *ngIf="getMode() === 'block'" viewBox="0 0 300 300">
           <dmm-block-svg
             #wrapper
+            [lambdaMax]="$any(blockOrMolecule).properties['lambdaMaxShift']"
             [block]="$any(blockOrMolecule)"
+            [blockSet]="blockSet!"
             [asIcon]="true"
           ></dmm-block-svg>
           <ng-container
@@ -24,6 +26,7 @@
           <dmm-molecule-svg
             #wrapper
             [molecule]="$any(blockOrMolecule)"
+            [blockSet]="blockSet!"
           ></dmm-molecule-svg>
           <ng-container
             *ngTemplateOutlet="wrapper.childComponentTemplate"
@@ -50,14 +53,14 @@
               *ngIf="getMode() === 'block'"
               [innerHtml]="
                 $any(blockOrMolecule).properties[property.key]
-                  | chemicalProperty: property.displayStrategy
+                  | chemicalProperty : property.displayStrategy
               "
             ></span>
             <span
               *ngIf="getMode() === 'molecule'"
               [innerHtml]="
                 getAggregateProperty($any(blockOrMolecule), property)
-                  | chemicalProperty: property.displayStrategy
+                  | chemicalProperty : property.displayStrategy
               "
             ></span>
 
@@ -107,14 +110,14 @@
                   *ngIf="getMode() === 'block'"
                   [innerHtml]="
                     $any(blockOrMolecule).properties[property.key]
-                      | chemicalProperty: property.displayStrategy
+                      | chemicalProperty : property.displayStrategy
                   "
                 ></span>
                 <span
                   *ngIf="getMode() === 'molecule'"
                   [innerHtml]="
                     getAggregateProperty($any(blockOrMolecule), property)
-                      | chemicalProperty: property.displayStrategy
+                      | chemicalProperty : property.displayStrategy
                   "
                 ></span>
 

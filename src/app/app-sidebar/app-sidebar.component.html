@@ -247,13 +247,7 @@
           </div> -->
 
           <div class="block_wrapper">
-            <block
-              [type]="block.type"
-              [svgUrl]="block.svgUrl"
-              [imageWidth]="block.width"
-              [imageHeight]="block.height"
-              [size]="BlockSize.Small"
-            ></block>
+            <block [block]="block"></block>
           </div>
         </div>
 
@@ -262,7 +256,7 @@
             <div
               *ngIf="
                 block.properties[blockSet.labelProperty.key]
-                  | chemicalProperty: blockSet.labelProperty.displayStrategy;
+                  | chemicalProperty : blockSet.labelProperty.displayStrategy;
                 let label
               "
               class="formula_label"
@@ -296,13 +290,7 @@
         </div>
 
         <div *dfDraggableHelper class="dragging_helper">
-          <block
-            [type]="block.type"
-            [svgUrl]="block.svgUrl"
-            [imageWidth]="block.width"
-            [imageHeight]="block.height"
-            [size]="BlockSize.Small"
-          ></block>
+          <block [block]="block"></block>
         </div>
       </div>
     </div>

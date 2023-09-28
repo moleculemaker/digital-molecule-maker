@@ -1,7 +1,17 @@
-import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 
 import 'external-svg-loader';
-import { BlockType } from '../models';
+import { Block, BlockType } from '../models';
+import { getRgbFromLambdaMax } from '../utils/index';
+import { BlockService } from '../services/block.service';
+import { Spectrum } from '../utils/spectrum';
 
 @Component({
   selector: 'block',
@@ -10,22 +20,11 @@ import { BlockType } from '../models';
 })
 export class BlockComponent implements OnInit {
   @Input()
-  svgUrl = '';
+  block!: Block;
 
-  @Input()
-  type = BlockType.Start;
-
-  @Input()
-  size = BlockSize.Default;
-
-  @Input()
-  iconLabel = ''; //if set, then we display the entire block as a small icon
-
-  @Input()
-  imageWidth = 80;
-
-  @Input()
-  imageHeight = 80;
+  size = BlockSize.Small;
+  imageWidth = 0;
+  imageHeight = 0;
 
   @ViewChild('svgImage') svg: ElementRef | null = null;
 
@@ -54,10 +53,15 @@ export class BlockComponent implements OnInit {
   tabRadius = 2; //px rounded corners
   tabWidth = 20; //px wide    related to margin-left in app-build.scss - if you adjust one, adjust the other
 
-  constructor() {}
+  constructor(public blockService: BlockService) {}
+
+  test = 2;
 
   //********************************************
   ngOnInit(): void {
+    this.imageWidth = this.block.width;
+    this.imageHeight = this.block.height;
+
     //change border size for icons
     if (this.isIcon()) {
       this.borderRadius = 1;
@@ -90,7 +94,7 @@ export class BlockComponent implements OnInit {
     }
 
     if (this.isSmall() || this.isDefaultSize() || this.isLarge()) {
-      const scale = this.scales[this.size];
+      const scale = this.scales[BlockSize.Small];
 
       this.tabHeight = 28 * scale;
       this.tabOffset = 20;
@@ -147,6 +151,22 @@ export class BlockComponent implements OnInit {
     let height = this.imageHeight / scale;
 
     return '0 0 ' + width + ' ' + height;
+  }
+
+  get centerX() {
+    let minX = this.strokeWidth;
+    let maxX = this.blockWidth + this.padding.x - this.strokeWidth;
+    return (minX + maxX) / 2;
+  }
+
+  get centerY() {
+    let minY = this.strokeWidth;
+    let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
+    return (minY + maxY) / 2;
+  }
+
+  get lambdaMax() {
+    return this.block.properties['lambdaMaxShift'];
   }
 
   //********************************************
@@ -241,7 +261,7 @@ export class BlockComponent implements OnInit {
   createRoundedPath(
     coords: Array<{ x: number; y: number; radius?: number }>,
     radius = 8,
-    close = true,
+    close = true
   ) {
     let path = '';
     const length = coords.length + (close ? 1 : -1);
@@ -254,7 +274,7 @@ export class BlockComponent implements OnInit {
       let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
       const t = Math.min(
         Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y),
-        0.5,
+        0.5
       );
       //      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
 
@@ -286,12 +306,12 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   isStart() {
-    return this.type === BlockType.Start;
+    return this.block.type === BlockType.Start;
   }
 
   //********************************************
   isEnd() {
-    return this.type === BlockType.End;
+    return this.block.type === BlockType.End;
   }
 
   //********************************************
@@ -317,7 +337,21 @@ export class BlockComponent implements OnInit {
   //********************************************
   //todo: determine if this should be a separate property to control it, for now, show the add block structure if no svgUrl has been added
   isAddBlock() {
-    return !this.iconLabel && !this.svgUrl ? true : false;
+    return !this.block.svgUrl ? true : false;
+  }
+
+  get fillColor() {
+    const [r, g, b] = Spectrum[this.block.properties['lambdaMaxShift']] ?? [
+      0, 0, 0,
+    ];
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  get strokeColor() {
+    const [r, g, b] = Spectrum[this.block.properties['lambdaMaxShift']] ?? [
+      0, 0, 0,
+    ];
+    return `rgb(${r - 50}, ${g - 50}, ${b - 50})`;
   }
 }
 

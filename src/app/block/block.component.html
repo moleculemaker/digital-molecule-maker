@@ -4,61 +4,117 @@
   *ngIf="imageWidth"
   [style.height.px]="blockHeight + this.padding.y"
   [style.width.px]="blockWidth + this.padding.x"
-  [class]="['block_' + type, 'size_' + size]"
+  [class]="['block_' + block.type, 'size_' + size]"
   [class.dashes]="isAddBlock()"
 >
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    [attr.viewBox]="
-      '0 0 ' +
-      (blockWidth + this.padding.x) +
-      ' ' +
-      (blockHeight + this.padding.y)
-    "
-  >
-    <path
-      class="block_background block_border"
-      [attr.d]="drawBlock()"
-      [attr.stroke-dasharray]="strokeDasharray"
-      [attr.stroke-width]="strokeWidth"
-    ></path>
+  <ng-container [ngSwitch]="blockService.functionMode$ | async">
+    <ng-container *ngSwitchCase="true">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        [attr.viewBox]="
+          '0 0 ' +
+          (blockWidth + this.padding.x) +
+          ' ' +
+          (blockHeight + this.padding.y)
+        "
+      >
+        <path
+          [attr.d]="drawBlock()"
+          [attr.fill]="fillColor"
+          [attr.stroke]="strokeColor"
+          [attr.stroke-dasharray]="strokeDasharray"
+          [attr.stroke-width]="strokeWidth"
+        ></path>
 
-    <!-- + add block icon -->
-    <g *ngIf="isAddBlock()">
-      <rect
-        width="6"
-        height="24"
-        x="50%"
-        y="50%"
-        fill="black"
-        style="transform: translate(-3px, -12px)"
-      />
-      <rect
-        width="24"
-        height="6"
-        x="50%"
-        y="50%"
-        fill="black"
-        style="transform: translate(-12px, -3px)"
-      />
-    </g>
-  </svg>
+        <text
+          [attr.x]="centerX"
+          [attr.y]="centerY"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          font-weight="bold"
+          fill="gray"
+        >
+          +{{ block.properties["lambdaMaxShift"] }}nm
+        </text>
 
-  <div class="image" [style.height.%]="50" [style.width.%]="50">
-    <!-- <div class="icon_label" *ngIf="iconLabel" [innerHTML]="iconLabel"></div> -->
+        <!-- + add block icon -->
+        <g *ngIf="isAddBlock()">
+          <rect
+            width="6"
+            height="24"
+            x="50%"
+            y="50%"
+            fill="black"
+            style="transform: translate(-3px, -12px)"
+          />
+          <rect
+            width="24"
+            height="6"
+            x="50%"
+            y="50%"
+            fill="black"
+            style="transform: translate(-12px, -3px)"
+          />
+        </g>
+      </svg>
+    </ng-container>
 
-    <svg
-      #svgImage
-      *ngIf="svgUrl"
-      [attr.data-src]="svgUrl"
-      width="100%"
-      height="100%"
-      [attr.viewBox]="buildImageViewbox()"
-      data-cache="disabled"
-      (load)="onLoadSVG($event)"
-    />
-  </div>
+    <ng-container *ngSwitchCase="false">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        [attr.viewBox]="
+          '0 0 ' +
+          (blockWidth + this.padding.x) +
+          ' ' +
+          (blockHeight + this.padding.y)
+        "
+      >
+        <path
+          class="block_background block_border"
+          [attr.d]="drawBlock()"
+          [attr.stroke-dasharray]="strokeDasharray"
+          [attr.stroke-width]="strokeWidth"
+        ></path>
+
+        <!-- + add block icon -->
+        <g *ngIf="isAddBlock()">
+          <rect
+            width="6"
+            height="24"
+            x="50%"
+            y="50%"
+            fill="black"
+            style="transform: translate(-3px, -12px)"
+          />
+          <rect
+            width="24"
+            height="6"
+            x="50%"
+            y="50%"
+            fill="black"
+            style="transform: translate(-12px, -3px)"
+          />
+        </g>
+      </svg>
+
+      <div class="image" [style.height.%]="50" [style.width.%]="50">
+        <!-- <div class="icon_label" *ngIf="iconLabel" [innerHTML]="iconLabel"></div> -->
+
+        <svg
+          #svgImage
+          *ngIf="block.svgUrl"
+          [attr.data-src]="block.svgUrl"
+          width="100%"
+          height="100%"
+          [attr.viewBox]="buildImageViewbox()"
+          data-cache="disabled"
+          (load)="onLoadSVG($event)"
+        />
+      </div>
+    </ng-container>
+  </ng-container>
 </div>
 
 <!-- hiding label for now; comp doesn't call for one -->

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Block, BlockSet, BlockType } from '../models';
 
@@ -13,6 +13,12 @@ export enum BlockSetId {
   providedIn: 'root',
 })
 export class BlockService {
+  private _functionMode = false;
+  functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
+  toggle() {
+    this.functionMode$.next((this._functionMode = !this._functionMode));
+  }
+
   urls = new Map<BlockSetId, string>([
     [BlockSetId.ColorWheel, 'assets/blocks/10x10x10palette/blocks.json'],
     [BlockSetId.OPV, 'assets/blocks/opv/blocks.json'],

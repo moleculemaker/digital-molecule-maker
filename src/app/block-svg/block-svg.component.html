@@ -12,28 +12,53 @@
     #trigger="cdkOverlayOrigin"
     (click)="isInfoPanelOpen = !isInfoPanelOpen"
   >
-    <g>
-      <path
-        class="block_background block_border"
-        [attr.d]="path"
-        [attr.stroke-dasharray]="strokeDasharray"
-        [attr.stroke-width]="strokeWidth"
-      ></path>
-    </g>
+    <ng-container [ngSwitch]="blockService.functionMode$ | async">
+      <ng-container *ngSwitchCase="true">
+        <g>
+          <path
+            [attr.d]="drawBlock()"
+            class="molecule-block"
+            [attr.fill]="fillColor"
+            [attr.stroke]="strokeColor"
+            [attr.stroke-dasharray]="strokeDasharray"
+            [attr.stroke-width]="strokeWidth"
+          ></path>
+          <text
+            [attr.x]="centerX"
+            [attr.y]="centerY"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-weight="bold"
+            [attr.fill]="textColor"
+          >
+            +{{ block.properties["lambdaMaxShift"] }}nm
+          </text>
+        </g>
+      </ng-container>
+      <ng-container *ngSwitchCase="false">
+        <g>
+          <path
+            class="block_background block_border"
+            [attr.d]="path"
+            [attr.stroke-dasharray]="strokeDasharray"
+            [attr.stroke-width]="strokeWidth"
+          ></path>
+        </g>
 
-    <g
-      [attr.transform]="'matrix(' + imageZoomAndPanMatrix.join(' ') + ')'"
-      class="image"
-    >
-      <g
-        #svgImage
-        *ngIf="block.svgUrl"
-        [attr.data-src]="block.svgUrl"
-        [attr.transform]="'scale(' + scale + ')'"
-        data-cache="disabled"
-      />
-    </g>
-
+        <g
+          [attr.transform]="'matrix(' + imageZoomAndPanMatrix.join(' ') + ')'"
+          class="image"
+        >
+          <g
+            #svgImage
+            *ngIf="block.svgUrl"
+            [attr.data-src]="block.svgUrl"
+            [attr.transform]="'scale(' + scale + ')'"
+            data-cache="disabled"
+          />
+        </g>
+      </ng-container>
+    </ng-container>
     <g class="delete_block_button" (click)="removeBlock()">
       <circle
         class="outline"

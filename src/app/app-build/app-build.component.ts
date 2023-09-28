@@ -18,7 +18,6 @@ import {
   Coordinates,
   getBlockSetScale,
   Molecule,
-  RigJob,
 } from '../models';
 
 import { BlockService, BlockSetId } from '../services/block.service';
@@ -361,5 +360,8 @@ export class AppBuildComponent implements OnInit {
     this.changeDetector.detectChanges();
     this.workspaceService.updateMoleculeList(this.moleculeList);
     this.cartService.updateMoleculeList(this.cartMoleculeList);
+  }
+  toggle() {
+    this.blockService.toggle();
   }
 }

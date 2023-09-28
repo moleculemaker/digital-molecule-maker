@@ -13,6 +13,8 @@ import {
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, BlockSet, BlockType } from '../models';
+import { BlockService } from '../services/block.service';
+import { Spectrum } from '../utils/spectrum';
 
 @Component({
   selector: 'dmm-block-svg',
@@ -22,6 +24,9 @@ import { Block, BlockSet, BlockType } from '../models';
 export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('childComponentTemplate')
   childComponentTemplate: TemplateRef<any> | null = null;
+
+  @Input()
+  lambdaMax: number = 0;
 
   @Input()
   asIcon = false; // currently using this just to control x offset when rendering inside the properties overlay
@@ -69,7 +74,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   positionPairs!: ConnectionPositionPair[];
 
-  constructor() {}
+  constructor(public blockService: BlockService) {}
 
   ngOnInit(): void {
     if (this.closeOverlayObservable) {
@@ -110,10 +115,44 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     alert(this.block.type);
   }
 
+  get centerX() {
+    let minX = this.strokeWidth + this.borderOffset;
+    if (!this.asIcon && this.isMiddle()) {
+      minX += this.blockWidth + this.padding.x;
+      this.imageZoomAndPanMatrix[4] = minX + 60;
+    } else if (!this.asIcon && this.isEnd()) {
+      minX += 2 * (this.blockWidth + this.padding.x);
+      this.imageZoomAndPanMatrix[4] = minX + 60;
+    }
+    let maxX = this.blockWidth + this.padding.x + minX;
+    return (minX + maxX) / 2;
+  }
+
+  get centerY() {
+    let minY = this.strokeWidth + this.borderOffset;
+    let maxY = this.blockHeight + this.padding.y + this.borderOffset;
+    return (minY + maxY) / 2;
+  }
+
+  get textColor() {
+    const [r, g, b] = Spectrum[this.lambdaMax] ?? [0, 0, 0];
+    return (r + g + b) / 3 > 200 ? 'gray' : 'white';
+  }
+
+  get fillColor() {
+    const [r, g, b] = Spectrum[this.lambdaMax] ?? [0, 0, 0];
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  get strokeColor() {
+    const [r, g, b] = Spectrum[this.lambdaMax] ?? [0, 0, 0];
+    return `rgb(${r - 50}, ${g - 50}, ${b - 50})`;
+  }
+
   drawBlock() {
     this.scale = Math.min(
       this.blockHeight / this.block.height,
-      this.blockWidth / this.block.width,
+      this.blockWidth / this.block.width
     );
     let path = '';
     let hasRightTab = !this.isEnd() && !this.isAddBlock() ? true : false;
@@ -204,7 +243,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   createRoundedPath(
     coords: Array<{ x: number; y: number; radius?: number }>,
     radius = 8,
-    close = true,
+    close = true
   ) {
     let path = '';
     const length = coords.length + (close ? 1 : -1);
@@ -217,7 +256,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
       let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
       const t = Math.min(
         Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y),
-        0.5,
+        0.5
       );
       //      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
 

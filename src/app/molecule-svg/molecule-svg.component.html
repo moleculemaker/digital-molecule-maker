@@ -49,6 +49,7 @@
     <g class="blocks" *ngFor="let block of molecule?.blockList">
       <dmm-block-svg
         #wrapper
+        [lambdaMax]="lambdaMax"
         [block]="block"
         [blockSet]="blockSet"
         (deleteBlock)="onRemoveBlock($event)"

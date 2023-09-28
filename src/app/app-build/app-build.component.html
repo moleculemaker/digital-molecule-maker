@@ -92,8 +92,8 @@
       >
         <dmm-molecule-svg
           #wrapper
-          [molecule]="molecule"
           [blockSet]="blockSet"
+          [molecule]="molecule"
           (deleteMolecule)="onRemoveMolecule(moleculeId)"
           (addToCart)="addMoleculeToCart(moleculeId)"
           [closeOverlayObservable]="closeOverlay.asObservable()"
@@ -106,6 +106,7 @@
   </svg>
 
   <div class="canvas_controls">
+    <div class="button" (click)="toggle()">I'm a toggle</div>
     <div class="button zoom_in" (click)="onZoomIn()">
       <svg
         width="20"

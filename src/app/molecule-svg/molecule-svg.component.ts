@@ -9,6 +9,9 @@ import {
   ChangeDetectorRef,
   Output,
   EventEmitter,
+  OnChanges,
+  AfterViewChecked,
+  AfterViewInit,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -19,18 +22,18 @@ import {
   Coordinates,
   BlockPropertyDefinition,
 } from '../models';
+import { easeInOutQuad } from '../utils';
 
 @Component({
   selector: 'dmm-molecule-svg',
   templateUrl: './molecule-svg.component.html',
   styleUrls: ['./molecule-svg.component.scss'],
 })
-export class MoleculeSvgComponent implements OnInit {
+export class MoleculeSvgComponent
+  implements OnInit, AfterViewChecked, AfterViewInit
+{
   @ViewChild('childComponentTemplate')
   childComponentTemplate: TemplateRef<any> | null = null;
-
-  @Input()
-  molecule?: Molecule;
 
   @Input()
   blockSet?: BlockSet;
@@ -50,6 +53,53 @@ export class MoleculeSvgComponent implements OnInit {
   _eventsSubscription?: Subscription;
   positionPairs!: ConnectionPositionPair[];
   positionEditName!: ConnectionPositionPair[];
+
+  @Input()
+  molecule!: Molecule;
+
+  timer = -1;
+
+  lambdaMax = -1;
+  _lambdaMax = -1;
+
+  ngAfterViewInit(): void {
+    this.lambdaMax = this.getAggregateProperty(
+      this.molecule,
+      this.blockSet!.primaryProperty
+    );
+  }
+
+  ngAfterViewChecked(): void {
+    const oldValue = this._lambdaMax;
+    const curValue = this.lambdaMax;
+    const newValue = this.getAggregateProperty(
+      this.molecule,
+      this.blockSet!.primaryProperty
+    );
+
+    this._lambdaMax = newValue;
+    if (oldValue === newValue) return;
+    if (oldValue < 0) {
+      this.lambdaMax = this._lambdaMax = newValue;
+      return;
+    }
+    cancelAnimationFrame(this.timer);
+
+    const start = Date.now();
+    const duration = 200;
+
+    const animate = () => {
+      const t = Math.min(duration, Date.now() - start);
+      this.lambdaMax = Math.round(
+        easeInOutQuad(t, curValue, newValue - curValue, duration)
+      );
+      if (t < duration) {
+        this.timer = requestAnimationFrame(animate);
+      }
+    };
+
+    this.timer = requestAnimationFrame(animate);
+  }
 
   constructor(private changeDetector: ChangeDetectorRef) {}
 
@@ -109,7 +159,7 @@ export class MoleculeSvgComponent implements OnInit {
   onRemoveBlock(type: BlockType) {
     if (this.molecule)
       this.molecule.blockList = this.molecule?.blockList.filter(
-        (block) => block.type != type,
+        (block) => block.type != type
       );
   }
 
@@ -134,7 +184,7 @@ export class MoleculeSvgComponent implements OnInit {
 
   getAggregateProperty(
     molecule: Molecule,
-    property: BlockPropertyDefinition,
+    property: BlockPropertyDefinition
   ): any {
     return aggregateProperty(molecule, property);
   }
