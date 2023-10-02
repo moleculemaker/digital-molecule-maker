@@ -133,8 +133,6 @@ export class AppBuildComponent implements OnInit {
   //********************************************
 
   sendToLab(moleculeList: Molecule[]): void {
-    // disabled for now
-    /*
     this.moleculeList.forEach(molecule => {
       this.rigService.submitReaction(
         this.blockSet!,
@@ -146,7 +144,6 @@ export class AppBuildComponent implements OnInit {
         console.log("submitted", molecule);
       });
     });
-     */
   }
 
   onZoomIn(): void {

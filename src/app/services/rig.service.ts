@@ -11,8 +11,7 @@ import { Block, BlockSet } from '../models';
 })
 export class RigService {
 
-  //private RIG_URL = 'http://128.174.226.165:8001/Rig@Beckman/';
-  private RIG_JOB_URL = '/api/v1/rig_job/';
+  private RIG_URL = 'https://dmm.fastapi.mmli1.ncsa.illinois.edu/synthesize';
 
   constructor(private http: HttpClient) { }
 
@@ -26,16 +25,16 @@ export class RigService {
     };
 
     const rigJob = {
-      blockSetId: blockSet.id,
-      blockIds: [
+      block_set_id: blockSet.id,
+      block_ids: [
         block1.id,
         block2.id,
         block3.id
       ],
-      moleculeName
+      molecule_name: moleculeName
     }
 
-    return this.http.post(this.RIG_JOB_URL, rigJob, httpOptions)
+    return this.http.post(this.RIG_URL, rigJob, httpOptions)
       .pipe(
         timeout(5000),
         map(resp => null),
