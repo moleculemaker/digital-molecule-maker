@@ -19,6 +19,13 @@ import { CartService } from '../services/cart.service';
   templateUrl: './app-build.component.html',
   styleUrls: ['./app-build.component.scss']
 })
+
+// interface RigJob {
+//   block_set_id: number;
+//   block_ids: number[];
+//   molecule_name: string;
+// }
+
 export class AppBuildComponent implements OnInit {
   @ViewChild('workspace') svgWorkspace: ElementRef<SVGGraphicsElement> | null = null;
 
@@ -132,17 +139,29 @@ export class AppBuildComponent implements OnInit {
 
   //********************************************
 
+  
+
   sendToLab(moleculeList: Molecule[]): void {
-    this.moleculeList.forEach(molecule => {
-      this.rigService.submitReaction(
-        this.blockSet!,
-        molecule.blockList[0],
-        molecule.blockList[1],
-        molecule.blockList[2],
-        molecule.label
-      ).subscribe(nullVal => {
-        console.log("submitted", molecule);
-      });
+
+    const rigJobs: any[] = [];
+
+    moleculeList.forEach(molecule => {
+
+      const rigJob = {
+        block_set_id: this.blockSet!.id,
+        block_ids: [
+          molecule.blockList[0].id,
+          molecule.blockList[1].id,
+          molecule.blockList[2].id
+        ],
+        molecule_name: molecule.label
+      }
+
+      rigJobs.push(rigJob);
+    });
+
+    this.rigService.submitReactions(rigJobs).subscribe(nullVal => {
+        console.log("Submitted molecules in Cart", rigJobs);
     });
   }
 

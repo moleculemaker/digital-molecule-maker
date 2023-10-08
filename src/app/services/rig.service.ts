@@ -15,8 +15,7 @@ export class RigService {
 
   constructor(private http: HttpClient) { }
 
-  submitReaction(blockSet: BlockSet, block1: Block, block2: Block, block3: Block, moleculeName: string): Observable<null> {
-
+  submitReactions(rigJobs: any[]): Observable<null> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -24,17 +23,7 @@ export class RigService {
       })
     };
 
-    const rigJob = {
-      block_set_id: blockSet.id,
-      block_ids: [
-        block1.id,
-        block2.id,
-        block3.id
-      ],
-      molecule_name: moleculeName
-    }
-
-    return this.http.post(this.RIG_URL, rigJob, httpOptions)
+    return this.http.post(this.RIG_URL, rigJobs, httpOptions)
       .pipe(
         timeout(5000),
         map(resp => null),
@@ -44,5 +33,4 @@ export class RigService {
         })
       );
   }
-
 }
