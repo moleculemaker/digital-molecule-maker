@@ -20,12 +20,6 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./app-build.component.scss']
 })
 
-// interface RigJob {
-//   block_set_id: number;
-//   block_ids: number[];
-//   molecule_name: string;
-// }
-
 export class AppBuildComponent implements OnInit {
   @ViewChild('workspace') svgWorkspace: ElementRef<SVGGraphicsElement> | null = null;
 
