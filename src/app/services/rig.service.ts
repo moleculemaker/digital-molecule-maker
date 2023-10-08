@@ -15,7 +15,7 @@ export class RigService {
 
   constructor(private http: HttpClient) { }
 
-  submitReactions(rigJobs: any[]): Observable<null> {
+  submitReactions(rigJobs: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -23,12 +23,14 @@ export class RigService {
       })
     };
 
+    console.log(rigJobs);
     return this.http.post(this.RIG_URL, rigJobs, httpOptions)
       .pipe(
         timeout(5000),
-        map(resp => null),
+        map(resp => resp),
         catchError(e => {
           // do something on a timeout
+          console.log('Error during molecule synthesis:', e);
           return of(null);
         })
       );

@@ -150,9 +150,9 @@ export class AppBuildComponent implements OnInit {
       const rigJob = {
         block_set_id: this.blockSet!.id,
         block_ids: [
-          molecule.blockList[0].id,
-          molecule.blockList[1].id,
-          molecule.blockList[2].id
+          parseInt(molecule.blockList[0].id),
+          parseInt(molecule.blockList[1].id),
+          parseInt(molecule.blockList[2].id),
         ],
         molecule_name: molecule.label
       }
@@ -160,8 +160,8 @@ export class AppBuildComponent implements OnInit {
       rigJobs.push(rigJob);
     });
 
-    this.rigService.submitReactions(rigJobs).subscribe(nullVal => {
-        console.log("Submitted molecules in Cart", rigJobs);
+    this.rigService.submitReactions(rigJobs).subscribe(resp => {
+        console.log("Submitted molecules in Cart", resp);
     });
   }
 
