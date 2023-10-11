@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { BlockSize } from '../block/block.component';
-import { Block, BlockSet, BlockType, Coordinates, getBlockSetScale, Molecule } from '../models';
+import { Block, BlockSet, BlockType, Coordinates, getBlockSetScale, Molecule, RigJob } from '../models';
 
 import { BlockService, BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
@@ -19,6 +19,7 @@ import { CartService } from '../services/cart.service';
   templateUrl: './app-build.component.html',
   styleUrls: ['./app-build.component.scss']
 })
+
 export class AppBuildComponent implements OnInit {
   @ViewChild('workspace') svgWorkspace: ElementRef<SVGGraphicsElement> | null = null;
 
@@ -131,22 +132,28 @@ export class AppBuildComponent implements OnInit {
   }
 
   //********************************************
-
   sendToLab(moleculeList: Molecule[]): void {
-    // disabled for now
-    /*
-    this.moleculeList.forEach(molecule => {
-      this.rigService.submitReaction(
-        this.blockSet!,
-        molecule.blockList[0],
-        molecule.blockList[1],
-        molecule.blockList[2],
-        molecule.label
-      ).subscribe(nullVal => {
-        console.log("submitted", molecule);
-      });
+
+    const rigJobs: RigJob[] = [];
+
+    moleculeList.forEach(molecule => {
+
+      const rigJob: RigJob = {
+        block_set_id: this.blockSet!.id,
+        block_ids: [
+          molecule.blockList[0].id,
+          molecule.blockList[1].id,
+          molecule.blockList[2].id,
+        ],
+        molecule_name: molecule.label
+      }
+
+      rigJobs.push(rigJob);
     });
-     */
+
+    this.rigService.submitReactions(rigJobs).subscribe(resp => {
+        console.log("Submitted molecules in Cart", resp);
+    });
   }
 
   onZoomIn(): void {

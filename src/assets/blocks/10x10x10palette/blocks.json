@@ -38,7 +38,7 @@
     "start": [
       {
         "type": "start",
-        "id": "1",
+        "id": 1,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S1.svg",
         "width": 124,
@@ -52,7 +52,7 @@
       },
       {
         "type": "start",
-        "id": "2",
+        "id": 2,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S2.svg",
         "width": 162,
@@ -66,7 +66,7 @@
       },
       {
         "type": "start",
-        "id": "3",
+        "id": 3,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S3.svg",
         "width": 148,
@@ -80,7 +80,7 @@
       },
       {
         "type": "start",
-        "id": "4",
+        "id": 4,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S4.svg",
         "width": 184,
@@ -94,7 +94,7 @@
       },
       {
         "type": "start",
-        "id": "5",
+        "id": 5,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S5.svg",
         "width": 159,
@@ -108,7 +108,7 @@
       },
       {
         "type": "start",
-        "id": "6",
+        "id": 6,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S6.svg",
         "width": 170,
@@ -122,7 +122,7 @@
       },
       {
         "type": "start",
-        "id": "7",
+        "id": 7,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S7.svg",
         "width": 135,
@@ -136,7 +136,7 @@
       },
       {
         "type": "start",
-        "id": "8",
+        "id": 8,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S8.svg",
         "width": 135,
@@ -150,7 +150,7 @@
       },
       {
         "type": "start",
-        "id": "9",
+        "id": 9,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S9.svg",
         "width": 133,
@@ -164,7 +164,7 @@
       },
       {
         "type": "start",
-        "id": "10",
+        "id": 10,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/S10.svg",
         "width": 153,
@@ -180,7 +180,7 @@
     "middle": [
       {
         "type": "middle",
-        "id": "11",
+        "id": 11,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M1.svg",
         "width": 144,
@@ -194,7 +194,7 @@
       },
       {
         "type": "middle",
-        "id": "12",
+        "id": 12,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M2.svg",
         "width": 102,
@@ -208,7 +208,7 @@
       },
       {
         "type": "middle",
-        "id": "13",
+        "id": 13,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M3.svg",
         "width": 145,
@@ -222,7 +222,7 @@
       },
       {
         "type": "middle",
-        "id": "14",
+        "id": 14,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M4.svg",
         "width": 145,
@@ -236,7 +236,7 @@
       },
       {
         "type": "middle",
-        "id": "15",
+        "id": 15,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M5.svg",
         "width": 195,
@@ -250,7 +250,7 @@
       },
       {
         "type": "middle",
-        "id": "16",
+        "id": 16,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M6.svg",
         "width": 151,
@@ -264,7 +264,7 @@
       },
       {
         "type": "middle",
-        "id": "17",
+        "id": 17,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M7.svg",
         "width": 195,
@@ -278,7 +278,7 @@
       },
       {
         "type": "middle",
-        "id": "18",
+        "id": 18,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M8.svg",
         "width": 145,
@@ -292,7 +292,7 @@
       },
       {
         "type": "middle",
-        "id": "19",
+        "id": 19,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M9.svg",
         "width": 145,
@@ -306,7 +306,7 @@
       },
       {
         "type": "middle",
-        "id": "20",
+        "id": 20,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/M10.svg",
         "width": 145,
@@ -322,7 +322,7 @@
     "end": [
       {
         "type": "end",
-        "id": "21",
+        "id": 21,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E1.svg",
         "width": 163,
@@ -336,7 +336,7 @@
       },
       {
         "type": "end",
-        "id": "22",
+        "id": 22,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E2.svg",
         "width": 156,
@@ -350,7 +350,7 @@
       },
       {
         "type": "end",
-        "id": "23",
+        "id": 23,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E3.svg",
         "width": 154,
@@ -364,7 +364,7 @@
       },
       {
         "type": "end",
-        "id": "24",
+        "id": 24,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E4.svg",
         "width": 106,
@@ -378,7 +378,7 @@
       },
       {
         "type": "end",
-        "id": "25",
+        "id": 25,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E5.svg",
         "width": 107,
@@ -392,7 +392,7 @@
       },
       {
         "type": "end",
-        "id": "26",
+        "id": 26,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E6.svg",
         "width": 170,
@@ -406,7 +406,7 @@
       },
       {
         "type": "end",
-        "id": "27",
+        "id": 27,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E7.svg",
         "width": 117,
@@ -420,7 +420,7 @@
       },
       {
         "type": "end",
-        "id": "28",
+        "id": 28,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E8.svg",
         "width": 166,
@@ -434,7 +434,7 @@
       },
       {
         "type": "end",
-        "id": "29",
+        "id": 29,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E9.svg",
         "width": 180,
@@ -448,7 +448,7 @@
       },
       {
         "type": "end",
-        "id": "30",
+        "id": 30,
         "label": "",
         "svgUrl": "assets/blocks/10x10x10palette/E10.svg",
         "width": 152,
