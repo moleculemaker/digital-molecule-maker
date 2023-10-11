@@ -6,7 +6,7 @@ export enum BlockType {
 
 export interface Block {
   type: BlockType;
-  id: string;
+  id: number;
   svgUrl: string;
   width: number;
   height: number;
@@ -24,6 +24,14 @@ export interface BlockSet {
     [BlockType.Middle]: Block[];
     [BlockType.End]: Block[];
   }
+}
+
+export interface RigJob {
+  block_set_id: string;
+  block_ids: number[];
+  molecule_name: string;
+  status?: string;
+  user_or_group?: number;
 }
 
 export interface BlockPropertyDefinition {

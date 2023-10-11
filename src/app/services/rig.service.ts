@@ -4,18 +4,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
 
-import { Block, BlockSet } from '../models';
+import { RigJob } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RigService {
 
+
   private RIG_URL = 'https://dmm.fastapi.mmli1.ncsa.illinois.edu/synthesize';
 
   constructor(private http: HttpClient) { }
-
-  submitReactions(rigJobs: any): Observable<any> {
+  
+  submitReactions(rigJobs: RigJob[]): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',

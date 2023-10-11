@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { BlockSize } from '../block/block.component';
-import { Block, BlockSet, BlockType, Coordinates, getBlockSetScale, Molecule } from '../models';
+import { Block, BlockSet, BlockType, Coordinates, getBlockSetScale, Molecule, RigJob } from '../models';
 
 import { BlockService, BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
@@ -132,21 +132,18 @@ export class AppBuildComponent implements OnInit {
   }
 
   //********************************************
-
-  
-
   sendToLab(moleculeList: Molecule[]): void {
 
-    const rigJobs: any[] = [];
+    const rigJobs: RigJob[] = [];
 
     moleculeList.forEach(molecule => {
 
-      const rigJob = {
+      const rigJob: RigJob = {
         block_set_id: this.blockSet!.id,
         block_ids: [
-          parseInt(molecule.blockList[0].id),
-          parseInt(molecule.blockList[1].id),
-          parseInt(molecule.blockList[2].id),
+          molecule.blockList[0].id,
+          molecule.blockList[1].id,
+          molecule.blockList[2].id,
         ],
         molecule_name: molecule.label
       }
