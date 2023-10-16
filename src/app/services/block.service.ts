@@ -13,7 +13,7 @@ export enum BlockSetId {
   providedIn: 'root',
 })
 export class BlockService {
-  private _functionMode = false;
+  private _functionMode = true;
   functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
   toggle() {
     this.functionMode$.next((this._functionMode = !this._functionMode));

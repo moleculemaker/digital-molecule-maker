@@ -6,12 +6,13 @@ import {
   ViewChild,
   TemplateRef,
 } from '@angular/core';
-
 import 'external-svg-loader';
 import { Block, BlockType } from '../models';
-import { getRgbFromLambdaMax } from '../utils/index';
 import { BlockService } from '../services/block.service';
-import { Spectrum } from '../utils/spectrum';
+import {
+  getTextColorFromBackgroundColor,
+  lambdaMaxToColor,
+} from '../utils/colors';
 
 @Component({
   selector: 'block',
@@ -340,18 +341,18 @@ export class BlockComponent implements OnInit {
     return !this.block.svgUrl ? true : false;
   }
 
+  get textColor() {
+    return getTextColorFromBackgroundColor(this.fillColor);
+  }
+
   get fillColor() {
-    const [r, g, b] = Spectrum[this.block.properties['lambdaMaxShift']] ?? [
-      0, 0, 0,
-    ];
-    return `rgb(${r}, ${g}, ${b})`;
+    return lambdaMaxToColor(this.block.properties['lambdaMaxShift'], {
+      opacity: 0.2,
+    });
   }
 
   get strokeColor() {
-    const [r, g, b] = Spectrum[this.block.properties['lambdaMaxShift']] ?? [
-      0, 0, 0,
-    ];
-    return `rgb(${r - 50}, ${g - 50}, ${b - 50})`;
+    return lambdaMaxToColor(this.block.properties['lambdaMaxShift']);
   }
 }
 

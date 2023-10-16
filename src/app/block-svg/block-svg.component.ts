@@ -14,7 +14,10 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import { Block, BlockSet, BlockType } from '../models';
 import { BlockService } from '../services/block.service';
-import { Spectrum } from '../utils/spectrum';
+import {
+  getTextColorFromBackgroundColor,
+  lambdaMaxToColor,
+} from '../utils/colors';
 
 @Component({
   selector: 'dmm-block-svg',
@@ -135,18 +138,15 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get textColor() {
-    const [r, g, b] = Spectrum[this.lambdaMax] ?? [0, 0, 0];
-    return (r + g + b) / 3 > 200 ? 'gray' : 'white';
+    return getTextColorFromBackgroundColor(this.fillColor);
   }
 
   get fillColor() {
-    const [r, g, b] = Spectrum[this.lambdaMax] ?? [0, 0, 0];
-    return `rgb(${r}, ${g}, ${b})`;
+    return lambdaMaxToColor(this.lambdaMax, { opacity: 0.5 });
   }
 
   get strokeColor() {
-    const [r, g, b] = Spectrum[this.lambdaMax] ?? [0, 0, 0];
-    return `rgb(${r - 50}, ${g - 50}, ${b - 50})`;
+    return lambdaMaxToColor(this.lambdaMax);
   }
 
   drawBlock() {

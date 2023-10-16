@@ -22,16 +22,13 @@ import {
   Coordinates,
   BlockPropertyDefinition,
 } from '../models';
-import { easeInOutQuad } from '../utils';
 
 @Component({
   selector: 'dmm-molecule-svg',
   templateUrl: './molecule-svg.component.html',
   styleUrls: ['./molecule-svg.component.scss'],
 })
-export class MoleculeSvgComponent
-  implements OnInit, AfterViewChecked, AfterViewInit
-{
+export class MoleculeSvgComponent implements OnInit {
   @ViewChild('childComponentTemplate')
   childComponentTemplate: TemplateRef<any> | null = null;
 
@@ -56,50 +53,6 @@ export class MoleculeSvgComponent
 
   @Input()
   molecule!: Molecule;
-
-  timer = -1;
-
-  lambdaMax = -1;
-  _lambdaMax = -1;
-
-  ngAfterViewInit(): void {
-    this.lambdaMax = this.getAggregateProperty(
-      this.molecule,
-      this.blockSet!.primaryProperty
-    );
-  }
-
-  ngAfterViewChecked(): void {
-    const oldValue = this._lambdaMax;
-    const curValue = this.lambdaMax;
-    const newValue = this.getAggregateProperty(
-      this.molecule,
-      this.blockSet!.primaryProperty
-    );
-
-    this._lambdaMax = newValue;
-    if (oldValue === newValue) return;
-    if (oldValue < 0) {
-      this.lambdaMax = this._lambdaMax = newValue;
-      return;
-    }
-    cancelAnimationFrame(this.timer);
-
-    const start = Date.now();
-    const duration = 200;
-
-    const animate = () => {
-      const t = Math.min(duration, Date.now() - start);
-      this.lambdaMax = Math.round(
-        easeInOutQuad(t, curValue, newValue - curValue, duration)
-      );
-      if (t < duration) {
-        this.timer = requestAnimationFrame(animate);
-      }
-    };
-
-    this.timer = requestAnimationFrame(animate);
-  }
 
   constructor(private changeDetector: ChangeDetectorRef) {}
 
