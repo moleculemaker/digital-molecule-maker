@@ -347,7 +347,7 @@ export class BlockComponent implements OnInit {
 
   get fillColor() {
     return lambdaMaxToColor(this.block.properties['lambdaMaxShift'], {
-      opacity: 0.2,
+      opacity: 0.5,
     });
   }
 

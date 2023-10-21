@@ -25,6 +25,7 @@ import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.servi
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { CartService } from '../services/cart.service';
+import { lambdaMaxToColor } from '../utils/colors';
 
 @UntilDestroy()
 @Component({
@@ -52,6 +53,14 @@ export class AppBuildComponent implements OnInit {
 
   hoveredMolecule?: number = undefined;
   spacebarPressed = false;
+
+  lambdaRange = Array(380)
+    .fill(0)
+    .map((_, i) => 400 + i);
+
+  colorFor(lambda: number) {
+    return lambdaMaxToColor(lambda);
+  }
 
   panning = false;
   isInfoPanelOpen = false;

@@ -1,13 +1,35 @@
 import * as d3 from 'd3';
 
-const MAX_VISIBLE = 700;
-const MIN_VISIBLE = 380;
+const LAMBDA_RANGE_MAX = 800;
+const LAMBDA_RANGE_MIN = 300;
 
 function clamp(v: number, min: number, max: number) {
   return Math.max(Math.min(v, max), min);
 }
 
-const interpolator = d3.interpolateRgbBasis(['cyan', 'violet', 'yellow']);
+const interpolator = d3.piecewise(d3.interpolateHsl, [
+  'white', // 300
+  'white', // 325
+  'white', // 350
+  'yellow', // 375
+  'yellow', // 400
+  'yellow', // 425
+  'yellow', // 450
+  'orange', // 475
+  'red', // 500
+  'magenta', // 525
+  'magenta', // 550
+  'violet', // 575
+  'blue', // 600
+  'cyan', // 625
+  'cyan', // 650
+  'green', // 675
+  'green', // 700
+  'green', // 725
+  'green', // 750
+  'green', // 775
+  'white', // 800
+]);
 
 type HSLColorOptions = {
   saturation?: number;
@@ -20,7 +42,8 @@ export function lambdaMaxToColor(
   options: HSLColorOptions = {}
 ): d3.HSLColor {
   const { saturation = 1, lightness = 0.5, opacity = 1 } = options;
-  const t = (lambdaMax - MAX_VISIBLE) / (MIN_VISIBLE - MAX_VISIBLE);
+  const t =
+    (lambdaMax - LAMBDA_RANGE_MIN) / (LAMBDA_RANGE_MAX - LAMBDA_RANGE_MIN);
   const color = d3.hsl(d3.color(interpolator(clamp(t, 0, 1)))!);
   color.s = saturation;
   color.l = lightness;
