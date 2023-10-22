@@ -9,11 +9,18 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class WorkspaceService {
+  private _functionMode = true;
+
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
+  functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
 
   constructor(private userService: UserService) {
     this.startAutorestore();
     this.startAutosave();
+  }
+
+  toggle() {
+    this.functionMode$.next((this._functionMode = !this._functionMode));
   }
 
   updateMoleculeList(list: Molecule[]): void {
@@ -45,13 +52,13 @@ export class WorkspaceService {
     this.getMoleculeList()
       .pipe(
         withLatestFrom(this.userService.getUser()),
-        filter(([moleculeList, user]) => !!user),
+        filter(([moleculeList, user]) => !!user)
       )
       .subscribe(([moleculeList, user]) => {
         try {
           localStorage.setItem(
             this.getLocalStorageKey(user),
-            JSON.stringify(moleculeList),
+            JSON.stringify(moleculeList)
           );
         } catch (e: unknown) {
           console.error('Failed to save workspace to localStorage', e);

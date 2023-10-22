@@ -13,12 +13,6 @@ export enum BlockSetId {
   providedIn: 'root',
 })
 export class BlockService {
-  private _functionMode = true;
-  functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
-  toggle() {
-    this.functionMode$.next((this._functionMode = !this._functionMode));
-  }
-
   urls = new Map<BlockSetId, string>([
     [BlockSetId.ColorWheel, 'assets/blocks/10x10x10palette/blocks.json'],
     [BlockSetId.OPV, 'assets/blocks/opv/blocks.json'],

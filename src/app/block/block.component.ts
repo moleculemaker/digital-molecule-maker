@@ -5,14 +5,15 @@ import {
   ElementRef,
   ViewChild,
   TemplateRef,
+  HostListener,
 } from '@angular/core';
 import 'external-svg-loader';
 import { Block, BlockType } from '../models';
-import { BlockService } from '../services/block.service';
 import {
   getTextColorFromBackgroundColor,
   lambdaMaxToColor,
 } from '../utils/colors';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: 'block',
@@ -54,9 +55,27 @@ export class BlockComponent implements OnInit {
   tabRadius = 2; //px rounded corners
   tabWidth = 20; //px wide    related to margin-left in app-build.scss - if you adjust one, adjust the other
 
-  constructor(public blockService: BlockService) {}
+  _functionModeEnabled = false;
+  _isMouseOver = false;
 
-  test = 2;
+  get functionModeEnabled() {
+    return this._functionModeEnabled !== this._isMouseOver;
+  }
+
+  constructor(public workspaceService: WorkspaceService) {
+    workspaceService.functionMode$.subscribe((enabled) => {
+      this._functionModeEnabled = enabled;
+    });
+  }
+
+  @HostListener('mouseover')
+  onHover() {
+    this._isMouseOver = true;
+  }
+  @HostListener('mouseout')
+  onHoverEnd() {
+    this._isMouseOver = false;
+  }
 
   //********************************************
   ngOnInit(): void {

@@ -7,7 +7,7 @@
   [class]="['block_' + block.type, 'size_' + size]"
   [class.dashes]="isAddBlock()"
 >
-  <ng-container [ngSwitch]="blockService.functionMode$ | async">
+  <ng-container [ngSwitch]="functionModeEnabled">
     <ng-container *ngSwitchCase="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"

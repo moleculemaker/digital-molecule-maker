@@ -13,11 +13,11 @@ import {
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, BlockSet, BlockType } from '../models';
-import { BlockService } from '../services/block.service';
 import {
   getTextColorFromBackgroundColor,
   lambdaMaxToColor,
 } from '../utils/colors';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: 'dmm-block-svg',
@@ -77,7 +77,13 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   positionPairs!: ConnectionPositionPair[];
 
-  constructor(public blockService: BlockService) {}
+  functionModeEnabled = false;
+
+  constructor(public workspaceService: WorkspaceService) {
+    workspaceService.functionMode$.subscribe((enabled) => {
+      this.functionModeEnabled = enabled;
+    });
+  }
 
   ngOnInit(): void {
     if (this.closeOverlayObservable) {

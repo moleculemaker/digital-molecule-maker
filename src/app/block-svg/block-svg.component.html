@@ -12,7 +12,7 @@
     #trigger="cdkOverlayOrigin"
     (click)="isInfoPanelOpen = !isInfoPanelOpen"
   >
-    <ng-container [ngSwitch]="blockService.functionMode$ | async">
+    <ng-container [ngSwitch]="functionModeEnabled">
       <ng-container *ngSwitchCase="true">
         <g>
           <path
