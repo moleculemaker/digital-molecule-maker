@@ -8,7 +8,7 @@ FIXME create a new ai file with the dots and check it in
 export one block at a time by selecting it (w/ rectangular selection) and right-clicking
 rename and reorganize svg files (watch out for SVG/ directory)
 edit each svg
-    delete defs node, title node, group nodes
-    remove existing classes
-    add connection_out, connection_in classes in circles
+delete defs node, title node, group nodes
+remove existing classes
+add connection_out, connection_in classes in circles
 create ts block set, setting length + width

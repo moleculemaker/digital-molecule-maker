@@ -1,6 +1,6 @@
 /**
  * This service enables the tracking of user activity within the application.
- * 
+ *
  * The current implementation uses Matomo. While the @ngx-matomo library offers
  * ways to track activity directly from component templates, we're adding this
  * wrapper in case we later replace Matomo.
@@ -15,28 +15,27 @@ import { Block, Molecule, User } from '../models';
 import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TrackingService {
-
   constructor(
     private readonly tracker: MatomoTracker,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
   ) {
     this.startAutoTrackNavigation();
     this.startAutoUpdateUser();
   }
 
   private startAutoTrackNavigation(): void {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(event => event as NavigationEnd) // just for the typing below
-    ).subscribe(
-      (navEnd) => {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map((event) => event as NavigationEnd), // just for the typing below
+      )
+      .subscribe((navEnd) => {
         this.trackNavigation(navEnd.url);
-      }
-    );
+      });
   }
 
   private trackNavigation(url: string): void {
@@ -44,84 +43,53 @@ export class TrackingService {
   }
 
   private startAutoUpdateUser(): void {
-    this.userService.getUser().subscribe(
-      user => {
-        this.tracker.setUserId(user?.surveyCode || 'none')
-      }
-    );
+    this.userService.getUser().subscribe((user) => {
+      this.tracker.setUserId(user?.surveyCode || 'none');
+    });
   }
 
-  trackBeginSession(user: User | null): void {
+  trackBeginSession(user: User | null): void {}
 
-  }
+  trackRestoreWorkspace(): void {}
 
-  trackRestoreWorkspace(): void {
+  trackClickCatalogTab(tab: 'blocks' | 'molecules'): void {}
 
-  }
+  trackClickCatalogSubtab(subtab: 'start' | 'middle' | 'end'): void {}
 
-  trackClickCatalogTab(tab: 'blocks' | 'molecules'): void {
+  trackSearch(): void {}
 
-  }
+  trackFilter(): void {}
 
-  trackClickCatalogSubtab(subtab: 'start' | 'middle' | 'end'): void {
+  trackAddMoleculeToCart(): void {}
 
-  }
+  trackRemoveMoleculeFromCart(): void {}
 
-  trackSearch(): void {
+  trackStartWorkspaceMolecule(method: 'drag' | 'click'): void {}
 
-  }
+  trackUpdateWorkspaceMolecule(
+    method: 'drag' | 'click' | 'block-delete-button',
+  ): void {}
 
-  trackFilter(): void {
+  trackDeleteWorkspaceMolecule(method: 'molecule-delete-button'): void {}
 
-  }
+  trackOpenOverlay(blockOrMolecule: Block | Molecule): void {}
 
-  trackAddMoleculeToCart(): void {
+  trackShowMoreMoleculePropertiesInOverlay(
+    blockOrMolecule: Block | Molecule,
+  ): void {}
 
-  }
+  trackCloseOverlay(
+    blockOrMolecule: Block | Molecule,
+    method: 'close-button' | 'background-click' | 'auto',
+  ) {}
 
-  trackRemoveMoleculeFromCart(): void {
+  trackOpenCart(): void {}
 
-  }
+  trackCloseCart(): void {}
 
-  trackStartWorkspaceMolecule(method: 'drag' | 'click'): void {
+  trackMouseEnter(): void {}
 
-  }
-
-  trackUpdateWorkspaceMolecule(method: 'drag' | 'click' | 'block-delete-button'): void {
-
-  }
-
-  trackDeleteWorkspaceMolecule(method: 'molecule-delete-button'): void {
-
-  }
-
-  trackOpenOverlay(blockOrMolecule: Block | Molecule): void {
-
-  }
-
-  trackShowMoreMoleculePropertiesInOverlay(blockOrMolecule: Block | Molecule): void {
-
-  }
-
-  trackCloseOverlay(blockOrMolecule: Block | Molecule, method: 'close-button' | 'background-click' | 'auto') {
-
-  }
-
-  trackOpenCart(): void {
-
-  }
-
-  trackCloseCart(): void {
-
-  }
-
-  trackMouseEnter(): void {
-
-  }
-
-  trackMouseLeave(): void {
-
-  }
+  trackMouseLeave(): void {}
 
   /*
   trackClick(target): void {

@@ -1,14 +1,10 @@
 /**************** tutorial css ******************/
 
-@import '../styles/core';
-
+@import "../styles/core";
 
 //**************** custom mixins ******************
 
-
-
 //**************** animations ******************
-
 
 //**************** css ******************
 
@@ -24,7 +20,9 @@
   z-index: get_index(tutorial);
 
   background: {
-    color: color_variable('tutorial_background'); // rgba(get_color('background'), .85);
+    color: color_variable(
+      "tutorial_background"
+    ); // rgba(get_color('background'), .85);
   }
 
   .step {
@@ -36,14 +34,14 @@
     width: 24rem;
 
     background: {
-      color: color_variable('background');
+      color: color_variable("background");
     }
 
     padding: ($padding * 2) ($padding * 1.5);
 
     @include translate(-50%, -50%);
     @include border-radius($border_radius * 2);
-    @include shadow(8px, rgba(#000, .1), 5px, 5px);
+    @include shadow(8px, rgba(#000, 0.1), 5px, 5px);
 
     &.wide {
       width: 40rem;
@@ -70,7 +68,7 @@
 
     .content {
       font: {
-        size: .9rem;
+        size: 0.9rem;
       }
       line: {
         height: 140%;
@@ -96,7 +94,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: $padding * .5;
+      gap: $padding * 0.5;
 
       margin: {
         top: $padding * 1.5;
@@ -110,16 +108,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: $padding * .25;
+        gap: $padding * 0.25;
 
-        padding: ($padding * .65) ($padding * .5);
+        padding: ($padding * 0.65) ($padding * 0.5);
 
-        color: color_variable('background');
+        color: color_variable("background");
         background: {
-          color: color_variable('button');
+          color: color_variable("button");
         }
 
-        border: 1px solid color_variable('button');
+        border: 1px solid color_variable("button");
 
         @include border-radius($border_radius);
 
@@ -131,20 +129,20 @@
 
         &:hover {
           background: {
-            color: color_variable('button_hover');
+            color: color_variable("button_hover");
           }
 
           border: {
-            color: color_variable('button_hover');
+            color: color_variable("button_hover");
           }
         }
 
         &.button_outline:not(:hover) {
-          color: color_variable('button_border');
+          color: color_variable("button_border");
           background: none;
 
           border: {
-            color: color_variable('button_border');
+            color: color_variable("button_border");
           }
         }
       }
@@ -158,6 +156,6 @@
   }
 
   strong {
-    color: color_variable('primary');
+    color: color_variable("primary");
   }
 }

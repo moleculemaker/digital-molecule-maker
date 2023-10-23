@@ -1,6 +1,6 @@
 /**************** panel css ******************/
 
-@import '../styles/core';
+@import "../styles/core";
 
 $panel_width: 320px;
 $panel_width_wide: 460px; //320px * 2;
@@ -13,7 +13,7 @@ $panel_width_wide: 460px; //320px * 2;
 @include keyframes(blur_in) {
   to {
     background: {
-      color: rgba(#ccc, .8);
+      color: rgba(#ccc, 0.8);
     }
 
     backdrop-filter: blur(4px);
@@ -23,7 +23,7 @@ $panel_width_wide: 460px; //320px * 2;
 @include keyframes(blur_out) {
   from {
     background: {
-      color: rgba(#ccc, .8);
+      color: rgba(#ccc, 0.8);
     }
 
     backdrop-filter: blur(4px);
@@ -48,10 +48,10 @@ $panel_width_wide: 460px; //320px * 2;
   bottom: 0px;
   z-index: get_index(panel);
 
-  @include animation(blur_in .3s ease-in-out 0s 1 normal both);
+  @include animation(blur_in 0.3s ease-in-out 0s 1 normal both);
 
   &.inactive {
-    @include animation(blur_out .3s ease-in-out 0s 1 normal both);
+    @include animation(blur_out 0.3s ease-in-out 0s 1 normal both);
   }
 
   .panel {
@@ -88,7 +88,7 @@ $panel_width_wide: 460px; //320px * 2;
     }
 
     background: {
-      color: color_variable('background');
+      color: color_variable("background");
     }
 
     padding: $padding;
@@ -98,7 +98,7 @@ $panel_width_wide: 460px; //320px * 2;
 
     &:hover {
       background: {
-        color: color_variable('button_hover');
+        color: color_variable("button_hover");
       }
     }
   }
@@ -117,12 +117,12 @@ $panel_width_wide: 460px; //320px * 2;
 
   height: calc(100% - #{$padding * 3});
 
-  margin: $padding * .5;
-  padding: ($padding * .75) ($padding * 1.5);
+  margin: $padding * 0.5;
+  padding: ($padding * 0.75) ($padding * 1.5);
 
-  color: color_variable('panel_text');
+  color: color_variable("panel_text");
   background: {
-    color: color_variable('panel_background');
+    color: color_variable("panel_background");
   }
 
   @include border-radius($interface_radius);
@@ -137,7 +137,7 @@ $panel_width_wide: 460px; //320px * 2;
     height: 12px;
 
     margin: {
-      left: $padding * .2;
+      left: $padding * 0.2;
     }
 
     text: {
@@ -160,27 +160,27 @@ $panel_width_wide: 460px; //320px * 2;
 
   .molecules {
     .molecule {
-      padding: $padding * .5;
+      padding: $padding * 0.5;
 
-      border: 1px solid color_variable('interface_border');
+      border: 1px solid color_variable("interface_border");
 
-      @include border-radius($interface_radius * .5);
+      @include border-radius($interface_radius * 0.5);
 
       & + .molecule {
         margin: {
-          top: $padding * .5;
+          top: $padding * 0.5;
         }
       }
     }
 
     .molecule_content {
       display: flex;
-//      flex-wrap: wrap;
+      //      flex-wrap: wrap;
       align-items: stretch;
       gap: $padding;
 
       margin: {
-        top: $padding * .25;
+        top: $padding * 0.25;
       }
 
       .preview,
@@ -191,10 +191,10 @@ $panel_width_wide: 460px; //320px * 2;
       }
 
       .button {
-        padding: ($padding * .5);
+        padding: ($padding * 0.5);
 
         font: {
-          size: .75rem;
+          size: 0.75rem;
         }
       }
     }
@@ -212,15 +212,15 @@ $panel_width_wide: 460px; //320px * 2;
     }
 
     margin: {
-//      right: -($padding * .75);
-//      left: -($padding * .75);
+      //      right: -($padding * .75);
+      //      left: -($padding * .75);
     }
 
     background: {
-      color: color_variable('panel_preview_background');
+      color: color_variable("panel_preview_background");
     }
 
-    @include border-radius($interface_radius * .5);
+    @include border-radius($interface_radius * 0.5);
 
     .icon_3d {
       display: flex;
@@ -236,7 +236,7 @@ $panel_width_wide: 460px; //320px * 2;
       height: 30px;
 
       background: {
-        color: color_variable('panel_preview_icon');
+        color: color_variable("panel_preview_icon");
       }
 
       pointer-events: none;
@@ -252,7 +252,7 @@ $panel_width_wide: 460px; //320px * 2;
 
   inplace {
     margin: {
-      top: $padding * .25;
+      top: $padding * 0.25;
     }
     padding: $padding 0px;
 
@@ -263,14 +263,14 @@ $panel_width_wide: 460px; //320px * 2;
     .label {
       flex-grow: 1;
 
-      color: color_variable('primary');
+      color: color_variable("primary");
 
       font: {
         weight: bold;
       }
 
       .placeholder {
-        color:color_variable('panel_text_faded');
+        color: color_variable("panel_text_faded");
       }
     }
 
@@ -283,16 +283,16 @@ $panel_width_wide: 460px; //320px * 2;
         height: 2rem;
 
         background: {
-          color: color_variable('interface_faded');
+          color: color_variable("interface_faded");
         }
 
         @include border-left-radius(0px);
         @include box-sizing(border-box);
 
         &:hover {
-          color: color_variable('background');
+          color: color_variable("background");
           background: {
-            color: color_variable('button_hover');
+            color: color_variable("button_hover");
           }
         }
       }
@@ -303,13 +303,13 @@ $panel_width_wide: 460px; //320px * 2;
       height: 2rem;
 
       margin: 0px;
-      padding: ($padding * .25) ($padding * .5);
+      padding: ($padding * 0.25) ($padding * 0.5);
 
       font: {
         family: $font_family;
       }
 
-      border: 1px solid color_variable('interface_border');
+      border: 1px solid color_variable("interface_border");
 
       @include border-left-radius($border_radius);
       @include box-sizing(border-box);
@@ -318,10 +318,10 @@ $panel_width_wide: 460px; //320px * 2;
 
   .info {
     .label {
-      color: color_variable('text_faded');
+      color: color_variable("text_faded");
 
       font: {
-        size: .65rem;
+        size: 0.65rem;
       }
     }
 
@@ -336,14 +336,14 @@ $panel_width_wide: 460px; //320px * 2;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: $padding * .2;
+    gap: $padding * 0.2;
 
     background: none;
 
     margin: {
       top: $padding;
     }
-    padding: ($padding * .75);
+    padding: ($padding * 0.75);
 
     border: 0px;
 
@@ -352,29 +352,35 @@ $panel_width_wide: 460px; //320px * 2;
     }
 
     @include box-sizing(border-box);
-    @include border-radius($interface_radius * .5);
+    @include border-radius($interface_radius * 0.5);
 
     & + .button {
       margin: {
-        top: $padding * .5;
+        top: $padding * 0.5;
       }
     }
 
     &.outline_button {
-      color: color_variable('button_border');
+      color: color_variable("button_border");
 
-      border: 1px solid color_variable('button_border');
+      border: 1px solid color_variable("button_border");
 
-      @include transition(#{color .2s easing($ease-in), background-color .2s easing($ease-in)});
+      @include transition(
+        #{color 0.2s easing($ease-in),
+        background-color 0.2s easing($ease-in)}
+      );
     }
 
     &:not(.outline_button) {
-      color: color_variable('background');
+      color: color_variable("background");
       background: {
-        color: color_variable('button');
+        color: color_variable("button");
       }
 
-      @include transition(#{color .2s easing($ease-in), background-color .2s easing($ease-in)});
+      @include transition(
+        #{color 0.2s easing($ease-in),
+        background-color 0.2s easing($ease-in)}
+      );
     }
 
     &:not([disabled]) {
@@ -382,14 +388,14 @@ $panel_width_wide: 460px; //320px * 2;
 
       &.outline_button {
         &:hover {
-          color: color_variable('background');
+          color: color_variable("background");
 
           background: {
-            color: color_variable('button_hover');
+            color: color_variable("button_hover");
           }
 
           border: {
-            color: color_variable('button_hover');
+            color: color_variable("button_hover");
           }
 
           @include transition(none);
@@ -399,7 +405,7 @@ $panel_width_wide: 460px; //320px * 2;
       &:not(.outline_button) {
         &:hover {
           background: {
-            color: color_variable('button_hover');
+            color: color_variable("button_hover");
           }
 
           @include transition(none);
@@ -420,14 +426,14 @@ $panel_width_wide: 460px; //320px * 2;
 
     & + .details {
       margin: {
-        top: $padding * .25;
+        top: $padding * 0.25;
       }
     }
 
     .label {
       flex-grow: 1;
 
-      color: color_variable('panel_text_faded');
+      color: color_variable("panel_text_faded");
     }
 
     .value {
@@ -443,10 +449,10 @@ $panel_width_wide: 460px; //320px * 2;
         cursor: pointer;
         display: inline-block;
 
-        color: color_variable('panel_button');
+        color: color_variable("panel_button");
 
         margin: {
-          top: $padding * .2;
+          top: $padding * 0.2;
         }
 
         font: {
@@ -459,14 +465,14 @@ $panel_width_wide: 460px; //320px * 2;
         }
 
         &:hover {
-          color: color_variable('panel_button_hover');
+          color: color_variable("panel_button_hover");
         }
       }
     }
   }
 
   .panel_label {
-    margin: ($padding * .5) 0px;
+    margin: ($padding * 0.5) 0px;
     margin: {
       top: $padding * 1.5;
     }
@@ -477,11 +483,11 @@ $panel_width_wide: 460px; //320px * 2;
     }
   }
 
-  .disable_submit{
+  .disable_submit {
     pointer-events: none;
-    background-color: color_variable('interface_button')
+    background-color: color_variable("interface_button");
   }
-/*
+  /*
   .button_group {
     display: flex;
     justify-content: flex-end;

@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 
 import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
@@ -40,7 +40,7 @@ import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 // then delete this comment!)
 function initializeAppFactory(): () => Observable<null> {
   return () => of(null);
- }
+}
 
 @NgModule({
   declarations: [
@@ -63,7 +63,7 @@ function initializeAppFactory(): () => Observable<null> {
     TutorialComponent,
     BlockSvgComponent,
     OverlayComponent,
-    MoleculeSvgComponent
+    MoleculeSvgComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,10 +73,10 @@ function initializeAppFactory(): () => Observable<null> {
     AppRoutingModule,
     NgxMatomoTrackerModule.forRoot({
       siteId: 2,
-      trackerUrl: 'https://matomo.mmli1.ncsa.illinois.edu/'
+      trackerUrl: 'https://matomo.mmli1.ncsa.illinois.edu/',
     }),
     DragDropModule,
-    OverlayModule
+    OverlayModule,
   ],
   providers: [
     {
@@ -85,9 +85,9 @@ function initializeAppFactory(): () => Observable<null> {
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,
       deps: [TrackingService],
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

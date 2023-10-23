@@ -2,8 +2,7 @@
 //this css library should only be loaded ONCE PER PAGE (or web component)
 //load _core.scss directly if only needing the supporting css colors, variables, mixins, and other functionality
 
-@import 'core';
-
+@import "core";
 
 /*
 
@@ -18,37 +17,36 @@ example: document.documentElement.style.setProperty('--text-color', '#ff0000');
 
 //TODO if restoring check always on case, too: gene navigator "Events" row, at least
 :host {
-	@each $name, $color in $colors {
-		--#{str-replace($name, '_', '-')}-color: #{$color};
-	}
+  @each $name, $color in $colors {
+    --#{str-replace($name, '_', '-')}-color: #{$color};
+  }
 }
 
 //**************** css libraries ******************
 
-@import 'core/reset';
+@import "core/reset";
 
 //load custom css for common elements
-@import 'tags';
-
+@import "tags";
 
 //**************** css ******************
 
 //host css (think of this as the body tag for the web component)
 :host {
-	display: block;
+  display: block;
 
-	color: color_variable('text');
-	background: {
-		color: color_variable('background');
-	}
+  color: color_variable("text");
+  background: {
+    color: color_variable("background");
+  }
 
-	font: {
-		family: $font_family;
-		//size: .9em;  --- if put this here each level of nested component decreases font size
-	}
-	line: {
-		height: 130%;
-	}
+  font: {
+    family: $font_family;
+    //size: .9em;  --- if put this here each level of nested component decreases font size
+  }
+  line: {
+    height: 130%;
+  }
 }
 
 /*
@@ -69,4 +67,4 @@ main {
 
 //**************** google webfont ******************
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400;600;700&family=Montserrat:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;600;700&family=Montserrat:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap");

@@ -7,10 +7,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: '[dfDroppable]'
+  selector: '[dfDroppable]',
 })
-export class DroppableDirective extends DraggableDirective implements OnInit, OnDestroy {
-
+export class DroppableDirective
+  extends DraggableDirective
+  implements OnInit, OnDestroy
+{
   @Input('dfDroppable') group!: string;
   @Input('dfDroppableData') data: any;
 
@@ -23,16 +25,19 @@ export class DroppableDirective extends DraggableDirective implements OnInit, On
   ngOnInit(): void {
     this.dragStart
       .pipe(takeUntil(this._destroy$))
-      .subscribe(event => this._droppableService.dragStarted(this.group, this.data, event));
+      .subscribe((event) =>
+        this._droppableService.dragStarted(this.group, this.data, event),
+      );
 
     this.dragEnd
       .pipe(takeUntil(this._destroy$))
-      .subscribe(event => this._droppableService.dragEnded(this.group, this.data, event));
+      .subscribe((event) =>
+        this._droppableService.dragEnded(this.group, this.data, event),
+      );
   }
 
   ngOnDestroy() {
     this._destroy$.next();
     this._destroy$.complete();
   }
-
 }

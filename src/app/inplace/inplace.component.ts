@@ -1,47 +1,57 @@
-import { Component, EventEmitter, Input, OnInit, AfterContentInit, Output, ElementRef, ViewChild } from '@angular/core';
-import { TemplateRef, ContentChild, ContentChildren, Directive, QueryList } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  AfterContentInit,
+  Output,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  TemplateRef,
+  ContentChild,
+  ContentChildren,
+  Directive,
+  QueryList,
+} from '@angular/core';
 
-@Directive({selector: '[templateName]'})
+@Directive({ selector: '[templateName]' })
 export class Template {
-  @Input() templateName!:string;
+  @Input() templateName!: string;
 }
-
 
 @Component({
   selector: 'inplace',
   templateUrl: './inplace.component.html',
   styleUrls: ['./inplace.component.scss'],
 })
-
 export class InplaceComponent implements AfterContentInit {
   @Input()
-  value:String = 'test';
+  value: String = 'test';
 
-//  @Output()
-//  onClose = new EventEmitter();
+  //  @Output()
+  //  onClose = new EventEmitter();
 
-  @ContentChild('display') displayTemplate!:TemplateRef<any>;
-  @ContentChild('content') contentTemplate!:TemplateRef<any>;
+  @ContentChild('display') displayTemplate!: TemplateRef<any>;
+  @ContentChild('content') contentTemplate!: TemplateRef<any>;
 
   isEditing = false;
 
   //********************************************
-  constructor() { }
+  constructor() {}
 
   //********************************************
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   //********************************************
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   //********************************************
-  ngAfterContentInit() {
-  }
+  ngAfterContentInit() {}
 
   //********************************************
-  toggleEditing():void {
+  toggleEditing(): void {
     this.isEditing = !this.isEditing;
   }
 }

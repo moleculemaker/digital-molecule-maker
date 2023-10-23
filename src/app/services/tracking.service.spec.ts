@@ -14,9 +14,9 @@ describe('TrackingService', () => {
         NgxMatomoTrackerModule.forRoot({
           siteId: 1,
           trackerUrl: 'https://moleculemaker.matomo.cloud/',
-          disabled: true
-        })
-      ]
+          disabled: true,
+        }),
+      ],
     });
     service = TestBed.inject(TrackingService);
   });

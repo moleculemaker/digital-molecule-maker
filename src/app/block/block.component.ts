@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 
-import "external-svg-loader";
+import 'external-svg-loader';
 import { BlockType } from '../models';
 
 @Component({
   selector: 'block',
   templateUrl: './block.component.html',
-  styleUrls: ['./block.component.scss']
+  styleUrls: ['./block.component.scss'],
 })
 export class BlockComponent implements OnInit {
   @Input()
@@ -27,15 +27,15 @@ export class BlockComponent implements OnInit {
   @Input()
   imageHeight = 80;
 
-  @ViewChild('svgImage') svg: ElementRef|null = null;
+  @ViewChild('svgImage') svg: ElementRef | null = null;
 
   padding = {
     x: 20 * 4,
-    y: 20 * 1.5
+    y: 20 * 1.5,
   };
 
   strokeWidth = 4;
-  strokeDasharray = "";
+  strokeDasharray = '';
 
   borderRadius = 4;
 
@@ -43,7 +43,7 @@ export class BlockComponent implements OnInit {
     [BlockSize.Default]: 1.5,
     [BlockSize.Small]: 1.0,
     [BlockSize.Large]: 3.0,
-    [BlockSize.Icon]: 2.0
+    [BlockSize.Icon]: 2.0,
   };
 
   blockWidth = 80;
@@ -54,11 +54,10 @@ export class BlockComponent implements OnInit {
   tabRadius = 2; //px rounded corners
   tabWidth = 20; //px wide    related to margin-left in app-build.scss - if you adjust one, adjust the other
 
-  constructor() { }
+  constructor() {}
 
   //********************************************
   ngOnInit(): void {
-
     //change border size for icons
     if (this.isIcon()) {
       this.borderRadius = 1;
@@ -71,7 +70,9 @@ export class BlockComponent implements OnInit {
     }
 
     //for small
-    if (this.isSmall()) {this.borderRadius = 4;}
+    if (this.isSmall()) {
+      this.borderRadius = 4;
+    }
 
     //change width / height if icon
     if (this.isIcon()) {
@@ -85,7 +86,7 @@ export class BlockComponent implements OnInit {
     //change width / height
     if (this.isSmall()) {
       this.padding.x = 16 * 3;
-//      this.padding.y = 20 * 1.5;
+      //      this.padding.y = 20 * 1.5;
     }
 
     if (this.isSmall() || this.isDefaultSize() || this.isLarge()) {
@@ -111,19 +112,24 @@ export class BlockComponent implements OnInit {
     //min width and height
     if (!this.isIcon()) {
       //believe this only happens if no svgURL was provided
-      let minSize = (this.isSmall()) ? 100 : 150;
+      let minSize = this.isSmall() ? 100 : 150;
 
-      if (this.blockWidth < minSize) {this.blockWidth = minSize;}
-      if (this.blockHeight < minSize) {this.blockHeight = minSize;}
+      if (this.blockWidth < minSize) {
+        this.blockWidth = minSize;
+      }
+      if (this.blockHeight < minSize) {
+        this.blockHeight = minSize;
+      }
     }
 
     //make dashes
-    if (this.isDefaultSize() && this.isAddBlock()) {this.strokeDasharray = "4 2";}
+    if (this.isDefaultSize() && this.isAddBlock()) {
+      this.strokeDasharray = '4 2';
+    }
   }
 
   //********************************************
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   //********************************************
   onLoadSVG(event: any) {
@@ -146,19 +152,21 @@ export class BlockComponent implements OnInit {
   //********************************************
   drawBlock() {
     let path = '';
-    let hasRightTab = (!this.isEnd() && !this.isAddBlock()) ? true : false;
+    let hasRightTab = !this.isEnd() && !this.isAddBlock() ? true : false;
 
     let minX = this.strokeWidth;
     let minY = this.strokeWidth;
-//    let maxX = this.imageWidth + this.padding.x - this.strokeWidth;
-//    let maxY = this.imageHeight + this.padding.y - this.strokeWidth;
+    //    let maxX = this.imageWidth + this.padding.x - this.strokeWidth;
+    //    let maxY = this.imageHeight + this.padding.y - this.strokeWidth;
     let maxX = this.blockWidth + this.padding.x - this.strokeWidth;
     let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
 
     let closePath = true;
 
     //adjust max if right tab
-    if (hasRightTab) {maxX = maxX - this.tabWidth;}
+    if (hasRightTab) {
+      maxX = maxX - this.tabWidth;
+    }
 
     //no need to show left border
     if (this.isAddBlock() && !this.isStart()) {
@@ -168,34 +176,57 @@ export class BlockComponent implements OnInit {
 
     //build list of coordinates
 
-    let coords: Array<{x: number, y: number, radius?: number}> = [];
+    let coords: Array<{ x: number; y: number; radius?: number }> = [];
 
     //start upper left
-    coords.push({x:minX, y:minY});
+    coords.push({ x: minX, y: minY });
 
     //top right
-    coords.push({x:maxX, y:minY});
+    coords.push({ x: maxX, y: minY });
 
     //right tab (override radius)
     if (hasRightTab) {
-      coords.push({x:maxX, y:this.tabOffset, radius:this.tabRadius});
-      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth, radius:this.tabRadius});
-      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight, radius:this.tabRadius});
-      coords.push({x:maxX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth});
+      coords.push({ x: maxX, y: this.tabOffset, radius: this.tabRadius });
+      coords.push({
+        x: maxX + this.tabWidth,
+        y: this.tabOffset + this.tabWidth,
+        radius: this.tabRadius,
+      });
+      coords.push({
+        x: maxX + this.tabWidth,
+        y: this.tabOffset + this.tabWidth + this.tabHeight,
+        radius: this.tabRadius,
+      });
+      coords.push({
+        x: maxX,
+        y: this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth,
+      });
     }
 
     //bottom right
-    coords.push({x:maxX, y:maxY});
+    coords.push({ x: maxX, y: maxY });
 
     //bottom left
-    coords.push({x:minX, y:maxY});
+    coords.push({ x: minX, y: maxY });
 
     //left tab (override radius)
     if (!this.isStart() && !this.isAddBlock()) {
-      coords.push({x:minX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth, radius:this.tabRadius});
-      coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight, radius:this.tabRadius});
-      coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth, radius:this.tabRadius});
-      coords.push({x:minX, y:this.tabOffset});
+      coords.push({
+        x: minX,
+        y: this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth,
+        radius: this.tabRadius,
+      });
+      coords.push({
+        x: minX + this.tabWidth,
+        y: this.tabOffset + this.tabWidth + this.tabHeight,
+        radius: this.tabRadius,
+      });
+      coords.push({
+        x: minX + this.tabWidth,
+        y: this.tabOffset + this.tabWidth,
+        radius: this.tabRadius,
+      });
+      coords.push({ x: minX, y: this.tabOffset });
     }
 
     //generate rounded corner path
@@ -207,8 +238,12 @@ export class BlockComponent implements OnInit {
   //********************************************
   //requires an array of {x:0, y:0} coordinate pairs
   //based on https://stackoverflow.com/questions/10177985/svg-rounded-corner/65186378#65186378
-  createRoundedPath(coords: Array<{x: number, y: number, radius?: number}>, radius = 8, close = true) {
-    let path = "";
+  createRoundedPath(
+    coords: Array<{ x: number; y: number; radius?: number }>,
+    radius = 8,
+    close = true,
+  ) {
+    let path = '';
     const length = coords.length + (close ? 1 : -1);
 
     for (let i = 0; i < length; i++) {
@@ -216,11 +251,18 @@ export class BlockComponent implements OnInit {
       const b = coords[(i + 1) % coords.length];
 
       //added to allow override of radius at coordinate level
-      let thisRadius = (a.radius && a.radius > 0) ? a.radius : radius;
-      const t = Math.min(Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
-//      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
+      let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
+      const t = Math.min(
+        Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y),
+        0.5,
+      );
+      //      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
 
-      if (i > 0) {path += `Q${a.x},${a.y} ${a.x * (1 - t) + b.x * t},${a.y * (1 - t) + b.y * t}`;}
+      if (i > 0) {
+        path += `Q${a.x},${a.y} ${a.x * (1 - t) + b.x * t},${
+          a.y * (1 - t) + b.y * t
+        }`;
+      }
 
       if (!close && i == 0) {
         path += `M${a.x},${a.y}`;
@@ -235,7 +277,9 @@ export class BlockComponent implements OnInit {
       }
     }
 
-    if (close) {path += "Z";}
+    if (close) {
+      path += 'Z';
+    }
 
     return path;
   }
@@ -271,9 +315,9 @@ export class BlockComponent implements OnInit {
   }
 
   //********************************************
-//todo: determine if this should be a separate property to control it, for now, show the add block structure if no svgUrl has been added
+  //todo: determine if this should be a separate property to control it, for now, show the add block structure if no svgUrl has been added
   isAddBlock() {
-    return (!this.iconLabel && !this.svgUrl) ? true : false;
+    return !this.iconLabel && !this.svgUrl ? true : false;
   }
 }
 
@@ -281,5 +325,5 @@ export enum BlockSize {
   Default = 'default',
   Small = 'small',
   Large = 'large',
-  Icon = 'icon'
+  Icon = 'icon',
 }

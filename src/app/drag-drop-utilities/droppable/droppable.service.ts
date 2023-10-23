@@ -11,10 +11,9 @@ export interface DroppableEvent {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DroppableService {
-
   dragStart$: Observable<DroppableEvent>;
   dragEnd$: Observable<DroppableEvent>;
 
@@ -30,7 +29,7 @@ export class DroppableService {
     this._dragStartSubject.next({
       group: group,
       nativeEvent: event,
-      data: data
+      data: data,
     });
   }
 
@@ -38,8 +37,7 @@ export class DroppableService {
     this._dragEndSubject.next({
       group: group,
       nativeEvent: event,
-      data: data
+      data: data,
     });
   }
-
 }

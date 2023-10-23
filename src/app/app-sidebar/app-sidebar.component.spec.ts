@@ -11,16 +11,9 @@ describe('AppSidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule
-      ],
-      declarations: [
-        AppSidebarComponent,
-        BlockComponent,
-        DroppableDirective
-      ]
-    })
-    .compileComponents();
+      imports: [BrowserAnimationsModule],
+      declarations: [AppSidebarComponent, BlockComponent, DroppableDirective],
+    }).compileComponents();
   });
 
   beforeEach(() => {

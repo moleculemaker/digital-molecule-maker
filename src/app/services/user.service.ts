@@ -5,19 +5,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  user$ = new BehaviorSubject<User | null>(null);
 
-  user$ = new BehaviorSubject<User|null>(null);
+  constructor() {}
 
-  constructor() { }
-
-  setUser(user: User|null): void {
+  setUser(user: User | null): void {
     this.user$.next(user);
   }
 
-  getUser(): Observable<User|null> {
+  getUser(): Observable<User | null> {
     return this.user$.asObservable();
   }
 }

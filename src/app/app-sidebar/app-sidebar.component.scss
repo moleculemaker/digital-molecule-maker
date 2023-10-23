@@ -1,18 +1,17 @@
 /**************** block css ******************/
 
 @use "sass:math";
-@import '../styles/core';
+@import "../styles/core";
 
 $toggle_button_count: 2;
 $sidebar_width: 500px;
-
 
 //**************** custom mixins ******************
 
 @mixin button_color($name) {
   &.button_#{$name} {
     .label {
-      color: color_variable(#{'block_' + $name});
+      color: color_variable(#{"block_" + $name});
     }
   }
 }
@@ -21,20 +20,19 @@ $sidebar_width: 500px;
   &.type_#{$name} {
     .molecule_svg {
       path {
-        fill: color_variable(#{'block_' + $name});
-        stroke: color_variable(#{'block_' + $name + '_border'});
+        fill: color_variable(#{"block_" + $name});
+        stroke: color_variable(#{"block_" + $name + "_border"});
       }
     }
   }
 }
-
 
 //**************** css ******************
 
 :host {
   width: $sidebar_width;
 
-  @include transition(#{width .2s easing($ease-in-out-cubic)});
+  @include transition(#{width 0.2s easing($ease-in-out-cubic)});
 
   &.collapsed {
     width: 0px;
@@ -60,14 +58,14 @@ $sidebar_width: 500px;
   height: 100%;
 
   @include translate(0%, 0%);
-  @include transition(#{transform .2s easing($ease-in-out-cubic)});
+  @include transition(#{transform 0.2s easing($ease-in-out-cubic)});
 
   border: {
-    right: 2px solid color_variable('interface_border');
+    right: 2px solid color_variable("interface_border");
   }
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     left: 100%;
     top: 0px;
@@ -77,7 +75,7 @@ $sidebar_width: 500px;
     width: 4px;
 
     background: {
-      color: color_variable('interface_border');
+      color: color_variable("interface_border");
     }
   }
 
@@ -98,15 +96,15 @@ $sidebar_width: 500px;
     }
 
     background: {
-      color: color_variable('background');
+      color: color_variable("background");
     }
 
     margin: {
       left: 4px; //don't cover up the border
     }
-    padding: ($padding * .5) ($padding * .65);
+    padding: ($padding * 0.5) ($padding * 0.65);
 
-    border: 1px solid color_variable('interface_border');
+    border: 1px solid color_variable("interface_border");
     border: {
       left: 0px;
     }
@@ -115,7 +113,7 @@ $sidebar_width: 500px;
 
     &:hover {
       background: {
-        color: color_variable('interface_hover');
+        color: color_variable("interface_hover");
       }
     }
   }
@@ -124,7 +122,7 @@ $sidebar_width: 500px;
     display: flex;
 
     border: {
-      bottom: 1px solid color_variable('interface_border');
+      bottom: 1px solid color_variable("interface_border");
     }
 
     .tab {
@@ -135,7 +133,7 @@ $sidebar_width: 500px;
       justify-content: center;
       align-items: center;
 
-      color: color_variable('interface_button');
+      color: color_variable("interface_button");
 
       padding: ($padding) $padding;
 
@@ -154,7 +152,7 @@ $sidebar_width: 500px;
       }
 
       &.selected {
-        color: color_variable('interface_tab_selected');
+        color: color_variable("interface_tab_selected");
 
         font: {
           weight: bold;
@@ -162,7 +160,7 @@ $sidebar_width: 500px;
 
         border: {
           bottom: {
-            color: color_variable('interface_tab_selected');
+            color: color_variable("interface_tab_selected");
           }
         }
       }
@@ -176,16 +174,16 @@ $sidebar_width: 500px;
     }
 
     border: {
-      bottom: 1px solid color_variable('interface_border');
+      bottom: 1px solid color_variable("interface_border");
     }
 
     .control_bar {
       display: flex;
       align-items: center;
-      gap: $padding * .25;
+      gap: $padding * 0.25;
 
       margin: {
-        top: $padding * .5;
+        top: $padding * 0.5;
       }
 
       .type {
@@ -195,20 +193,20 @@ $sidebar_width: 500px;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: $padding * .25;
+        gap: $padding * 0.25;
 
         height: 1.5rem;
 
-        padding: ($padding * .25) ($padding * .5);
+        padding: ($padding * 0.25) ($padding * 0.5);
 
-        border: 1px solid color_variable('interface_border');
+        border: 1px solid color_variable("interface_border");
 
         @include border-radius($border_radius);
 
         &.has_selected_type {
           &:not(.selected) {
             &:not(:hover) {
-              color: color_variable('text_faded');
+              color: color_variable("text_faded");
 
               @include opacity(50);
 
@@ -224,25 +222,25 @@ $sidebar_width: 500px;
 
         &.selected {
           border: {
-            color: color_variable('button_selected');
+            color: color_variable("button_selected");
           }
         }
 
         &:hover {
           border: {
-            color: color_variable('button_hover');
+            color: color_variable("button_hover");
           }
 
           @include opacity(100);
         }
 
-        @include type_color('start');
-        @include type_color('middle');
-        @include type_color('end');
+        @include type_color("start");
+        @include type_color("middle");
+        @include type_color("end");
 
         .label {
           font: {
-            size: .75rem;
+            size: 0.75rem;
           }
           text: {
             transform: uppercase;
@@ -261,15 +259,15 @@ $sidebar_width: 500px;
       justify-content: center;
       align-items: center;
 
-      color: color_variable('interface_faded');
+      color: color_variable("interface_faded");
 
       padding: {
-        top: $padding * .5;
-        bottom: $padding * .5;
+        top: $padding * 0.5;
+        bottom: $padding * 0.5;
       }
 
       &:hover {
-        color: color_variable('button_hover');
+        color: color_variable("button_hover");
       }
 
       &.expanded {
@@ -297,48 +295,48 @@ $sidebar_width: 500px;
           cursor: pointer;
           display: flex;
           align-items: center;
-          gap: $padding * .2;
+          gap: $padding * 0.2;
 
           background: none;
-          border: 1px solid color_variable('tag_background');
+          border: 1px solid color_variable("tag_background");
 
           svg {
             .star {
-              fill: color_variable('primary');
+              fill: color_variable("primary");
               stroke-width: 0px;
             }
           }
 
           &.selected {
-            color: color_variable('background');
+            color: color_variable("background");
             background: {
-              color: color_variable('interface_selected');
+              color: color_variable("interface_selected");
             }
 
             border: {
-              color: color_variable('interface_selected');
+              color: color_variable("interface_selected");
             }
 
             svg {
               .star {
-                fill: color_variable('background');
+                fill: color_variable("background");
               }
             }
 
             &:hover {
               background: {
-                color: color_variable('button_hover');
+                color: color_variable("button_hover");
               }
 
               border: {
-                color: color_variable('button_hover');
+                color: color_variable("button_hover");
               }
             }
           }
 
           &:hover {
             background: {
-              color: color_variable('interface_hover');
+              color: color_variable("interface_hover");
             }
           }
         }
@@ -349,19 +347,19 @@ $sidebar_width: 500px;
   .search {
     display: flex;
     align-items: center;
-    gap: $padding * .2;
+    gap: $padding * 0.2;
 
     background: {
-      color: color_variable('interface_search_background');
+      color: color_variable("interface_search_background");
     }
 
-    padding: ($padding * .2);
+    padding: ($padding * 0.2);
 
     font: {
-      size: .8rem;
+      size: 0.8rem;
     }
 
-    border: 1px solid color_variable('interface_border');
+    border: 1px solid color_variable("interface_border");
 
     @include border-radius($border_radius);
 
@@ -371,8 +369,8 @@ $sidebar_width: 500px;
       align-items: center;
 
       margin: {
-        right: $padding * .2;
-        left: $padding * .35;
+        right: $padding * 0.2;
+        left: $padding * 0.35;
       }
     }
 
@@ -381,16 +379,16 @@ $sidebar_width: 500px;
 
       display: flex;
       align-items: center;
-      gap: $padding * .2;
+      gap: $padding * 0.2;
 
       font: {
-        size: .65rem;
+        size: 0.65rem;
       }
 
       &:hover {
         .molecule {
           background: {
-            color: color_variable('interface_search_hover');
+            color: color_variable("interface_search_hover");
           }
         }
 
@@ -402,13 +400,13 @@ $sidebar_width: 500px;
       .molecule {
         display: flex;
         align-items: center;
-        gap: $padding * .2;
+        gap: $padding * 0.2;
 
         background: {
-          color: color_variable('interface_border');
+          color: color_variable("interface_border");
         }
 
-        padding: ($padding * .2) ($padding * .35);
+        padding: ($padding * 0.2) ($padding * 0.35);
 
         font: {
           weight: 500; //semibold if the webfont has it
@@ -418,10 +416,10 @@ $sidebar_width: 500px;
 
         .molecule_svg {
           margin: {
-            right: $padding * .2;
-            left: $padding * .25;
+            right: $padding * 0.2;
+            left: $padding * 0.25;
           }
-/*
+          /*
 //override colors based on molecule type? or use generic color scheme? or leave as the default green for all?
           path {
             fill: #bbb;
@@ -439,7 +437,7 @@ $sidebar_width: 500px;
         @include opacity(20);
 
         svg {
-          @include scale(.65);
+          @include scale(0.65);
         }
       }
     }
@@ -449,10 +447,10 @@ $sidebar_width: 500px;
 
       background: none;
 
-      padding: ($padding * .5) ($padding * .25);
+      padding: ($padding * 0.5) ($padding * 0.25);
 
       font: {
-        size: .8rem;
+        size: 0.8rem;
       }
 
       border: 0px;
@@ -461,7 +459,6 @@ $sidebar_width: 500px;
         outline: none;
       }
     }
-
   }
 
   .block_list {
@@ -474,7 +471,9 @@ $sidebar_width: 500px;
     @include border-radius($interface_radius);
 
     background: {
-      color: color_variable('background'); //just in case anything goes behind this
+      color: color_variable(
+        "background"
+      ); //just in case anything goes behind this
     }
 
     .content {
@@ -484,7 +483,7 @@ $sidebar_width: 500px;
       display: flex;
       flex-wrap: wrap;
       align-content: flex-start;
-      gap: $padding * .5;
+      gap: $padding * 0.5;
 
       overflow: {
         y: scroll;
@@ -492,7 +491,7 @@ $sidebar_width: 500px;
 
       padding: {
         top: $padding;
-        right: $padding * .5;
+        right: $padding * 0.5;
         bottom: $padding;
         left: $padding;
       }
@@ -505,25 +504,25 @@ $sidebar_width: 500px;
         display: flex;
         flex-direction: column;
 
-        width: calc(50% - #{$padding * .5});
+        width: calc(50% - #{$padding * 0.5});
 
         flex-shrink: 0;
 
-        border: 2px solid color_variable('interface_border');
+        border: 2px solid color_variable("interface_border");
 
         @include box-sizing(border-box);
         @include border-radius($border_radius * 2);
 
         &:hover {
           background: {
-//            color: color_variable('interface_sidebar_background_hover');
+            //            color: color_variable('interface_sidebar_background_hover');
           }
 
-          border-color: color_variable('button_hover');
+          border-color: color_variable("button_hover");
 
           .preview {
             background: {
-//              color: color_variable('interface_sidebar_background_hover');
+              //              color: color_variable('interface_sidebar_background_hover');
             }
           }
         }
@@ -532,14 +531,14 @@ $sidebar_width: 500px;
           cursor: grab;
 
           ::ng-deep .block_container {
-//            cursor: grab;
+            //            cursor: grab;
           }
         }
 
         &.dragging {
           cursor: grabbing;
         }
-/*
+        /*
         &.dragging {
           ::ng-deep .block_container {
             cursor: grabbing;
@@ -554,10 +553,10 @@ $sidebar_width: 500px;
       flex-grow: 1;
 
       background: {
-        color: color_variable('interface_sidebar_block_background');
+        color: color_variable("interface_sidebar_block_background");
       }
 
-      padding: ($padding * .5);
+      padding: ($padding * 0.5);
 
       @include border-top-radius($border_radius * 2);
 
@@ -565,25 +564,25 @@ $sidebar_width: 500px;
         cursor: pointer;
 
         position: absolute;
-        right: $padding * .5;
-        top: $padding * .5;
+        right: $padding * 0.5;
+        top: $padding * 0.5;
         z-index: 100;
 
         width: 1.25rem;
         height: 1.25rem;
 
-        color: color_variable('interface_button');
+        color: color_variable("interface_button");
 
         &:hover {
-          color: color_variable('button_border');
+          color: color_variable("button_border");
         }
 
         &.is_favorite {
-          color: color_variable('primary');
+          color: color_variable("primary");
 
           svg {
             .star {
-              fill: color_variable('primary');
+              fill: color_variable("primary");
             }
           }
         }
@@ -596,12 +595,12 @@ $sidebar_width: 500px;
       align-items: center;
 
       margin: {
-//        top: $padding * .25;
-        bottom: -($padding * .5); //tighten up the spacing a bit given the block scale
+        //        top: $padding * .25;
+        bottom: -($padding * 0.5); //tighten up the spacing a bit given the block scale
       }
 
       block {
-        @include scale(.75);
+        @include scale(0.75);
       }
     }
 
@@ -609,15 +608,15 @@ $sidebar_width: 500px;
     }
 
     .info {
-      padding: ($padding * .5);
+      padding: ($padding * 0.5);
       padding: {
-        bottom: $padding * .75;
+        bottom: $padding * 0.75;
       }
 
       .formula {
         display: flex;
         align-items: center;
-        gap: $padding * .5;
+        gap: $padding * 0.5;
 
         font: {
           weight: bold;
@@ -625,14 +624,14 @@ $sidebar_width: 500px;
       }
 
       .weight {
-        color: color_variable('interface_tab_text');
+        color: color_variable("interface_tab_text");
 
         font: {
-          size: .8rem;
+          size: 0.8rem;
         }
       }
     }
-/*
+    /*
 
     .info {
       display: flex;
@@ -707,18 +706,18 @@ $sidebar_width: 500px;
           }
         }
 */
-/*
+    /*
         &.dragging {
           ::ng-deep .block_container {
             cursor: grabbing;
           }
         }
 */
-/*
+    /*
       }
     }
 */
-/*
+    /*
     .tabs {
       display: flex;
       align-items: stretch;
@@ -804,17 +803,17 @@ $sidebar_width: 500px;
   }
 
   .dragging_helper {
-//todo: unable to get this to work...the grabbing icon changes, however, then the block won't drop into the workspace with pointer-events enabled
-//    cursor: grabbing !important;
-//    pointer-events: auto !important;
+    //todo: unable to get this to work...the grabbing icon changes, however, then the block won't drop into the workspace with pointer-events enabled
+    //    cursor: grabbing !important;
+    //    pointer-events: auto !important;
 
     display: inline-block; //don't let it get full width
 
     @include opacity(60);
 
     ::ng-deep block {
-        .block_container {
-        }
+      .block_container {
+      }
     }
   }
 }

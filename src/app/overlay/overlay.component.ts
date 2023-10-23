@@ -1,7 +1,28 @@
-import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { aggregateProperty, Block, BlockPropertyDefinition, BlockSet, Molecule } from "../models";
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import {
+  aggregateProperty,
+  Block,
+  BlockPropertyDefinition,
+  BlockSet,
+  Molecule,
+} from '../models';
 
 @Component({
   selector: 'dmm-overlay',
@@ -11,21 +32,25 @@ import { aggregateProperty, Block, BlockPropertyDefinition, BlockSet, Molecule }
     trigger('overlayPropExpand', [
       state('collapsed', style({ height: '0px' })),
       state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
+      ),
     ]),
   ],
 })
 export class OverlayComponent implements OnInit {
-  @ViewChild('childComponentTemplate') childComponentTemplate: TemplateRef<any>|null = null;
+  @ViewChild('childComponentTemplate')
+  childComponentTemplate: TemplateRef<any> | null = null;
 
   @Input()
-  blockOrMolecule: Block|Molecule|null = null;
+  blockOrMolecule: Block | Molecule | null = null;
 
   @Input()
-  blockSet: BlockSet|null = null;
+  blockSet: BlockSet | null = null;
 
   @Input()
-  tags:any[] = [];
+  tags: any[] = [];
 
   @Input()
   isExpanded = false;
@@ -39,27 +64,27 @@ export class OverlayComponent implements OnInit {
   @Output()
   addToCart = new EventEmitter<void>();
 
-  @ContentChild('templateAdditionalProperties') templateAdditionalProperties:TemplateRef<HTMLElement>|null = null;
-  @ContentChild('templateFooter') templateFooter:TemplateRef<HTMLElement>|null = null;
+  @ContentChild('templateAdditionalProperties')
+  templateAdditionalProperties: TemplateRef<HTMLElement> | null = null;
+  @ContentChild('templateFooter')
+  templateFooter: TemplateRef<HTMLElement> | null = null;
 
   isOverlayPropExpanded = false;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
-
-  onClose():void {
+  onClose(): void {
     this.close.emit();
   }
 
-  onAddToCart(){
+  onAddToCart() {
     this.addToCart.emit();
   }
 
-  getMode(): 'block'|'molecule'|null {
-    let returnVal: 'block'|'molecule'|null = null;
+  getMode(): 'block' | 'molecule' | null {
+    let returnVal: 'block' | 'molecule' | null = null;
     if (this.blockOrMolecule) {
       if ('blockList' in this.blockOrMolecule) {
         returnVal = 'molecule';
@@ -70,7 +95,10 @@ export class OverlayComponent implements OnInit {
     return returnVal;
   }
 
-  getAggregateProperty(molecule: Molecule, property: BlockPropertyDefinition): any {
+  getAggregateProperty(
+    molecule: Molecule,
+    property: BlockPropertyDefinition,
+  ): any {
     return aggregateProperty(molecule, property);
   }
 }

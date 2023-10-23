@@ -1,11 +1,25 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { BlockSize } from '../block/block.component';
-import { Block, BlockSet, BlockType, Coordinates, getBlockSetScale, Molecule, RigJob } from '../models';
+import {
+  Block,
+  BlockSet,
+  BlockType,
+  Coordinates,
+  getBlockSetScale,
+  Molecule,
+  RigJob,
+} from '../models';
 
 import { BlockService, BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
@@ -17,11 +31,11 @@ import { CartService } from '../services/cart.service';
 @Component({
   selector: 'app-build',
   templateUrl: './app-build.component.html',
-  styleUrls: ['./app-build.component.scss']
+  styleUrls: ['./app-build.component.scss'],
 })
-
 export class AppBuildComponent implements OnInit {
-  @ViewChild('workspace') svgWorkspace: ElementRef<SVGGraphicsElement> | null = null;
+  @ViewChild('workspace') svgWorkspace: ElementRef<SVGGraphicsElement> | null =
+    null;
 
   isShowingSendToLab = false;
   isShowingCart = false;
@@ -30,7 +44,7 @@ export class AppBuildComponent implements OnInit {
   BlockSize = BlockSize; // for template
   svgScale = 1;
 
-  blockSet: BlockSet|null = null;
+  blockSet: BlockSet | null = null;
 
   zoomAndPanMatrix = [1, 0, 0, 1, 0, 0];
 
@@ -42,12 +56,12 @@ export class AppBuildComponent implements OnInit {
 
   panning = false;
   isInfoPanelOpen = false;
-  private _initialPosition!:  { x: number, y: number };
+  private _initialPosition!: { x: number; y: number };
   private _panElement!: HTMLElement;
   closeOverlay: Subject<void> = new Subject<void>();
   isDragging: boolean | undefined;
   draggedMolecule: any;
-  startingMousePosition: { x: number; y: number; } = { x: 0, y: 0 };
+  startingMousePosition: { x: number; y: number } = { x: 0, y: 0 };
   draggedMoleculeIndex: number | undefined;
   constructor(
     private blockService: BlockService,
@@ -55,11 +69,8 @@ export class AppBuildComponent implements OnInit {
     private workspaceService: WorkspaceService,
     private cartService: CartService,
     private changeDetector: ChangeDetectorRef,
-    private route: ActivatedRoute
-  ) { }
-
-  
-
+    private route: ActivatedRoute,
+  ) {}
 
   //********************************************
   ngOnInit(): void {
@@ -70,29 +81,39 @@ export class AppBuildComponent implements OnInit {
     // moleculeList in the current session (which becomes a more interesting case
     // once sessions are persisted on the backend instead of in localStorage)
 
-    this.route.queryParamMap.subscribe(queryParamMap => {
+    this.route.queryParamMap.subscribe((queryParamMap) => {
       let blockSet = BlockSetId.ColorWheel;
-      if (Object.values(BlockSetId).includes(queryParamMap.get('blockSet') as BlockSetId)) {
+      if (
+        Object.values(BlockSetId).includes(
+          queryParamMap.get('blockSet') as BlockSetId,
+        )
+      ) {
         blockSet = queryParamMap.get('blockSet')! as BlockSetId;
       }
       this.setBlockSet(blockSet);
     });
 
-    this.workspaceService.getMoleculeList().pipe(
-      untilDestroyed(this),
-      filter(moleculeList => !!moleculeList)
-    ).subscribe(moleculeList => {
-      this.moleculeList = moleculeList;
-      this.changeDetector.detectChanges();
-    })
+    this.workspaceService
+      .getMoleculeList()
+      .pipe(
+        untilDestroyed(this),
+        filter((moleculeList) => !!moleculeList),
+      )
+      .subscribe((moleculeList) => {
+        this.moleculeList = moleculeList;
+        this.changeDetector.detectChanges();
+      });
 
-    this.cartService.getMoleculeList().pipe(
-      untilDestroyed(this),
-      filter(moleculeList => !!moleculeList)
-    ).subscribe(moleculeList => {
-      this.cartMoleculeList = moleculeList;
-      this.changeDetector.detectChanges();
-    })
+    this.cartService
+      .getMoleculeList()
+      .pipe(
+        untilDestroyed(this),
+        filter((moleculeList) => !!moleculeList),
+      )
+      .subscribe((moleculeList) => {
+        this.cartMoleculeList = moleculeList;
+        this.changeDetector.detectChanges();
+      });
 
     document.addEventListener('keydown', (event) => {
       if (event.code === 'Space') {
@@ -110,7 +131,7 @@ export class AppBuildComponent implements OnInit {
   }
 
   setBlockSet(blockSetId: BlockSetId): void {
-    this.blockService.getBlockSet(blockSetId).subscribe(blockSet => {
+    this.blockService.getBlockSet(blockSetId).subscribe((blockSet) => {
       this.blockSet = blockSet;
       this.svgScale = getBlockSetScale(blockSet, 70);
     });
@@ -122,7 +143,7 @@ export class AppBuildComponent implements OnInit {
   }
 
   //********************************************
-  onPanelClose():void {
+  onPanelClose(): void {
     this.toggleCartPanel();
   }
 
@@ -133,11 +154,9 @@ export class AppBuildComponent implements OnInit {
 
   //********************************************
   sendToLab(moleculeList: Molecule[]): void {
-
     const rigJobs: RigJob[] = [];
 
-    moleculeList.forEach(molecule => {
-
+    moleculeList.forEach((molecule) => {
       const rigJob: RigJob = {
         block_set_id: this.blockSet!.id,
         block_ids: [
@@ -145,28 +164,27 @@ export class AppBuildComponent implements OnInit {
           molecule.blockList[1].id,
           molecule.blockList[2].id,
         ],
-        molecule_name: molecule.label
-      }
+        molecule_name: molecule.label,
+      };
 
       rigJobs.push(rigJob);
     });
 
-    this.rigService.submitReactions(rigJobs).subscribe(resp => {
-        console.log("Submitted molecules in Cart", resp);
+    this.rigService.submitReactions(rigJobs).subscribe((resp) => {
+      console.log('Submitted molecules in Cart', resp);
     });
   }
 
   onZoomIn(): void {
-    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map(val => val * 1.1);
+    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map((val) => val * 1.1);
   }
   onZoomOut(): void {
-    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map(val => val * 0.9);
+    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map((val) => val * 0.9);
   }
 
   onCenter(): void {
     this.zoomAndPanMatrix[4] = 0;
     this.zoomAndPanMatrix[5] = 0;
-
   }
 
   /**
@@ -187,16 +205,20 @@ export class AppBuildComponent implements OnInit {
     const xAfterTransform = x - originX;
     const yAfterTransform = y - originY;
     return new Coordinates(
-      (xAfterTransform - this.zoomAndPanMatrix[4]) / this.zoomAndPanMatrix[0] + originX,
-      (yAfterTransform - this.zoomAndPanMatrix[5]) / this.zoomAndPanMatrix[3] + originY
+      (xAfterTransform - this.zoomAndPanMatrix[4]) / this.zoomAndPanMatrix[0] +
+        originX,
+      (yAfterTransform - this.zoomAndPanMatrix[5]) / this.zoomAndPanMatrix[3] +
+        originY,
     );
   }
 
   dropped(event: DroppableEvent): void {
     if (this.hoveredMolecule != undefined) {
-      this.moleculeList[this.hoveredMolecule].blockList = this.moleculeList[this.hoveredMolecule].blockList.filter(block => block.type != event.data.type);
+      this.moleculeList[this.hoveredMolecule].blockList = this.moleculeList[
+        this.hoveredMolecule
+      ].blockList.filter((block) => block.type != event.data.type);
       this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
-    } else{
+    } else {
       if (event.data.type == BlockType.Start) {
         const newBlockList: Block[] = [event.data];
         const pos = this.getMousePosition(event.nativeEvent);
@@ -204,9 +226,7 @@ export class AppBuildComponent implements OnInit {
         const positionCoordinates = new Coordinates(x, y);
         const newMolecule = new Molecule(positionCoordinates, newBlockList);
         this.moleculeList.push(newMolecule);
-        
       }
-
     }
     // todo: clean up state management a bit; currently modifying the object in place, passing the
     // object to the service, and then subscribing to the service for updates
@@ -216,23 +236,21 @@ export class AppBuildComponent implements OnInit {
     this.closeOverlay.next();
   }
 
-  onMouseEnter(moleculeId: number){
+  onMouseEnter(moleculeId: number) {
     this.hoveredMolecule = moleculeId;
   }
 
-  onMouseLeave(){
+  onMouseLeave() {
     this.hoveredMolecule = undefined;
   }
 
-  onPanStart(event: MouseEvent){
+  onPanStart(event: MouseEvent) {
     this.closeOverlay.next();
 
     if (this.spacebarPressed) {
-
       this.panning = true;
       this._panElement = event.target as HTMLElement;
       this.closeOverlay.next();
-
 
       this._initialPosition = {
         x: event.pageX - this.zoomAndPanMatrix[4],
@@ -241,20 +259,28 @@ export class AppBuildComponent implements OnInit {
     }
   }
 
-  onPan(event: MouseEvent){
+  onPan(event: MouseEvent) {
     if (this.panning && this.spacebarPressed) {
-      let dx = (event.pageX - this._initialPosition.x);
-      let dy = (event.pageY - this._initialPosition.y);
+      let dx = event.pageX - this._initialPosition.x;
+      let dy = event.pageY - this._initialPosition.y;
 
       this.zoomAndPanMatrix[4] = dx;
       this.zoomAndPanMatrix[5] = dy;
     } else {
       // Original code for single molecule movement
       const moleculeIndex = this.hoveredMolecule;
-      if (this.isDragging && typeof moleculeIndex !== 'undefined' && !this.spacebarPressed) {
+      if (
+        this.isDragging &&
+        typeof moleculeIndex !== 'undefined' &&
+        !this.spacebarPressed
+      ) {
         const mousePosition = this.getMousePosition(event);
-        const dx = (mousePosition.x - this.startingMousePosition.x) / this.zoomAndPanMatrix[0];
-        const dy = (mousePosition.y - this.startingMousePosition.y) / this.zoomAndPanMatrix[3];
+        const dx =
+          (mousePosition.x - this.startingMousePosition.x) /
+          this.zoomAndPanMatrix[0];
+        const dy =
+          (mousePosition.y - this.startingMousePosition.y) /
+          this.zoomAndPanMatrix[3];
 
         this.moleculeList[moleculeIndex].position.x += dx;
         this.moleculeList[moleculeIndex].position.y += dy;
@@ -264,12 +290,11 @@ export class AppBuildComponent implements OnInit {
     }
   }
 
-
-  onPanStop(event: MouseEvent){
+  onPanStop(event: MouseEvent) {
     this.panning = false;
   }
 
-  onRemoveMolecule(moleculeId: number){
+  onRemoveMolecule(moleculeId: number) {
     this.hoveredMolecule = undefined;
     this.moleculeList.splice(moleculeId, 1);
   }
@@ -285,12 +310,19 @@ export class AppBuildComponent implements OnInit {
     this.closeMoleculePopup();
   }
 
-
   onMove(event: MouseEvent) {
-    if (this.isDragging && typeof this.draggedMoleculeIndex !== 'undefined' && !this.spacebarPressed) {
+    if (
+      this.isDragging &&
+      typeof this.draggedMoleculeIndex !== 'undefined' &&
+      !this.spacebarPressed
+    ) {
       const mousePosition = this.getMousePosition(event);
-      const dx = (mousePosition.x - this.startingMousePosition.x) / this.zoomAndPanMatrix[0];
-      const dy = (mousePosition.y - this.startingMousePosition.y) / this.zoomAndPanMatrix[3];
+      const dx =
+        (mousePosition.x - this.startingMousePosition.x) /
+        this.zoomAndPanMatrix[0];
+      const dy =
+        (mousePosition.y - this.startingMousePosition.y) /
+        this.zoomAndPanMatrix[3];
 
       this.moleculeList[this.draggedMoleculeIndex].position.x += dx;
       this.moleculeList[this.draggedMoleculeIndex].position.y += dy;
@@ -306,7 +338,6 @@ export class AppBuildComponent implements OnInit {
     }
   }
 
-
   getMousePosition(event: MouseEvent) {
     const CTM = this.svgWorkspace!.nativeElement.getScreenCTM()!;
     return {
@@ -315,7 +346,7 @@ export class AppBuildComponent implements OnInit {
     };
   }
 
-  addMoleculeToCart(moleculeId: number){
+  addMoleculeToCart(moleculeId: number) {
     let moleculeToAdd = this.moleculeList.splice(moleculeId, 1);
     this.cartMoleculeList.push(moleculeToAdd[0]);
     this.closeOverlay.next();
@@ -323,7 +354,7 @@ export class AppBuildComponent implements OnInit {
     this.cartService.updateMoleculeList(this.cartMoleculeList);
   }
 
-  addToWorkSpace(moleculeIdString: string){
+  addToWorkSpace(moleculeIdString: string) {
     let moleculeId: number = +moleculeIdString;
     let moleculeToAdd = this.cartMoleculeList.splice(moleculeId, 1);
     this.moleculeList.push(moleculeToAdd[0]);
@@ -331,5 +362,4 @@ export class AppBuildComponent implements OnInit {
     this.workspaceService.updateMoleculeList(this.moleculeList);
     this.cartService.updateMoleculeList(this.cartMoleculeList);
   }
-
 }

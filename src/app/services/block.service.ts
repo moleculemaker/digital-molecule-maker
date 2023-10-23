@@ -4,36 +4,30 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Block, BlockSet, BlockType } from '../models';
 
-
 export enum BlockSetId {
   ColorWheel = 'COLOR_WHEEL',
-  OPV = 'OPV'
+  OPV = 'OPV',
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BlockService {
-
   urls = new Map<BlockSetId, string>([
     [BlockSetId.ColorWheel, 'assets/blocks/10x10x10palette/blocks.json'],
-    [BlockSetId.OPV, 'assets/blocks/opv/blocks.json']
+    [BlockSetId.OPV, 'assets/blocks/opv/blocks.json'],
   ]);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
 
-  }
-
-  getBlockSet(blockSetId: BlockSetId) : Observable<BlockSet> {
-
+  getBlockSet(blockSetId: BlockSetId): Observable<BlockSet> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        Authorization: 'my-auth-token'
-      })
+        'Content-Type': 'application/json',
+        Authorization: 'my-auth-token',
+      }),
     };
 
     return this.http.get<BlockSet>(this.urls.get(blockSetId)!, httpOptions);
   }
-
 }

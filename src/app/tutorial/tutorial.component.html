@@ -1,6 +1,10 @@
 <div class="tutorial" *ngIf="currentStep">
-  <div class="step"
-    [class]="['step_' + currentStep.id, (currentStep.class) ? currentStep.class : 'default']"
+  <div
+    class="step"
+    [class]="[
+      'step_' + currentStep.id,
+      currentStep.class ? currentStep.class : 'default'
+    ]"
   >
     <!-- welcome -->
     <ng-container *ngIf="currentStep.id == 'welcome'">
@@ -18,7 +22,8 @@
     <ng-container *ngIf="currentStep.id == 'workspace'">
       <div class="content">
         <h3>The Workspace</h3>
-        This is the <strong>workspace</strong>, a sandbox where you can design the molecules you want!
+        This is the <strong>workspace</strong>, a sandbox where you can design
+        the molecules you want!
       </div>
       <div class="controls">
         <button class="button_outline" (click)="previousStep()">Back</button>
@@ -30,7 +35,8 @@
     <ng-container *ngIf="currentStep.id == 'blocks'">
       <div class="content">
         <h3>The Block Tray</h3>
-        This is the <strong>block tray</strong>, an area that stores Lego-like molecule blocks. You will use them to build your molecules.
+        This is the <strong>block tray</strong>, an area that stores Lego-like
+        molecule blocks. You will use them to build your molecules.
       </div>
       <div class="controls">
         <button class="button_outline" (click)="previousStep()">Back</button>
@@ -42,7 +48,8 @@
     <ng-container *ngIf="currentStep.id == 'build'">
       <div class="content">
         <h3>Building a Molecule</h3>
-        Now that you know where everything in the DMM is, let’s show you how to build your <strong>first molecule!</strong>
+        Now that you know where everything in the DMM is, let’s show you how to
+        build your <strong>first molecule!</strong>
       </div>
       <div class="controls">
         <button class="button_outline" (click)="previousStep()">Back</button>
@@ -53,9 +60,11 @@
     <!-- build 002 -->
     <ng-container *ngIf="currentStep.id == 'build_002'">
       <div class="content">
-        <div class="center">Filter by block type using <strong>tags</strong></div>
+        <div class="center">
+          Filter by block type using <strong>tags</strong>
+        </div>
         <!-- todo: change this to the animated gif -->
-        <img src="assets/tutorial/build_002.png">
+        <img src="assets/tutorial/build_002.png" />
       </div>
       <div class="controls">
         <button class="button_outline" (click)="previousStep()">Back</button>
@@ -68,7 +77,7 @@
       <div class="content">
         <div class="center">Hover on block to view additional properties</div>
         <!-- todo: change this to the animated gif -->
-        <img src="assets/tutorial/build_003.png">
+        <img src="assets/tutorial/build_003.png" />
       </div>
       <div class="controls">
         <button class="button_outline" (click)="previousStep()">Back</button>
@@ -81,7 +90,7 @@
       <div class="content">
         <div class="center">Drag and drop blocks into the workspace.</div>
         <!-- todo: change this to the animated gif -->
-        <img src="assets/tutorial/build_004.png">
+        <img src="assets/tutorial/build_004.png" />
       </div>
       <div class="controls">
         <button class="button_outline" (click)="previousStep()">Back</button>
@@ -99,5 +108,5 @@
         <button class="full" (click)="close()">Okay</button>
       </div>
     </ng-container>
-</div>
+  </div>
 </div>

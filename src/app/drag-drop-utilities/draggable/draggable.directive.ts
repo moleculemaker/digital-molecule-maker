@@ -8,16 +8,15 @@ import {
   HostListener,
   Input,
   Output,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { DraggableHelperDirective } from './draggable-helper.directive';
 import { fromEvent, Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[dfDraggable]'
+  selector: '[dfDraggable]',
 })
 export class DraggableDirective implements OnDestroy {
-
   @HostBinding('class.draggable')
   enabled = true;
 
@@ -56,8 +55,9 @@ export class DraggableDirective implements OnDestroy {
     }
 
     // prevent the cursor from selecting
-    this._selectSubscription = fromEvent(document, 'selectstart')
-      .subscribe((ev: Event) => ev.preventDefault());
+    this._selectSubscription = fromEvent(document, 'selectstart').subscribe(
+      (ev: Event) => ev.preventDefault(),
+    );
 
     // small timeout to prevent click start dragging
     this._timeout = setTimeout(() => {
