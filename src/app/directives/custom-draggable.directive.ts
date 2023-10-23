@@ -6,6 +6,8 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 export class CustomDraggableDirective {
   private isMouseDown = false;
   private clickDisabled = false;
+  private timer = -1;
+
   constructor(private el: ElementRef<HTMLElement>) {
     this.el.nativeElement.addEventListener(
       'click',
@@ -25,13 +27,15 @@ export class CustomDraggableDirective {
     this.isMouseDown = true;
   }
 
-  @HostListener('mousemove') mouseMove() {
+  @HostListener('mousemove', ['$event']) mouseMove(event: MouseEvent) {
     if (this.isMouseDown) {
-      this.clickDisabled = true;
+      clearTimeout(this.timer);
+      this.timer = window.setTimeout(() => (this.clickDisabled = true), 200);
     }
   }
 
   @HostListener('mouseup') mouseUp() {
     this.isMouseDown = false;
+    window.clearTimeout(this.timer);
   }
 }

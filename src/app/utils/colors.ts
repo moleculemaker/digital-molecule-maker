@@ -1,35 +1,27 @@
 import * as d3 from 'd3';
 
-const LAMBDA_RANGE_MAX = 800;
-const LAMBDA_RANGE_MIN = 300;
+const LAMBDA_RANGE_MAX = 780;
+const LAMBDA_RANGE_MIN = 380;
+
+export const LambdaMaxRangeForColor: Record<
+  string,
+  {
+    min: number;
+    max: number;
+  }
+> = {
+  yellow: { min: 400, max: 480 },
+  orange: { min: 480, max: 490 },
+  red: { min: 490, max: 500 },
+  magenta: { min: 500, max: 560 },
+  violet: { min: 560, max: 580 },
+  blue: { min: 580, max: 605 },
+  cyan: { min: 605, max: 750 },
+};
 
 function clamp(v: number, min: number, max: number) {
   return Math.max(Math.min(v, max), min);
 }
-
-const interpolator = d3.piecewise(d3.interpolateHsl, [
-  'white', // 300
-  'white', // 325
-  'white', // 350
-  'yellow', // 375
-  'yellow', // 400
-  'yellow', // 425
-  'yellow', // 450
-  'orange', // 475
-  'red', // 500
-  'magenta', // 525
-  'magenta', // 550
-  'violet', // 575
-  'blue', // 600
-  'cyan', // 625
-  'cyan', // 650
-  'green', // 675
-  'green', // 700
-  'green', // 725
-  'green', // 750
-  'green', // 775
-  'white', // 800
-]);
 
 type HSLColorOptions = {
   saturation?: number;
@@ -37,14 +29,53 @@ type HSLColorOptions = {
   opacity?: number;
 };
 
+function interpolate(a: number, b: number, t: number) {
+  if (isNaN(a)) return b;
+  if (isNaN(b)) return a;
+  return (1 - t) * a + t * b;
+}
+
 export function lambdaMaxToColor(
   lambdaMax: number,
   options: HSLColorOptions = {}
-): d3.HSLColor {
+) {
   const { saturation = 1, lightness = 0.5, opacity = 1 } = options;
+
+  if (lambdaMax < LAMBDA_RANGE_MIN || lambdaMax > LAMBDA_RANGE_MAX) {
+    const color = d3.hsl('white');
+    color.s = saturation;
+    (color.l = lightness), (color.opacity = opacity);
+    return color;
+  }
+
+  const prev = Object.entries(LambdaMaxRangeForColor)
+    .reverse()
+    .find(([, { min, max }]) => (min + max) / 2 <= lambdaMax);
+  const next = Object.entries(LambdaMaxRangeForColor).find(
+    ([, { min, max }]) => (min + max) / 2 >= lambdaMax
+  );
+  const color1 = prev ? d3.hsl(prev[0]) : d3.hsl('white');
+  const color2 = next ? d3.hsl(next[0]) : d3.hsl('white');
+  const lambda1 = prev ? (prev[1].min + prev[1].max) / 2 : LAMBDA_RANGE_MIN;
+  const lambda2 = next ? (next[1].min + next[1].max) / 2 : LAMBDA_RANGE_MAX;
   const t =
-    (lambdaMax - LAMBDA_RANGE_MIN) / (LAMBDA_RANGE_MAX - LAMBDA_RANGE_MIN);
-  const color = d3.hsl(d3.color(interpolator(clamp(t, 0, 1)))!);
+    lambda2 > lambda1
+      ? clamp((lambdaMax - lambda1) / (lambda2 - lambda1), 0, 1)
+      : 1;
+  const color = d3.hsl(
+    interpolate(
+      color1.h,
+      color2.h - color1.h > 180
+        ? color2.h - 360
+        : color2.h - color1.h < -180
+        ? color2.h + 360
+        : color2.h,
+      t
+    ),
+    interpolate(color1.s, color2.s, t),
+    interpolate(color1.l, color2.l, t),
+    interpolate(color1.opacity, color2.opacity, t)
+  );
   color.s = saturation;
   color.l = lightness;
   color.opacity = opacity;

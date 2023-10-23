@@ -27,6 +27,15 @@ $sidebar_width: 500px;
   }
 }
 
+@mixin color_type_color($color) {
+  &.color_type_#{"" + $color} {
+    background: rgba($color, 0.2);
+    &.selected {
+      background: rgba($color, 0.5);
+    }
+  }
+}
+
 //**************** css ******************
 
 :host {
@@ -181,6 +190,7 @@ $sidebar_width: 500px;
       display: flex;
       align-items: center;
       gap: $padding * 0.25;
+      flex-wrap: wrap;
 
       margin: {
         top: $padding * 0.5;
@@ -237,6 +247,12 @@ $sidebar_width: 500px;
         @include type_color("start");
         @include type_color("middle");
         @include type_color("end");
+
+        $colors: yellow, orange, red, magenta, violet, blue, cyan;
+
+        @each $color in $colors {
+          @include color_type_color($color);
+        }
 
         .label {
           font: {

@@ -55,11 +55,11 @@ export class BlockComponent implements OnInit {
   tabRadius = 2; //px rounded corners
   tabWidth = 20; //px wide    related to margin-left in app-build.scss - if you adjust one, adjust the other
 
+  flipped = false;
   _functionModeEnabled = false;
-  _isMouseOver = false;
 
   get functionModeEnabled() {
-    return this._functionModeEnabled !== this._isMouseOver;
+    return this._functionModeEnabled !== this.flipped;
   }
 
   constructor(public workspaceService: WorkspaceService) {
@@ -68,14 +68,19 @@ export class BlockComponent implements OnInit {
     });
   }
 
-  @HostListener('mouseover')
-  onHover() {
-    this._isMouseOver = true;
+  @HostListener('click')
+  onClick() {
+    this.flipped = !this.flipped;
   }
-  @HostListener('mouseout')
-  onHoverEnd() {
-    this._isMouseOver = false;
-  }
+
+  // @HostListener('mouseover')
+  // onHover() {
+  //   this.flipped = true;
+  // }
+  // @HostListener('mouseout')
+  // onHoverEnd() {
+  //   this.flipped = false;
+  // }
 
   //********************************************
   ngOnInit(): void {
