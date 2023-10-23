@@ -53,14 +53,14 @@
               *ngIf="getMode() === 'block'"
               [innerHtml]="
                 $any(blockOrMolecule).properties[property.key]
-                  | chemicalProperty : property.displayStrategy
+                  | chemicalProperty: property.displayStrategy
               "
             ></span>
             <span
               *ngIf="getMode() === 'molecule'"
               [innerHtml]="
                 getAggregateProperty($any(blockOrMolecule), property)
-                  | chemicalProperty : property.displayStrategy
+                  | chemicalProperty: property.displayStrategy
               "
             ></span>
 
@@ -110,14 +110,14 @@
                   *ngIf="getMode() === 'block'"
                   [innerHtml]="
                     $any(blockOrMolecule).properties[property.key]
-                      | chemicalProperty : property.displayStrategy
+                      | chemicalProperty: property.displayStrategy
                   "
                 ></span>
                 <span
                   *ngIf="getMode() === 'molecule'"
                   [innerHtml]="
                     getAggregateProperty($any(blockOrMolecule), property)
-                      | chemicalProperty : property.displayStrategy
+                      | chemicalProperty: property.displayStrategy
                   "
                 ></span>
 

@@ -286,7 +286,7 @@ export class BlockComponent implements OnInit {
   createRoundedPath(
     coords: Array<{ x: number; y: number; radius?: number }>,
     radius = 8,
-    close = true
+    close = true,
   ) {
     let path = '';
     const length = coords.length + (close ? 1 : -1);
@@ -299,7 +299,7 @@ export class BlockComponent implements OnInit {
       let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
       const t = Math.min(
         Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y),
-        0.5
+        0.5,
       );
       //      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
 

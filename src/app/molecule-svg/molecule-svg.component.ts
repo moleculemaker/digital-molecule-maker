@@ -112,7 +112,7 @@ export class MoleculeSvgComponent implements OnInit {
   onRemoveBlock(type: BlockType) {
     if (this.molecule)
       this.molecule.blockList = this.molecule?.blockList.filter(
-        (block) => block.type != type
+        (block) => block.type != type,
       );
   }
 
@@ -137,7 +137,7 @@ export class MoleculeSvgComponent implements OnInit {
 
   getAggregateProperty(
     molecule: Molecule,
-    property: BlockPropertyDefinition
+    property: BlockPropertyDefinition,
   ): any {
     return aggregateProperty(molecule, property);
   }

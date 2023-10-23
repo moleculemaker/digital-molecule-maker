@@ -52,13 +52,13 @@ export class WorkspaceService {
     this.getMoleculeList()
       .pipe(
         withLatestFrom(this.userService.getUser()),
-        filter(([moleculeList, user]) => !!user)
+        filter(([moleculeList, user]) => !!user),
       )
       .subscribe(([moleculeList, user]) => {
         try {
           localStorage.setItem(
             this.getLocalStorageKey(user),
-            JSON.stringify(moleculeList)
+            JSON.stringify(moleculeList),
           );
         } catch (e: unknown) {
           console.error('Failed to save workspace to localStorage', e);

@@ -37,7 +37,7 @@ function interpolate(a: number, b: number, t: number) {
 
 export function lambdaMaxToColor(
   lambdaMax: number,
-  options: HSLColorOptions = {}
+  options: HSLColorOptions = {},
 ) {
   const { saturation = 1, lightness = 0.5, opacity = 1 } = options;
 
@@ -52,7 +52,7 @@ export function lambdaMaxToColor(
     .reverse()
     .find(([, { min, max }]) => (min + max) / 2 <= lambdaMax);
   const next = Object.entries(LambdaMaxRangeForColor).find(
-    ([, { min, max }]) => (min + max) / 2 >= lambdaMax
+    ([, { min, max }]) => (min + max) / 2 >= lambdaMax,
   );
   const color1 = prev ? d3.hsl(prev[0]) : d3.hsl('white');
   const color2 = next ? d3.hsl(next[0]) : d3.hsl('white');
@@ -70,11 +70,11 @@ export function lambdaMaxToColor(
         : color2.h - color1.h < -180
         ? color2.h + 360
         : color2.h,
-      t
+      t,
     ),
     interpolate(color1.s, color2.s, t),
     interpolate(color1.l, color2.l, t),
-    interpolate(color1.opacity, color2.opacity, t)
+    interpolate(color1.opacity, color2.opacity, t),
   );
   color.s = saturation;
   color.l = lightness;
@@ -83,7 +83,7 @@ export function lambdaMaxToColor(
 }
 
 export function getTextColorFromBackgroundColor(
-  c: d3.ColorSpaceObject
+  c: d3.ColorSpaceObject,
 ): d3.ColorSpaceObject {
   const textColors = [
     d3.color('white')!,
@@ -104,7 +104,7 @@ export function getTextColorFromBackgroundColor(
 
 function contrastRatio(
   c1: d3.ColorSpaceObject,
-  c2: d3.ColorSpaceObject
+  c2: d3.ColorSpaceObject,
 ): number {
   const l1 = relativeLuminance(c1);
   const l2 = relativeLuminance(c2);

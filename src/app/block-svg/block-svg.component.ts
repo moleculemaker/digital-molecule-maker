@@ -158,7 +158,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   drawBlock() {
     this.scale = Math.min(
       this.blockHeight / this.block.height,
-      this.blockWidth / this.block.width
+      this.blockWidth / this.block.width,
     );
     let path = '';
     let hasRightTab = !this.isEnd() && !this.isAddBlock() ? true : false;
@@ -249,7 +249,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   createRoundedPath(
     coords: Array<{ x: number; y: number; radius?: number }>,
     radius = 8,
-    close = true
+    close = true,
   ) {
     let path = '';
     const length = coords.length + (close ? 1 : -1);
@@ -262,7 +262,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
       let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
       const t = Math.min(
         Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y),
-        0.5
+        0.5,
       );
       //      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
 

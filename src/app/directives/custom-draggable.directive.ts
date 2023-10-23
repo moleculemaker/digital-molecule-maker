@@ -19,7 +19,7 @@ export class CustomDraggableDirective {
       },
       {
         capture: true,
-      }
+      },
     );
   }
 

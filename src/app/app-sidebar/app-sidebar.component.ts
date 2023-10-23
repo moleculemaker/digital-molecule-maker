@@ -28,7 +28,7 @@ import { LambdaMaxRangeForColor } from '../utils/colors';
       state('expanded', style({ height: '*' })),
       transition(
         'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
       ),
     ]),
   ],
@@ -129,32 +129,32 @@ export class AppSidebarComponent implements OnInit {
 
       if (this.colorFilter.length == 0) {
         return Object.values(BlockType).flatMap(
-          (type) => this.blockData?.blocks[type] ?? []
+          (type) => this.blockData?.blocks[type] ?? [],
         );
       }
 
       const startingLambdaMax =
         currentMolecule?.blockList.reduce(
           (lambda, block) => lambda + block.properties.lambdaMaxShift,
-          0
+          0,
         ) ?? 0;
 
       const excludedTypes = new Set(
-        currentMolecule?.blockList.map((block) => block.type) ?? []
+        currentMolecule?.blockList.map((block) => block.type) ?? [],
       );
 
       const availableTypes = Object.values(BlockType).filter(
-        (t) => !excludedTypes.has(t)
+        (t) => !excludedTypes.has(t),
       );
 
       const viableBlocks = Object.fromEntries(
-        Object.values(BlockType).map((type) => [type, new Set<Block>()])
+        Object.values(BlockType).map((type) => [type, new Set<Block>()]),
       );
 
       const enumerate = (
         curBlocks: Block[],
         accumulatedLambdaMax: number,
-        remainingTypes: BlockType[]
+        remainingTypes: BlockType[],
       ) => {
         if (!remainingTypes.length) {
           if (
@@ -172,7 +172,7 @@ export class AppSidebarComponent implements OnInit {
           enumerate(
             [...curBlocks, nextBlock],
             accumulatedLambdaMax + nextBlock.properties.lambdaMaxShift,
-            nextRemainingTypes
+            nextRemainingTypes,
           );
         }
       };
@@ -195,7 +195,7 @@ export class AppSidebarComponent implements OnInit {
               if (
                 this.filteredBlocks.some(
                   (e) =>
-                    e === block.properties[this.blockSet!.labelProperty.key]
+                    e === block.properties[this.blockSet!.labelProperty.key],
                 )
               ) {
                 blocks.push(block);
@@ -268,7 +268,7 @@ export class AppSidebarComponent implements OnInit {
 
   getKeyByValue(value: string) {
     const indexOfS = Object.values(BlockType).indexOf(
-      value as unknown as BlockType
+      value as unknown as BlockType,
     );
     const key = Object.keys(BlockType)[indexOfS];
     const enumKey: BlockType = (<any>BlockType)[key];
@@ -280,13 +280,15 @@ export class AppSidebarComponent implements OnInit {
       this.filteredBlocks.length = 0;
       if (event.target.value == '') {
         this.labelList.forEach((e) =>
-          this.filteredBlocks.push(e.replace(/(\d+)/g, '<sub>$1</sub>'))
+          this.filteredBlocks.push(e.replace(/(\d+)/g, '<sub>$1</sub>')),
         );
         return;
       }
       const results = this.fuse.search(event.target.value);
       results.forEach((result) =>
-        this.filteredBlocks.push(result.item.replace(/(\d+)/g, '<sub>$1</sub>'))
+        this.filteredBlocks.push(
+          result.item.replace(/(\d+)/g, '<sub>$1</sub>'),
+        ),
       );
     } catch (error) {
       console.log(error);
