@@ -27,7 +27,8 @@ export class CustomDraggableDirective {
     this.isMouseDown = true;
   }
 
-  @HostListener('mousemove', ['$event']) mouseMove(event: MouseEvent) {
+  @HostListener('pointermove')
+  onPointerMove() {
     if (this.isMouseDown) {
       clearTimeout(this.timer);
       this.timer = window.setTimeout(() => (this.clickDisabled = true), 200);

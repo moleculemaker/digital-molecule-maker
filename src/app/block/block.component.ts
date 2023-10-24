@@ -6,6 +6,7 @@ import {
   ViewChild,
   TemplateRef,
   HostListener,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import 'external-svg-loader';
 import { Block, BlockType } from '../models';
@@ -19,6 +20,7 @@ import { WorkspaceService } from '../services/workspace.service';
   selector: 'block',
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlockComponent implements OnInit {
   @Input()

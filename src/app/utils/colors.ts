@@ -39,43 +39,24 @@ export function lambdaMaxToColor(
   lambdaMax: number,
   options: HSLColorOptions = {},
 ) {
-  const { saturation = 1, lightness = 0.5, opacity = 1 } = options;
-
-  if (lambdaMax < LAMBDA_RANGE_MIN || lambdaMax > LAMBDA_RANGE_MAX) {
-    const color = d3.hsl('white');
-    color.s = saturation;
-    (color.l = lightness), (color.opacity = opacity);
-    return color;
-  }
-
   const prev = Object.entries(LambdaMaxRangeForColor)
     .reverse()
     .find(([, { min, max }]) => (min + max) / 2 <= lambdaMax);
+
   const next = Object.entries(LambdaMaxRangeForColor).find(
     ([, { min, max }]) => (min + max) / 2 >= lambdaMax,
   );
-  const color1 = prev ? d3.hsl(prev[0]) : d3.hsl('white');
-  const color2 = next ? d3.hsl(next[0]) : d3.hsl('white');
+
+  const color1 = prev ? prev[0] : 'white';
+  const color2 = next ? next[0] : 'white';
   const lambda1 = prev ? (prev[1].min + prev[1].max) / 2 : LAMBDA_RANGE_MIN;
   const lambda2 = next ? (next[1].min + next[1].max) / 2 : LAMBDA_RANGE_MAX;
-  const t =
-    lambda2 > lambda1
-      ? clamp((lambdaMax - lambda1) / (lambda2 - lambda1), 0, 1)
-      : 1;
-  const color = d3.hsl(
-    interpolate(
-      color1.h,
-      color2.h - color1.h > 180
-        ? color2.h - 360
-        : color2.h - color1.h < -180
-        ? color2.h + 360
-        : color2.h,
-      t,
-    ),
-    interpolate(color1.s, color2.s, t),
-    interpolate(color1.l, color2.l, t),
-    interpolate(color1.opacity, color2.opacity, t),
-  );
+  const t = (lambdaMax - lambda1) / (lambda2 - lambda1);
+  const interpolator = d3.interpolateHsl(color1, color2);
+  const color = d3.hsl(interpolator(t));
+
+  const { saturation = 1, lightness = 0.5, opacity = 1 } = options;
+
   color.s = saturation;
   color.l = lightness;
   color.opacity = opacity;

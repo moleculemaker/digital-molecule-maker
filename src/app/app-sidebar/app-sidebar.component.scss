@@ -30,9 +30,6 @@ $sidebar_width: 500px;
 @mixin color_type_color($color) {
   &.color_type_#{"" + $color} {
     background: rgba($color, 0.2);
-    &.selected {
-      background: rgba($color, 0.5);
-    }
   }
 }
 
@@ -199,6 +196,8 @@ $sidebar_width: 500px;
       .type {
         cursor: pointer;
         position: relative;
+
+        user-select: none;
 
         display: flex;
         justify-content: center;

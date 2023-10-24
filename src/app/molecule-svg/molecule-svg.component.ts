@@ -110,10 +110,14 @@ export class MoleculeSvgComponent implements OnInit {
   }
 
   onRemoveBlock(type: BlockType) {
-    if (this.molecule)
+    if (this.molecule) {
       this.molecule.blockList = this.molecule?.blockList.filter(
         (block) => block.type != type,
       );
+      if (!this.molecule.blockList.length) {
+        this.removeMolecule();
+      }
+    }
   }
 
   onEnterInput(event: Event, newMoleculeName: string) {

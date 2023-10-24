@@ -157,7 +157,7 @@
           [class.has_selected_type]="colorFilter.length > 0"
           [class.selected]="type != 'all' && colorFilter.includes(type)"
           [title]="type + ' blocks'"
-          (click)="onClickColorType(type)"
+          (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
         >
           <div class="label">{{ type }}</div>
         </div>
@@ -229,7 +229,7 @@
     </div>
   -->
 
-    <div class="content">
+    <div class="content" #tray>
       <div
         *ngFor="let block of getBlockData()"
         dfDroppable

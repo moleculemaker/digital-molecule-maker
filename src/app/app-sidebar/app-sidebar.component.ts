@@ -79,15 +79,7 @@ export class AppSidebarComponent implements OnInit {
   allTypeFilters = ['all', 'start', 'middle', 'end'];
 
   colorFilter: string[] = [];
-  allColorFilters = [
-    'yellow',
-    'orange',
-    'red',
-    'magenta',
-    'violet',
-    'blue',
-    'cyan',
-  ];
+  allColorFilters = Object.keys(LambdaMaxRangeForColor);
 
   isSidebarExpanded = true;
   isShowingFilters = false;
