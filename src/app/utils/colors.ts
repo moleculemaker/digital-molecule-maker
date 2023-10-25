@@ -1,27 +1,77 @@
 import * as d3 from 'd3';
 
 const LAMBDA_RANGE_MAX = 780;
-const LAMBDA_RANGE_MIN = 380;
+const LAMBDA_RANGE_MIN = 100;
 
-export const LambdaMaxRangeForColor: Record<
-  string,
-  {
-    min: number;
-    max: number;
-  }
-> = {
-  yellow: { min: 400, max: 480 },
-  orange: { min: 480, max: 490 },
-  red: { min: 490, max: 500 },
-  magenta: { min: 500, max: 560 },
-  violet: { min: 560, max: 580 },
-  blue: { min: 580, max: 605 },
-  cyan: { min: 605, max: 750 },
+type ColorTypeDef = {
+  name: string;
+  display: d3.ColorSpaceObject;
+  min: number;
+  max: number;
 };
 
-function clamp(v: number, min: number, max: number) {
-  return Math.max(Math.min(v, max), min);
-}
+export const LambdaMaxRangeForColor: Record<string, ColorTypeDef> = {
+  yellow: {
+    name: 'yellow',
+    display: d3.color('yellow')!,
+    min: 400,
+    max: 480,
+  },
+  orange: {
+    name: 'orange',
+    display: d3.color('orange')!,
+    min: 480,
+    max: 490,
+  },
+  red: {
+    name: 'red',
+    display: d3.color('red')!,
+    min: 490,
+    max: 500,
+  },
+  magenta: {
+    name: 'magenta',
+    display: d3.color('magenta')!,
+    min: 500,
+    max: 560,
+  },
+  violet: {
+    name: 'violet',
+    display: d3.color('violet')!,
+    min: 560,
+    max: 580,
+  },
+  blue: {
+    name: 'blue',
+    display: d3.color('blue')!,
+    min: 580,
+    max: 605,
+  },
+  cyan: {
+    name: 'cyan',
+    display: d3.color('cyan')!,
+    min: 605,
+    max: 750,
+  },
+  uva: {
+    name: 'TBD(uva)',
+    display: d3.color('lightgray')!,
+    min: 315,
+    max: 400,
+  },
+  uvb: {
+    name: 'TBD(uvb)',
+    display: d3.color('silver')!,
+    min: 280,
+    max: 315,
+  },
+  uvc: {
+    name: 'TBD(uvc)',
+    display: d3.hsl('gray')!,
+    min: 100,
+    max: 280,
+  },
+};
 
 type HSLColorOptions = {
   saturation?: number;
@@ -29,37 +79,40 @@ type HSLColorOptions = {
   opacity?: number;
 };
 
-function interpolate(a: number, b: number, t: number) {
-  if (isNaN(a)) return b;
-  if (isNaN(b)) return a;
-  return (1 - t) * a + t * b;
-}
-
 export function lambdaMaxToColor(
   lambdaMax: number,
   options: HSLColorOptions = {},
 ) {
-  const prev = Object.entries(LambdaMaxRangeForColor)
-    .reverse()
-    .find(([, { min, max }]) => (min + max) / 2 <= lambdaMax);
+  let prev: ColorTypeDef | null = null;
+  let next: ColorTypeDef | null = null;
+  for (let def of Object.values(LambdaMaxRangeForColor)) {
+    if (
+      (def.min + def.max) / 2 <= lambdaMax &&
+      (!prev || def.min + def.max > prev.min + prev.max)
+    ) {
+      prev = def;
+    }
+    if (
+      (def.min + def.max) / 2 >= lambdaMax &&
+      (!next || def.min + def.max < next.min + next.max)
+    ) {
+      next = def;
+    }
+  }
+  const color1 = prev ? prev.display : d3.hsl('gray');
+  const color2 = next ? next.display : d3.hsl('gray');
 
-  const next = Object.entries(LambdaMaxRangeForColor).find(
-    ([, { min, max }]) => (min + max) / 2 >= lambdaMax,
-  );
-
-  const color1 = prev ? prev[0] : 'white';
-  const color2 = next ? next[0] : 'white';
-  const lambda1 = prev ? (prev[1].min + prev[1].max) / 2 : LAMBDA_RANGE_MIN;
-  const lambda2 = next ? (next[1].min + next[1].max) / 2 : LAMBDA_RANGE_MAX;
+  const lambda1 = prev ? (prev.min + prev.max) / 2 : LAMBDA_RANGE_MIN;
+  const lambda2 = next ? (next.min + next.max) / 2 : LAMBDA_RANGE_MAX;
   const t = (lambdaMax - lambda1) / (lambda2 - lambda1);
-  const interpolator = d3.interpolateHsl(color1, color2);
+  const interpolator = d3.interpolateHcl(color1, color2);
   const color = d3.hsl(interpolator(t));
 
-  const { saturation = 1, lightness = 0.5, opacity = 1 } = options;
+  const { saturation, lightness, opacity } = options;
 
-  color.s = saturation;
-  color.l = lightness;
-  color.opacity = opacity;
+  if (saturation) color.s = saturation;
+  if (lightness) color.l = lightness;
+  if (opacity) color.opacity = opacity;
   return color;
 }
 

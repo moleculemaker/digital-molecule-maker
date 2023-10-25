@@ -159,7 +159,7 @@
           [title]="type + ' blocks'"
           (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
         >
-          <div class="label">{{ type }}</div>
+          <div class="label">{{ labelForColor(type) }}</div>
         </div>
       </ng-template>
     </div>

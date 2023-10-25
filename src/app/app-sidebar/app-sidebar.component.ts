@@ -80,6 +80,9 @@ export class AppSidebarComponent implements OnInit {
 
   colorFilter: string[] = [];
   allColorFilters = Object.keys(LambdaMaxRangeForColor);
+  labelForColor(key: string) {
+    return LambdaMaxRangeForColor[key].name;
+  }
 
   isSidebarExpanded = true;
   isShowingFilters = false;
