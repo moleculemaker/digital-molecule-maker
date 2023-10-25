@@ -10,10 +10,7 @@ import {
 } from '@angular/core';
 import 'external-svg-loader';
 import { Block, BlockType } from '../models';
-import {
-  getTextColorFromBackgroundColor,
-  lambdaMaxToColor,
-} from '../utils/colors';
+import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
@@ -368,7 +365,7 @@ export class BlockComponent implements OnInit {
   }
 
   get textColor() {
-    return getTextColorFromBackgroundColor(this.fillColor);
+    return 'black';
   }
 
   get fillColor() {

@@ -155,7 +155,7 @@
           *ngFor="let type of allColorFilters"
           [class]="['type_' + type, 'color_type_' + type]"
           [class.has_selected_type]="colorFilter.length > 0"
-          [class.selected]="type != 'all' && colorFilter.includes(type)"
+          [class.selected]="colorFilter.includes(type)"
           [title]="type + ' blocks'"
           (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
         >

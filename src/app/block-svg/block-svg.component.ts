@@ -13,10 +13,7 @@ import {
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, BlockSet, BlockType } from '../models';
-import {
-  getTextColorFromBackgroundColor,
-  lambdaMaxToColor,
-} from '../utils/colors';
+import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
@@ -144,7 +141,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get textColor() {
-    return getTextColorFromBackgroundColor(this.fillColor);
+    return 'black';
   }
 
   get fillColor() {

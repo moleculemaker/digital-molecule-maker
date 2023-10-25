@@ -10,7 +10,7 @@ type ColorTypeDef = {
   max: number;
 };
 
-export const LambdaMaxRangeForColor: Record<string, ColorTypeDef> = {
+export const LambdaMaxRangeForColor = {
   yellow: {
     name: 'yellow',
     display: d3.color('yellow')!,
@@ -54,24 +54,26 @@ export const LambdaMaxRangeForColor: Record<string, ColorTypeDef> = {
     max: 750,
   },
   uva: {
-    name: 'TBD(uva)',
+    name: 'UVA-absorbing',
     display: d3.color('lightgray')!,
     min: 315,
     max: 400,
   },
   uvb: {
-    name: 'TBD(uvb)',
+    name: 'UVB-absorbing',
     display: d3.color('silver')!,
     min: 280,
     max: 315,
   },
   uvc: {
-    name: 'TBD(uvc)',
+    name: 'UVC-absorbing',
     display: d3.hsl('gray')!,
     min: 100,
     max: 280,
   },
-};
+} as const;
+
+export type ColorKeyT = keyof typeof LambdaMaxRangeForColor;
 
 type HSLColorOptions = {
   saturation?: number;
@@ -79,13 +81,23 @@ type HSLColorOptions = {
   opacity?: number;
 };
 
+const colorStops: Array<ColorTypeDef> = [
+  LambdaMaxRangeForColor.uvc,
+  LambdaMaxRangeForColor.uvb,
+  LambdaMaxRangeForColor.uva,
+  LambdaMaxRangeForColor.yellow,
+  LambdaMaxRangeForColor.magenta,
+  LambdaMaxRangeForColor.cyan,
+];
+
 export function lambdaMaxToColor(
   lambdaMax: number,
   options: HSLColorOptions = {},
 ) {
   let prev: ColorTypeDef | null = null;
   let next: ColorTypeDef | null = null;
-  for (let def of Object.values(LambdaMaxRangeForColor)) {
+
+  for (let def of colorStops) {
     if (
       (def.min + def.max) / 2 <= lambdaMax &&
       (!prev || def.min + def.max > prev.min + prev.max)
@@ -99,6 +111,7 @@ export function lambdaMaxToColor(
       next = def;
     }
   }
+
   const color1 = prev ? prev.display : d3.hsl('gray');
   const color2 = next ? next.display : d3.hsl('gray');
 
@@ -114,45 +127,4 @@ export function lambdaMaxToColor(
   if (lightness) color.l = lightness;
   if (opacity) color.opacity = opacity;
   return color;
-}
-
-export function getTextColorFromBackgroundColor(
-  c: d3.ColorSpaceObject,
-): d3.ColorSpaceObject {
-  const textColors = [
-    d3.color('white')!,
-    d3.color('gray')!,
-    d3.color('black')!,
-  ];
-  let maxContrast = 0,
-    k = 0;
-  for (let i = 0; i < textColors.length; ++i) {
-    const contrast = contrastRatio(textColors[i], c);
-    if (contrast > maxContrast) {
-      maxContrast = contrast;
-      k = i;
-    }
-  }
-  return textColors[k];
-}
-
-function contrastRatio(
-  c1: d3.ColorSpaceObject,
-  c2: d3.ColorSpaceObject,
-): number {
-  const l1 = relativeLuminance(c1);
-  const l2 = relativeLuminance(c2);
-  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
-}
-
-function relativeLuminance(c: d3.ColorSpaceObject): number {
-  const rgb = d3.rgb(c);
-  const r = gamma(rgb.r / 255);
-  const g = gamma(rgb.g / 255);
-  const b = gamma(rgb.b / 255);
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-function gamma(v: number): number {
-  return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ^ 2.4;
 }

@@ -16,7 +16,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { WorkspaceService } from '../services/workspace.service';
-import { LambdaMaxRangeForColor } from '../utils/colors';
+import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
 
 @Component({
   selector: 'app-sidebar',
@@ -78,9 +78,9 @@ export class AppSidebarComponent implements OnInit {
   typeFilter: string[] = []; //array of types to filter by (only used in showing the blocks?)
   allTypeFilters = ['all', 'start', 'middle', 'end'];
 
-  colorFilter: string[] = [];
-  allColorFilters = Object.keys(LambdaMaxRangeForColor);
-  labelForColor(key: string) {
+  colorFilter: ColorKeyT[] = [];
+  allColorFilters = Object.keys(LambdaMaxRangeForColor) as ColorKeyT[];
+  labelForColor(key: ColorKeyT) {
     return LambdaMaxRangeForColor[key].name;
   }
 
@@ -241,7 +241,7 @@ export class AppSidebarComponent implements OnInit {
     }
   }
 
-  onClickColorType(type: string) {
+  onClickColorType(type: ColorKeyT) {
     if (this.colorFilter.includes(type)) {
       this.colorFilter = [];
     } else {
