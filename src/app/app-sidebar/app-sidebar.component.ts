@@ -75,7 +75,7 @@ export class AppSidebarComponent implements OnInit {
     { chemicalFormula: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S' },
   ]; //array of molecules to search by
 
-  typeFilter: string[] = []; //array of types to filter by (only used in showing the blocks?)
+  typeFilter: string[] = ['start', 'middle', 'end']; //array of types to filter by (only used in showing the blocks?)
   allTypeFilters = ['all', 'start', 'middle', 'end'];
 
   colorFilter: ColorKeyT[] = [];
@@ -230,7 +230,7 @@ export class AppSidebarComponent implements OnInit {
   //********************************************
   onClickType(type: string) {
     if (type == 'all') {
-      this.typeFilter = [];
+      this.typeFilter = ['start', 'middle', 'end'];
     } else {
       if (this.typeFilter.includes(type)) {
         let index = this.typeFilter.indexOf(type);

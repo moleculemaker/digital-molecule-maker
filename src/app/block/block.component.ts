@@ -7,6 +7,7 @@ import {
   TemplateRef,
   HostListener,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import 'external-svg-loader';
 import { Block, BlockType } from '../models';
@@ -61,9 +62,13 @@ export class BlockComponent implements OnInit {
     return this._functionModeEnabled !== this.flipped;
   }
 
-  constructor(public workspaceService: WorkspaceService) {
+  constructor(
+    public workspaceService: WorkspaceService,
+    private cd: ChangeDetectorRef,
+  ) {
     workspaceService.functionMode$.subscribe((enabled) => {
       this._functionModeEnabled = enabled;
+      this.cd.markForCheck();
     });
   }
 

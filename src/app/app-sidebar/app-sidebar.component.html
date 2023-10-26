@@ -87,7 +87,7 @@
           *ngFor="let type of allTypeFilters"
           [class]="['type_' + type]"
           [class.has_selected_type]="typeFilter.length > 0"
-          [class.selected]="type != 'all' && typeFilter.includes(type)"
+          [class.selected]="typeFilter.includes(type)"
           [title]="type + ' blocks'"
           (click)="onClickType(type)"
         >
