@@ -86,7 +86,9 @@ const colorStops: Array<ColorTypeDef> = [
   LambdaMaxRangeForColor.uvb,
   LambdaMaxRangeForColor.uva,
   LambdaMaxRangeForColor.yellow,
+  LambdaMaxRangeForColor.red,
   LambdaMaxRangeForColor.magenta,
+  LambdaMaxRangeForColor.blue,
   LambdaMaxRangeForColor.cyan,
 ];
 
@@ -118,7 +120,7 @@ export function lambdaMaxToColor(
   const lambda1 = prev ? (prev.min + prev.max) / 2 : LAMBDA_RANGE_MIN;
   const lambda2 = next ? (next.min + next.max) / 2 : LAMBDA_RANGE_MAX;
   const t = (lambdaMax - lambda1) / (lambda2 - lambda1);
-  const interpolator = d3.interpolateHcl(color1, color2);
+  const interpolator = d3.interpolateRgb(color1, color2);
   const color = d3.hsl(interpolator(t));
 
   const { saturation, lightness, opacity } = options;
