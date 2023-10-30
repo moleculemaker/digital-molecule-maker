@@ -243,16 +243,11 @@ export class AppSidebarComponent implements OnInit {
 
   onClickColorType(type: ColorKeyT) {
     if (this.colorFilter.includes(type)) {
-      this.colorFilter = [];
+      let index = this.colorFilter.indexOf(type);
+      this.colorFilter.splice(index, 1);
     } else {
-      this.colorFilter = [type];
+      this.colorFilter.push(type);
     }
-    // if (this.colorFilter.includes(type)) {
-    //   let index = this.colorFilter.indexOf(type);
-    //   this.colorFilter.splice(index, 1);
-    // } else {
-    //   this.colorFilter.push(type);
-    // }
   }
 
   //********************************************
