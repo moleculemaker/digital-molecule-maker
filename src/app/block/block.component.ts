@@ -68,6 +68,7 @@ export class BlockComponent implements OnInit {
   ) {
     workspaceService.functionMode$.subscribe((enabled) => {
       this._functionModeEnabled = enabled;
+      this.flipped = false;
       this.cd.markForCheck();
     });
   }
