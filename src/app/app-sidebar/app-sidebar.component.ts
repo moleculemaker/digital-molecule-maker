@@ -52,7 +52,12 @@ export class AppSidebarComponent implements OnInit {
       processBlockArray(blockSet.blocks[BlockType.Start]);
       processBlockArray(blockSet.blocks[BlockType.Middle]);
       processBlockArray(blockSet.blocks[BlockType.End]);
-      this.fuse = new Fuse(this.labelList, { includeScore: true });
+      this.fuse = new Fuse(this.labelList, {
+        includeScore: true,
+        isCaseSensitive: true,
+        ignoreLocation: true,
+        shouldSort: true,
+      });
       this.filteredBlocks = this.labelList.slice();
       this.blockData = blockSet;
       this.blockLevelScale = getBlockSetScale(blockSet, 200);
@@ -275,17 +280,19 @@ export class AppSidebarComponent implements OnInit {
     try {
       this.filteredBlocks.length = 0;
       if (event.target.value == '') {
-        this.labelList.forEach((e) =>
-          this.filteredBlocks.push(e.replace(/(\d+)/g, '<sub>$1</sub>')),
-        );
+        this.labelList.forEach((e) => {
+          // this.filteredBlocks.push(e.replace(/(\d+)/g, '<sub>$1</sub>'));
+          this.filteredBlocks.push(e);
+        });
         return;
       }
       const results = this.fuse.search(event.target.value);
-      results.forEach((result) =>
-        this.filteredBlocks.push(
-          result.item.replace(/(\d+)/g, '<sub>$1</sub>'),
-        ),
-      );
+      results.forEach((result) => {
+        // this.filteredBlocks.push(
+        //   result.item.replace(/(\d+)/g, '<sub>$1</sub>'),
+        // );
+        this.filteredBlocks.push(result.item);
+      });
     } catch (error) {
       console.log(error);
     }
