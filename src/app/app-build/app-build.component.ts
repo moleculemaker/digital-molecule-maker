@@ -370,7 +370,4 @@ export class AppBuildComponent implements OnInit {
     this.workspaceService.updateMoleculeList(this.moleculeList);
     this.cartService.updateMoleculeList(this.cartMoleculeList);
   }
-  toggle() {
-    this.workspaceService.toggle();
-  }
 }
