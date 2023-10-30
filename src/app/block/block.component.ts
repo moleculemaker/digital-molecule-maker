@@ -77,6 +77,16 @@ export class BlockComponent implements OnInit {
     this.flipped = !this.flipped;
   }
 
+  hovered = false;
+  @HostListener('pointerenter')
+  onPointerEnter() {
+    this.hovered = true;
+  }
+  @HostListener('pointerleave')
+  onPointerLeave() {
+    this.hovered = false;
+  }
+
   // @HostListener('mouseover')
   // onHover() {
   //   this.flipped = true;
