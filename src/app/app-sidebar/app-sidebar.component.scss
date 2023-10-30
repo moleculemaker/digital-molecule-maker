@@ -29,6 +29,7 @@ $sidebar_width: 500px;
 
 @mixin color_type_color($color) {
   &.color_type_#{"" + $color} {
+    width: 50px;
     background: rgba($color, 0.2);
   }
 }

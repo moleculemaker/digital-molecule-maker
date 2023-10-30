@@ -153,7 +153,7 @@
         <div
           class="type"
           *ngFor="let type of allColorFilters"
-          [class]="['type_' + type, 'color_type_' + type]"
+          [class]="['color_type_' + type]"
           [class.has_selected_type]="colorFilter.length > 0"
           [class.selected]="colorFilter.includes(type)"
           [title]="type + ' blocks'"
