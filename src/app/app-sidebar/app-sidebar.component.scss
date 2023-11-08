@@ -29,8 +29,8 @@ $sidebar_width: 500px;
 
 @mixin color_type_color($color) {
   &.color_type_#{"" + $color} {
-    width: 50px;
     background: rgba($color, 0.2);
+    flex-basis: calc(100% / 8);
   }
 }
 
@@ -185,10 +185,12 @@ $sidebar_width: 500px;
     }
 
     .row {
+      width: 100%;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+      gap: 4px;
     }
 
     .control_bar {
@@ -255,8 +257,14 @@ $sidebar_width: 500px;
         @include type_color("middle");
         @include type_color("end");
 
-        $colors: yellow, orange, red, magenta, violet, blue, cyan;
+        &.color_type {
+          flex: 1;
+          .label {
+            font-size: 0.6rem;
+          }
+        }
 
+        $colors: yellow, orange, red, magenta, violet, blue, cyan;
         @each $color in $colors {
           @include color_type_color($color);
         }
@@ -487,7 +495,7 @@ $sidebar_width: 500px;
 
   .toggle_button {
     user-select: none;
-    margin-left: 10px;
+    margin-right: 10px;
     width: 100px;
     text-align: center;
     text-transform: uppercase;

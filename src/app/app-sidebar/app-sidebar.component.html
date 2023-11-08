@@ -33,6 +33,10 @@
 
   <div class="filters">
     <div class="row">
+      <div class="toggle_button" (click)="toggle()">
+        {{ functionModeEnabled ? "function" : "structure" }}
+      </div>
+
       <div class="search">
         <div class="search_icon">
           <svg
@@ -79,10 +83,6 @@
           class="search_field"
           (keyup)="searchBlock($event)"
         />
-      </div>
-
-      <div class="toggle_button" (click)="toggle()">
-        {{ functionModeEnabled ? "function" : "structure" }}
       </div>
     </div>
 
@@ -159,16 +159,39 @@
       </ng-template>
 
       <ng-template [ngIf]="functionModeEnabled">
-        <div
-          class="type"
-          *ngFor="let type of allColorFilters"
-          [class]="['color_type_' + type]"
-          [class.has_selected_type]="colorFilter.length > 0"
-          [class.selected]="colorFilter.includes(type)"
-          [title]="type + ' blocks'"
-          (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
-        >
-          <div class="label">{{ labelForColor(type) }}</div>
+        <div class="row">
+          <div
+            *ngFor="
+              let type of $any([
+                'yellow',
+                'orange',
+                'red',
+                'magenta',
+                'violet',
+                'blue',
+                'cyan'
+              ])
+            "
+            [class]="['type', 'color_type', 'color_type_' + type]"
+            [class.has_selected_type]="colorFilter.length > 0"
+            [class.selected]="colorFilter.includes(type)"
+            [title]="type + ' blocks'"
+            (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
+          >
+            <div class="label">{{ labelForColor(type) }}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            *ngFor="let type of $any(['uva', 'uvb', 'uvc'])"
+            [class]="['type', 'color_type', 'color_type_' + type]"
+            [class.has_selected_type]="colorFilter.length > 0"
+            [class.selected]="colorFilter.includes(type)"
+            [title]="type + ' blocks'"
+            (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
+          >
+            <div class="label">{{ labelForColor(type) }}</div>
+          </div>
         </div>
       </ng-template>
     </div>

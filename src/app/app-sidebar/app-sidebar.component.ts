@@ -84,7 +84,6 @@ export class AppSidebarComponent implements OnInit {
   allTypeFilters = ['all', 'start', 'middle', 'end'];
 
   colorFilter: ColorKeyT[] = [];
-  allColorFilters = Object.keys(LambdaMaxRangeForColor) as ColorKeyT[];
   labelForColor(key: ColorKeyT) {
     return LambdaMaxRangeForColor[key].name;
   }
