@@ -24,13 +24,13 @@ import {
 } from '../models';
 
 @Component({
-  selector: 'dmm-molecule-svg',
+  selector: '[dmm-molecule-svg]',
   templateUrl: './molecule-svg.component.html',
   styleUrls: ['./molecule-svg.component.scss'],
 })
 export class MoleculeSvgComponent implements OnInit {
-  @ViewChild('childComponentTemplate')
-  childComponentTemplate: TemplateRef<any> | null = null;
+  @Input()
+  interactive = true;
 
   @Input()
   blockSet?: BlockSet;

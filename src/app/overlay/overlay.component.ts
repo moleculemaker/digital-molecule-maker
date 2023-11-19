@@ -40,9 +40,6 @@ import {
   ],
 })
 export class OverlayComponent implements OnInit {
-  @ViewChild('childComponentTemplate')
-  childComponentTemplate: TemplateRef<any> | null = null;
-
   @Input()
   blockOrMolecule: Block | Molecule | null = null;
 

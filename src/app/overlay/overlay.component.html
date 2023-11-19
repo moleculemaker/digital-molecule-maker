@@ -12,25 +12,17 @@
       <div class="overlay_image">
         <svg *ngIf="getMode() === 'block'" viewBox="0 0 300 300">
           <dmm-block-svg
-            #wrapper
             [lambdaMax]="$any(blockOrMolecule).properties['lambdaMaxShift']"
             [block]="$any(blockOrMolecule)"
             [blockSet]="blockSet!"
             [asIcon]="true"
           ></dmm-block-svg>
-          <ng-container
-            *ngTemplateOutlet="wrapper.childComponentTemplate"
-          ></ng-container>
         </svg>
         <svg *ngIf="getMode() === 'molecule'" viewBox="0 0 600 200">
           <dmm-molecule-svg
-            #wrapper
             [molecule]="$any(blockOrMolecule)"
             [blockSet]="blockSet!"
           ></dmm-molecule-svg>
-          <ng-container
-            *ngTemplateOutlet="wrapper.childComponentTemplate"
-          ></ng-container>
         </svg>
       </div>
     </div> -->

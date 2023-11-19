@@ -17,14 +17,11 @@ import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
-  selector: 'dmm-block-svg',
+  selector: '[dmm-block-svg]',
   templateUrl: './block-svg.component.html',
   styleUrls: ['./block-svg.component.scss'],
 })
 export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('childComponentTemplate')
-  childComponentTemplate: TemplateRef<any> | null = null;
-
   @Input()
   lambdaMax: number = 0;
 
