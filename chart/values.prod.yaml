@@ -19,6 +19,6 @@ extraDeploy:
   spec:
     redirectRegex:
       regex: "^https://(dmm.frontend.mmli1.ncsa.illinois.edu|dmm.moeculemaker.org)/(.*)"
-      replacement: "https://dmm.platform.moleculemaker.org/${1}"
+      replacement: "https://dmm.platform.moleculemaker.org/${2}"
       permanent: true
 
