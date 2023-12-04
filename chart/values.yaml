@@ -1,8 +1,10 @@
 ingress:
   hostname: dmm.frontend.localhost
+  extraHosts: []
   tls: false
   annotations: {}
 
 controller:
   image: moleculemaker/dmm-frontend-image
 
+extraDeploy: []

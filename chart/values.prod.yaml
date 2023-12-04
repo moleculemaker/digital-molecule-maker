@@ -1,8 +1,24 @@
 ingress:
-  hostname: dmm.frontend.mmli1.ncsa.illinois.edu
+  hostname: dmm.platform.moleculemaker.org
+  extraHosts:
+  - dmm.frontend.mmli1.ncsa.illinois.edu
+  - dmm.moleculemaker.org
   tls: true
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: "alphasynthesis-dmm-prod-domain-redirect@kubernetescrd"
+
+extraDeploy:
+- apiVersion: traefik.containo.us/v1alpha1
+  kind: Middleware
+  metadata:
+    name: dmm-prod-domain-redirect
+    namespace: alphasynthesis
+  spec:
+    redirectRegex:
+      regex: "^https://(dmm.frontend.mmli1.ncsa.illinois.edu|dmm.moeculemaker.org)/(.*)"
+      replacement: "https://dmm.platform.moleculemaker.org/${1}"
+      permanent: true
 
