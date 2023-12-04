@@ -2,7 +2,7 @@ ingress:
   hostname: dmm.platform.moleculemaker.org
   extraHosts:
   - dmm.frontend.mmli1.ncsa.illinois.edu
-  - dmm.moleculemaker.org
+  #- dmm.moleculemaker.org
   tls: true
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
