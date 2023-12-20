@@ -18,6 +18,7 @@ import {
   Coordinates,
   getBlockSetScale,
   Molecule,
+  RigJob,
 } from '../models';
 
 import { BlockService, BlockSetId } from '../services/block.service';
