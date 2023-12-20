@@ -55,19 +55,19 @@ export const LambdaMaxRangeForColor = {
   },
   uva: {
     name: 'UVA-absorbing',
-    display: d3.color('lightgray')!,
+    display: d3.color('#cccccc')!,
     min: 315,
     max: 400,
   },
   uvb: {
     name: 'UVB-absorbing',
-    display: d3.color('silver')!,
+    display: d3.color('#dddddd')!,
     min: 280,
     max: 315,
   },
   uvc: {
     name: 'UVC-absorbing',
-    display: d3.hsl('gray')!,
+    display: d3.hsl('#eeeeee')!,
     min: 100,
     max: 280,
   },
@@ -114,8 +114,8 @@ export function lambdaMaxToColor(
     }
   }
 
-  const color1 = prev ? prev.display : d3.hsl('gray');
-  const color2 = next ? next.display : d3.hsl('gray');
+  const color1 = prev ? prev.display : d3.hsl('#bbbbbb');
+  const color2 = next ? next.display : d3.hsl('#bbbbbb');
 
   const lambda1 = prev ? (prev.min + prev.max) / 2 : LAMBDA_RANGE_MIN;
   const lambda2 = next ? (next.min + next.max) / 2 : LAMBDA_RANGE_MAX;

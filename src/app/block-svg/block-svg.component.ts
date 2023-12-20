@@ -138,15 +138,15 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get textColor() {
-    return 'black';
+    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
   }
 
   get fillColor() {
-    return lambdaMaxToColor(this.lambdaMax, { opacity: 0.5 });
+    return lambdaMaxToColor(this.lambdaMax);
   }
 
   get strokeColor() {
-    return lambdaMaxToColor(this.lambdaMax);
+    return this.fillColor.darker();
   }
 
   drawBlock() {

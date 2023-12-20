@@ -381,17 +381,15 @@ export class BlockComponent implements OnInit {
   }
 
   get textColor() {
-    return 'black';
+    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
   }
 
   get fillColor() {
-    return lambdaMaxToColor(this.block.properties['lambdaMaxShift'], {
-      opacity: 0.5,
-    });
+    return lambdaMaxToColor(this.block.properties['lambdaMaxShift']);
   }
 
   get strokeColor() {
-    return lambdaMaxToColor(this.block.properties['lambdaMaxShift']);
+    return this.fillColor.darker();
   }
 }
 
