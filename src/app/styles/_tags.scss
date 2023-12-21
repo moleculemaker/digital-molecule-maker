@@ -4,33 +4,33 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: ($padding * .25) ($padding * .5);
+  gap: ($padding * 0.25) ($padding * 0.5);
 
   margin: {
     right: $padding * 2; //leave room for close_btn and star
   }
 
   &.condensed {
-    gap: $padding * .25;
+    gap: $padding * 0.25;
 
     .tag {
-      padding: 2px ($padding * .5);
+      padding: 2px ($padding * 0.5);
 
       font: {
-        size: .55rem;
+        size: 0.55rem;
       }
     }
   }
 
   .tag {
     background: {
-      color: color_variable('tag_background');
+      color: color_variable("tag_background");
     }
 
-    padding: ($padding * .2) ($padding * .75);
+    padding: ($padding * 0.2) ($padding * 0.75);
 
     font: {
-      size: .65rem;
+      size: 0.65rem;
     }
 
     @include border-left-radius(2000px);

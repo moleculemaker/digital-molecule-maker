@@ -1,12 +1,10 @@
 /**************** app-build css ******************/
 
-@import '../styles/core';
+@import "../styles/core";
 
 $analyze_panel_width: 420px;
 
-
 //**************** custom mixins ******************
-
 
 //**************** css ******************
 
@@ -37,18 +35,18 @@ $analyze_panel_width: 420px;
 
     display: flex;
     align-items: center;
-    gap: $padding * .5;
+    gap: $padding * 0.5;
 
     .button {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: $padding * .25;
+      gap: $padding * 0.25;
 
-      padding: ($padding * .5) ($padding * .75);
+      padding: ($padding * 0.5) ($padding * 0.75);
 
       font: {
-        size: .75rem;
+        size: 0.75rem;
       }
     }
   }
@@ -61,7 +59,10 @@ $analyze_panel_width: 420px;
 
     display: flex;
 
-    @include translate(-50%, (-160px * .5)); //-50% use -px to keep the molecule from jumping around between short / tall blocks
+    @include translate(
+      -50%,
+      (-160px * 0.5)
+    ); //-50% use -px to keep the molecule from jumping around between short / tall blocks
 
     block {
       position: relative;
@@ -99,7 +100,7 @@ $analyze_panel_width: 420px;
     .button {
       & + .button {
         margin: {
-          top: $padding * .5;
+          top: $padding * 0.5;
         }
       }
     }
@@ -107,7 +108,7 @@ $analyze_panel_width: 420px;
 
   .canvas_analyze {
     position: absolute;
-//    left: 0px;
+    //    left: 0px;
     left: 100%;
     top: 0px;
     bottom: 0px;
@@ -118,15 +119,15 @@ $analyze_panel_width: 420px;
     padding: $padding;
 
     background: {
-      color: color_variable('modal_background');
+      color: color_variable("modal_background");
     }
 
     border: {
-      left: 1px solid color_variable('interface_border');
+      left: 1px solid color_variable("interface_border");
     }
 
     @include box-sizing(border-box);
-    @include transition(#{transform .2s easing($ease-out-cubic)});
+    @include transition(#{transform 0.2s easing($ease-out-cubic)});
 
     &.active {
       @include translate(-100%, 0%);
@@ -154,24 +155,24 @@ $analyze_panel_width: 420px;
     }
 
     background: {
-      color: color_variable('button_background');
+      color: color_variable("button_background");
     }
 
-    padding: ($padding * .5);
+    padding: ($padding * 0.5);
 
-    border: 1px solid color_variable('interface_border');
+    border: 1px solid color_variable("interface_border");
 
     @include box-sizing(border-box);
     @include border-radius($border_radius);
-    @include transition(#{background-color .2s easing($ease-in)});
+    @include transition(#{background-color 0.2s easing($ease-in)});
 
     &:not([disabled]) {
       cursor: pointer;
 
       &:hover {
-        color: color_variable('background');
+        color: color_variable("background");
         background: {
-          color: color_variable('button_hover');
+          color: color_variable("button_hover");
         }
 
         @include transition(none);
@@ -190,10 +191,10 @@ $analyze_panel_width: 420px;
         display: inline-block;
 
         margin: {
-          right: ($padding * .25);
+          right: ($padding * 0.25);
         }
 
-        @include scale(.8);
+        @include scale(0.8);
       }
     }
   }
@@ -213,7 +214,7 @@ $analyze_panel_width: 420px;
     padding: $padding;
 
     background: {
-      color: color_variable('modal_background');
+      color: color_variable("modal_background");
     }
 
     &.active {
@@ -227,12 +228,12 @@ $analyze_panel_width: 420px;
 
   .modal_container {
     background: {
-      color: color_variable('background');
+      color: color_variable("background");
     }
 
     padding: ($padding * 2);
 
-    border: 2px solid color_variable('interface_border');
+    border: 2px solid color_variable("interface_border");
 
     @include border-radius($interface_radius);
 
@@ -247,11 +248,11 @@ $analyze_panel_width: 420px;
     }
   }
 
-  .svg_workspace{
+  .svg_workspace {
     height: 100%;
     width: 100%;
 
-    g{
+    g {
       transform-origin: 50% 50%;
     }
   }

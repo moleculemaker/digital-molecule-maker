@@ -1,6 +1,6 @@
 /**************** splash css ******************/
 
-@import '../styles/core';
+@import "../styles/core";
 
 $splash_padding: 20px; //padding around screen
 $splash_position: 60%; //pivot position from top of screen (where title and footer meet)
@@ -11,12 +11,15 @@ $splash_form_field_width: 240px;
 //**************** custom mixins ******************
 
 //inspired by https://codepen.io/P1N2O/pen/pyBNzX
-@mixin gradient_background($name, $color, $speed:10s) {
+@mixin gradient_background($name, $color, $speed: 10s) {
   .background_#{$name} {
     position: absolute;
     z-index: -10;
 
-    background-image: radial-gradient(rgba($color, .5) 20%, rgba($color, 0) 60%);
+    background-image: radial-gradient(
+      rgba($color, 0.5) 20%,
+      rgba($color, 0) 60%
+    );
 
     @include animation(gradient $speed ease infinite);
     @include translate(-50%, -50%);
@@ -25,263 +28,262 @@ $splash_form_field_width: 240px;
   }
 }
 
-
 //**************** animations ******************
 
 @include keyframes(gradient) {
-	0% {
-	  @include opacity(100);
-	}
-	50% {
-	  @include opacity(0);
-	}
-	100% {
-	  @include opacity(100);
-	}
+  0% {
+    @include opacity(100);
+  }
+  50% {
+    @include opacity(0);
+  }
+  100% {
+    @include opacity(100);
+  }
 }
 
 @include keyframes(fade_in) {
-	0% {
-	  @include opacity(0);
-	}
-	100% {
-	  @include opacity(100);
-	}
+  0% {
+    @include opacity(0);
+  }
+  100% {
+    @include opacity(100);
+  }
 }
 
 @include keyframes(slide_down) {
-	0% {
-	  @include translate(0%, -40%);
-	  @include opacity(0);
-	}
-	100% {
-	  @include translate(0%, 0%);
-	  @include opacity(100);
-	}
+  0% {
+    @include translate(0%, -40%);
+    @include opacity(0);
+  }
+  100% {
+    @include translate(0%, 0%);
+    @include opacity(100);
+  }
 }
 
 @include keyframes(slide_right) {
-	0% {
-	  @include translate(-30px, 0%);
-	  @include opacity(0);
-	}
-	100% {
-	  @include translate(0px, 0%);
-	  @include opacity(100);
-	}
+  0% {
+    @include translate(-30px, 0%);
+    @include opacity(0);
+  }
+  100% {
+    @include translate(0px, 0%);
+    @include opacity(100);
+  }
 }
 
 @include keyframes(rotate) {
-	0% {
-	  @include rotate(0deg);
-	}
-	100% {
-	  @include rotate(360deg);
-	}
+  0% {
+    @include rotate(0deg);
+  }
+  100% {
+    @include rotate(360deg);
+  }
 }
 
 @include keyframes(yellow_drop_in) {
-	0% {
-	  @include translate(0px, 0px);
-	  @include rotate(0deg);
-	}
-	20% {
-	  @include translate(0px, 0px);
-	  @include rotate(45deg);
-	}
-	28% {
-	  @include translate(0px, 100px);
-	}
-	90% {
-	  @include translate(0px, 100px);
-	}
-	100% {
-	  @include translate(0px, 0px);
-	  @include rotate(25deg);
-	}
+  0% {
+    @include translate(0px, 0px);
+    @include rotate(0deg);
+  }
+  20% {
+    @include translate(0px, 0px);
+    @include rotate(45deg);
+  }
+  28% {
+    @include translate(0px, 100px);
+  }
+  90% {
+    @include translate(0px, 100px);
+  }
+  100% {
+    @include translate(0px, 0px);
+    @include rotate(25deg);
+  }
 }
 
 @include keyframes(arms_dangle) {
-	0% {
-	  @include rotate(0deg);
-	}
-	20% {
-	  @include rotate(-2deg);
-	}
-	23% {
-	  @include rotate(-20deg);
-	}
-	28% {
-	  @include rotate(-6deg);
-	}
+  0% {
+    @include rotate(0deg);
+  }
+  20% {
+    @include rotate(-2deg);
+  }
+  23% {
+    @include rotate(-20deg);
+  }
+  28% {
+    @include rotate(-6deg);
+  }
 
   //extra wave
-	40% {
-	  @include rotate(4deg);
-	}
-	46% {
-	  @include rotate(-12deg);
-	}
-	52% {
-	  @include rotate(4deg);
-	}
-	58% {
-	  @include rotate(-12deg);
-	}
-	64% {
-	  @include rotate(-6deg);
-	}
+  40% {
+    @include rotate(4deg);
+  }
+  46% {
+    @include rotate(-12deg);
+  }
+  52% {
+    @include rotate(4deg);
+  }
+  58% {
+    @include rotate(-12deg);
+  }
+  64% {
+    @include rotate(-6deg);
+  }
 
-	90% {
-	  @include rotate(-6deg);
-	}
-	100% {
-	  @include rotate(-60deg);
-	}
+  90% {
+    @include rotate(-6deg);
+  }
+  100% {
+    @include rotate(-60deg);
+  }
 }
 
 @include keyframes(arms_dangle_opposite) {
-	0% {
-	  @include rotate(0deg);
-	}
-	20% {
-	  @include rotate(-1deg);
-	}
-	23% {
-	  @include rotate(20deg);
-	}
-	28% {
-	  @include rotate(6deg);
-	}
-	90% {
-	  @include rotate(6deg);
-	}
-	100% {
-	  @include rotate(60deg);
-	}
+  0% {
+    @include rotate(0deg);
+  }
+  20% {
+    @include rotate(-1deg);
+  }
+  23% {
+    @include rotate(20deg);
+  }
+  28% {
+    @include rotate(6deg);
+  }
+  90% {
+    @include rotate(6deg);
+  }
+  100% {
+    @include rotate(60deg);
+  }
 }
 
 @include keyframes(floating) {
-	0% {
-	  @include rotate(0deg);
-	}
-	30% {
-	  @include rotate(2deg);
-	}
-	50% {
-	  @include rotate(-2.5deg);
-	}
-	100% {
-	  @include rotate(0deg);
-	}
+  0% {
+    @include rotate(0deg);
+  }
+  30% {
+    @include rotate(2deg);
+  }
+  50% {
+    @include rotate(-2.5deg);
+  }
+  100% {
+    @include rotate(0deg);
+  }
 }
 
 @include keyframes(floating_opposite) {
-	0% {
-	  @include rotate(0deg);
-	}
-	30% {
-	  @include rotate(-5deg);
-	}
-	50% {
-	  @include rotate(5.5deg);
-	}
-	100% {
-	  @include rotate(0deg);
-	}
+  0% {
+    @include rotate(0deg);
+  }
+  30% {
+    @include rotate(-5deg);
+  }
+  50% {
+    @include rotate(5.5deg);
+  }
+  100% {
+    @include rotate(0deg);
+  }
 }
 
 @include keyframes(blink) {
-	0% {
-	  @include translate(0px, -6px);
-	}
-	94% {
-	  @include translate(0px, -6px);
-	}
-	97% {
-	  @include translate(0px, 0px);
-	}
-	100% {
-	  @include translate(0px, -6px);
-	}
+  0% {
+    @include translate(0px, -6px);
+  }
+  94% {
+    @include translate(0px, -6px);
+  }
+  97% {
+    @include translate(0px, 0px);
+  }
+  100% {
+    @include translate(0px, -6px);
+  }
 }
 
 @include keyframes(moustache) {
-	0% {
-	  @include rotate(0deg);
-	}
-	80% {
-	  @include rotate(0deg);
-	}
-	90% {
-	  @include rotate(20deg);
-	}
-	100% {
-	  @include rotate(0deg);
-	}
+  0% {
+    @include rotate(0deg);
+  }
+  80% {
+    @include rotate(0deg);
+  }
+  90% {
+    @include rotate(20deg);
+  }
+  100% {
+    @include rotate(0deg);
+  }
 }
 
 @include keyframes(cape_flapping) {
-	0% {
+  0% {
     transform: skew(0deg, 0deg);
-	}
-	12% {
+  }
+  12% {
     transform: skew(5deg, -5deg); //15
-	}
-	22% {
-	  transform: skew(0deg, -3deg);
-	}
-	35% {
+  }
+  22% {
+    transform: skew(0deg, -3deg);
+  }
+  35% {
     transform: skew(1deg, -5deg); //15
-	}
-	70% {
-	  transform: skew(-1deg, 1deg);
-	}
-	80% {
-	  transform: skew(0deg, -1deg);
-	}
-	85% {
-	  transform: skew(2deg, 2deg); //15
-	}
-	100% {
+  }
+  70% {
+    transform: skew(-1deg, 1deg);
+  }
+  80% {
+    transform: skew(0deg, -1deg);
+  }
+  85% {
+    transform: skew(2deg, 2deg); //15
+  }
+  100% {
     transform: skew(0deg, 0deg);
-	}
+  }
 }
 
 @include keyframes(raise_arms) {
   0% {
     transform: scale(1, -1);
   }
-	40% {
+  40% {
     transform: scale(1, -1);
-	}
-	45% {
+  }
+  45% {
     transform: scale(1, 1);
-	}
-	95% {
+  }
+  95% {
     transform: scale(1, 1);
-	}
-	100% {
+  }
+  100% {
     transform: scale(1, -1);
-	}
+  }
 }
 
 @include keyframes(high_five) {
   0% {
     transform: scale(1, -1);
   }
-	35% {
+  35% {
     transform: scale(1, -1);
-	}
-	40% {
+  }
+  40% {
     transform: scale(1, 1);
-	}
-	95% {
+  }
+  95% {
     transform: scale(1, 1);
-	}
-	100% {
+  }
+  100% {
     transform: scale(1, -1);
-	}
+  }
 }
 
 @include keyframes(molecule_red_animation) {
@@ -290,33 +292,33 @@ $splash_form_field_width: 240px;
     top: 30%;
     @include rotate(0deg);
   }
-	20% {
+  20% {
     right: 5%;
     top: 30%;
     @include rotate(45deg);
-	}
-	46% {
+  }
+  46% {
     right: 2%;
     top: 30%;
     @include rotate(20deg);
-	}
-	52% {
+  }
+  52% {
     right: 1%;
     top: 30%;
     @include rotate(30deg);
-//    filter: none;
-	}
+    //    filter: none;
+  }
   58% {
     right: 18%;
     top: -160px;
     @include rotate(20deg);
-//    filter: blur(10px);
+    //    filter: blur(10px);
   }
   100% {
     right: 18%;
     top: -160px;
     @include rotate(20deg);
-//    filter: none;
+    //    filter: none;
   }
 }
 
@@ -334,21 +336,21 @@ $splash_form_field_width: 240px;
   20% {
     @include translate(0px, 0px);
   }
-	40% {
+  40% {
     @include rotate(8deg);
-	}
-	50% {
+  }
+  50% {
     @include rotate(-10deg);
-	}
-	52% {
+  }
+  52% {
     @include rotate(12deg);
-	}
-	54% {
+  }
+  54% {
     @include rotate(-12deg);
-	}
-	56% {
+  }
+  56% {
     @include rotate(0deg);
-	}
+  }
   100% {
     @include rotate(0deg);
   }
@@ -438,18 +440,18 @@ $splash_form_field_width: 240px;
   0% {
     transform: skew(0deg, 0deg);
   }
-	30% {
+  30% {
     transform: skew(0deg, 0deg);
-	}
-	33% {
+  }
+  33% {
     transform: skew(-4deg, 0deg);
-	}
-	36% {
+  }
+  36% {
     transform: skew(0deg, 0deg);
-	}
-	100% {
+  }
+  100% {
     transform: skew(0deg, 0deg);
-	}
+  }
 }
 
 @include keyframes(open_mouth) {
@@ -461,10 +463,10 @@ $splash_form_field_width: 240px;
   }
 
   74% {
-    transform: scale(1, .3);
+    transform: scale(1, 0.3);
   }
   97% {
-    transform: scale(1, .3);
+    transform: scale(1, 0.3);
   }
 
   100% {
@@ -477,53 +479,53 @@ $splash_form_field_width: 240px;
     @include translate(0px, 0px);
     @include rotate(0deg);
   }
-	35% {
+  35% {
     @include translate(0px, 0px);
-	}
-	38% {
+  }
+  38% {
     @include translate(0px, 4px);
-	}
-	41% {
+  }
+  41% {
     @include translate(0px, 0px);
     @include rotate(5deg);
-	}
+  }
 
   //wiggle
-	43% {
+  43% {
     @include rotate(5deg);
-	}
-	45% {
+  }
+  45% {
     @include rotate(-5deg);
-	}
-	47% {
+  }
+  47% {
     @include rotate(3deg);
-	}
-	49% {
+  }
+  49% {
     @include rotate(0deg);
-	}
+  }
 
-	100% {
+  100% {
     @include translate(0px, 0px);
     @include rotate(0deg);
-	}
+  }
 }
 
 @include keyframes(jump_legs) {
   0% {
     @include translate(0px, 0px);
   }
-	30% {
+  30% {
     @include translate(0px, 0px);
-	}
-	33% {
+  }
+  33% {
     @include translate(0px, -2px);
-	}
-	36% {
+  }
+  36% {
     @include translate(0px, 0px);
-	}
-	100% {
+  }
+  100% {
     @include translate(0px, 0px);
-	}
+  }
 }
 
 @include keyframes(form_animation) {
@@ -560,17 +562,17 @@ $splash_form_field_width: 240px;
   right: 0px;
   top: 0px;
   bottom: 0px;
-  z-index: get_index('splash');
+  z-index: get_index("splash");
 
   background: {
-    color: color_variable('background');
+    color: color_variable("background");
   }
 
   .splash_background {
-//    filter: blur(60px); //not needed and it really slows performance down on some browsers
+    //    filter: blur(60px); //not needed and it really slows performance down on some browsers
 
     //NOTE: change the animation speed slightly for each set to provide a bit more randomness. try and use prime numbers (or ones that one line up with each other very often)
-    @include gradient_background('green', #8cdcac, 10s) {
+    @include gradient_background("green", #8cdcac, 10s) {
       left: 15vw;
       top: 30vh;
 
@@ -590,7 +592,7 @@ $splash_form_field_width: 240px;
       }
     }
 
-    @include gradient_background('purple', #c8b2f7, 13s) {
+    @include gradient_background("purple", #c8b2f7, 13s) {
       left: 60vw;
       top: 85vh;
 
@@ -610,7 +612,7 @@ $splash_form_field_width: 240px;
       }
     }
 
-    @include gradient_background('blue', #549cde, 17s) {
+    @include gradient_background("blue", #549cde, 17s) {
       left: 110vw;
       top: 45vh;
 
@@ -635,7 +637,9 @@ $splash_form_field_width: 240px;
     position: absolute;
     left: 20%;
     right: 20%;
-    bottom: (100% - $splash_position); //$splash_footer_height + $splash_padding;
+    bottom: (
+      100% - $splash_position
+    ); //$splash_footer_height + $splash_padding;
     z-index: 200; //above footer
 
     @include not_desktop() {
@@ -651,12 +655,12 @@ $splash_form_field_width: 240px;
         height: 120%;
       }
 
-      @include animation(slide_down 1s easing($ease-in-out-cubic) .15s both);
+      @include animation(slide_down 1s easing($ease-in-out-cubic) 0.15s both);
     }
 
     .title_logo {
       margin: {
-        top: $padding * .5;
+        top: $padding * 0.5;
       }
 
       font: {
@@ -670,20 +674,20 @@ $splash_form_field_width: 240px;
         height: 110%;
       }
 
-      @include animation(slide_right 1s easing($ease-in-out-cubic) .15s both);
+      @include animation(slide_right 1s easing($ease-in-out-cubic) 0.15s both);
     }
 
     .title_tagline {
       margin: {
-        top: $padding * .2;
-        bottom: $padding * .5;
+        top: $padding * 0.2;
+        bottom: $padding * 0.5;
       }
 
       line: {
         height: 140%;
       }
 
-      @include animation(fade_in 1s easing($ease-in-out-cubic) .75s both);
+      @include animation(fade_in 1s easing($ease-in-out-cubic) 0.75s both);
     }
 
     .form {
@@ -695,10 +699,14 @@ $splash_form_field_width: 240px;
 
       &.active {
         //todo: change to angular animtion to get proper height instead of guessing
-        @include animation(form_animation .65s easing($ease-in-out-cubic) both);
+        @include animation(
+          form_animation 0.65s easing($ease-in-out-cubic) both
+        );
 
         input {
-          @include animation(form_field_animation .35s easing($ease-in-out-cubic) both);
+          @include animation(
+            form_field_animation 0.35s easing($ease-in-out-cubic) both
+          );
         }
       }
 
@@ -712,18 +720,18 @@ $splash_form_field_width: 240px;
           top: $padding;
           left: 3px; //offset to provide room for focus
         }
-        padding: ($padding * .5) ($padding * .5);
+        padding: ($padding * 0.5) ($padding * 0.5);
 
         border: 0px;
 
         @include border-radius($border_radius);
 
         &:nth-child(1) {
-          @include animation-delay(.35s);
+          @include animation-delay(0.35s);
         }
 
         &:nth-child(2) {
-          @include animation-delay(.65s);
+          @include animation-delay(0.65s);
         }
       }
     }
@@ -736,9 +744,9 @@ $splash_form_field_width: 240px;
         width: 110px;
       }
 
-      color: get_color('text'); //background
+      color: get_color("text"); //background
       background: {
-        color: get_color('splash_button');
+        color: get_color("splash_button");
       }
 
       margin: {
@@ -755,12 +763,14 @@ $splash_form_field_width: 240px;
       }
 
       @include border-radius(2000px); //$border_radius);
-      @include animation(floating 6s easing($ease-in-out-back) 0s both infinite);
+      @include animation(
+        floating 6s easing($ease-in-out-back) 0s both infinite
+      );
 
       &:hover {
-        color: get_color('background'); //background
+        color: get_color("background"); //background
         background: {
-          color: get_color('splash_button_hover');
+          color: get_color("splash_button_hover");
         }
       }
     }
@@ -775,7 +785,9 @@ $splash_form_field_width: 240px;
     pointer-events: none;
 
     @include transform-origin(25px 40px);
-    @include animation(molecule_red_animation 9s easing($ease-in-out-cubic) 1s both infinite);
+    @include animation(
+      molecule_red_animation 9s easing($ease-in-out-cubic) 1s both infinite
+    );
 
     svg {
       @include scale(1.8);
@@ -797,7 +809,9 @@ $splash_form_field_width: 240px;
     .arms {
       @include transform-origin(40px 35px);
       transform-box: fill-box;
-      @include animation(up_up_and_away 9s easing($ease-in-out) 1s both infinite);
+      @include animation(
+        up_up_and_away 9s easing($ease-in-out) 1s both infinite
+      );
     }
 
     .legs {
@@ -809,7 +823,9 @@ $splash_form_field_width: 240px;
     .motion_lines {
       @include transform-origin(0px 0px);
       transform-box: fill-box;
-      @include animation(motion_line_animation 9s easing($ease-in-out) 1s both infinite);
+      @include animation(
+        motion_line_animation 9s easing($ease-in-out) 1s both infinite
+      );
     }
 
     //animation delay, placed here to see all the parts that need to be set the same
@@ -834,7 +850,9 @@ $splash_form_field_width: 240px;
     top: -100px;
     z-index: 100;
 
-    @include animation(yellow_drop_in 12s easing($ease-in-out-back) 4s both infinite);
+    @include animation(
+      yellow_drop_in 12s easing($ease-in-out-back) 4s both infinite
+    );
 
     svg {
       @include scale(1.8);
@@ -843,13 +861,17 @@ $splash_form_field_width: 240px;
     .left_arm {
       @include transform-origin(15px 0px);
       transform-box: fill-box;
-      @include animation(arms_dangle 12s easing($ease-in-out-back) 4s both infinite);
+      @include animation(
+        arms_dangle 12s easing($ease-in-out-back) 4s both infinite
+      );
     }
 
     .right_arm {
       @include transform-origin(0px 0px);
       transform-box: fill-box;
-      @include animation(arms_dangle_opposite 12s easing($ease-in-out) 4s both infinite);
+      @include animation(
+        arms_dangle_opposite 12s easing($ease-in-out) 4s both infinite
+      );
     }
 
     .blink {
@@ -867,7 +889,7 @@ $splash_form_field_width: 240px;
 
     .blink {
       ellipse {
-//        @include animation-duration(6s);
+        //        @include animation-duration(6s);
         @include animation-delay(-2s);
       }
     }
@@ -875,20 +897,26 @@ $splash_form_field_width: 240px;
     .molecule {
       @include transform-origin(center -5px);
       transform-box: fill-box;
-      @include animation(floating 6s easing($ease-in-out-back) 0s both infinite);
+      @include animation(
+        floating 6s easing($ease-in-out-back) 0s both infinite
+      );
     }
 
     .legs {
       @include transform-origin(center 0px);
       transform-box: fill-box;
-      @include animation(floating_opposite 6s easing($ease-in-out-back) 0s both infinite);
-//      @include animation-delay(-0.25s);
+      @include animation(
+        floating_opposite 6s easing($ease-in-out-back) 0s both infinite
+      );
+      //      @include animation-delay(-0.25s);
     }
 
     .cape {
       @include transform-origin(0px 0px);
       transform-box: fill-box;
-      @include animation(cape_flapping 4s easing($ease-in-out-sine) 0s both infinite);
+      @include animation(
+        cape_flapping 4s easing($ease-in-out-sine) 0s both infinite
+      );
     }
   }
 
@@ -922,11 +950,13 @@ $splash_form_field_width: 240px;
   .moustache_right {
     @include transform-origin(3px 2.5px);
     transform-box: fill-box;
-    @include animation(moustache 4s easing($ease-in-out-back) 0s both infinite alternate-reverse);
+    @include animation(
+      moustache 4s easing($ease-in-out-back) 0s both infinite alternate-reverse
+    );
   }
 
   .shadow {
-    fill: rgba(#888, .1);
+    fill: rgba(#888, 0.1);
   }
 
   .footer_container {
@@ -938,9 +968,9 @@ $splash_form_field_width: 240px;
 
     display: flex;
     align-items: flex-end;
-    gap: $padding * .5;
+    gap: $padding * 0.5;
 
-//    height: $splash_footer_height;
+    //    height: $splash_footer_height;
 
     @include not_desktop() {
       left: $padding * 2;
@@ -984,19 +1014,25 @@ $splash_form_field_width: 240px;
       .left_leg {
         @include transform-origin(0px 0px);
         transform-box: fill-box;
-        @include animation(jump_legs 9s easing($ease-in-out-cubic) 0s both infinite);
+        @include animation(
+          jump_legs 9s easing($ease-in-out-cubic) 0s both infinite
+        );
       }
 
       .right_leg {
         @include transform-origin(0px 0px);
         transform-box: fill-box;
-        @include animation(jump_legs 9s easing($ease-in-out-cubic) .3s both infinite);
+        @include animation(
+          jump_legs 9s easing($ease-in-out-cubic) 0.3s both infinite
+        );
       }
 
       .mouth {
         @include transform-origin(2.5px 3px);
         transform-box: fill-box;
-        @include animation(open_mouth 9s easing($ease-in-out-cubic) -5s both infinite);
+        @include animation(
+          open_mouth 9s easing($ease-in-out-cubic) -5s both infinite
+        );
       }
     }
 
@@ -1022,12 +1058,14 @@ $splash_form_field_width: 240px;
       .mouth {
         @include transform-origin(2.5px 3px);
         transform-box: fill-box;
-        @include animation(open_mouth 6s easing($ease-in-out-cubic) -4s both infinite);
+        @include animation(
+          open_mouth 6s easing($ease-in-out-cubic) -4s both infinite
+        );
       }
     }
 
     .molecule_orange {
-//      @include animation(high_five 6s easing($ease-in-out) 0s both infinite);
+      //      @include animation(high_five 6s easing($ease-in-out) 0s both infinite);
 
       svg {
         @include scale(1.3);
@@ -1041,7 +1079,9 @@ $splash_form_field_width: 240px;
       .mouth {
         @include transform-origin(2.5px 3px);
         transform-box: fill-box;
-        @include animation(open_mouth 6s easing($ease-in-out-cubic) -4.4s both infinite);
+        @include animation(
+          open_mouth 6s easing($ease-in-out-cubic) -4.4s both infinite
+        );
       }
 
       .blink {

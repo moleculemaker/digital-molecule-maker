@@ -1,43 +1,61 @@
 <!--todo - change to better test to know when div is ready to display to avoid undefined error -->
-<div class="block_container"
+<div
+  class="block_container"
   *ngIf="imageWidth"
-  [style.height.px] = "(blockHeight + this.padding.y)"
-  [style.width.px] = "(blockWidth + this.padding.x)"
-  [class]="[
-    'block_' + type,
-    'size_' + size
-  ]"
+  [style.height.px]="blockHeight + this.padding.y"
+  [style.width.px]="blockWidth + this.padding.x"
+  [class]="['block_' + type, 'size_' + size]"
   [class.dashes]="isAddBlock()"
 >
-  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    [attr.viewBox]="'0 0 ' + (blockWidth + this.padding.x) + ' ' + (blockHeight + this.padding.y)"
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    [attr.viewBox]="
+      '0 0 ' +
+      (blockWidth + this.padding.x) +
+      ' ' +
+      (blockHeight + this.padding.y)
+    "
   >
-    <path class="block_background block_border"
+    <path
+      class="block_background block_border"
       [attr.d]="drawBlock()"
-
       [attr.stroke-dasharray]="strokeDasharray"
       [attr.stroke-width]="strokeWidth"
     ></path>
 
     <!-- + add block icon -->
     <g *ngIf="isAddBlock()">
-      <rect width="6" height="24" x="50%" y="50%" fill="black" style="transform: translate(-3px, -12px);" />
-      <rect width="24" height="6" x="50%" y="50%" fill="black" style="transform: translate(-12px, -3px);" />
+      <rect
+        width="6"
+        height="24"
+        x="50%"
+        y="50%"
+        fill="black"
+        style="transform: translate(-3px, -12px)"
+      />
+      <rect
+        width="24"
+        height="6"
+        x="50%"
+        y="50%"
+        fill="black"
+        style="transform: translate(-12px, -3px)"
+      />
     </g>
   </svg>
 
-  <div class="image" [style.height.%] = "50"
-  [style.width.%] = "50">
+  <div class="image" [style.height.%]="50" [style.width.%]="50">
     <!-- <div class="icon_label" *ngIf="iconLabel" [innerHTML]="iconLabel"></div> -->
 
-    <svg #svgImage *ngIf="svgUrl"
+    <svg
+      #svgImage
+      *ngIf="svgUrl"
       [attr.data-src]="svgUrl"
       width="100%"
       height="100%"
       [attr.viewBox]="buildImageViewbox()"
-
       data-cache="disabled"
-
       (load)="onLoadSVG($event)"
     />
   </div>

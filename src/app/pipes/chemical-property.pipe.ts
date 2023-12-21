@@ -1,24 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer } from "@angular/platform-browser";
-import {ChemicalPropertyDisplayStrategy} from "../models";
+import { DomSanitizer } from '@angular/platform-browser';
+import { ChemicalPropertyDisplayStrategy } from '../models';
 
 @Pipe({
-  name: 'chemicalProperty'
+  name: 'chemicalProperty',
 })
 export class ChemicalPropertyPipe implements PipeTransform {
-
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer) {}
 
   transform(value: any, strategy: ChemicalPropertyDisplayStrategy): any {
     let returnVal: any = value;
     if (strategy === 'default') {
       // no need to change anything
     } else if (strategy === 'chemicalFormula') {
-      returnVal = this.sanitizer.bypassSecurityTrustHtml(value.replace(/(\d+)/g, "<sub>$1</sub>"));
+      returnVal = this.sanitizer.bypassSecurityTrustHtml(
+        value.replace(/(\d+)/g, '<sub>$1</sub>'),
+      );
     } else {
       console.warn('Unrecognized display strategy', strategy);
     }
     return returnVal;
   }
-
 }

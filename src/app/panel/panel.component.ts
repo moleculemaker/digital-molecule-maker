@@ -1,8 +1,37 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { state, trigger, transition, style, animate, AnimationEvent, useAnimation } from "@angular/animations";
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  state,
+  trigger,
+  transition,
+  style,
+  animate,
+  AnimationEvent,
+  useAnimation,
+} from '@angular/animations';
 
-import { blurIn, blurOut, bounceIn, bounceOut, slideIn, slideOut, slideInReverse, slideOutReverse } from './panel.animations';
-import { aggregateProperty, BlockPropertyDefinition, BlockSet, Molecule } from '../models';
+import {
+  blurIn,
+  blurOut,
+  bounceIn,
+  bounceOut,
+  slideIn,
+  slideOut,
+  slideInReverse,
+  slideOutReverse,
+} from './panel.animations';
+import {
+  aggregateProperty,
+  BlockPropertyDefinition,
+  BlockSet,
+  Molecule,
+} from '../models';
 
 @Component({
   selector: 'panel',
@@ -12,10 +41,8 @@ import { aggregateProperty, BlockPropertyDefinition, BlockSet, Molecule } from '
     //unable to animation rgba backgroundColor and backdropFilter using angular...moved that animation to normal css
 
     trigger('panelAnimation', [
-      state('increasing', style({
-      })),
-      state('decreasing', style({
-      })),
+      state('increasing', style({})),
+      state('decreasing', style({})),
 
       transition('void => increasing', [useAnimation(slideIn)]),
       transition('void => decreasing', [useAnimation(slideInReverse)]),
@@ -26,7 +53,7 @@ import { aggregateProperty, BlockPropertyDefinition, BlockSet, Molecule } from '
       transition(':enter', [useAnimation(bounceIn)]),
       transition(':leave', [useAnimation(bounceOut)]),
     ]),
-/*
+    /*
 //example if you want to pass params... can delete here as needed
       transition(':enter', [useAnimation(slideIn, { //void => *
         params: {
@@ -34,13 +61,11 @@ import { aggregateProperty, BlockPropertyDefinition, BlockSet, Molecule } from '
         }}
       )]),
 */
-  ]
+  ],
 })
-
 export class PanelComponent implements OnInit {
-
   @Input()
-  cartMoleculeList: Molecule[] = []
+  cartMoleculeList: Molecule[] = [];
 
   @Input()
   blockSet?: BlockSet;
@@ -63,7 +88,7 @@ export class PanelComponent implements OnInit {
   moleculeNamePlaceholder = 'Molecule Name';
 
   //********************************************
-  constructor( ) { }
+  constructor() {}
 
   //********************************************
   ngOnInit(): void {
@@ -71,29 +96,32 @@ export class PanelComponent implements OnInit {
   }
 
   //********************************************
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   //********************************************
   nextStep() {
-    if (this.step >= this.maxSteps) {return;}
+    if (this.step >= this.maxSteps) {
+      return;
+    }
 
     this.isIncreasing = true;
 
     //wrap in a timeout so is_increasing actually changes before the animation is called
-    setTimeout(()=>{
+    setTimeout(() => {
       this.step++;
     }, 0);
   }
 
   //********************************************
   previousStep() {
-    if (this.step <= 0) {return;}
+    if (this.step <= 0) {
+      return;
+    }
 
     this.isIncreasing = false;
 
     //wrap in a timeout so is_increasing actually changes before the animation is called
-    setTimeout(()=>{
+    setTimeout(() => {
       this.step--;
     }, 0);
   }
@@ -113,7 +141,7 @@ export class PanelComponent implements OnInit {
     this.isIncreasing = false; //to make the panels slide off the screen
 
     //wrap in a timeout so is_increasing actually changes before the animation is called
-    setTimeout(()=>{
+    setTimeout(() => {
       this.step = 0;
     }, 0);
   }
@@ -121,11 +149,13 @@ export class PanelComponent implements OnInit {
   //********************************************
   onPanelAnimationEvent(e: AnimationEvent) {
     //callback
-    if (e.toState == 'void') {this.onClose.emit();}
+    if (e.toState == 'void') {
+      this.onClose.emit();
+    }
   }
 
   canSubmitMolecule(): boolean {
-return true;
+    return true;
     // const workingName = this.moleculeName?.trim() || '';
     // return workingName.length > 0;
   }
@@ -136,11 +166,14 @@ return true;
     this.nextStep();
   }
 
-  sendBackToWorkspace(moleculeId: number){
+  sendBackToWorkspace(moleculeId: number) {
     this.onSendBackToWorkspace.emit(moleculeId.toString());
   }
 
-  getAggregateProperty(molecule: Molecule, property: BlockPropertyDefinition): any {
+  getAggregateProperty(
+    molecule: Molecule,
+    property: BlockPropertyDefinition,
+  ): any {
     return aggregateProperty(molecule, property);
   }
 }

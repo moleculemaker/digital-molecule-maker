@@ -8,28 +8,30 @@ import { AppBuildComponent } from './app-build/app-build.component';
 import { PromptType, SplashComponent } from './splash/splash.component';
 
 const routes: Routes = [
-  { path: '',
+  {
+    path: '',
     component: SplashComponent,
     data: {
-      promptType: PromptType.None
-    }
+      promptType: PromptType.None,
+    },
   },
-  { path: 'activity',
+  {
+    path: 'activity',
     component: SplashComponent,
     data: {
-      promptType: PromptType.Code
-    }
+      promptType: PromptType.Code,
+    },
   },
   {
     path: 'build',
     component: AppBuildComponent,
-    canActivate: [CanActivateSurveyCode]
-  }
+    canActivate: [CanActivateSurveyCode],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [CanActivateSurveyCode, UserService]
+  providers: [CanActivateSurveyCode, UserService],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

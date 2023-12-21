@@ -1,14 +1,13 @@
 //**************** sass config ******************
 
-
 //**************** colors ******************
 
 $colors: (
-	default: #1f78b4, //used if color name not specified or not found when using get_color()
+  default: #1f78b4,
 
-	background: #ffffff,
-	background_faded: rgba(#fff, .4),
-
+  //used if color name not specified or not found when using get_color()
+  background: #ffffff,
+  background_faded: rgba(#fff, 0.4),
   block_start: #6c88cf,
   block_start_border: darken(#6c88cf, 20%),
   block_start_notselected: desaturate(#6c88cf, 60%),
@@ -21,7 +20,6 @@ $colors: (
   block_end_border: darken(#2ea6df, 20%),
   block_end_notselected: desaturate(#2ea6df, 60%),
   block_end_notselected_border: darken(desaturate(#2ea6df, 60%), 10%),
-
   block_border_dashes: #bbb,
   block_hover: #ffb800,
   block_hover_border: darken(#ffb800, 20%),
@@ -37,24 +35,29 @@ $colors: (
   molecule_hover_text: #6c88cf,
   molecule_hover_border: #6c88cf,
   molecule_hover_fill: #d9e2f9,
-  molecule_selected_border: #ffb800, //same as block_hover
+  molecule_selected_border: #ffb800,
+  //same as block_hover
   molecule_selected_fill: #ffb800,
 
-  button: #1f78b4, //same as default
+  button: #1f78b4,
+  //same as default
   button_background: #e1e1e1,
   button_border: #888,
-  button_hover: lighten(#1f78b4, 20%), //#ffb800, //#c4c4c4,
-
+  button_hover: lighten(#1f78b4, 20%),
+  //#ffb800, //#c4c4c4,
   button_toggle_background: #c4c4c4,
   button_toggle_hover: #ffffff,
-  button_toggle_selected: #ffffff, //same as background
+  button_toggle_selected: #ffffff,
 
+  //same as background
   header_border: #ececec,
 
   interface_background: #c4c4c4,
   interface_background_faded: #ececec,
-  interface_border: #dedede, //#888,
-  interface_button: #aaa, //#c4c4c4,
+  interface_border: #dedede,
+  //#888,
+  interface_button: #aaa,
+  //#c4c4c4,
   interface_hover: darken(#ececec, 5%),
   interface_search_background: #f8f8f8,
   interface_search_hover: #ccc,
@@ -65,8 +68,7 @@ $colors: (
   interface_tab_selected: #31509e,
   interface_faded: #ccc,
 
-  modal_background: rgba(#ececec, .95),
-
+  modal_background: rgba(#ececec, 0.95),
   overlay_background: #fff,
   overlay_button_background: #31509e,
   overlay_button_border: #dedede,
@@ -84,34 +86,32 @@ $colors: (
   panel_button_secondary: #f2f2f2,
   panel_button_secondary_hover: darken(#f2f2f2, 20%),
   panel_preview_background: #f2f2f2,
-  panel_preview_icon: rgba(darken(#f2f2f2, 30%), .5),
+  panel_preview_icon: rgba(darken(#f2f2f2, 30%), 0.5),
   panel_text: #000000,
   panel_text_faded: #c3c3c3,
 
   splash_button: #fff,
   splash_button_hover: #ffb800,
 
-	text: #000000,
-	text_faded: lighten(#000, 40%),
-
-  tutorial_background: rgba(#d9d9d9, .6)
+  text: #000000,
+  text_faded: lighten(#000, 40%),
+  tutorial_background: rgba(#d9d9d9, 0.6),
 );
-
 
 //**************** font ******************
 
-$font_family: 'Montserrat', 'Open Sans', sans-serif; //'Inter', 'Open Sans', sans-serif;
+$font_family: "Montserrat", "Open Sans", sans-serif; //'Inter', 'Open Sans', sans-serif;
 $font_family_header: $font_family; //'Bebas Neue', cursive;
-$font_size_min: .7rem;
-
+$font_size_min: 0.7rem;
 
 //**************** indexes ******************
 //z-index positions for positioned layers
 //set here to allow easy viewing and adjustments between all layers
 
 $indexes: (
-	default: 1000, //if no variable is specified, get_index() will return the default setting
+  default: 1000,
 
+  //if no variable is specified, get_index() will return the default setting
   interface_canvas: 4000,
   interface: 5000,
   interface_sidebar: 6000,
@@ -124,9 +124,8 @@ $indexes: (
   modal: 10000,
   splash: 11000,
 
-  tutorial: 12000
+  tutorial: 12000,
 );
-
 
 //**************** sizes ******************
 
@@ -140,16 +139,14 @@ $padding: 1rem; //base value used for padding and margins
 
 $interface_radius: 18px;
 
-
 //**************** core ******************
 
-@import 'core/functions';
-@import 'core/inline-svg-function';
-@import 'core/mixins';
-@import 'core/responsive';
+@import "core/functions";
+@import "core/inline-svg-function";
+@import "core/mixins";
+@import "core/responsive";
 
-@import 'core/easing';
-
+@import "core/easing";
 
 //**************** theme ******************
 //create a variable for every color
@@ -158,8 +155,11 @@ $interface_radius: 18px;
 // example of how to change these in javascript: document.documentElement.style.setProperty('--interface-color', '#00f');
 
 //creates a varible color reference, added here (instead of a mixin) since this could have custom naming schemes for each project
-@function color_variable($name:'default') {
-	@return var(#{'--' + str-replace($name, '_', '-') + '-color'}, #{get_color($name)});
+@function color_variable($name: "default") {
+  @return var(
+    #{"--" + str-replace($name, "_", "-") + "-color"},
+    #{get_color($name)}
+  );
 }
 
 //**************** custom ******************

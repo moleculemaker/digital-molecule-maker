@@ -1,6 +1,6 @@
 /**************** block css ******************/
 
-@import '../styles/core';
+@import "../styles/core";
 
 $block_border_width: 4px;
 $block_border_radius: 2px;
@@ -13,18 +13,17 @@ $block_icon_height: 36px;
 @mixin block_style($name) {
   &.block_#{$name} {
     .block_background {
-      fill: color_variable('block_' + $name);
-      stroke-miterlimit:10;
-      stroke-width:5;
-      stroke-linejoin:round;
+      fill: color_variable("block_" + $name);
+      stroke-miterlimit: 10;
+      stroke-width: 5;
+      stroke-linejoin: round;
     }
 
     .block_border {
-      stroke: color_variable('block_' + $name + '_border');
+      stroke: color_variable("block_" + $name + "_border");
     }
   }
 }
-
 
 //pass 2 variables
 //example: top, left
@@ -46,13 +45,13 @@ $block_icon_height: 36px;
       #{$name}: 0px; //top: 0px
 
       border: {
-        #{$name}: $block_border_width solid color_variable('block_border'); //top
+        #{$name}: $block_border_width
+          solid
+          color_variable("block_border"); //top
       }
-
     }
   }
 }
-
 
 //**************** css ******************
 
@@ -61,18 +60,18 @@ $block_icon_height: 36px;
 }
 
 .block_container {
-//  cursor: pointer;
+  //  cursor: pointer;
   position: relative;
 
   @include box-sizing(border-box);
 
-  @include block_style('start');
-  @include block_style('middle');
-  @include block_style('end');
+  @include block_style("start");
+  @include block_style("middle");
+  @include block_style("end");
 
   z-index: get_index(modal);
 
-/*
+  /*
   @include corner(top, left);
   @include corner(top, right);
   @include corner(bottom, left);
@@ -81,28 +80,28 @@ $block_icon_height: 36px;
 
   &:not(.dashes):hover {
     .block_background {
-      fill: color_variable('block_hover');
+      fill: color_variable("block_hover");
       @include transition(none);
     }
 
     .block_border {
-      stroke: color_variable('block_hover_border');
+      stroke: color_variable("block_hover_border");
       @include transition(none);
     }
   }
 
   &.dashes {
     .block_background {
-      fill: color_variable('background');
+      fill: color_variable("background");
     }
 
     .block_border {
-      stroke: color_variable('block_border_dashes');
+      stroke: color_variable("block_border_dashes");
     }
 
     &:hover {
       .block_border {
-        stroke: color_variable('block_hover_dashes');
+        stroke: color_variable("block_hover_dashes");
         @include transition(none);
       }
     }
@@ -112,7 +111,7 @@ $block_icon_height: 36px;
   }
 
   .icon_label {
-    color: color_variable('background');
+    color: color_variable("background");
 
     font: {
       weight: bold;
@@ -129,11 +128,17 @@ $block_icon_height: 36px;
   }
 
   .block_background {
-    @include transition(#{fill .2s easing($ease-in), stroke .2s easing($ease-in)});
+    @include transition(
+      #{fill 0.2s easing($ease-in),
+      stroke 0.2s easing($ease-in)}
+    );
   }
 
   .block_border {
-    @include transition(#{fill .2s easing($ease-in), stroke .2s easing($ease-in)});
+    @include transition(
+      #{fill 0.2s easing($ease-in),
+      stroke 0.2s easing($ease-in)}
+    );
   }
 
   .tab_offset {
@@ -155,8 +160,8 @@ $block_icon_height: 36px;
 
     svg {
       fill: white;
-      width:100%;
-      height:100%;
+      width: 100%;
+      height: 100%;
 
       ::ng-deep text {
         isolation: isolate;
@@ -169,17 +174,16 @@ $block_icon_height: 36px;
       }
 
       ::ng-deep .connection_in {
-        stroke: color_variable('block_stroke');
-        fill: color_variable('block_connection_in');
+        stroke: color_variable("block_stroke");
+        fill: color_variable("block_connection_in");
         stroke-miterlimit: 10;
       }
 
       ::ng-deep .connection_out {
-        stroke: color_variable('block_stroke');
-        fill: color_variable('block_connection_out');
+        stroke: color_variable("block_stroke");
+        fill: color_variable("block_connection_out");
         stroke-miterlimit: 10;
       }
-
     }
   }
 

@@ -1,7 +1,7 @@
 export enum BlockType {
-    Start = 'start',
-    Middle = 'middle',
-    End = 'end'
+  Start = 'start',
+  Middle = 'middle',
+  End = 'end',
 }
 
 export interface Block {
@@ -10,7 +10,7 @@ export interface Block {
   svgUrl: string;
   width: number;
   height: number;
-  properties: {[label: string]: any};
+  properties: { [label: string]: any };
 }
 
 export interface BlockSet {
@@ -23,7 +23,7 @@ export interface BlockSet {
     [BlockType.Start]: Block[];
     [BlockType.Middle]: Block[];
     [BlockType.End]: Block[];
-  }
+  };
 }
 
 export interface RigJob {
@@ -41,8 +41,11 @@ export interface BlockPropertyDefinition {
   aggregationStrategy: ChemicalPropertyAggregationStrategy;
 }
 
-export type ChemicalPropertyDisplayStrategy = 'default'|'chemicalFormula';
-export type ChemicalPropertyAggregationStrategy = 'sum'|'chemicalFormula'|'smiles';
+export type ChemicalPropertyDisplayStrategy = 'default' | 'chemicalFormula';
+export type ChemicalPropertyAggregationStrategy =
+  | 'sum'
+  | 'chemicalFormula'
+  | 'smiles';
 
 export class Coordinates {
   x: number;
@@ -60,7 +63,7 @@ export class Molecule {
   constructor(position: Coordinates, blockList: Block[]) {
     this.position = position;
     this.blockList = blockList;
-    this.label = "NewMolecule"
+    this.label = 'NewMolecule';
   }
 }
 
@@ -71,22 +74,29 @@ export interface User {
 
 export function getBlockSetScale(blockSet: BlockSet, target: number): number {
   const maxHeightOrWidth = Math.max(
-    ...blockSet.blocks[BlockType.Start].map(block => block.height),
-    ...blockSet.blocks[BlockType.Middle].map(block => block.height),
-    ...blockSet.blocks[BlockType.End].map(block => block.height),
-    ...blockSet.blocks[BlockType.Start].map(block => block.width),
-    ...blockSet.blocks[BlockType.Middle].map(block => block.width),
-    ...blockSet.blocks[BlockType.End].map(block => block.width)
+    ...blockSet.blocks[BlockType.Start].map((block) => block.height),
+    ...blockSet.blocks[BlockType.Middle].map((block) => block.height),
+    ...blockSet.blocks[BlockType.End].map((block) => block.height),
+    ...blockSet.blocks[BlockType.Start].map((block) => block.width),
+    ...blockSet.blocks[BlockType.Middle].map((block) => block.width),
+    ...blockSet.blocks[BlockType.End].map((block) => block.width),
   );
   return target / maxHeightOrWidth;
 }
 
-export function aggregateProperty(molecule: Molecule, property: BlockPropertyDefinition): any {
+export function aggregateProperty(
+  molecule: Molecule,
+  property: BlockPropertyDefinition,
+): any {
   if (property.aggregationStrategy === 'sum') {
-    return molecule.blockList.map(block => block.properties[property.key]).reduce((acc, cur) => acc + cur, 0);
+    return molecule.blockList
+      .map((block) => block.properties[property.key])
+      .reduce((acc, cur) => acc + cur, 0);
   } else if (property.aggregationStrategy === 'chemicalFormula') {
     let returnVal = '';
-    const concatenatedFormula = molecule.blockList.map(block => block.properties[property.key]).join('');
+    const concatenatedFormula = molecule.blockList
+      .map((block) => block.properties[property.key])
+      .join('');
     if (concatenatedFormula.length > 0) {
       const atomCounts = new Map<string, number>();
       const processSubstring = (substring: string) => {
@@ -102,7 +112,7 @@ export function aggregateProperty(molecule: Molecule, property: BlockPropertyDef
         }
       };
       let seen = concatenatedFormula.charAt(0);
-      for(let index = 1; index < concatenatedFormula.length; index++) {
+      for (let index = 1; index < concatenatedFormula.length; index++) {
         let next = concatenatedFormula.charAt(index);
         // if it's an upper-case letter, process seen and start anew
         if (/[A-Z]/.test(next)) {
@@ -122,7 +132,7 @@ export function aggregateProperty(molecule: Molecule, property: BlockPropertyDef
           }
         }
       };
-      ['C', 'H', 'F', 'N', 'O', 'S'].forEach(atom => {
+      ['C', 'H', 'F', 'N', 'O', 'S'].forEach((atom) => {
         appendOneAtom(atom);
         atomCounts.delete(atom);
       });
@@ -133,7 +143,9 @@ export function aggregateProperty(molecule: Molecule, property: BlockPropertyDef
     }
     return returnVal;
   } else if (property.aggregationStrategy === 'smiles') {
-    return molecule.blockList.map(block => block.properties[property.key]).join('-');
+    return molecule.blockList
+      .map((block) => block.properties[property.key])
+      .join('-');
   }
   return 'unrecognized aggregation strategy';
 }

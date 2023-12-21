@@ -9,10 +9,9 @@ describe('TutorialComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
-      declarations: [ TutorialComponent ]
-    })
-    .compileComponents();
+      imports: [RouterTestingModule],
+      declarations: [TutorialComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

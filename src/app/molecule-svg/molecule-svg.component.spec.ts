@@ -8,9 +8,8 @@ describe('MoleculeSvgComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MoleculeSvgComponent ]
-    })
-    .compileComponents();
+      declarations: [MoleculeSvgComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

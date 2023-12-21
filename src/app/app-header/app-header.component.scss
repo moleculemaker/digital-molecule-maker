@@ -1,10 +1,8 @@
 /**************** app-header css ******************/
 
-@import '../styles/core';
-
+@import "../styles/core";
 
 //**************** custom mixins ******************
-
 
 //**************** css ******************
 
@@ -14,7 +12,7 @@
   align-items: stretch;
 
   border: {
-    bottom: 1px solid color_variable('header_border');
+    bottom: 1px solid color_variable("header_border");
   }
 
   font: {
@@ -26,17 +24,17 @@
     display: flex;
     align-items: center; //flex-end;
 
-    padding: $padding * .5;
+    padding: $padding * 0.5;
 
     &:first-child {
       margin: {
-        left: $padding * .5;
+        left: $padding * 0.5;
       }
     }
 
     &:last-child {
       margin: {
-        right: $padding * .5;
+        right: $padding * 0.5;
       }
     }
   }
@@ -55,7 +53,7 @@
   }
 
   margin: {
-    right: $padding * .25;
+    right: $padding * 0.25;
   }
 }
 
@@ -77,57 +75,57 @@
 }
 
 .code {
-  color: color_variable('default');
+  color: color_variable("default");
 
   margin: {
-    right: $padding * .5;
+    right: $padding * 0.5;
   }
 
   font: {
-    size: .85rem;
+    size: 0.85rem;
     weight: bold;
   }
 }
 
 input[type="text"] {
-  padding: ($padding * .35) ($padding * .5);
+  padding: ($padding * 0.35) ($padding * 0.5);
 
   font: {
     family: $font_family_header;
     size: 90%;
   }
 
-  border: 1px solid color_variable('interface_border');
+  border: 1px solid color_variable("interface_border");
 }
 
 .button {
   cursor: pointer;
 
-  padding: ($padding * .4) ($padding * 1.25);
+  padding: ($padding * 0.4) ($padding * 1.25);
 
   font: {
-    size: .75rem;
+    size: 0.75rem;
   }
 
-  border: 1px solid color_variable('button_border');
+  border: 1px solid color_variable("button_border");
 
   @include border-radius($border_radius);
-  @include transition(#{background-color .2s easing($ease-in)});
+  @include transition(#{background-color 0.2s easing($ease-in)});
 
   & + .button {
     margin: {
-      left: $padding * .5;
+      left: $padding * 0.5;
     }
   }
 
   &:hover {
-    color: color_variable('background');
+    color: color_variable("background");
     background: {
-      color: color_variable('button_hover');
+      color: color_variable("button_hover");
     }
 
     border: {
-      color: color_variable('button_hover');
+      color: color_variable("button_hover");
     }
 
     @include transition(none);

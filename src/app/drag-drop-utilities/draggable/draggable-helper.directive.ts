@@ -1,29 +1,38 @@
 // Based on https://stackblitz.com/edit/cdk-drag-drop?file=app%2Fapp.component.html
 
-import { Directive, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { GlobalPositionStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import {
+  Directive,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
+import {
+  GlobalPositionStrategy,
+  Overlay,
+  OverlayRef,
+} from '@angular/cdk/overlay';
 import { CdkPortal } from '@angular/cdk/portal';
 
 @Directive({
-  selector: '[dfDraggableHelper]'
+  selector: '[dfDraggableHelper]',
 })
 export class DraggableHelperDirective implements OnInit, OnDestroy {
-
   private _dragElement!: HTMLElement;
-  private _relPosition!: { x: number, y: number };
+  private _relPosition!: { x: number; y: number };
   private _overlayRef!: OverlayRef;
   private _positioningStrategy!: GlobalPositionStrategy;
 
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainerRef: ViewContainerRef,
-    private overlay: Overlay
+    private overlay: Overlay,
   ) {}
 
   ngOnInit(): void {
     this._positioningStrategy = new GlobalPositionStrategy();
     this._overlayRef = this.overlay.create({
-      positionStrategy: this._positioningStrategy
+      positionStrategy: this._positioningStrategy,
     });
   }
 
@@ -43,7 +52,9 @@ export class DraggableHelperDirective implements OnInit, OnDestroy {
 
   onDragMove(event: PointerEvent): void {
     if (!this._overlayRef.hasAttached()) {
-      this._overlayRef.attach(new CdkPortal(this.templateRef, this.viewContainerRef));
+      this._overlayRef.attach(
+        new CdkPortal(this.templateRef, this.viewContainerRef),
+      );
       this._overlayRef.overlayElement.style.pointerEvents = 'none'; //overlay html element is never the target of pointer events
     }
 

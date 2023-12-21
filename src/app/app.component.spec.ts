@@ -9,14 +9,12 @@ import { SplashComponent } from './splash/splash.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
+      imports: [RouterTestingModule],
       declarations: [
         AppComponent,
         AppHeaderComponent,
         DroppableDirective,
-        SplashComponent
+        SplashComponent,
       ],
     }).compileComponents();
   });
@@ -32,5 +30,4 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     expect(app.title).toEqual('Digital Molecule Maker');
   });
-
 });

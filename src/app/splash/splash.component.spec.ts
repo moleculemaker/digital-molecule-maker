@@ -9,10 +9,9 @@ describe('SplashComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
-      declarations: [ SplashComponent ]
-    })
-    .compileComponents();
+      imports: [RouterTestingModule],
+      declarations: [SplashComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

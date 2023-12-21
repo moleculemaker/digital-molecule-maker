@@ -13,18 +13,14 @@ describe('AppBuildComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        HttpClientTestingModule
-      ],
+      imports: [BrowserAnimationsModule, HttpClientTestingModule],
       declarations: [
         AppBuildComponent,
         AppSidebarComponent,
         BlockComponent,
-        DroppableDirective
-      ]
-    })
-    .compileComponents();
+        DroppableDirective,
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {

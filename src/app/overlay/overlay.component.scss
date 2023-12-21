@@ -1,16 +1,16 @@
 //**************** css ******************
-@import '../styles/core';
+@import "../styles/core";
 
 .overlay {
   width: 650px;
 
   background: {
-    color: color_variable('overlay_background');
+    color: color_variable("overlay_background");
   }
 
   padding: $padding;
 
-  @include shadow(15px, rgba(#000, .25), 0px, 0px);
+  @include shadow(15px, rgba(#000, 0.25), 0px, 0px);
   @include border-radius($border_radius * 3);
   @include box-sizing(border-box);
 
@@ -34,7 +34,7 @@
       }
 
       background: {
-        color: color_variable('overlay_image_background');
+        color: color_variable("overlay_image_background");
       }
 
       @include border-radius($border_radius);
@@ -52,13 +52,13 @@
       .tag {
         display: flex;
         align-items: flex-start;
-        gap: $padding * .25;
+        gap: $padding * 0.25;
 
         .label {
           order: 2;
 
           margin: {
-            top: .17rem;
+            top: 0.17rem;
           }
         }
 
@@ -72,10 +72,10 @@
 
         display: flex;
         align-items: center;
-        gap: $padding * .5;
+        gap: $padding * 0.5;
 
         &:hover {
-          color: color_variable('button_hover');
+          color: color_variable("button_hover");
         }
 
         &.expanded {
@@ -88,7 +88,7 @@
 
         svg {
           @include rotate(90deg);
-          @include transition(#{transform .2s easing($ease-in-out-cubic)});
+          @include transition(#{transform 0.2s easing($ease-in-out-cubic)});
         }
       }
 
@@ -113,7 +113,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: $padding * .5;
+    gap: $padding * 0.5;
 
     margin: {
       right: $padding * 2; //leave room for close_btn
@@ -121,13 +121,13 @@
 
     .tag {
       background: {
-        color: color_variable('overlay_tag_background');
+        color: color_variable("overlay_tag_background");
       }
 
-      padding: ($padding * .2) ($padding * .75);
+      padding: ($padding * 0.2) ($padding * 0.75);
 
       font: {
-        size: .65rem;
+        size: 0.65rem;
       }
 
       @include border-left-radius(2000px);
@@ -138,7 +138,7 @@
   ::ng-deep .overlay_footer {
     display: flex;
     align-items: center;
-    gap: $padding * .5;
+    gap: $padding * 0.5;
 
     width: 100%;
 
@@ -153,23 +153,23 @@
     .outline {
       display: flex;
       justify-content: center;
-      gap: $padding * .2;
+      gap: $padding * 0.2;
 
-      padding: ($padding * .5) ($padding * .5);
+      padding: ($padding * 0.5) ($padding * 0.5);
 
       font: {
-        size: .8rem;
+        size: 0.8rem;
       }
 
-      border: 1px solid color_variable('overlay_outline');
+      border: 1px solid color_variable("overlay_outline");
 
       @include border-radius($border_radius);
     }
 
     .stat {
       & + .stat {
-         padding: {
-          left: $padding * .5;
+        padding: {
+          left: $padding * 0.5;
         }
 
         border: {
@@ -179,12 +179,12 @@
 
       .label {
         font: {
-          size: .65rem;
+          size: 0.65rem;
         }
       }
 
       .value {
-        color: color_variable('overlay_primary');
+        color: color_variable("overlay_primary");
 
         font: {
           size: 1.1rem;
@@ -213,7 +213,7 @@
 
     &:hover {
       background: {
-        color: color_variable('overlay_tag_background');
+        color: color_variable("overlay_tag_background");
       }
 
       @include opacity(100);
@@ -223,7 +223,7 @@
   .properties {
     display: flex;
     flex-wrap: wrap;
-    gap: ($padding * .5) ($padding * 1.5);
+    gap: ($padding * 0.5) ($padding * 1.5);
 
     margin: {
       top: $padding;
@@ -233,17 +233,17 @@
     }
 
     .label {
-      color: color_variable('overlay_label');
+      color: color_variable("overlay_label");
 
       font: {
-        size: .7rem;
+        size: 0.7rem;
       }
     }
 
     .value {
       display: flex;
       align-items: center;
-      gap: $padding * .2;
+      gap: $padding * 0.2;
 
       font: {
         weight: bold;
@@ -257,14 +257,14 @@
     }
   }
 
-  .extended_properties{
-//    display: grid;
-//    grid-template-columns: 1.5fr 2.5fr 1fr
+  .extended_properties {
+    //    display: grid;
+    //    grid-template-columns: 1.5fr 2.5fr 1fr
   }
 
   ::ng-deep sub {
     font: {
-      size: .6rem;
+      size: 0.6rem;
     }
   }
 
@@ -277,11 +277,11 @@
   ::ng-deep .button {
     display: flex;
     align-items: center;
-    gap: $padding * .2;
+    gap: $padding * 0.2;
 
     background: none;
 
-    padding: ($padding * .65) ($padding);
+    padding: ($padding * 0.65) ($padding);
 
     border: 0px;
 
@@ -290,31 +290,37 @@
     }
 
     @include box-sizing(border-box);
-    @include border-radius($border_radius*2);
+    @include border-radius($border_radius * 2);
 
     &.text_button {
-      color: color_variable('text');
+      color: color_variable("text");
 
-      padding: ($padding * .2) ($padding * .25);
+      padding: ($padding * 0.2) ($padding * 0.25);
 
-      @include transition(#{color .2s easing($ease-in)});
+      @include transition(#{color 0.2s easing($ease-in)});
     }
 
     &.outline_button {
-      color: color_variable('text');
+      color: color_variable("text");
 
-      border: 1px solid color_variable('overlay_button_border');
+      border: 1px solid color_variable("overlay_button_border");
 
-      @include transition(#{color .2s easing($ease-in), border-color .2s easing($ease-in)});
+      @include transition(
+        #{color 0.2s easing($ease-in),
+        border-color 0.2s easing($ease-in)}
+      );
     }
 
     &:not(.outline_button):not(.text_button) {
-      color: color_variable('background');
+      color: color_variable("background");
       background: {
-        color: color_variable('overlay_button_background');
+        color: color_variable("overlay_button_background");
       }
 
-      @include transition(#{color .2s easing($ease-in), background-color .2s easing($ease-in)});
+      @include transition(
+        #{color 0.2s easing($ease-in),
+        background-color 0.2s easing($ease-in)}
+      );
     }
 
     &:not([disabled]) {
@@ -322,18 +328,18 @@
 
       &.text_button {
         &:hover {
-          color: color_variable('overlay_button_hover');
+          color: color_variable("overlay_button_hover");
 
           @include transition(none);
 
           .info_icon {
-            color: color_variable('background');
+            color: color_variable("background");
             background: {
-              color: color_variable('overlay_button_hover');
+              color: color_variable("overlay_button_hover");
             }
 
             border: {
-              color: color_variable('overlay_button_hover');
+              color: color_variable("overlay_button_hover");
             }
           }
         }
@@ -341,10 +347,10 @@
 
       &.outline_button {
         &:hover {
-          color: color_variable('overlay_button_hover');
+          color: color_variable("overlay_button_hover");
 
           border: {
-            color: color_variable('overlay_button_hover');
+            color: color_variable("overlay_button_hover");
           }
 
           @include transition(none);
@@ -354,7 +360,7 @@
       &:not(.outline_button):not(.text_button) {
         &:hover {
           background: {
-            color: color_variable('overlay_button_hover');
+            color: color_variable("overlay_button_hover");
           }
 
           @include transition(none);
@@ -376,13 +382,13 @@
       width: 1.3rem;
       height: 1.3rem;
 
-//      color: color_variable('text');
+      //      color: color_variable('text');
 
       background: {
         color: #eee;
       }
 
-      border: 1px solid color_variable('overlay_button_border');
+      border: 1px solid color_variable("overlay_button_border");
 
       @include border-radius(50%);
     }

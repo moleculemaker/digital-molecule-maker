@@ -1,4 +1,4 @@
-@import '../styles/core';
+@import "../styles/core";
 
 $molecule_width: 570px; //fixed right now (to match html template). will need to revisit this when 3+ blocks
 $edit_name_height: 20px;
@@ -8,9 +8,9 @@ $edit_name_height: 20px;
 
   &:hover {
     .outside_border {
-      fill: color_variable('molecule_hover_fill');
+      fill: color_variable("molecule_hover_fill");
 
-      stroke: color_variable('molecule_hover_border');
+      stroke: color_variable("molecule_hover_border");
     }
 
     .delete_molecule_button {
@@ -20,33 +20,33 @@ $edit_name_height: 20px;
 
   &.selected {
     .outside_border {
-      fill: color_variable('molecule_selected_fill');
+      fill: color_variable("molecule_selected_fill");
 
-      stroke: color_variable('molecule_selected_border');
+      stroke: color_variable("molecule_selected_border");
     }
   }
 
   .outside_border {
-    fill: color_variable('molecule_background');
+    fill: color_variable("molecule_background");
     fill-opacity: 0.4;
 
-    stroke: color_variable('molecule_border');
+    stroke: color_variable("molecule_border");
     stroke-width: 1;
   }
 
   .name {
     font: {
       family: $font_family_header;
-      size: .8rem;
+      size: 0.8rem;
       weight: 700;
     }
 
-    fill: color_variable('text');
+    fill: color_variable("text");
 
     pointer-events: bounding-box;
 
     &:hover {
-      fill: color_variable('molecule_hover_text');
+      fill: color_variable("molecule_hover_text");
 
       .edit_name_button {
         display: inline;
@@ -55,7 +55,7 @@ $edit_name_height: 20px;
   }
 
   .invisible {
-//    outline: solid 1px #f00;
+    //    outline: solid 1px #f00;
 
     pointer-events: none;
   }
@@ -63,7 +63,7 @@ $edit_name_height: 20px;
   .edit_name_button {
     display: none;
 
-    color: color_variable('molecule_hover_text');
+    color: color_variable("molecule_hover_text");
   }
 
   .blocks {
@@ -80,23 +80,23 @@ $edit_name_height: 20px;
     cursor: pointer;
 
     .outline {
-      fill: color_variable('background');
+      fill: color_variable("background");
 
-      stroke: color_variable('molecule_border');
+      stroke: color_variable("molecule_border");
       stroke-width: 2px;
     }
 
     .icon {
-      color: color_variable('molecule_border');
+      color: color_variable("molecule_border");
     }
 
     &:hover {
       .outline {
-        stroke: color_variable('molecule_hover_text');
+        stroke: color_variable("molecule_hover_text");
       }
 
       .icon {
-        color: color_variable('molecule_hover_text');
+        color: color_variable("molecule_hover_text");
       }
     }
   }
@@ -112,7 +112,7 @@ $edit_name_height: 20px;
   width: $molecule_width;
 
   background: {
-//    color: color_variable('background');
+    //    color: color_variable('background');
   }
 
   input {
@@ -121,14 +121,14 @@ $edit_name_height: 20px;
     height: $edit_name_height;
 
     background: {
-      color: color_variable('background_faded');
+      color: color_variable("background_faded");
     }
 
-    padding: ($padding * .2) ($padding);
+    padding: ($padding * 0.2) ($padding);
 
     border: 0px;
     border: {
-      top: 1px solid color_variable('interface_border');
+      top: 1px solid color_variable("interface_border");
     }
 
     @include box-sizing(border-box);
@@ -144,15 +144,15 @@ $edit_name_height: 20px;
 
     height: $edit_name_height;
 
-    color: color_variable('background');
+    color: color_variable("background");
     background: {
-      color: color_variable('interface_border'); //button_background
+      color: color_variable("interface_border"); //button_background
     }
 
-    padding: ($padding * .2) ($padding * .5);
+    padding: ($padding * 0.2) ($padding * 0.5);
 
     font: {
-      size: .75rem;
+      size: 0.75rem;
     }
     text: {
       transform: uppercase;
@@ -163,7 +163,7 @@ $edit_name_height: 20px;
 
     &:hover {
       background: {
-        color: color_variable('button_hover');
+        color: color_variable("button_hover");
       }
     }
   }

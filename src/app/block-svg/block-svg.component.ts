@@ -1,25 +1,37 @@
 import { ConnectionPositionPair } from '@angular/cdk/overlay';
-import { Component, OnChanges, OnDestroy, OnInit, Input, TemplateRef, ViewChild, SimpleChanges, Output, EventEmitter} from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Input,
+  TemplateRef,
+  ViewChild,
+  SimpleChanges,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, BlockSet, BlockType } from '../models';
 
 @Component({
   selector: 'dmm-block-svg',
   templateUrl: './block-svg.component.html',
-  styleUrls: ['./block-svg.component.scss']
+  styleUrls: ['./block-svg.component.scss'],
 })
 export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('childComponentTemplate') childComponentTemplate: TemplateRef<any>|null = null;
+  @ViewChild('childComponentTemplate')
+  childComponentTemplate: TemplateRef<any> | null = null;
 
   @Input()
   asIcon = false; // currently using this just to control x offset when rendering inside the properties overlay
-                  // consider handling that offset in the parent component, in the containing <g>
+  // consider handling that offset in the parent component, in the containing <g>
 
   @Input()
-  block! : Block;
+  block!: Block;
 
   @Input()
-  blockSet? : BlockSet;
+  blockSet?: BlockSet;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
@@ -33,11 +45,11 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   padding = {
     x: 20 * 4,
-    y: 20 * 1.5
+    y: 20 * 1.5,
   };
 
   strokeWidth = 4;
-  strokeDasharray = "";
+  strokeDasharray = '';
 
   borderRadius = 4;
   borderOffset = 15;
@@ -48,7 +60,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 20 + this.borderOffset];
 
-  path = "";
+  path = '';
 
   isInfoPanelOpen = false;
   _eventsSubscription?: Subscription;
@@ -57,41 +69,39 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   positionPairs!: ConnectionPositionPair[];
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
-    if(this.closeOverlayObservable){
-        this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
-            this.isInfoPanelOpen = false;
-        });
+    if (this.closeOverlayObservable) {
+      this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
+        this.isInfoPanelOpen = false;
+      });
     }
 
-    if(this.block.type == BlockType.Middle){
-        this.popupoffsetX = -1 * (this.blockWidth + this.padding.x)
-    } else if(this.block.type == BlockType.End){
-        this.popupoffsetX = -2 * (this.blockWidth + this.padding.x)
+    if (this.block.type == BlockType.Middle) {
+      this.popupoffsetX = -1 * (this.blockWidth + this.padding.x);
+    } else if (this.block.type == BlockType.End) {
+      this.popupoffsetX = -2 * (this.blockWidth + this.padding.x);
     }
 
     this.positionPairs = [
-        {
-          offsetX: this.popupoffsetX - 40 - 15, //need to convert this numeric approach to a formula based on the width of the overlay
-          offsetY: 10,
-          originX: 'start',
-          originY: 'bottom',
-          overlayX: 'start',
-          overlayY: 'top'
-        },
-      ];
+      {
+        offsetX: this.popupoffsetX - 40 - 15, //need to convert this numeric approach to a formula based on the width of the overlay
+        offsetY: 10,
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top',
+      },
+    ];
   }
 
-  ngOnDestroy(){
-    if(this._eventsSubscription) this._eventsSubscription.unsubscribe();
+  ngOnDestroy() {
+    if (this._eventsSubscription) this._eventsSubscription.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    if(changes.block){
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.block) {
       this.path = this.drawBlock();
     }
   }
@@ -101,9 +111,12 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   drawBlock() {
-    this.scale = Math.min(this.blockHeight / this.block.height, this.blockWidth / this.block.width);
+    this.scale = Math.min(
+      this.blockHeight / this.block.height,
+      this.blockWidth / this.block.width,
+    );
     let path = '';
-    let hasRightTab = (!this.isEnd() && !this.isAddBlock()) ? true : false;
+    let hasRightTab = !this.isEnd() && !this.isAddBlock() ? true : false;
     let minX = this.strokeWidth + this.borderOffset;
     let minY = this.strokeWidth + this.borderOffset;
 
@@ -121,34 +134,62 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     let closePath = true;
 
     //build list of coordinates
-    let coords: Array<{x: number, y: number, radius?: number}> = [];
+    let coords: Array<{ x: number; y: number; radius?: number }> = [];
 
     //start upper left
-    coords.push({x:minX, y:minY});
+    coords.push({ x: minX, y: minY });
 
     //top right
-    coords.push({x:maxX, y:minY});
+    coords.push({ x: maxX, y: minY });
 
     //right tab (override radius)
     if (hasRightTab) {
-      coords.push({x:maxX, y:this.tabOffset+this.borderOffset});
-      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth+this.borderOffset});
-      coords.push({x:maxX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight+this.borderOffset});
-      coords.push({x:maxX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth+this.borderOffset});
+      coords.push({ x: maxX, y: this.tabOffset + this.borderOffset });
+      coords.push({
+        x: maxX + this.tabWidth,
+        y: this.tabOffset + this.tabWidth + this.borderOffset,
+      });
+      coords.push({
+        x: maxX + this.tabWidth,
+        y: this.tabOffset + this.tabWidth + this.tabHeight + this.borderOffset,
+      });
+      coords.push({
+        x: maxX,
+        y:
+          this.tabOffset +
+          this.tabWidth +
+          this.tabHeight +
+          this.tabWidth +
+          this.borderOffset,
+      });
     }
 
     //bottom right
-    coords.push({x:maxX, y:maxY});
+    coords.push({ x: maxX, y: maxY });
 
     //bottom left
-    coords.push({x:minX, y:maxY});
+    coords.push({ x: minX, y: maxY });
 
     // //left tab (override radius)
     if (!this.isStart() && !this.isAddBlock()) {
-      coords.push({x:minX, y:this.tabOffset + this.tabWidth + this.tabHeight + this.tabWidth+this.borderOffset});
-      coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth + this.tabHeight+this.borderOffset});
-      coords.push({x:minX + this.tabWidth, y:this.tabOffset + this.tabWidth+this.borderOffset});
-      coords.push({x:minX, y:this.tabOffset+this.borderOffset});
+      coords.push({
+        x: minX,
+        y:
+          this.tabOffset +
+          this.tabWidth +
+          this.tabHeight +
+          this.tabWidth +
+          this.borderOffset,
+      });
+      coords.push({
+        x: minX + this.tabWidth,
+        y: this.tabOffset + this.tabWidth + this.tabHeight + this.borderOffset,
+      });
+      coords.push({
+        x: minX + this.tabWidth,
+        y: this.tabOffset + this.tabWidth + this.borderOffset,
+      });
+      coords.push({ x: minX, y: this.tabOffset + this.borderOffset });
     }
 
     //generate rounded corner path
@@ -157,11 +198,15 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     return path;
   }
 
-    //********************************************
+  //********************************************
   //requires an array of {x:0, y:0} coordinate pairs
   //based on https://stackoverflow.com/questions/10177985/svg-rounded-corner/65186378#65186378
-  createRoundedPath(coords: Array<{x: number, y: number, radius?: number}>, radius = 8, close = true) {
-    let path = "";
+  createRoundedPath(
+    coords: Array<{ x: number; y: number; radius?: number }>,
+    radius = 8,
+    close = true,
+  ) {
+    let path = '';
     const length = coords.length + (close ? 1 : -1);
 
     for (let i = 0; i < length; i++) {
@@ -169,11 +214,18 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
       const b = coords[(i + 1) % coords.length];
 
       //added to allow override of radius at coordinate level
-      let thisRadius = (a.radius && a.radius > 0) ? a.radius : radius;
-      const t = Math.min(Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
-//      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
+      let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
+      const t = Math.min(
+        Number(thisRadius) / Math.hypot(b.x - a.x, b.y - a.y),
+        0.5,
+      );
+      //      const t = Math.min(Number(radius) / Math.hypot(b.x - a.x, b.y - a.y), 0.5);
 
-      if (i > 0) {path += `Q${a.x},${a.y} ${a.x * (1 - t) + b.x * t},${a.y * (1 - t) + b.y * t}`;}
+      if (i > 0) {
+        path += `Q${a.x},${a.y} ${a.x * (1 - t) + b.x * t},${
+          a.y * (1 - t) + b.y * t
+        }`;
+      }
 
       if (!close && i == 0) {
         path += `M${a.x},${a.y}`;
@@ -188,14 +240,16 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
 
-    if (close) {path += "Z";}
+    if (close) {
+      path += 'Z';
+    }
 
     return path;
   }
 
   // Check if the block is placeholder for another block
   isAddBlock() {
-    return (!this.asIcon && !this.block.svgUrl) ? true : false;
+    return !this.asIcon && !this.block.svgUrl ? true : false;
   }
 
   // check if it's a starting block
@@ -216,13 +270,13 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   calculateDeletePositionX() {
     let minX = this.strokeWidth + this.borderOffset;
 
-    if(this.isMiddle()){
+    if (this.isMiddle()) {
       minX += this.blockWidth + this.padding.x;
-    } else if(this.isEnd()){
+    } else if (this.isEnd()) {
       minX += 2 * (this.blockWidth + this.padding.x);
     }
 
-    return ((this.blockWidth + this.padding.x) / 2) + minX;
+    return (this.blockWidth + this.padding.x) / 2 + minX;
   }
 
   calculateDeletePositionY() {
@@ -233,4 +287,3 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     this.deleteBlock.emit(this.block.type);
   }
 }
-

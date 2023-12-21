@@ -9,10 +9,9 @@ describe('PanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PanelComponent ],
-      imports: [ BrowserAnimationsModule ]
-    })
-    .compileComponents();
+      declarations: [PanelComponent],
+      imports: [BrowserAnimationsModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

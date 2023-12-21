@@ -1,5 +1,4 @@
 <div class="sidebar_container">
-
   <!-- todo: change to data driven toggle structure -->
   <!--
   <div class="toggle"
@@ -11,8 +10,19 @@
   </div>
   -->
   <div class="sidebar_toggle" (click)="toggleSidebar()">
-    <svg width="9" height="27" viewBox="0 0 9 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M7.44795 26.3975C7.21084 26.5163 6.93625 26.536 6.68458 26.4524C6.43291 26.3687 6.22477 26.1886 6.10595 25.9515L0.10595 13.9515C0.0362665 13.8124 -1.69969e-05 13.659 -1.69833e-05 13.5035C-1.69697e-05 13.3479 0.0362665 13.1945 0.10595 13.0555L6.10595 1.05546C6.16416 0.937015 6.24524 0.831266 6.34451 0.744308C6.44379 0.65735 6.55929 0.590902 6.68437 0.548796C6.80945 0.506689 6.94162 0.489757 7.07327 0.498976C7.20492 0.508194 7.33345 0.543381 7.45143 0.602507C7.56942 0.661632 7.67454 0.743526 7.76073 0.843472C7.84691 0.943417 7.91246 1.05943 7.9536 1.18483C7.99474 1.31023 8.01064 1.44253 8.00041 1.57411C7.99017 1.70568 7.95399 1.83393 7.89395 1.95146L2.11995 13.5035L7.89395 25.0555C8.01276 25.2926 8.03251 25.5672 7.94887 25.8188C7.86523 26.0705 7.68505 26.2786 7.44795 26.3975Z" fill="currentColor"/>
+    <svg
+      width="9"
+      height="27"
+      viewBox="0 0 9 27"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M7.44795 26.3975C7.21084 26.5163 6.93625 26.536 6.68458 26.4524C6.43291 26.3687 6.22477 26.1886 6.10595 25.9515L0.10595 13.9515C0.0362665 13.8124 -1.69969e-05 13.659 -1.69833e-05 13.5035C-1.69697e-05 13.3479 0.0362665 13.1945 0.10595 13.0555L6.10595 1.05546C6.16416 0.937015 6.24524 0.831266 6.34451 0.744308C6.44379 0.65735 6.55929 0.590902 6.68437 0.548796C6.80945 0.506689 6.94162 0.489757 7.07327 0.498976C7.20492 0.508194 7.33345 0.543381 7.45143 0.602507C7.56942 0.661632 7.67454 0.743526 7.76073 0.843472C7.84691 0.943417 7.91246 1.05943 7.9536 1.18483C7.99474 1.31023 8.01064 1.44253 8.00041 1.57411C7.99017 1.70568 7.95399 1.83393 7.89395 1.95146L2.11995 13.5035L7.89395 25.0555C8.01276 25.2926 8.03251 25.5672 7.94887 25.8188C7.86523 26.0705 7.68505 26.2786 7.44795 26.3975Z"
+        fill="currentColor"
+      />
     </svg>
   </div>
 
@@ -24,8 +34,17 @@
   <div class="filters">
     <div class="search">
       <div class="search_icon">
-        <svg width="14" height="14" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 16C9.77498 15.9996 11.4988 15.4054 12.897 14.312L17.293 18.708L18.707 17.294L14.311 12.898C15.405 11.4997 15.9996 9.77544 16 8C16 3.589 12.411 0 8 0C3.589 0 0 3.589 0 8C0 12.411 3.589 16 8 16ZM8 2C11.309 2 14 4.691 14 8C14 11.309 11.309 14 8 14C4.691 14 2 11.309 2 8C2 4.691 4.691 2 8 2Z" fill="currentColor"/>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 19 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8 16C9.77498 15.9996 11.4988 15.4054 12.897 14.312L17.293 18.708L18.707 17.294L14.311 12.898C15.405 11.4997 15.9996 9.77544 16 8C16 3.589 12.411 0 8 0C3.589 0 0 3.589 0 8C0 12.411 3.589 16 8 16ZM8 2C11.309 2 14 4.691 14 8C14 11.309 11.309 14 8 14C4.691 14 2 11.309 2 8C2 4.691 4.691 2 8 2Z"
+            fill="currentColor"
+          />
         </svg>
       </div>
 
@@ -53,50 +72,86 @@
         </div> -->
       </ng-container>
 
-      <input value="" [placeholder]="getSearchPlaceholder()" class="search_field" (keyup)="searchBlock($event)"/>
+      <input
+        value=""
+        [placeholder]="getSearchPlaceholder()"
+        class="search_field"
+        (keyup)="searchBlock($event)"
+      />
     </div>
 
     <div class="control_bar">
-      <div class="type"
+      <div
+        class="type"
         *ngFor="let type of allTypeFilters"
-
         [class]="['type_' + type]"
         [class.has_selected_type]="typeFilter.length > 0"
         [class.selected]="type != 'all' && typeFilter.includes(type)"
-
         [title]="type + ' blocks'"
-
         (click)="onClickType(type)"
       >
-        <div class="label">{{type}}</div>
+        <div class="label">{{ type }}</div>
 
         <ng-container *ngIf="type == 'start'">
-          <svg class="molecule_svg" width="18" height="18" viewBox="0 0 118 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2,18.9V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3c0,1.6,0.7,3.2,2,4.2l9.2,7.7
+          <svg
+            class="molecule_svg"
+            width="18"
+            height="18"
+            viewBox="0 0 118 82"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2,18.9V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3c0,1.6,0.7,3.2,2,4.2l9.2,7.7
     c0.6,0.5,0.9,1.2,0.9,2v16.4c0,0.8-0.3,1.5-0.9,2l-9.2,7.7c-1.3,1-2,2.6-2,4.2v14.3c0,1.4-1.2,2.6-2.6,2.6H4.6C3.2,80,2,78.8,2,77.4
-    V63.1V18.9z" stroke-width="4" />
+    V63.1V18.9z"
+              stroke-width="4"
+            />
           </svg>
         </ng-container>
 
         <ng-container *ngIf="type == 'middle'">
-          <svg class="molecule_svg" width="18" height="18" viewBox="0 0 118 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2,18.9V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3c0,1.6,0.7,3.2,2,4.2l9.2,7.7
+          <svg
+            class="molecule_svg"
+            width="18"
+            height="18"
+            viewBox="0 0 118 82"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M2,18.9V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3c0,1.6,0.7,3.2,2,4.2l9.2,7.7
     c0.6,0.5,0.9,1.2,0.9,2v16.4c0,0.8-0.3,1.5-0.9,2l-9.2,7.7c-1.3,1-2,2.6-2,4.2v14.3c0,1.4-1.2,2.6-2.6,2.6H4.6C3.2,80,2,78.8,2,77.4
-    V63.1V18.9z" stroke-width="4" />
+    V63.1V18.9z"
+              stroke-width="4"
+            />
           </svg>
         </ng-container>
 
         <ng-container *ngIf="type == 'end'">
-          <svg class="molecule_svg" width="18" height="18" viewBox="0 0 118 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M103.8,18.9V4.6c0-1.4-1.2-2.6-2.6-2.6H4.6C3.2,2,2,3.2,2,4.6v14.3c0,0.8,0.3,1.5,0.9,2c0,0,9.2,7.7,9.2,7.7
+          <svg
+            class="molecule_svg"
+            width="18"
+            height="18"
+            viewBox="0 0 118 82"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M103.8,18.9V4.6c0-1.4-1.2-2.6-2.6-2.6H4.6C3.2,2,2,3.2,2,4.6v14.3c0,0.8,0.3,1.5,0.9,2c0,0,9.2,7.7,9.2,7.7
       c1.3,1,2,2.6,2,4.2v16.4c0,1.6-0.7,3.2-2,4.2L3,61.1c-0.6,0.5-0.9,1.2-0.9,2v14.3C2,78.8,3.2,80,4.6,80h96.7c1.4,0,2.6-1.2,2.6-2.6
-      V18.9z" stroke-width="4" />
+      V18.9z"
+              stroke-width="4"
+            />
           </svg>
         </ng-container>
       </div>
     </div>
 
-    <div class="extra_filters" [@filtersExpand]="isShowingFilters ? 'expanded' : 'collapsed'">
+    <div
+      class="extra_filters"
+      [@filtersExpand]="isShowingFilters ? 'expanded' : 'collapsed'"
+    >
       <div class="container">
         <div class="tags">
           <!-- official tags -->
@@ -106,8 +161,23 @@
 
           <!-- extra tags like favorites -->
           <div class="tag selected">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polygon class="star" points="12,1.3 14.6,9.5 23.2,9.5 16.2,14.5 18.9,22.7 12,17.6 5.1,22.7 7.8,14.5 0.8,9.5 9.4,9.5 " stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                class="star"
+                points="12,1.3 14.6,9.5 23.2,9.5 16.2,14.5 18.9,22.7 12,17.6 5.1,22.7 7.8,14.5 0.8,9.5 9.4,9.5 "
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-miterlimit="10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                fill="none"
+              />
             </svg>
             My Favorites
           </div>
@@ -115,15 +185,28 @@
       </div>
     </div>
 
-    <div class="toggle_filters_btn" [class.expanded]="isShowingFilters" (click)="toggleFilters()">
-      <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9.49995 8L1.99995 15.5L0.949951 14.45L7.39995 8L0.949951 1.55L1.99995 0.5L9.49995 8Z" fill="currentColor"/>
+    <div
+      class="toggle_filters_btn"
+      [class.expanded]="isShowingFilters"
+      (click)="toggleFilters()"
+    >
+      <svg
+        width="10"
+        height="16"
+        viewBox="0 0 10 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9.49995 8L1.99995 15.5L0.949951 14.45L7.39995 8L0.949951 1.55L1.99995 0.5L9.49995 8Z"
+          fill="currentColor"
+        />
       </svg>
     </div>
   </div>
 
   <div class="block_list">
-  <!--
+    <!--
     <div class="info">
       <div class="count">{{getBlockDataLength()}} Block{{(getBlockDataLength() == 1) ? '' : 's'}} Available</div>
       <div class="filter">Filter <div class="filter_setting">Largest</div></div>
@@ -131,12 +214,30 @@
   -->
 
     <div class="content">
-      <div *ngFor="let block of getBlockData()" dfDroppable [dfDroppableData]="block" class="item">
+      <div
+        *ngFor="let block of getBlockData()"
+        dfDroppable
+        [dfDroppableData]="block"
+        class="item"
+      >
         <div class="preview">
-  <!-- todo: add favorite functionality -->
+          <!-- todo: add favorite functionality -->
           <div class="star_btn is_favorite" *ngIf="false">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <polygon class="star" points="12,1.3 14.6,9.5 23.2,9.5 16.2,14.5 18.9,22.7 12,17.6 5.1,22.7 7.8,14.5 0.8,9.5 9.4,9.5 " stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polygon
+                class="star"
+                points="12,1.3 14.6,9.5 23.2,9.5 16.2,14.5 18.9,22.7 12,17.6 5.1,22.7 7.8,14.5 0.8,9.5 9.4,9.5 "
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-miterlimit="10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                fill="none"
+              />
             </svg>
           </div>
 
@@ -158,14 +259,40 @@
 
         <div *ngIf="blockSet" class="info">
           <div class="formula">
-            <div *ngIf="block.properties[blockSet.labelProperty.key] | chemicalProperty:blockSet.labelProperty.displayStrategy; let label" class="formula_label" [title]="label" [innerHTML]="label.length > 16 ? label.substring(0, 16) + '…' : label"></div>
+            <div
+              *ngIf="
+                block.properties[blockSet.labelProperty.key]
+                  | chemicalProperty: blockSet.labelProperty.displayStrategy;
+                let label
+              "
+              class="formula_label"
+              [title]="label"
+              [innerHTML]="
+                label.length > 16 ? label.substring(0, 16) + '…' : label
+              "
+            ></div>
 
-  <!-- todo: test to see if checkmark should be shown -->
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="false">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M4.2671 1.45486C4.91036 1.4035 5.52102 1.15049 6.0121 0.73186C6.56677 0.259451 7.27153 0 8.0001 0C8.72868 0 9.43344 0.259451 9.9881 0.73186C10.4792 1.15049 11.0898 1.4035 11.7331 1.45486C12.4595 1.51292 13.1415 1.82782 13.6568 2.34313C14.1721 2.85843 14.487 3.54043 14.5451 4.26686C14.5961 4.90986 14.8491 5.52086 15.2681 6.01186C15.7405 6.56652 16 7.27129 16 7.99986C16 8.72843 15.7405 9.4332 15.2681 9.98786C14.8495 10.4789 14.5965 11.0896 14.5451 11.7329C14.487 12.4593 14.1721 13.1413 13.6568 13.6566C13.1415 14.1719 12.4595 14.4868 11.7331 14.5449C11.0898 14.5962 10.4792 14.8492 9.9881 15.2679C9.43344 15.7403 8.72868 15.9997 8.0001 15.9997C7.27153 15.9997 6.56677 15.7403 6.0121 15.2679C5.52102 14.8492 4.91036 14.5962 4.2671 14.5449C3.54067 14.4868 2.85867 14.1719 2.34337 13.6566C1.82807 13.1413 1.51316 12.4593 1.4551 11.7329C1.40375 11.0896 1.15073 10.4789 0.732104 9.98786C0.259695 9.4332 0.000244141 8.72843 0.000244141 7.99986C0.000244141 7.27129 0.259695 6.56652 0.732104 6.01186C1.15073 5.52077 1.40375 4.91012 1.4551 4.26686C1.51316 3.54043 1.82807 2.85843 2.34337 2.34313C2.85867 1.82782 3.54067 1.51292 4.2671 1.45486ZM11.7071 6.70686C11.8893 6.51826 11.9901 6.26566 11.9878 6.00346C11.9855 5.74126 11.8803 5.49045 11.6949 5.30504C11.5095 5.11963 11.2587 5.01446 10.9965 5.01219C10.7343 5.00991 10.4817 5.1107 10.2931 5.29286L7.0001 8.58586L5.7071 7.29286C5.5185 7.1107 5.2659 7.00991 5.0037 7.01219C4.74151 7.01446 4.49069 7.11963 4.30529 7.30504C4.11988 7.49045 4.01471 7.74126 4.01243 8.00346C4.01015 8.26566 4.11095 8.51826 4.2931 8.70686L6.2931 10.7069C6.48063 10.8943 6.73494 10.9996 7.0001 10.9996C7.26527 10.9996 7.51958 10.8943 7.7071 10.7069L11.7071 6.70686Z" fill="#31509E"/>
+            <!-- todo: test to see if checkmark should be shown -->
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              *ngIf="false"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M4.2671 1.45486C4.91036 1.4035 5.52102 1.15049 6.0121 0.73186C6.56677 0.259451 7.27153 0 8.0001 0C8.72868 0 9.43344 0.259451 9.9881 0.73186C10.4792 1.15049 11.0898 1.4035 11.7331 1.45486C12.4595 1.51292 13.1415 1.82782 13.6568 2.34313C14.1721 2.85843 14.487 3.54043 14.5451 4.26686C14.5961 4.90986 14.8491 5.52086 15.2681 6.01186C15.7405 6.56652 16 7.27129 16 7.99986C16 8.72843 15.7405 9.4332 15.2681 9.98786C14.8495 10.4789 14.5965 11.0896 14.5451 11.7329C14.487 12.4593 14.1721 13.1413 13.6568 13.6566C13.1415 14.1719 12.4595 14.4868 11.7331 14.5449C11.0898 14.5962 10.4792 14.8492 9.9881 15.2679C9.43344 15.7403 8.72868 15.9997 8.0001 15.9997C7.27153 15.9997 6.56677 15.7403 6.0121 15.2679C5.52102 14.8492 4.91036 14.5962 4.2671 14.5449C3.54067 14.4868 2.85867 14.1719 2.34337 13.6566C1.82807 13.1413 1.51316 12.4593 1.4551 11.7329C1.40375 11.0896 1.15073 10.4789 0.732104 9.98786C0.259695 9.4332 0.000244141 8.72843 0.000244141 7.99986C0.000244141 7.27129 0.259695 6.56652 0.732104 6.01186C1.15073 5.52077 1.40375 4.91012 1.4551 4.26686C1.51316 3.54043 1.82807 2.85843 2.34337 2.34313C2.85867 1.82782 3.54067 1.51292 4.2671 1.45486ZM11.7071 6.70686C11.8893 6.51826 11.9901 6.26566 11.9878 6.00346C11.9855 5.74126 11.8803 5.49045 11.6949 5.30504C11.5095 5.11963 11.2587 5.01446 10.9965 5.01219C10.7343 5.00991 10.4817 5.1107 10.2931 5.29286L7.0001 8.58586L5.7071 7.29286C5.5185 7.1107 5.2659 7.00991 5.0037 7.01219C4.74151 7.01446 4.49069 7.11963 4.30529 7.30504C4.11988 7.49045 4.01471 7.74126 4.01243 8.00346C4.01015 8.26566 4.11095 8.51826 4.2931 8.70686L6.2931 10.7069C6.48063 10.8943 6.73494 10.9996 7.0001 10.9996C7.26527 10.9996 7.51958 10.8943 7.7071 10.7069L11.7071 6.70686Z"
+                fill="#31509E"
+              />
             </svg>
           </div>
-          <div class="weight">{{blockSet.primaryProperty.label}}: {{block.properties[blockSet.primaryProperty.key]}}</div>
+          <div class="weight">
+            {{ blockSet.primaryProperty.label }}:
+            {{ block.properties[blockSet.primaryProperty.key] }}
+          </div>
         </div>
 
         <div *dfDraggableHelper class="dragging_helper">
@@ -177,10 +304,7 @@
             [size]="BlockSize.Small"
           ></block>
         </div>
-
       </div>
     </div>
-
   </div>
-
 </div>

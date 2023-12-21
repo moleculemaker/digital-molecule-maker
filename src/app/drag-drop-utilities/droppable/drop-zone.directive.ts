@@ -1,16 +1,24 @@
 // Based on https://stackblitz.com/edit/cdk-drag-drop?file=app%2Fapp.component.html
 
-import { Directive, Input, HostBinding, HostListener, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import {
+  Directive,
+  Input,
+  HostBinding,
+  HostListener,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { DroppableService, DroppableEvent } from './droppable.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: '[dfDropZone]'
+  selector: '[dfDropZone]',
 })
 export class DropZoneDirective implements OnInit, OnDestroy {
-
-  @Input('dfDropZone') groups:any = [];
+  @Input('dfDropZone') groups: any = [];
 
   @HostBinding('class.droppable-accepting') accepting = false;
   @HostBinding('class.droppable-over') over = false;
@@ -27,22 +35,20 @@ export class DropZoneDirective implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.service.dragStart$
       .pipe(takeUntil(this._destroy$))
-      .subscribe(event => {
+      .subscribe((event) => {
         if (!this.groups || this.groups.indexOf(event.group) !== -1) {
           this.accepting = true;
         }
       });
 
-    this.service.dragEnd$
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(event => {
-          if (this.over) {
-            this.drop.emit(event);
-          }
+    this.service.dragEnd$.pipe(takeUntil(this._destroy$)).subscribe((event) => {
+      if (this.over) {
+        this.drop.emit(event);
+      }
 
-          this.over = false;
-          this.accepting = false;
-        });
+      this.over = false;
+      this.accepting = false;
+    });
   }
 
   ngOnDestroy() {
@@ -66,5 +72,4 @@ export class DropZoneDirective implements OnInit, OnDestroy {
     clearTimeout(this._timer);
     this.dragLeave.emit();
   }
-
 }
