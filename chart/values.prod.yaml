@@ -18,7 +18,7 @@ extraDeploy:
     namespace: alphasynthesis
   spec:
     redirectRegex:
-      regex: "^https://(dmm.frontend.mmli1.ncsa.illinois.edu|dmm.moeculemaker.org)/(.*)"
+      regex: "^https://(dmm.frontend.mmli1.ncsa.illinois.edu|dmm.moleculemaker.org)/(.*)"
       replacement: "https://dmm.platform.moleculemaker.org/${2}"
       permanent: true
 
