@@ -8,14 +8,14 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.middlewares: "alphasynthesis-dmm-prod-domain-redirect@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "dmm-dmm-prod-domain-redirect@kubernetescrd"
 
 extraDeploy:
 - apiVersion: traefik.containo.us/v1alpha1
   kind: Middleware
   metadata:
     name: dmm-prod-domain-redirect
-    namespace: alphasynthesis
+    namespace: dmm
   spec:
     redirectRegex:
       regex: "^https://(dmm.frontend.mmli1.ncsa.illinois.edu|dmm.moleculemaker.org)/(.*)"
