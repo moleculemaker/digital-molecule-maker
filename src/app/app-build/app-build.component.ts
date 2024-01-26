@@ -55,14 +55,6 @@ export class AppBuildComponent implements OnInit {
   hoveredMolecule?: number = undefined;
   spacebarPressed = false;
 
-  lambdaRange = Array(380)
-    .fill(0)
-    .map((_, i) => 400 + i);
-
-  colorFor(lambda: number) {
-    return lambdaMaxToColor(lambda);
-  }
-
   panning = false;
   isInfoPanelOpen = false;
   private _initialPosition!: { x: number; y: number };
