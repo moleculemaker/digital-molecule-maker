@@ -5,6 +5,7 @@ import {
   BlockSet,
   BlockType,
   Molecule,
+  aggregateProperty,
   getBlockSetScale,
 } from '../models';
 import Fuse from 'fuse.js';
@@ -132,11 +133,10 @@ export class AppSidebarComponent implements OnInit {
         );
       }
 
-      const startingLambdaMax =
-        currentMolecule?.blockList.reduce(
-          (lambda, block) => lambda + block.properties.lambdaMaxShift,
-          0,
-        ) ?? 0;
+      const startingLambdaMax = aggregateProperty(
+        currentMolecule,
+        this.blockSet.primaryProperty,
+      );
 
       const excludedTypes = new Set(
         currentMolecule?.blockList.map((block) => block.type) ?? [],
