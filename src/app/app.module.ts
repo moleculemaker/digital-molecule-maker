@@ -34,7 +34,6 @@ import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 import { TrackingService } from './services/tracking.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
-import { CustomDraggableDirective } from './directives/custom-draggable.directive';
 
 // placeholder implementation
 // change this as needed; nothing relies on the current behavior (but
@@ -54,7 +53,6 @@ function initializeAppFactory(): () => Observable<null> {
     DraggableHelperDirective,
     DroppableDirective,
     DropZoneDirective,
-    CustomDraggableDirective,
 
     ChemicalPropertyPipe,
 

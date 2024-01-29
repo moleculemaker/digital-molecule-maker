@@ -101,6 +101,28 @@ export class MoleculeSvgComponent implements OnInit {
     //  this.isInfoPanelOpen = false;
   }
 
+  private mouseDown = false;
+  private dragging = false;
+
+  onMouseDown() {
+    this.mouseDown = true;
+  }
+
+  onMouseMove() {
+    if (this.mouseDown) {
+      this.dragging = true;
+    }
+  }
+
+  onMouseUp() {
+    if (!this.dragging) {
+      this.isInfoPanelOpen = !this.isInfoPanelOpen;
+    } else {
+      this.dragging = false;
+    }
+    this.mouseDown = false;
+  }
+
   showEditName() {
     this.isEditNamePanelOpen = true;
   }

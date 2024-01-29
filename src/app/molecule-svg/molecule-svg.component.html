@@ -2,6 +2,9 @@
   class="molecule"
   (mouseenter)="onMouseEnter()"
   (mouseleave)="onMouseLeave()"
+  (mousedown)="onMouseDown()"
+  (mousemove)="onMouseMove()"
+  (mouseup)="onMouseUp()"
   [class.selected]="isInfoPanelOpen"
   [class.non_interactive]="!interactive"
 >
@@ -9,7 +12,6 @@
     class="outside_border"
     cdkOverlayOrigin
     #trigger="cdkOverlayOrigin"
-    (click)="isInfoPanelOpen = !isInfoPanelOpen"
     x="5"
     y="15"
     width="570"
