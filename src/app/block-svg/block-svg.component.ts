@@ -1,4 +1,4 @@
-import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   Component,
   OnChanges,
@@ -37,6 +37,9 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   closeOverlayObservable?: Observable<void>;
+
+  @Input()
+  overlayOrigin!: CdkOverlayOrigin;
 
   @Output()
   deleteBlock = new EventEmitter<BlockType>();
@@ -86,16 +89,10 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (this.block.type == BlockType.Middle) {
-      this.popupoffsetX = -1 * (this.blockWidth + this.padding.x);
-    } else if (this.block.type == BlockType.End) {
-      this.popupoffsetX = -2 * (this.blockWidth + this.padding.x);
-    }
-
     this.positionPairs = [
       {
-        offsetX: this.popupoffsetX - 40 - 15, //need to convert this numeric approach to a formula based on the width of the overlay
-        offsetY: 10,
+        offsetX: -40, //need to convert this numeric approach to a formula based on the width of the overlay
+        offsetY: 5,
         originX: 'start',
         originY: 'bottom',
         overlayX: 'start',
@@ -112,6 +109,36 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.block) {
       this.path = this.drawBlock();
     }
+  }
+
+  private mouseDown = false;
+  private dragging = false;
+
+  onMouseOver(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
+  onMouseOut(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
+  onMouseDown() {
+    this.mouseDown = true;
+  }
+
+  onMouseMove() {
+    if (this.mouseDown) {
+      this.dragging = true;
+    }
+  }
+
+  onMouseUp() {
+    if (!this.dragging) {
+      this.isInfoPanelOpen = !this.isInfoPanelOpen;
+    } else {
+      this.dragging = false;
+    }
+    this.mouseDown = false;
   }
 
   onClick(): void {

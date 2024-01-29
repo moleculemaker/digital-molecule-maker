@@ -101,8 +101,17 @@ export class MoleculeSvgComponent implements OnInit {
     //  this.isInfoPanelOpen = false;
   }
 
+  private mouseInside = false;
   private mouseDown = false;
   private dragging = false;
+
+  onMouseOver(e: MouseEvent) {
+    this.mouseInside = true;
+  }
+
+  onMouseOut(e: MouseEvent) {
+    this.mouseInside = false;
+  }
 
   onMouseDown() {
     this.mouseDown = true;
@@ -116,7 +125,9 @@ export class MoleculeSvgComponent implements OnInit {
 
   onMouseUp() {
     if (!this.dragging) {
-      this.isInfoPanelOpen = !this.isInfoPanelOpen;
+      if (this.mouseInside) {
+        this.isInfoPanelOpen = !this.isInfoPanelOpen;
+      }
     } else {
       this.dragging = false;
     }

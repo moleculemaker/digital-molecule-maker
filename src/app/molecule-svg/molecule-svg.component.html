@@ -1,7 +1,9 @@
-<svg
+<svg:g
   class="molecule"
   (mouseenter)="onMouseEnter()"
   (mouseleave)="onMouseLeave()"
+  (mouseover)="onMouseOver($event)"
+  (mouseout)="onMouseOut($event)"
   (mousedown)="onMouseDown()"
   (mousemove)="onMouseMove()"
   (mouseup)="onMouseUp()"
@@ -56,6 +58,7 @@
       [blockSet]="blockSet"
       (deleteBlock)="onRemoveBlock($event)"
       [closeOverlayObservable]="closeOverlayObservable"
+      [overlayOrigin]="trigger"
     ></g>
   </g>
 
@@ -82,7 +85,7 @@
       />
     </svg>
   </g>
-</svg>
+</svg:g>
 
 <!-- info panel -->
 <ng-template
