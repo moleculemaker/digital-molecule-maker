@@ -1,4 +1,4 @@
-import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   Component,
   OnChanges,
@@ -13,15 +13,17 @@ import {
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, BlockSet, BlockType } from '../models';
+import { lambdaMaxToColor } from '../utils/colors';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
-  selector: 'dmm-block-svg',
+  selector: '[dmm-block-svg]',
   templateUrl: './block-svg.component.html',
   styleUrls: ['./block-svg.component.scss'],
 })
 export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('childComponentTemplate')
-  childComponentTemplate: TemplateRef<any> | null = null;
+  @Input()
+  lambdaMax: number = 0;
 
   @Input()
   asIcon = false; // currently using this just to control x offset when rendering inside the properties overlay
@@ -35,6 +37,9 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   closeOverlayObservable?: Observable<void>;
+
+  @Input()
+  overlayOrigin!: CdkOverlayOrigin;
 
   @Output()
   deleteBlock = new EventEmitter<BlockType>();
@@ -69,7 +74,13 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   positionPairs!: ConnectionPositionPair[];
 
-  constructor() {}
+  functionModeEnabled = false;
+
+  constructor(public workspaceService: WorkspaceService) {
+    workspaceService.functionMode$.subscribe((enabled) => {
+      this.functionModeEnabled = enabled;
+    });
+  }
 
   ngOnInit(): void {
     if (this.closeOverlayObservable) {
@@ -78,16 +89,10 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    if (this.block.type == BlockType.Middle) {
-      this.popupoffsetX = -1 * (this.blockWidth + this.padding.x);
-    } else if (this.block.type == BlockType.End) {
-      this.popupoffsetX = -2 * (this.blockWidth + this.padding.x);
-    }
-
     this.positionPairs = [
       {
-        offsetX: this.popupoffsetX - 40 - 15, //need to convert this numeric approach to a formula based on the width of the overlay
-        offsetY: 10,
+        offsetX: -40, //need to convert this numeric approach to a formula based on the width of the overlay
+        offsetY: 5,
         originX: 'start',
         originY: 'bottom',
         overlayX: 'start',
@@ -106,8 +111,69 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  private mouseDown = false;
+  private dragging = false;
+
+  onMouseOver(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
+  onMouseOut(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
+  onMouseDown() {
+    this.mouseDown = true;
+  }
+
+  onMouseMove() {
+    if (this.mouseDown) {
+      this.dragging = true;
+    }
+  }
+
+  onMouseUp() {
+    if (!this.dragging) {
+      this.isInfoPanelOpen = !this.isInfoPanelOpen;
+    } else {
+      this.dragging = false;
+    }
+    this.mouseDown = false;
+  }
+
   onClick(): void {
     alert(this.block.type);
+  }
+
+  get centerX() {
+    let minX = this.strokeWidth + this.borderOffset;
+    if (!this.asIcon && this.isMiddle()) {
+      minX += this.blockWidth + this.padding.x;
+      this.imageZoomAndPanMatrix[4] = minX + 60;
+    } else if (!this.asIcon && this.isEnd()) {
+      minX += 2 * (this.blockWidth + this.padding.x);
+      this.imageZoomAndPanMatrix[4] = minX + 60;
+    }
+    let maxX = this.blockWidth + this.padding.x + minX;
+    return (minX + maxX) / 2;
+  }
+
+  get centerY() {
+    let minY = this.strokeWidth + this.borderOffset;
+    let maxY = this.blockHeight + this.padding.y + this.borderOffset;
+    return (minY + maxY) / 2;
+  }
+
+  get textColor() {
+    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
+  }
+
+  get fillColor() {
+    return lambdaMaxToColor(this.lambdaMax);
+  }
+
+  get strokeColor() {
+    return this.fillColor.darker();
   }
 
   drawBlock() {

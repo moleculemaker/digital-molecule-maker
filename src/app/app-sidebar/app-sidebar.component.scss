@@ -27,6 +27,13 @@ $sidebar_width: 500px;
   }
 }
 
+@mixin color_type_color($color) {
+  &.color_type_#{"" + $color} {
+    background: rgba($color, 0.2);
+    flex-basis: calc(100% / 8);
+  }
+}
+
 //**************** css ******************
 
 :host {
@@ -177,10 +184,20 @@ $sidebar_width: 500px;
       bottom: 1px solid color_variable("interface_border");
     }
 
+    .row {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+    }
+
     .control_bar {
       display: flex;
       align-items: center;
       gap: $padding * 0.25;
+      flex-wrap: wrap;
 
       margin: {
         top: $padding * 0.5;
@@ -189,6 +206,8 @@ $sidebar_width: 500px;
       .type {
         cursor: pointer;
         position: relative;
+
+        user-select: none;
 
         display: flex;
         justify-content: center;
@@ -237,6 +256,18 @@ $sidebar_width: 500px;
         @include type_color("start");
         @include type_color("middle");
         @include type_color("end");
+
+        &.color_type {
+          flex: 1;
+          .label {
+            font-size: 0.6rem;
+          }
+        }
+
+        $colors: yellow, orange, red, magenta, violet, blue, cyan;
+        @each $color in $colors {
+          @include color_type_color($color);
+        }
 
         .label {
           font: {
@@ -345,6 +376,7 @@ $sidebar_width: 500px;
   }
 
   .search {
+    flex: auto;
     display: flex;
     align-items: center;
     gap: $padding * 0.2;
@@ -458,6 +490,43 @@ $sidebar_width: 500px;
       &:focus {
         outline: none;
       }
+    }
+  }
+
+  .toggle_button {
+    user-select: none;
+    margin-right: 10px;
+    width: 100px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 12px;
+
+    min: {
+      width: 36px;
+      height: 36px;
+    }
+
+    background: {
+      color: color_variable("button_background");
+    }
+
+    padding: ($padding * 0.5);
+
+    border: 1px solid color_variable("interface_border");
+
+    @include box-sizing(border-box);
+    @include border-radius($border_radius);
+    @include transition(#{background-color 0.2s easing($ease-in)});
+
+    cursor: pointer;
+
+    &:hover {
+      color: color_variable("background");
+      background: {
+        color: color_variable("button_hover");
+      }
+
+      @include transition(none);
     }
   }
 

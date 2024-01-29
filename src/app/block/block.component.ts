@@ -1,31 +1,32 @@
-import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
-
+import {
+  Component,
+  Input,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  TemplateRef,
+  HostListener,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import 'external-svg-loader';
-import { BlockType } from '../models';
+import { Block, BlockType } from '../models';
+import { lambdaMaxToColor } from '../utils/colors';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: 'block',
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlockComponent implements OnInit {
   @Input()
-  svgUrl = '';
+  block!: Block;
 
-  @Input()
-  type = BlockType.Start;
-
-  @Input()
-  size = BlockSize.Default;
-
-  @Input()
-  iconLabel = ''; //if set, then we display the entire block as a small icon
-
-  @Input()
-  imageWidth = 80;
-
-  @Input()
-  imageHeight = 80;
+  size = BlockSize.Small;
+  imageWidth = 0;
+  imageHeight = 0;
 
   @ViewChild('svgImage') svg: ElementRef | null = null;
 
@@ -54,10 +55,53 @@ export class BlockComponent implements OnInit {
   tabRadius = 2; //px rounded corners
   tabWidth = 20; //px wide    related to margin-left in app-build.scss - if you adjust one, adjust the other
 
-  constructor() {}
+  flipped = false;
+  _functionModeEnabled = false;
+
+  get functionModeEnabled() {
+    return this._functionModeEnabled !== this.flipped;
+  }
+
+  constructor(
+    public workspaceService: WorkspaceService,
+    private cd: ChangeDetectorRef,
+  ) {
+    workspaceService.functionMode$.subscribe((enabled) => {
+      this._functionModeEnabled = enabled;
+      this.flipped = false;
+      this.cd.markForCheck();
+    });
+  }
+
+  @HostListener('click')
+  onClick() {
+    this.flipped = !this.flipped;
+  }
+
+  hovered = false;
+  @HostListener('pointerenter')
+  onPointerEnter() {
+    this.hovered = true;
+  }
+  @HostListener('pointerleave')
+  onPointerLeave() {
+    this.hovered = false;
+  }
+
+  // @HostListener('mouseover')
+  // onHover() {
+  //   this.flipped = true;
+  // }
+  // @HostListener('mouseout')
+  // onHoverEnd() {
+  //   this.flipped = false;
+  // }
 
   //********************************************
   ngOnInit(): void {
+    this.imageWidth = this.block.width;
+    this.imageHeight = this.block.height;
+
     //change border size for icons
     if (this.isIcon()) {
       this.borderRadius = 1;
@@ -90,7 +134,7 @@ export class BlockComponent implements OnInit {
     }
 
     if (this.isSmall() || this.isDefaultSize() || this.isLarge()) {
-      const scale = this.scales[this.size];
+      const scale = this.scales[BlockSize.Small];
 
       this.tabHeight = 28 * scale;
       this.tabOffset = 20;
@@ -147,6 +191,22 @@ export class BlockComponent implements OnInit {
     let height = this.imageHeight / scale;
 
     return '0 0 ' + width + ' ' + height;
+  }
+
+  get centerX() {
+    let minX = this.strokeWidth;
+    let maxX = this.blockWidth + this.padding.x - this.strokeWidth;
+    return (minX + maxX) / 2;
+  }
+
+  get centerY() {
+    let minY = this.strokeWidth;
+    let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
+    return (minY + maxY) / 2;
+  }
+
+  get lambdaMax() {
+    return this.block.properties['lambdaMaxShift'];
   }
 
   //********************************************
@@ -286,12 +346,12 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   isStart() {
-    return this.type === BlockType.Start;
+    return this.block.type === BlockType.Start;
   }
 
   //********************************************
   isEnd() {
-    return this.type === BlockType.End;
+    return this.block.type === BlockType.End;
   }
 
   //********************************************
@@ -317,7 +377,19 @@ export class BlockComponent implements OnInit {
   //********************************************
   //todo: determine if this should be a separate property to control it, for now, show the add block structure if no svgUrl has been added
   isAddBlock() {
-    return !this.iconLabel && !this.svgUrl ? true : false;
+    return !this.block.svgUrl ? true : false;
+  }
+
+  get textColor() {
+    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
+  }
+
+  get fillColor() {
+    return lambdaMaxToColor(this.block.properties['lambdaMaxShift']);
+  }
+
+  get strokeColor() {
+    return this.fillColor.darker();
   }
 }
 

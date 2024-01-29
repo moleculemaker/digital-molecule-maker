@@ -9,6 +9,9 @@ import {
   ChangeDetectorRef,
   Output,
   EventEmitter,
+  OnChanges,
+  AfterViewChecked,
+  AfterViewInit,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -21,16 +24,13 @@ import {
 } from '../models';
 
 @Component({
-  selector: 'dmm-molecule-svg',
+  selector: '[dmm-molecule-svg]',
   templateUrl: './molecule-svg.component.html',
   styleUrls: ['./molecule-svg.component.scss'],
 })
 export class MoleculeSvgComponent implements OnInit {
-  @ViewChild('childComponentTemplate')
-  childComponentTemplate: TemplateRef<any> | null = null;
-
   @Input()
-  molecule?: Molecule;
+  interactive = true;
 
   @Input()
   blockSet?: BlockSet;
@@ -50,6 +50,9 @@ export class MoleculeSvgComponent implements OnInit {
   _eventsSubscription?: Subscription;
   positionPairs!: ConnectionPositionPair[];
   positionEditName!: ConnectionPositionPair[];
+
+  @Input()
+  molecule!: Molecule;
 
   constructor(private changeDetector: ChangeDetectorRef) {}
 
@@ -98,6 +101,39 @@ export class MoleculeSvgComponent implements OnInit {
     //  this.isInfoPanelOpen = false;
   }
 
+  private mouseInside = false;
+  private mouseDown = false;
+  private dragging = false;
+
+  onMouseOver(e: MouseEvent) {
+    this.mouseInside = true;
+  }
+
+  onMouseOut(e: MouseEvent) {
+    this.mouseInside = false;
+  }
+
+  onMouseDown() {
+    this.mouseDown = true;
+  }
+
+  onMouseMove() {
+    if (this.mouseDown) {
+      this.dragging = true;
+    }
+  }
+
+  onMouseUp() {
+    if (!this.dragging) {
+      if (this.mouseInside) {
+        this.isInfoPanelOpen = !this.isInfoPanelOpen;
+      }
+    } else {
+      this.dragging = false;
+    }
+    this.mouseDown = false;
+  }
+
   showEditName() {
     this.isEditNamePanelOpen = true;
   }
@@ -107,10 +143,14 @@ export class MoleculeSvgComponent implements OnInit {
   }
 
   onRemoveBlock(type: BlockType) {
-    if (this.molecule)
+    if (this.molecule) {
       this.molecule.blockList = this.molecule?.blockList.filter(
         (block) => block.type != type,
       );
+      if (!this.molecule.blockList.length) {
+        this.removeMolecule();
+      }
+    }
   }
 
   onEnterInput(event: Event, newMoleculeName: string) {

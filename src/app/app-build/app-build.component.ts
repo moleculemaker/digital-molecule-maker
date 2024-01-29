@@ -26,6 +26,7 @@ import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.servi
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { CartService } from '../services/cart.service';
+import { lambdaMaxToColor } from '../utils/colors';
 
 @UntilDestroy()
 @Component({
@@ -219,14 +220,14 @@ export class AppBuildComponent implements OnInit {
       ].blockList.filter((block) => block.type != event.data.type);
       this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
     } else {
-      if (event.data.type == BlockType.Start) {
-        const newBlockList: Block[] = [event.data];
-        const pos = this.getMousePosition(event.nativeEvent);
-        const { x, y } = this.invertTransforms(pos.x, pos.y);
-        const positionCoordinates = new Coordinates(x, y);
-        const newMolecule = new Molecule(positionCoordinates, newBlockList);
-        this.moleculeList.push(newMolecule);
-      }
+      // if (event.data.type == BlockType.Start) {
+      const newBlockList: Block[] = [event.data];
+      const pos = this.getMousePosition(event.nativeEvent);
+      const { x, y } = this.invertTransforms(pos.x, pos.y);
+      const positionCoordinates = new Coordinates(x, y);
+      const newMolecule = new Molecule(positionCoordinates, newBlockList);
+      this.moleculeList.push(newMolecule);
+      // }
     }
     // todo: clean up state management a bit; currently modifying the object in place, passing the
     // object to the service, and then subscribing to the service for updates

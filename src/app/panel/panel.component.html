@@ -74,13 +74,12 @@
           <!-- todo: add molecule preview here -->
           <div class="preview">
             <svg viewBox="0 0 600 200">
-              <dmm-molecule-svg
-                #wrapper
+              <g
+                dmm-molecule-svg
                 [molecule]="molecule"
-              ></dmm-molecule-svg>
-              <ng-container
-                *ngTemplateOutlet="wrapper.childComponentTemplate"
-              ></ng-container>
+                [blockSet]="blockSet"
+                [interactive]="false"
+              ></g>
             </svg>
           </div>
 

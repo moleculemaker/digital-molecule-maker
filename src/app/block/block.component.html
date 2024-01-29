@@ -4,60 +4,120 @@
   *ngIf="imageWidth"
   [style.height.px]="blockHeight + this.padding.y"
   [style.width.px]="blockWidth + this.padding.x"
-  [class]="['block_' + type, 'size_' + size]"
+  [class]="['block_' + block.type, 'size_' + size]"
   [class.dashes]="isAddBlock()"
 >
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    [attr.viewBox]="
-      '0 0 ' +
-      (blockWidth + this.padding.x) +
-      ' ' +
-      (blockHeight + this.padding.y)
-    "
+  <div
+    class="overlay"
+    [style.opacity]="functionModeEnabled ? (hovered ? 0.5 : 0) : 1"
   >
-    <path
-      class="block_background block_border"
-      [attr.d]="drawBlock()"
-      [attr.stroke-dasharray]="strokeDasharray"
-      [attr.stroke-width]="strokeWidth"
-    ></path>
-
-    <!-- + add block icon -->
-    <g *ngIf="isAddBlock()">
-      <rect
-        width="6"
-        height="24"
-        x="50%"
-        y="50%"
-        fill="black"
-        style="transform: translate(-3px, -12px)"
-      />
-      <rect
-        width="24"
-        height="6"
-        x="50%"
-        y="50%"
-        fill="black"
-        style="transform: translate(-12px, -3px)"
-      />
-    </g>
-  </svg>
-
-  <div class="image" [style.height.%]="50" [style.width.%]="50">
-    <!-- <div class="icon_label" *ngIf="iconLabel" [innerHTML]="iconLabel"></div> -->
-
     <svg
-      #svgImage
-      *ngIf="svgUrl"
-      [attr.data-src]="svgUrl"
-      width="100%"
-      height="100%"
-      [attr.viewBox]="buildImageViewbox()"
-      data-cache="disabled"
-      (load)="onLoadSVG($event)"
-    />
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      [attr.viewBox]="
+        '0 0 ' +
+        (blockWidth + this.padding.x) +
+        ' ' +
+        (blockHeight + this.padding.y)
+      "
+    >
+      <path
+        class="block_background block_border"
+        [attr.d]="drawBlock()"
+        [attr.stroke-dasharray]="strokeDasharray"
+        [attr.stroke-width]="strokeWidth"
+      ></path>
+
+      <!-- + add block icon -->
+      <g *ngIf="isAddBlock()">
+        <rect
+          width="6"
+          height="24"
+          x="50%"
+          y="50%"
+          fill="black"
+          style="transform: translate(-3px, -12px)"
+        />
+        <rect
+          width="24"
+          height="6"
+          x="50%"
+          y="50%"
+          fill="black"
+          style="transform: translate(-12px, -3px)"
+        />
+      </g>
+    </svg>
+
+    <div class="image" [style.height.%]="50" [style.width.%]="50">
+      <!-- <div class="icon_label" *ngIf="iconLabel" [innerHTML]="iconLabel"></div> -->
+
+      <svg
+        #svgImage
+        *ngIf="block.svgUrl"
+        [attr.data-src]="block.svgUrl"
+        width="100%"
+        height="100%"
+        [attr.viewBox]="buildImageViewbox()"
+        data-cache="disabled"
+        (load)="onLoadSVG($event)"
+      />
+    </div>
+  </div>
+
+  <div class="overlay" [style.opacity]="functionModeEnabled ? 1 : 0">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      [attr.viewBox]="
+        '0 0 ' +
+        (blockWidth + this.padding.x) +
+        ' ' +
+        (blockHeight + this.padding.y)
+      "
+    >
+      <path
+        [attr.d]="drawBlock()"
+        [attr.fill]="fillColor"
+        [attr.opacity]="hovered ? 0.2 : 1"
+        [attr.stroke]="strokeColor"
+        [attr.stroke-dasharray]="strokeDasharray"
+        [attr.stroke-width]="strokeWidth"
+      ></path>
+
+      <text
+        [attr.x]="centerX"
+        [attr.y]="centerY"
+        [style.transform]="hovered ? 'translateY(-40px)' : 'none'"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        font-weight="bold"
+        font-size="20px"
+        [attr.fill]="textColor"
+      >
+        +{{ block.properties["lambdaMaxShift"] }} nm
+      </text>
+
+      <!-- + add block icon -->
+      <g *ngIf="isAddBlock()">
+        <rect
+          width="6"
+          height="24"
+          x="50%"
+          y="50%"
+          fill="black"
+          style="transform: translate(-3px, -12px)"
+        />
+        <rect
+          width="24"
+          height="6"
+          x="50%"
+          y="50%"
+          fill="black"
+          style="transform: translate(-12px, -3px)"
+        />
+      </g>
+    </svg>
   </div>
 </div>
 

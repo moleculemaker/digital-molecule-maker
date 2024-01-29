@@ -9,11 +9,18 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class WorkspaceService {
+  private _functionMode = true;
+
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
+  functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
 
   constructor(private userService: UserService) {
     this.startAutorestore();
     this.startAutosave();
+  }
+
+  toggle() {
+    this.functionMode$.next((this._functionMode = !this._functionMode));
   }
 
   updateMoleculeList(list: Molecule[]): void {

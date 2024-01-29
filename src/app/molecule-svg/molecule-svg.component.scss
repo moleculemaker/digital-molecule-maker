@@ -3,6 +3,10 @@
 $molecule_width: 570px; //fixed right now (to match html template). will need to revisit this when 3+ blocks
 $edit_name_height: 20px;
 
+.non_interactive {
+  pointer-events: none;
+}
+
 .molecule {
   cursor: pointer;
 

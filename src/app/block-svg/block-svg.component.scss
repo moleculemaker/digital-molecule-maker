@@ -26,6 +26,10 @@
   }
 }
 
+.molecule-block {
+  @include transition((stroke 0.5s ease-out, fill 0.8s ease-out));
+}
+
 .block_container {
   position: relative;
 

@@ -78,9 +78,14 @@ $block_icon_height: 36px;
   @include corner(bottom, right);
 */
 
+  text {
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+  }
+
   &:not(.dashes):hover {
     .block_background {
-      fill: color_variable("block_hover");
+      // fill: color_variable("block_hover");
       @include transition(none);
     }
 
@@ -143,6 +148,14 @@ $block_icon_height: 36px;
 
   .tab_offset {
     @include translate(0px, 20px);
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 
   .image {

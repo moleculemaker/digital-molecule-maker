@@ -1,6 +1,13 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { BlockSize } from '../block/block.component';
-import { Block, BlockSet, BlockType, getBlockSetScale } from '../models';
+import {
+  Block,
+  BlockSet,
+  BlockType,
+  Molecule,
+  aggregateProperty,
+  getBlockSetScale,
+} from '../models';
 import Fuse from 'fuse.js';
 import {
   animate,
@@ -9,6 +16,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { WorkspaceService } from '../services/workspace.service';
+import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
 
 @Component({
   selector: 'app-sidebar',
@@ -44,7 +53,12 @@ export class AppSidebarComponent implements OnInit {
       processBlockArray(blockSet.blocks[BlockType.Start]);
       processBlockArray(blockSet.blocks[BlockType.Middle]);
       processBlockArray(blockSet.blocks[BlockType.End]);
-      this.fuse = new Fuse(this.labelList, { includeScore: true });
+      this.fuse = new Fuse(this.labelList, {
+        includeScore: true,
+        isCaseSensitive: true,
+        ignoreLocation: true,
+        shouldSort: true,
+      });
       this.filteredBlocks = this.labelList.slice();
       this.blockData = blockSet;
       this.blockLevelScale = getBlockSetScale(blockSet, 200);
@@ -70,10 +84,25 @@ export class AppSidebarComponent implements OnInit {
   typeFilter: string[] = []; //array of types to filter by (only used in showing the blocks?)
   allTypeFilters = ['all', 'start', 'middle', 'end'];
 
+  colorFilter: ColorKeyT[] = [];
+  labelForColor(key: ColorKeyT) {
+    return LambdaMaxRangeForColor[key].name;
+  }
+
   isSidebarExpanded = true;
   isShowingFilters = false;
 
-  constructor() {}
+  moleculeList: Molecule[] = [];
+  functionModeEnabled = true;
+
+  constructor(private workspaceService: WorkspaceService) {
+    this.workspaceService.functionMode$.subscribe((enabled) => {
+      this.functionModeEnabled = enabled;
+    });
+    this.workspaceService.moleculeList$.subscribe((moleculeList) => {
+      this.moleculeList = moleculeList;
+    });
+  }
 
   //********************************************
   ngOnInit(): void {}
@@ -90,26 +119,94 @@ export class AppSidebarComponent implements OnInit {
 
   //********************************************
   getBlockData(): Block[] {
-    const blockTypes =
-      this.typeFilter.length == 0 ? this.allTypeFilters : this.typeFilter;
-    let blocks: Block[] = [];
-    if (this.blockSet) {
-      blockTypes.forEach((blockType) => {
-        const blockTypeEnum = this.getKeyByValue(blockType);
-        if (blockTypeEnum) {
-          this.blockData?.blocks[blockTypeEnum].forEach((block) => {
-            if (
-              this.filteredBlocks.some(
-                (e) => e === block.properties[this.blockSet!.labelProperty.key],
-              )
-            ) {
-              blocks.push(block);
-            }
-          });
+    if (this.functionModeEnabled) {
+      if (!this.blockSet) return [];
+
+      const currentMolecule = this.moleculeList[0];
+
+      const getBlocksOfType = (type: BlockType) =>
+        this.blockData?.blocks[type] ?? [];
+
+      if (this.colorFilter.length == 0) {
+        return Object.values(BlockType).flatMap(
+          (type) => this.blockData?.blocks[type] ?? [],
+        );
+      }
+
+      const startingLambdaMax = aggregateProperty(
+        currentMolecule,
+        this.blockSet.primaryProperty,
+      );
+
+      const excludedTypes = new Set(
+        currentMolecule?.blockList.map((block) => block.type) ?? [],
+      );
+
+      const availableTypes = Object.values(BlockType).filter(
+        (t) => !excludedTypes.has(t),
+      );
+
+      const viableBlocks = Object.fromEntries(
+        Object.values(BlockType).map((type) => [type, new Set<Block>()]),
+      );
+
+      const enumerate = (
+        curBlocks: Block[],
+        accumulatedLambdaMax: number,
+        remainingTypes: BlockType[],
+      ) => {
+        if (!remainingTypes.length) {
+          if (
+            this.colorFilter.some((color) => {
+              const { min, max } = LambdaMaxRangeForColor[color];
+              return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
+            })
+          ) {
+            curBlocks.forEach((block) => viableBlocks[block.type].add(block));
+          }
+          return;
         }
-      });
+        const [nextType, ...nextRemainingTypes] = remainingTypes;
+        for (const nextBlock of getBlocksOfType(nextType)) {
+          enumerate(
+            [...curBlocks, nextBlock],
+            accumulatedLambdaMax + nextBlock.properties.lambdaMaxShift,
+            nextRemainingTypes,
+          );
+        }
+      };
+
+      enumerate([], startingLambdaMax, availableTypes);
+
+      return [
+        ...viableBlocks[BlockType.Start],
+        ...viableBlocks[BlockType.Middle],
+        ...viableBlocks[BlockType.End],
+      ];
+    } else {
+      let blocks: Block[] = [];
+      const blockTypes = this.typeFilter.length
+        ? this.typeFilter
+        : ['start', 'middle', 'end'];
+      if (this.blockSet) {
+        blockTypes.forEach((blockType) => {
+          const blockTypeEnum = this.getKeyByValue(blockType);
+          if (blockTypeEnum) {
+            this.blockData?.blocks[blockTypeEnum].forEach((block) => {
+              if (
+                this.filteredBlocks.some(
+                  (e) =>
+                    e === block.properties[this.blockSet!.labelProperty.key],
+                )
+              ) {
+                blocks.push(block);
+              }
+            });
+          }
+        });
+      }
+      return blocks;
     }
-    return blocks;
   }
 
   //********************************************
@@ -150,6 +247,19 @@ export class AppSidebarComponent implements OnInit {
     }
   }
 
+  onClickColorType(type: ColorKeyT) {
+    if (this.colorFilter.includes(type)) {
+      let index = this.colorFilter.indexOf(type);
+      this.colorFilter.splice(index, 1);
+    } else {
+      this.colorFilter.push(type);
+    }
+  }
+
+  toggle() {
+    this.workspaceService.toggle();
+  }
+
   //********************************************
   removeMoleculeFromSearch(molecule: any) {
     //todo: remove the specific molecule from the search, for now, just clear off the last one
@@ -169,17 +279,19 @@ export class AppSidebarComponent implements OnInit {
     try {
       this.filteredBlocks.length = 0;
       if (event.target.value == '') {
-        this.labelList.forEach((e) =>
-          this.filteredBlocks.push(e.replace(/(\d+)/g, '<sub>$1</sub>')),
-        );
+        this.labelList.forEach((e) => {
+          // this.filteredBlocks.push(e.replace(/(\d+)/g, '<sub>$1</sub>'));
+          this.filteredBlocks.push(e);
+        });
         return;
       }
       const results = this.fuse.search(event.target.value);
-      results.forEach((result) =>
-        this.filteredBlocks.push(
-          result.item.replace(/(\d+)/g, '<sub>$1</sub>'),
-        ),
-      );
+      results.forEach((result) => {
+        // this.filteredBlocks.push(
+        //   result.item.replace(/(\d+)/g, '<sub>$1</sub>'),
+        // );
+        this.filteredBlocks.push(result.item);
+      });
     } catch (error) {
       console.log(error);
     }

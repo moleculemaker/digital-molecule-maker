@@ -90,17 +90,14 @@
           'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'
         "
       >
-        <dmm-molecule-svg
-          #wrapper
-          [molecule]="molecule"
+        <g
+          dmm-molecule-svg
           [blockSet]="blockSet"
+          [molecule]="molecule"
           (deleteMolecule)="onRemoveMolecule(moleculeId)"
           (addToCart)="addMoleculeToCart(moleculeId)"
           [closeOverlayObservable]="closeOverlay.asObservable()"
-        ></dmm-molecule-svg>
-        <ng-container
-          *ngTemplateOutlet="wrapper.childComponentTemplate"
-        ></ng-container>
+        ></g>
       </g>
     </g>
   </svg>
