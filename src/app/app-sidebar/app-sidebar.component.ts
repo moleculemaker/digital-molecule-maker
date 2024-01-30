@@ -133,10 +133,9 @@ export class AppSidebarComponent implements OnInit {
         );
       }
 
-      const startingLambdaMax = aggregateProperty(
-        currentMolecule,
-        this.blockSet.primaryProperty,
-      );
+      const startingLambdaMax = currentMolecule
+        ? aggregateProperty(currentMolecule, this.blockSet.primaryProperty)
+        : 0;
 
       const excludedTypes = new Set(
         currentMolecule?.blockList.map((block) => block.type) ?? [],
