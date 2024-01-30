@@ -40,9 +40,6 @@ export class MoleculeSvgComponent implements OnInit {
   closeOverlayObservable?: Observable<void>;
 
   @Output()
-  deleteMolecule = new EventEmitter();
-
-  @Output()
   addToCart = new EventEmitter();
 
   isInfoPanelOpen = false;
@@ -143,7 +140,7 @@ export class MoleculeSvgComponent implements OnInit {
   }
 
   removeMolecule() {
-    this.deleteMolecule.emit();
+    this.workspaceService.updateMoleculeList([]);
   }
 
   onRemoveBlock(type: BlockType) {

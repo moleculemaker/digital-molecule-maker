@@ -37,6 +37,8 @@ import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 import { ScatterplotComponent } from './scatterplot/scatterplot.component';
 import { ScatterplotAllComponent } from './scatterplot-all/scatterplot-all.component';
 
+import { SliderModule } from 'primeng/slider';
+
 // placeholder implementation
 // change this as needed; nothing relies on the current behavior (but
 // then delete this comment!)
@@ -81,6 +83,7 @@ function initializeAppFactory(): () => Observable<null> {
     }),
     DragDropModule,
     OverlayModule,
+    SliderModule,
   ],
   providers: [
     {

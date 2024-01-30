@@ -285,11 +285,6 @@ export class AppBuildComponent implements OnInit {
     this.panning = false;
   }
 
-  onRemoveMolecule(moleculeId: number) {
-    this.hoveredMolecule = undefined;
-    this.moleculeList.splice(moleculeId, 1);
-  }
-
   closeMoleculePopup() {
     this.closeOverlay.next();
   }

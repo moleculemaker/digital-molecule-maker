@@ -4,6 +4,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { HSLColorOptions, lambdaMaxToColor } from '../utils/colors';
 
 type Point = { x: number; y: number };
 type Bounds = [number, number, number, number];
@@ -19,6 +20,10 @@ export class ScatterplotAllComponent implements OnInit {
   @Input('bounds') bounds!: Bounds;
 
   constructor() {}
+
+  lambdaMaxToColor(lambda: number, options: HSLColorOptions = {}) {
+    return lambdaMaxToColor(lambda, options);
+  }
 
   ngOnInit(): void {}
 }

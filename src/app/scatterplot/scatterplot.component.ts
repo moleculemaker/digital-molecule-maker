@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WorkspaceService } from '../services/workspace.service';
 import { Block, BlockType, Molecule, aggregateProperty } from '../models';
 import { combineLatest } from 'rxjs';
+import { HSLColorOptions, lambdaMaxToColor } from '../utils/colors';
 
 type Point = { x: number; y: number };
 type Bounds = [number, number, number, number];
@@ -104,6 +105,10 @@ export class ScatterplotComponent implements OnInit {
         y: yCoord(blocks),
       }));
     });
+  }
+
+  lambdaMaxToColor(lambda: number, options: HSLColorOptions = {}) {
+    return lambdaMaxToColor(lambda, options);
   }
 
   ngOnInit(): void {}

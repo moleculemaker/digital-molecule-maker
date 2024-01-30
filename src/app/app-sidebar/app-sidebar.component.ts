@@ -16,9 +16,12 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { WorkspaceService } from '../services/workspace.service';
+import { Filter, WorkspaceService } from '../services/workspace.service';
 import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
+import { combineLatest, fromEvent } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
+const toValue = map((e: InputEvent) => +(e.target as HTMLInputElement).value);
 @Component({
   selector: 'app-sidebar',
   templateUrl: './app-sidebar.component.html',
@@ -94,6 +97,7 @@ export class AppSidebarComponent implements OnInit {
 
   moleculeList: Molecule[] = [];
   functionModeEnabled = true;
+  filters: Filter[] = [];
 
   constructor(private workspaceService: WorkspaceService) {
     this.workspaceService.functionMode$.subscribe((enabled) => {
@@ -102,6 +106,51 @@ export class AppSidebarComponent implements OnInit {
     this.workspaceService.moleculeList$.subscribe((moleculeList) => {
       this.moleculeList = moleculeList;
     });
+    this.workspaceService.filters$.subscribe((filters) => {
+      this.filters = filters;
+    });
+  }
+
+  _xRange: [number, number] = [200, 650];
+  _yRange: [number, number] = [300, 600];
+
+  get xRange() {
+    return this._xRange;
+  }
+
+  get yRange() {
+    return this._yRange;
+  }
+
+  set xRange(v) {
+    this._xRange = v;
+    this.update();
+  }
+
+  set yRange(v) {
+    this._yRange = v;
+    this.update();
+  }
+
+  private update() {
+    this.workspaceService.updateFilters([
+      (blocks: Block[]) => {
+        const lambdaMax = blocks.reduce(
+          (lambda, blocks) => lambda + blocks.properties.lambdaMaxShift,
+          0,
+        );
+        const molecularWeight = blocks.reduce(
+          (weight, blocks) => weight + blocks.properties.molecularWeight,
+          0,
+        );
+        return (
+          this.xRange[0] <= lambdaMax &&
+          lambdaMax <= this.xRange[1] &&
+          this.yRange[0] <= molecularWeight &&
+          molecularWeight <= this.yRange[1]
+        );
+      },
+    ]);
   }
 
   //********************************************
@@ -127,15 +176,16 @@ export class AppSidebarComponent implements OnInit {
       const getBlocksOfType = (type: BlockType) =>
         this.blockData?.blocks[type] ?? [];
 
-      if (this.colorFilter.length == 0) {
-        return Object.values(BlockType).flatMap(
-          (type) => this.blockData?.blocks[type] ?? [],
-        );
-      }
+      // if (this.colorFilter.length == 0) {
+      //   return Object.values(BlockType).flatMap(
+      //     (type) => this.blockData?.blocks[type] ?? [],
+      //   );
+      // }
 
-      const startingLambdaMax = currentMolecule
-        ? aggregateProperty(currentMolecule, this.blockSet.primaryProperty)
-        : 0;
+      // const startingLambdaMax = currentMolecule
+      //   ? aggregateProperty(currentMolecule, this.blockSet.primaryProperty)
+      //   : 0;
+      const initialBlocks = currentMolecule?.blockList ?? [];
 
       const excludedTypes = new Set(
         currentMolecule?.blockList.map((block) => block.type) ?? [],
@@ -149,33 +199,30 @@ export class AppSidebarComponent implements OnInit {
         Object.values(BlockType).map((type) => [type, new Set<Block>()]),
       );
 
-      const enumerate = (
-        curBlocks: Block[],
-        accumulatedLambdaMax: number,
-        remainingTypes: BlockType[],
-      ) => {
+      const enumerate = (curBlocks: Block[], remainingTypes: BlockType[]) => {
         if (!remainingTypes.length) {
           if (
-            this.colorFilter.some((color) => {
-              const { min, max } = LambdaMaxRangeForColor[color];
-              return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
-            })
+            // this.colorFilter.some((color) => {
+            //   const { min, max } = LambdaMaxRangeForColor[color];
+            //   return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
+            // })
+            this.filters.every((filter) => filter(curBlocks))
           ) {
-            curBlocks.forEach((block) => viableBlocks[block.type].add(block));
+            curBlocks.forEach((block) => {
+              if (!excludedTypes.has(block.type)) {
+                viableBlocks[block.type].add(block);
+              }
+            });
           }
           return;
         }
         const [nextType, ...nextRemainingTypes] = remainingTypes;
         for (const nextBlock of getBlocksOfType(nextType)) {
-          enumerate(
-            [...curBlocks, nextBlock],
-            accumulatedLambdaMax + nextBlock.properties.lambdaMaxShift,
-            nextRemainingTypes,
-          );
+          enumerate([...curBlocks, nextBlock], nextRemainingTypes);
         }
       };
 
-      enumerate([], startingLambdaMax, availableTypes);
+      enumerate(initialBlocks, availableTypes);
 
       return [
         ...viableBlocks[BlockType.Start],

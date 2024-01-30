@@ -1,4 +1,4 @@
-$size: 400px;
+$size: 300px;
 
 :host {
   position: absolute;
@@ -7,7 +7,7 @@ $size: 400px;
   width: $size;
   height: $size;
   z-index: 200;
-  border: 1px solid gray;
+  border: 1px solid lightgray;
   background: white;
   pointer-events: none;
 }

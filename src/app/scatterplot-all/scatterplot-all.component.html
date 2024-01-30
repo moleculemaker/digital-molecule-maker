@@ -1,7 +1,7 @@
 <svg:circle
   *ngFor="let p of points"
   [attr.cx]="((p.x - bounds[0]) / (bounds[1] - bounds[0])) * 1000"
-  [attr.cy]="((p.y - bounds[2]) / (bounds[3] - bounds[2])) * 1000"
-  r="10"
-  fill="rgba(0,0,0,0.1)"
+  [attr.cy]="((bounds[3] - p.y) / (bounds[3] - bounds[2])) * 1000"
+  [attr.r]="p.y * 0.05"
+  [attr.fill]="lambdaMaxToColor(p.x, { opacity: 0.05 })"
 ></svg:circle>

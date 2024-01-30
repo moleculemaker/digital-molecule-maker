@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 import { BlockService, BlockSetId } from './block.service';
 import { ActivatedRoute, Route } from '@angular/router';
 
-type Filter = (blocks: Block[]) => boolean;
+export type Filter = (blocks: Block[]) => boolean;
 
 @Injectable({
   providedIn: 'root',

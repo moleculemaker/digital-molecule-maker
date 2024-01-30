@@ -75,7 +75,7 @@ export const LambdaMaxRangeForColor = {
 
 export type ColorKeyT = keyof typeof LambdaMaxRangeForColor;
 
-type HSLColorOptions = {
+export type HSLColorOptions = {
   saturation?: number;
   lightness?: number;
   opacity?: number;
