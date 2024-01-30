@@ -71,7 +71,14 @@ export class AppBuildComponent implements OnInit {
     private cartService: CartService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+    this.workspaceService.blockSet$.subscribe((blockSet) => {
+      if (blockSet) {
+        this.blockSet = blockSet;
+        this.svgScale = getBlockSetScale(blockSet, 70);
+      }
+    });
+  }
 
   //********************************************
   ngOnInit(): void {
@@ -82,18 +89,6 @@ export class AppBuildComponent implements OnInit {
     // moleculeList in the current session (which becomes a more interesting case
     // once sessions are persisted on the backend instead of in localStorage)
 
-    this.route.queryParamMap.subscribe((queryParamMap) => {
-      let blockSet = BlockSetId.ColorWheel;
-      if (
-        Object.values(BlockSetId).includes(
-          queryParamMap.get('blockSet') as BlockSetId,
-        )
-      ) {
-        blockSet = queryParamMap.get('blockSet')! as BlockSetId;
-      }
-      this.setBlockSet(blockSet);
-    });
-
     this.workspaceService
       .getMoleculeList()
       .pipe(
@@ -103,6 +98,8 @@ export class AppBuildComponent implements OnInit {
       .subscribe((moleculeList) => {
         this.moleculeList = moleculeList;
         this.changeDetector.detectChanges();
+        // bugfix
+        this.hoveredMolecule = undefined;
       });
 
     this.cartService
@@ -129,13 +126,6 @@ export class AppBuildComponent implements OnInit {
     });
 
     document.addEventListener('mouseup', (event) => this.onMoveStop(event));
-  }
-
-  setBlockSet(blockSetId: BlockSetId): void {
-    this.blockService.getBlockSet(blockSetId).subscribe((blockSet) => {
-      this.blockSet = blockSet;
-      this.svgScale = getBlockSetScale(blockSet, 70);
-    });
   }
 
   //********************************************

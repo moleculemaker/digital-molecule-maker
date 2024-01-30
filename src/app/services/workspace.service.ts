@@ -2,8 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, withLatestFrom } from 'rxjs/operators';
 
-import { Molecule, User } from '../models';
+import { Block, BlockSet, Molecule, User } from '../models';
 import { UserService } from './user.service';
+import { BlockService, BlockSetId } from './block.service';
+import { ActivatedRoute, Route } from '@angular/router';
+
+type Filter = (blocks: Block[]) => boolean;
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +17,33 @@ export class WorkspaceService {
 
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
   functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
+  filters$ = new BehaviorSubject<Filter[]>([]);
+  blockSet$ = new BehaviorSubject<BlockSet | null>(null);
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    private blockService: BlockService,
+    private route: ActivatedRoute,
+  ) {
+    this.route.queryParamMap.subscribe((queryParamMap) => {
+      let blockSetId = BlockSetId.ColorWheel;
+      if (
+        Object.values(BlockSetId).includes(
+          queryParamMap.get('blockSet') as BlockSetId,
+        )
+      ) {
+        blockSetId = queryParamMap.get('blockSet')! as BlockSetId;
+      }
+      this.setBlockSet(blockSetId);
+    });
     this.startAutorestore();
     this.startAutosave();
+  }
+
+  setBlockSet(blockSetId: BlockSetId): void {
+    this.blockService.getBlockSet(blockSetId).subscribe((blockSet) => {
+      this.blockSet$.next(blockSet);
+    });
   }
 
   toggle() {
@@ -29,6 +56,10 @@ export class WorkspaceService {
 
   getMoleculeList(): Observable<Molecule[]> {
     return this.moleculeList$.asObservable();
+  }
+
+  updateFilters(filters: Filter[]) {
+    this.filters$.next(filters);
   }
 
   private startAutorestore(): void {

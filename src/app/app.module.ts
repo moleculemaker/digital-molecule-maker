@@ -34,6 +34,8 @@ import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 import { TrackingService } from './services/tracking.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
+import { ScatterplotComponent } from './scatterplot/scatterplot.component';
+import { ScatterplotAllComponent } from './scatterplot-all/scatterplot-all.component';
 
 // placeholder implementation
 // change this as needed; nothing relies on the current behavior (but
@@ -64,6 +66,8 @@ function initializeAppFactory(): () => Observable<null> {
     BlockSvgComponent,
     OverlayComponent,
     MoleculeSvgComponent,
+    ScatterplotComponent,
+    ScatterplotAllComponent,
   ],
   imports: [
     BrowserModule,

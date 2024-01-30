@@ -1,0 +1,13 @@
+$size: 400px;
+
+:host {
+  position: absolute;
+  right: 16px;
+  top: 60px;
+  width: $size;
+  height: $size;
+  z-index: 200;
+  border: 1px solid gray;
+  background: white;
+  pointer-events: none;
+}

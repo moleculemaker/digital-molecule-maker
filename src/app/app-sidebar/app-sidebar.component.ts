@@ -253,6 +253,19 @@ export class AppSidebarComponent implements OnInit {
     } else {
       this.colorFilter.push(type);
     }
+
+    this.workspaceService.updateFilters([
+      (blocks: Block[]) => {
+        const accumulatedLambdaMax = blocks.reduce(
+          (lambda, blocks) => lambda + blocks.properties.lambdaMaxShift,
+          0,
+        );
+        return this.colorFilter.some((color) => {
+          const { min, max } = LambdaMaxRangeForColor[color];
+          return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
+        });
+      },
+    ]);
   }
 
   toggle() {

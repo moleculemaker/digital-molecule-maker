@@ -22,6 +22,7 @@ import {
   Coordinates,
   BlockPropertyDefinition,
 } from '../models';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: '[dmm-molecule-svg]',
@@ -54,7 +55,10 @@ export class MoleculeSvgComponent implements OnInit {
   @Input()
   molecule!: Molecule;
 
-  constructor(private changeDetector: ChangeDetectorRef) {}
+  constructor(
+    private workspaceService: WorkspaceService,
+    private changeDetector: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.changeDetector.detectChanges();
@@ -144,12 +148,27 @@ export class MoleculeSvgComponent implements OnInit {
 
   onRemoveBlock(type: BlockType) {
     if (this.molecule) {
-      this.molecule.blockList = this.molecule?.blockList.filter(
+      // this.molecule.blockList = this.molecule?.blockList.filter(
+      //   (block) => block.type != type,
+      // );
+      // if (!this.molecule.blockList.length) {
+      //   this.removeMolecule();
+      // }
+
+      const blockList = this.molecule?.blockList.filter(
         (block) => block.type != type,
       );
-      if (!this.molecule.blockList.length) {
-        this.removeMolecule();
-      }
+
+      this.workspaceService.updateMoleculeList(
+        blockList.length
+          ? [
+              {
+                ...this.molecule,
+                blockList,
+              },
+            ]
+          : [],
+      );
     }
   }
 
