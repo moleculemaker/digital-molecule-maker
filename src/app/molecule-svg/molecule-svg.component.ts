@@ -125,7 +125,7 @@ export class MoleculeSvgComponent implements OnInit {
 
   onMouseUp() {
     if (!this.dragging) {
-      if (this.mouseInside) {
+      if (this.mouseDown && this.mouseInside) {
         this.isInfoPanelOpen = !this.isInfoPanelOpen;
       }
     } else {

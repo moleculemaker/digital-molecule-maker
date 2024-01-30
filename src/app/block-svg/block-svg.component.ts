@@ -134,7 +134,9 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   onMouseUp() {
     if (!this.dragging) {
-      this.isInfoPanelOpen = !this.isInfoPanelOpen;
+      if (this.mouseDown) {
+        this.isInfoPanelOpen = !this.isInfoPanelOpen;
+      }
     } else {
       this.dragging = false;
     }
