@@ -196,6 +196,23 @@
       </ng-template>
     </div>
 
+    <div class="prototype-range-filter">
+      <h5>Lambda Max: {{ xRange[0] + " - " + xRange[1] }}</h5>
+      <p-slider
+        [(ngModel)]="xRange"
+        [range]="true"
+        [min]="200"
+        [max]="650"
+      ></p-slider>
+      <h5>Molecular Weight: {{ yRange[0] + " - " + yRange[1] }}</h5>
+      <p-slider
+        [(ngModel)]="yRange"
+        [range]="true"
+        [min]="300"
+        [max]="600"
+      ></p-slider>
+    </div>
+
     <div
       class="extra_filters"
       [@filtersExpand]="isShowingFilters ? 'expanded' : 'collapsed'"
@@ -251,23 +268,6 @@
         />
       </svg>
     </div>
-  </div>
-
-  <div class="prototype-range-filter">
-    <h5>Lambda Max: {{ xRange[0] + " - " + xRange[1] }}</h5>
-    <p-slider
-      [(ngModel)]="xRange"
-      [range]="true"
-      [min]="200"
-      [max]="650"
-    ></p-slider>
-    <h5>Molecular Weight: {{ yRange[0] + " - " + yRange[1] }}</h5>
-    <p-slider
-      [(ngModel)]="yRange"
-      [range]="true"
-      [min]="300"
-      [max]="600"
-    ></p-slider>
   </div>
 
   <div class="block_list">

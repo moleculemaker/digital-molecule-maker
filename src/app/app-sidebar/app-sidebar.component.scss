@@ -888,7 +888,10 @@ $sidebar_width: 500px;
 }
 
 .prototype-range-filter {
-  padding: 10px 40px;
+  padding: 0 16px;
+  h5 {
+    margin: 8px 0;
+  }
   input {
     display: block;
     width: 100%;

@@ -4,22 +4,28 @@ import { Block, BlockType, Molecule, aggregateProperty } from '../models';
 import { combineLatest } from 'rxjs';
 import { HSLColorOptions, lambdaMaxToColor } from '../utils/colors';
 
-type Point = { x: number; y: number };
+type BlockPoint = {
+  blockList: Block[];
+  x: number;
+  y: number;
+  focused: boolean;
+};
+
 type Bounds = [number, number, number, number];
 
-const xCoord = (blockList: Block[]) => {
+function x(blockList: Block[]) {
   return blockList.reduce(
     (lambda, block) => lambda + block.properties.lambdaMaxShift,
     0,
   );
-};
+}
 
-const yCoord = (blockList: Block[]) => {
+function y(blockList: Block[]) {
   return blockList.reduce(
     (weight, block) => weight + block.properties.molecularWeight,
     0,
   );
-};
+}
 
 @Component({
   selector: 'dmm-scatterplot',
@@ -28,17 +34,21 @@ const yCoord = (blockList: Block[]) => {
 })
 export class ScatterplotComponent implements OnInit {
   bounds: Bounds = [0, 0, 0, 0];
-  allPoints: Point[] = [];
-  targetPoints: Point[] = [];
+  allPoints: BlockPoint[] = [];
 
   constructor(private workspace: WorkspaceService) {
     combineLatest([workspace.blockSet$]).subscribe(([blockSet]) => {
       if (!blockSet) return;
-      const allCombinations: Block[][] = [];
+      this.allPoints = [];
 
       const enumerate = (curBlocks: Block[], remainingTypes: BlockType[]) => {
         if (!remainingTypes.length) {
-          allCombinations.push([...curBlocks]);
+          this.allPoints.push({
+            blockList: curBlocks,
+            x: x(curBlocks),
+            y: y(curBlocks),
+            focused: false,
+          });
           return;
         }
         const [nextType, ...nextRemainingTypes] = remainingTypes;
@@ -49,20 +59,15 @@ export class ScatterplotComponent implements OnInit {
 
       enumerate([], Object.values(BlockType));
 
-      this.bounds = allCombinations.reduce(
-        ([minX, maxX, minY, maxY], blocks) => [
-          Math.min(minX, xCoord(blocks)),
-          Math.max(maxX, xCoord(blocks)),
-          Math.min(minY, yCoord(blocks)),
-          Math.max(maxY, yCoord(blocks)),
+      this.bounds = this.allPoints.reduce(
+        ([minX, maxX, minY, maxY], bp) => [
+          Math.min(minX, bp.x),
+          Math.max(maxX, bp.x),
+          Math.min(minY, bp.y),
+          Math.max(maxY, bp.y),
         ],
         [Infinity, -Infinity, Infinity, -Infinity],
       );
-
-      this.allPoints = allCombinations.map((blocks) => ({
-        x: xCoord(blocks),
-        y: yCoord(blocks),
-      }));
     });
 
     combineLatest([
@@ -70,40 +75,49 @@ export class ScatterplotComponent implements OnInit {
       workspace.moleculeList$,
       workspace.filters$,
     ]).subscribe(([blockSet, molecules, filters]) => {
-      if (!blockSet) return;
+      // if (!blockSet) return;
 
-      const currentMolecule = molecules[0];
-      const initialBlocks = currentMolecule?.blockList ?? [];
+      // const currentMolecule = molecules[0];
+      // const initialBlocks = currentMolecule?.blockList ?? [];
 
-      const excludedTypes = new Set(
-        currentMolecule?.blockList.map((block) => block.type) ?? [],
-      );
+      // const excludedTypes = new Set(
+      //   currentMolecule?.blockList.map((block) => block.type) ?? [],
+      // );
 
-      const availableTypes = Object.values(BlockType).filter(
-        (t) => !excludedTypes.has(t),
-      );
+      // const availableTypes = Object.values(BlockType).filter(
+      //   (t) => !excludedTypes.has(t),
+      // );
 
-      const targetCombinations: Block[][] = [];
+      // const targetCombinations: Block[][] = [];
 
-      const enumerate = (curBlocks: Block[], remainingTypes: BlockType[]) => {
-        if (!remainingTypes.length) {
-          if (filters.every((filter) => filter(curBlocks))) {
-            targetCombinations.push([...curBlocks]);
-          }
-          return;
-        }
-        const [nextType, ...nextRemainingTypes] = remainingTypes;
-        for (const nextBlock of blockSet.blocks[nextType]) {
-          enumerate([...curBlocks, nextBlock], nextRemainingTypes);
-        }
-      };
+      // const enumerate = (curBlocks: Block[], remainingTypes: BlockType[]) => {
+      //   if (!remainingTypes.length) {
+      //     if (filters.every((filter) => filter(curBlocks))) {
+      //       targetCombinations.push([...curBlocks]);
+      //     }
+      //     return;
+      //   }
+      //   const [nextType, ...nextRemainingTypes] = remainingTypes;
+      //   for (const nextBlock of blockSet.blocks[nextType]) {
+      //     enumerate([...curBlocks, nextBlock], nextRemainingTypes);
+      //   }
+      // };
 
-      enumerate(initialBlocks, availableTypes);
+      // enumerate(initialBlocks, availableTypes);
 
-      this.targetPoints = targetCombinations.map((blocks) => ({
-        x: xCoord(blocks),
-        y: yCoord(blocks),
-      }));
+      // this.targetPoints = targetCombinations.map((blocks) => ({
+      //   x: xCoord(blocks),
+      //   y: yCoord(blocks),
+      // }));
+      this.allPoints.forEach((bp) => {
+        bp.focused =
+          (molecules.length === 0 ||
+            molecules[0].blockList.every((usedBlock) =>
+              bp.blockList.some((b) => usedBlock.id === b.id),
+            )) &&
+          filters.every((filter) => filter(bp.blockList));
+      });
+      // console.log(this.allPoints);
     });
   }
 

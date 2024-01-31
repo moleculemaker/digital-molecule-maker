@@ -1,10 +1,12 @@
 <svg viewBox="-50 -50 1100 1100">
   <g dmm-scatterplot-all [points]="allPoints" [bounds]="bounds"></g>
   <circle
-    *ngFor="let p of targetPoints"
+    *ngFor="let p of allPoints"
     [attr.cx]="((p.x - bounds[0]) / (bounds[1] - bounds[0])) * 1000"
     [attr.cy]="((bounds[3] - p.y) / (bounds[3] - bounds[2])) * 1000"
     [attr.r]="p.y * 0.015"
-    [attr.fill]="lambdaMaxToColor(p.x, { lightness: 0.5 })"
+    [attr.fill]="
+      lambdaMaxToColor(p.x, { lightness: 0.5, opacity: p.focused ? 1 : 0 })
+    "
   ></circle>
 </svg>

@@ -127,6 +127,6 @@ export function lambdaMaxToColor(
 
   if (saturation) color.s = saturation;
   if (lightness) color.l = lightness;
-  if (opacity) color.opacity = opacity;
+  if (opacity != undefined) color.opacity = opacity;
   return color;
 }
