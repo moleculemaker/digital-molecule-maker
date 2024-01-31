@@ -4,7 +4,7 @@
     *ngFor="let p of targetPoints"
     [attr.cx]="((p.x - bounds[0]) / (bounds[1] - bounds[0])) * 1000"
     [attr.cy]="((bounds[3] - p.y) / (bounds[3] - bounds[2])) * 1000"
-    [attr.r]="p.y * 0.01"
-    [attr.fill]="lambdaMaxToColor(p.x)"
+    [attr.r]="p.y * 0.015"
+    [attr.fill]="lambdaMaxToColor(p.x, { lightness: 0.5 })"
   ></circle>
 </svg>
