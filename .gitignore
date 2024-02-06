@@ -46,3 +46,4 @@ Thumbs.db
 
 # Fetched Helm dependencies
 chart/charts/
+chart/Chart.lock

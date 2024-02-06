@@ -18,7 +18,12 @@ spec:
       containers:
         - name: dmm-frontend
           image: {{ .Values.controller.image }}
-
+          env:
+            - name: JOB_MANAGER_API_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: hostname
           ports:
             - containerPort: 80
           imagePullPolicy: Always

@@ -1,0 +1,3 @@
+{
+  "hostname": "${JOB_MANAGER_API_HOSTNAME}"
+}

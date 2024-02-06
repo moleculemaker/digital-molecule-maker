@@ -5,4 +5,7 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-production
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/router.tls: "true"
-    
+
+config:
+  hostname: "https://dmm.backend.staging.mmli1.ncsa.illinois.edu"
+

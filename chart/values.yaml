@@ -1,5 +1,4 @@
 ingress:
-  hostname: dmm.frontend.localhost
   extraHosts: []
   tls: false
   annotations: {}

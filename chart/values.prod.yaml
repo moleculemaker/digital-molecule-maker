@@ -10,6 +10,9 @@ ingress:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.middlewares: "dmm-dmm-prod-domain-redirect@kubernetescrd"
 
+config:
+  hostname: "https://dmm.fastapi.mmli1.ncsa.illinois.edu"
+
 extraDeploy:
 - apiVersion: traefik.containo.us/v1alpha1
   kind: Middleware

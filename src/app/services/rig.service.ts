@@ -6,13 +6,18 @@ import { map, timeout, catchError } from 'rxjs/operators';
 
 import { RigJob } from '../models';
 
+import {EnvironmentService} from "./environment.service";
+
 @Injectable({
   providedIn: 'root',
 })
 export class RigService {
-  private RIG_URL = 'https://dmm.fastapi.mmli1.ncsa.illinois.edu/synthesize';
+  private get RIG_URL() {
+    const { hostname } = this.envService.getEnvConfig();
+    return `${hostname}/synthesize`;
+  }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private envService: EnvironmentService) {}
 
   submitReactions(rigJobs: RigJob[]): Observable<any> {
     const httpOptions = {

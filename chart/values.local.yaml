@@ -1,3 +1,6 @@
 ingress:
+  hostname: localhost
   ingressClassName: nginx
 
+config:
+  hostname: "http://localhost:8080"
