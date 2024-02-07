@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable, of } from 'rxjs';
 
 import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 
@@ -33,13 +32,14 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
 import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 import { TrackingService } from './services/tracking.service';
+import { EnvironmentService } from "./services/environment.service";
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 
-// placeholder implementation
-// change this as needed; nothing relies on the current behavior (but
-// then delete this comment!)
-function initializeAppFactory(): () => Observable<null> {
-  return () => of(null);
+// The arguments to this function are injected based on the `deps` field next to `useFactory`
+function initializeAppFactory(trackingService: TrackingService, envService: EnvironmentService) {
+  return () => {
+    return envService.loadEnvConfig('/assets/config/envvars.json');
+  };
 }
 
 @NgModule({
@@ -84,7 +84,7 @@ function initializeAppFactory(): () => Observable<null> {
       // to run immediately. that'll ensure we're recording all changes of route.
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,
-      deps: [TrackingService],
+      deps: [TrackingService, EnvironmentService],
       multi: true,
     },
   ],

@@ -1,3 +1,7 @@
+export interface EnvVars {
+  hostname: string;
+}
+
 export enum BlockType {
   Start = 'start',
   Middle = 'middle',
