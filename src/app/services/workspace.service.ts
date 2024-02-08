@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, withLatestFrom } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {filter, withLatestFrom} from 'rxjs/operators';
 
-import { Block, BlockSet, Molecule, User } from '../models';
-import { UserService } from './user.service';
-import { BlockService, BlockSetId } from './block.service';
-import { ActivatedRoute, Route } from '@angular/router';
+import {Block, BlockSet, Bounds, Molecule, User} from '../models';
+import {UserService} from './user.service';
+import {BlockService, BlockSetId} from './block.service';
+import {ActivatedRoute} from '@angular/router';
+import {enumerateAll, getBounds} from "../utils/dft";
 
 export type Filter = (blocks: Block[]) => boolean;
 
@@ -13,12 +14,14 @@ export type Filter = (blocks: Block[]) => boolean;
   providedIn: 'root',
 })
 export class WorkspaceService {
-  private _functionMode = true;
+  private _functionMode = false;
 
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
   functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
   filters$ = new BehaviorSubject<Filter[]>([]);
   blockSet$ = new BehaviorSubject<BlockSet | null>(null);
+
+  public bounds: Bounds = [0, 0, 0, 0];
 
   constructor(
     private userService: UserService,
@@ -38,6 +41,7 @@ export class WorkspaceService {
     });
     this.startAutorestore();
     this.startAutosave();
+    this.bounds = getBounds(enumerateAll());
   }
 
   setBlockSet(blockSetId: BlockSetId): void {

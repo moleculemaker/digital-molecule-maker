@@ -4,6 +4,15 @@ export enum BlockType {
   End = 'end',
 }
 
+export type BlockPoint = {
+  blockList: Block[];
+  x: number;
+  y: number;
+  focused: boolean;
+};
+
+export type Bounds = [number, number, number, number];
+
 export interface Block {
   type: BlockType;
   id: number;

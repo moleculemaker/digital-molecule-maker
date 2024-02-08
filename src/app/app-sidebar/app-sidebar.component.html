@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <div class="control_bar">
+    <div class="control_bar" style="display: none">
       <ng-template [ngIf]="!functionModeEnabled">
         <div
           class="type"
@@ -197,19 +197,21 @@
     </div>
 
     <div class="prototype-range-filter">
-      <h5>Lambda Max: {{ xRange[0] + " - " + xRange[1] }}</h5>
+      <h5>Predicted SO (Spectral Overlap): {{ xRange[0].toFixed(2) }} % - {{ xRange[1].toFixed((2)) }}%</h5>
       <p-slider
         [(ngModel)]="xRange"
         [range]="true"
-        [min]="200"
-        [max]="650"
+        [min]="xRangeMax[0]"
+        [max]="xRangeMax[1]"
+        [step]="(xRangeMax[1] - xRangeMax[0])/  100"
       ></p-slider>
-      <h5>Molecular Weight: {{ yRange[0] + " - " + yRange[1] }}</h5>
+      <h5>Predicted T80: {{ yRange[0].toFixed(2) }}s - {{ yRange[1].toFixed(2) }}s</h5>
       <p-slider
         [(ngModel)]="yRange"
         [range]="true"
-        [min]="300"
-        [max]="600"
+        [min]="yRangeMax[0]"
+        [max]="yRangeMax[1]"
+        [step]="(yRangeMax[1] - yRangeMax[0])/  100"
       ></p-slider>
     </div>
 

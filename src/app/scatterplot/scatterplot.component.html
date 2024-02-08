@@ -4,9 +4,15 @@
     *ngFor="let p of allPoints"
     [attr.cx]="((p.x - bounds[0]) / (bounds[1] - bounds[0])) * 1000"
     [attr.cy]="((bounds[3] - p.y) / (bounds[3] - bounds[2])) * 1000"
-    [attr.r]="p.y * 0.015"
+    [attr.r]="10"
+    [attr.stroke-width]="1"
+    [attr.stroke]="
+    'rgba(0,0,0,' + (p.focused ? 1 : 0) + ')'
+      // lambdaMaxToColor(p.x, { lightness: 0.5, opacity: p.focused ? 1 : 0 })
+    "
     [attr.fill]="
-      lambdaMaxToColor(p.x, { lightness: 0.5, opacity: p.focused ? 1 : 0 })
+    'rgba(0,0,0,' + (p.focused ? 0.5 : 0) + ')'
+      // lambdaMaxToColor(p.x, { lightness: 0.5, opacity: p.focused ? 1 : 0 })
     "
   ></circle>
 </svg>

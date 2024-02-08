@@ -1,35 +1,23 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { BlockSize } from '../block/block.component';
-import {
-  Block,
-  BlockSet,
-  BlockType,
-  Molecule,
-  aggregateProperty,
-  getBlockSetScale,
-} from '../models';
+import {Component, HostBinding, Input, OnInit} from '@angular/core';
+import {BlockSize} from '../block/block.component';
+import {Block, BlockSet, BlockType, getBlockSetScale, Molecule,} from '../models';
 import Fuse from 'fuse.js';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import { Filter, WorkspaceService } from '../services/workspace.service';
-import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
-import { combineLatest, fromEvent } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import {animate, state, style, transition, trigger,} from '@angular/animations';
+import {Filter, WorkspaceService} from '../services/workspace.service';
+import {ColorKeyT, LambdaMaxRangeForColor} from '../utils/colors';
+import {map} from 'rxjs/operators';
+import {dftX, dftY} from "../utils/dft";
 
 const toValue = map((e: InputEvent) => +(e.target as HTMLInputElement).value);
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './app-sidebar.component.html',
   styleUrls: ['./app-sidebar.component.scss'],
   animations: [
     trigger('filtersExpand', [
-      state('collapsed', style({ height: '0px' })),
-      state('expanded', style({ height: '*' })),
+      state('collapsed', style({height: '0px'})),
+      state('expanded', style({height: '*'})),
       transition(
         'expanded <=> collapsed',
         animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
@@ -47,6 +35,7 @@ export class AppSidebarComponent implements OnInit {
   get blockSet(): BlockSet | null {
     return this.blockData;
   }
+
   set blockSet(blockSet: BlockSet | null) {
     if (blockSet) {
       const processBlockArray = (blocks: Block[]) =>
@@ -81,13 +70,14 @@ export class AppSidebarComponent implements OnInit {
 
   searchPlaceholder = 'Search';
   moleculeSearch = [
-    { chemicalFormula: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S' },
+    {chemicalFormula: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S'},
   ]; //array of molecules to search by
 
   typeFilter: string[] = []; //array of types to filter by (only used in showing the blocks?)
   allTypeFilters = ['all', 'start', 'middle', 'end'];
 
   colorFilter: ColorKeyT[] = [];
+
   labelForColor(key: ColorKeyT) {
     return LambdaMaxRangeForColor[key].name;
   }
@@ -109,10 +99,16 @@ export class AppSidebarComponent implements OnInit {
     this.workspaceService.filters$.subscribe((filters) => {
       this.filters = filters;
     });
+    const [x1, x2, y1, y2] = this.workspaceService.bounds
+    this.xRangeMax = this._xRange = [x1, x2];
+    this.yRangeMax = this._yRange = [y1, y2];
   }
 
-  _xRange: [number, number] = [200, 650];
-  _yRange: [number, number] = [300, 600];
+  xRangeMax: [number, number] = [0, 0];
+  yRangeMax: [number, number] = [0, 0];
+
+  _xRange: [number, number] = [0, 0];
+  _yRange: [number, number] = [0, 0];
 
   get xRange() {
     return this._xRange;
@@ -135,26 +131,21 @@ export class AppSidebarComponent implements OnInit {
   private update() {
     this.workspaceService.updateFilters([
       (blocks: Block[]) => {
-        const lambdaMax = blocks.reduce(
-          (lambda, blocks) => lambda + blocks.properties.lambdaMaxShift,
-          0,
-        );
-        const molecularWeight = blocks.reduce(
-          (weight, blocks) => weight + blocks.properties.molecularWeight,
-          0,
-        );
+        const x = dftX(blocks);
+        const y = dftY(blocks);
         return (
-          this.xRange[0] <= lambdaMax &&
-          lambdaMax <= this.xRange[1] &&
-          this.yRange[0] <= molecularWeight &&
-          molecularWeight <= this.yRange[1]
+          this.xRange[0] <= x &&
+          x <= this.xRange[1] &&
+          this.yRange[0] <= y &&
+          y <= this.yRange[1]
         );
       },
     ]);
   }
 
   //********************************************
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   //********************************************
   onChangeToggle(newToggle: string) {
@@ -165,6 +156,7 @@ export class AppSidebarComponent implements OnInit {
   getSearchPlaceholder(): string {
     return this.moleculeSearch.length == 0 ? this.searchPlaceholder : '';
   }
+
 
   //********************************************
   getBlockData(): Block[] {
@@ -308,7 +300,7 @@ export class AppSidebarComponent implements OnInit {
           0,
         );
         return this.colorFilter.some((color) => {
-          const { min, max } = LambdaMaxRangeForColor[color];
+          const {min, max} = LambdaMaxRangeForColor[color];
           return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
         });
       },

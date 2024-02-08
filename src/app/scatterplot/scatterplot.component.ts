@@ -1,33 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { WorkspaceService } from '../services/workspace.service';
-import { Block, BlockType, Molecule, aggregateProperty } from '../models';
-import { combineLatest } from 'rxjs';
-import { HSLColorOptions, lambdaMaxToColor } from '../utils/colors';
-
-type BlockPoint = {
-  blockList: Block[];
-  x: number;
-  y: number;
-  focused: boolean;
-};
-
-type Bounds = [number, number, number, number];
-
-function x(blockList: Block[]) {
-  return blockList.reduce(
-    (lambda, block) => lambda + block.properties.lambdaMaxShift,
-    0,
-  );
-}
-
-function y(blockList: Block[]) {
-  return blockList.reduce(
-    (weight, block) => weight + block.properties.molecularWeight,
-    0,
-  );
-}
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {WorkspaceService} from '../services/workspace.service';
+import {BlockPoint, Bounds} from '../models';
+import {combineLatest} from 'rxjs';
+import {HSLColorOptions, lambdaMaxToColor} from '../utils/colors';
+import {enumerateAll, getBounds} from "../utils/dft";
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'dmm-scatterplot',
   templateUrl: './scatterplot.component.html',
   styleUrls: ['./scatterplot.component.scss'],
@@ -36,44 +15,21 @@ export class ScatterplotComponent implements OnInit {
   bounds: Bounds = [0, 0, 0, 0];
   allPoints: BlockPoint[] = [];
 
-  constructor(private workspace: WorkspaceService) {
-    combineLatest([workspace.blockSet$]).subscribe(([blockSet]) => {
+  constructor(private workspace: WorkspaceService, private cd: ChangeDetectorRef) {
+  }
+
+  ngOnInit() {
+    combineLatest([this.workspace.blockSet$]).subscribe(([blockSet]) => {
       if (!blockSet) return;
-      this.allPoints = [];
-
-      const enumerate = (curBlocks: Block[], remainingTypes: BlockType[]) => {
-        if (!remainingTypes.length) {
-          this.allPoints.push({
-            blockList: curBlocks,
-            x: x(curBlocks),
-            y: y(curBlocks),
-            focused: false,
-          });
-          return;
-        }
-        const [nextType, ...nextRemainingTypes] = remainingTypes;
-        for (const nextBlock of blockSet.blocks[nextType]) {
-          enumerate([...curBlocks, nextBlock], nextRemainingTypes);
-        }
-      };
-
-      enumerate([], Object.values(BlockType));
-
-      this.bounds = this.allPoints.reduce(
-        ([minX, maxX, minY, maxY], bp) => [
-          Math.min(minX, bp.x),
-          Math.max(maxX, bp.x),
-          Math.min(minY, bp.y),
-          Math.max(maxY, bp.y),
-        ],
-        [Infinity, -Infinity, Infinity, -Infinity],
-      );
+      this.allPoints = enumerateAll();
+      this.bounds = getBounds(this.allPoints)
+      this.cd.detectChanges();
     });
 
     combineLatest([
-      workspace.blockSet$,
-      workspace.moleculeList$,
-      workspace.filters$,
+      this.workspace.blockSet$,
+      this.workspace.moleculeList$,
+      this.workspace.filters$,
     ]).subscribe(([blockSet, molecules, filters]) => {
       // if (!blockSet) return;
 
@@ -113,10 +69,11 @@ export class ScatterplotComponent implements OnInit {
         bp.focused =
           (molecules.length === 0 ||
             molecules[0].blockList.every((usedBlock) =>
-              bp.blockList.some((b) => usedBlock.id === b.id),
+              bp.blockList.some((b) => usedBlock.type === b.type && usedBlock.id === b.id),
             )) &&
           filters.every((filter) => filter(bp.blockList));
       });
+      this.cd.detectChanges();
       // console.log(this.allPoints);
     });
   }
@@ -125,5 +82,4 @@ export class ScatterplotComponent implements OnInit {
     return lambdaMaxToColor(lambda, options);
   }
 
-  ngOnInit(): void {}
 }

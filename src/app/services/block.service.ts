@@ -1,13 +1,14 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Block, BlockSet, BlockType } from '../models';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {BlockSet} from '../models';
+import {opv} from "../utils/dft";
 
 export enum BlockSetId {
   ColorWheel = 'COLOR_WHEEL',
   OPV = 'OPV',
 }
+
 
 @Injectable({
   providedIn: 'root',
@@ -18,16 +19,21 @@ export class BlockService {
     [BlockSetId.OPV, 'assets/blocks/opv/blocks.json'],
   ]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getBlockSet(blockSetId: BlockSetId): Observable<BlockSet> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'my-auth-token',
-      }),
-    };
+    return of(opv);
 
-    return this.http.get<BlockSet>(this.urls.get(blockSetId)!, httpOptions);
+
+
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //     Authorization: 'my-auth-token',
+    //   }),
+    // };
+    //
+    // return this.http.get<BlockSet>(this.urls.get(blockSetId)!, httpOptions);
   }
 }
