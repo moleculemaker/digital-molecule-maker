@@ -3,26 +3,28 @@ import {WorkspaceService} from '../services/workspace.service';
 import {BlockPoint, Bounds} from '../models';
 import {combineLatest} from 'rxjs';
 import {HSLColorOptions, lambdaMaxToColor} from '../utils/colors';
-import {enumerateAll, getBounds} from "../utils/dft";
+import {BlockService} from "../services/block.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'dmm-scatterplot',
-  templateUrl: './scatterplot.component.html',
-  styleUrls: ['./scatterplot.component.scss'],
+  templateUrl: './scatter-plot.component.html',
+  styleUrls: ['./scatter-plot.component.scss'],
 })
-export class ScatterplotComponent implements OnInit {
+export class ScatterPlotComponent implements OnInit {
   bounds: Bounds = [0, 0, 0, 0];
   allPoints: BlockPoint[] = [];
+  loaded = false;
 
-  constructor(private workspace: WorkspaceService, private cd: ChangeDetectorRef) {
+  constructor(private workspace: WorkspaceService, private blockService: BlockService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    combineLatest([this.workspace.blockSet$]).subscribe(([blockSet]) => {
+    combineLatest([this.workspace.blockSet$, this.blockService.dftLoaded$]).subscribe(([blockSet, loaded]) => {
       if (!blockSet) return;
-      this.allPoints = enumerateAll();
-      this.bounds = getBounds(this.allPoints)
+      this.loaded = loaded;
+      this.allPoints = this.blockService.enumerateAll();
+      this.bounds = this.blockService.bounds;
       this.cd.detectChanges();
     });
 
@@ -30,7 +32,8 @@ export class ScatterplotComponent implements OnInit {
       this.workspace.blockSet$,
       this.workspace.moleculeList$,
       this.workspace.filters$,
-    ]).subscribe(([blockSet, molecules, filters]) => {
+      this.blockService.dftLoaded$,
+    ]).subscribe(([blockSet, molecules, filters, _]) => {
       // if (!blockSet) return;
 
       // const currentMolecule = molecules[0];

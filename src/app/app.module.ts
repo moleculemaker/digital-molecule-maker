@@ -34,8 +34,8 @@ import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 import { TrackingService } from './services/tracking.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
-import { ScatterplotComponent } from './scatterplot/scatterplot.component';
-import { ScatterplotAllComponent } from './scatterplot-all/scatterplot-all.component';
+import { ScatterPlotComponent } from './scatterplot/scatter-plot.component';
+import { ScatterPlotAllComponent } from './scatterplot-all/scatter-plot-all.component';
 
 import { SliderModule } from 'primeng/slider';
 
@@ -68,8 +68,8 @@ function initializeAppFactory(): () => Observable<null> {
     BlockSvgComponent,
     OverlayComponent,
     MoleculeSvgComponent,
-    ScatterplotComponent,
-    ScatterplotAllComponent,
+    ScatterPlotComponent,
+    ScatterPlotAllComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,10 +12,10 @@ type Bounds = [number, number, number, number];
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: '[dmm-scatterplot-all]',
-  templateUrl: './scatterplot-all.component.html',
-  styleUrls: ['./scatterplot-all.component.scss'],
+  templateUrl: './scatter-plot-all.component.html',
+  styleUrls: ['./scatter-plot-all.component.scss'],
 })
-export class ScatterplotAllComponent implements OnInit {
+export class ScatterPlotAllComponent implements OnInit {
   @Input('points') points!: Point[];
   @Input('bounds') bounds!: Bounds;
 

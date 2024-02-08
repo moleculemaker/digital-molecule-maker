@@ -6,7 +6,7 @@ import {animate, state, style, transition, trigger,} from '@angular/animations';
 import {Filter, WorkspaceService} from '../services/workspace.service';
 import {ColorKeyT, LambdaMaxRangeForColor} from '../utils/colors';
 import {map} from 'rxjs/operators';
-import {dftX, dftY} from "../utils/dft";
+import {BlockService} from "../services/block.service";
 
 const toValue = map((e: InputEvent) => +(e.target as HTMLInputElement).value);
 
@@ -89,7 +89,7 @@ export class AppSidebarComponent implements OnInit {
   functionModeEnabled = true;
   filters: Filter[] = [];
 
-  constructor(private workspaceService: WorkspaceService) {
+  constructor(private workspaceService: WorkspaceService, private blockService: BlockService) {
     this.workspaceService.functionMode$.subscribe((enabled) => {
       this.functionModeEnabled = enabled;
     });
@@ -99,9 +99,12 @@ export class AppSidebarComponent implements OnInit {
     this.workspaceService.filters$.subscribe((filters) => {
       this.filters = filters;
     });
-    const [x1, x2, y1, y2] = this.workspaceService.bounds
-    this.xRangeMax = this._xRange = [x1, x2];
-    this.yRangeMax = this._yRange = [y1, y2];
+    this.blockService.dftLoaded$.subscribe(() => {
+      const [x1, x2, y1, y2] = this.blockService.bounds;
+      this.xRangeMax = this._xRange = [x1, x2];
+      this.yRangeMax = this._yRange = [y1, y2];
+    });
+
   }
 
   xRangeMax: [number, number] = [0, 0];
@@ -131,8 +134,8 @@ export class AppSidebarComponent implements OnInit {
   private update() {
     this.workspaceService.updateFilters([
       (blocks: Block[]) => {
-        const x = dftX(blocks);
-        const y = dftY(blocks);
+        const x = this.blockService.dftX(blocks);
+        const y = this.blockService.dftY(blocks);
         return (
           this.xRange[0] <= x &&
           x <= this.xRange[1] &&

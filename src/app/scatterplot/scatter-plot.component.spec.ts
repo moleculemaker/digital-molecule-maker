@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScatterplotComponent } from './scatterplot.component';
+import { ScatterPlotComponent } from './scatter-plot.component';
 
 describe('ScatterplotComponent', () => {
-  let component: ScatterplotComponent;
-  let fixture: ComponentFixture<ScatterplotComponent>;
+  let component: ScatterPlotComponent;
+  let fixture: ComponentFixture<ScatterPlotComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ScatterplotComponent ]
+      declarations: [ ScatterPlotComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ScatterplotComponent);
+    fixture = TestBed.createComponent(ScatterPlotComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

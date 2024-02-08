@@ -1,4 +1,4 @@
-<svg viewBox="-50 -50 1100 1100">
+<svg viewBox="-50 -50 1100 1100" *ngIf="loaded">
   <g dmm-scatterplot-all [points]="allPoints" [bounds]="bounds"></g>
   <circle
     *ngFor="let p of allPoints"

@@ -6,7 +6,6 @@ import {Block, BlockSet, Bounds, Molecule, User} from '../models';
 import {UserService} from './user.service';
 import {BlockService, BlockSetId} from './block.service';
 import {ActivatedRoute} from '@angular/router';
-import {enumerateAll, getBounds} from "../utils/dft";
 
 export type Filter = (blocks: Block[]) => boolean;
 
@@ -21,7 +20,6 @@ export class WorkspaceService {
   filters$ = new BehaviorSubject<Filter[]>([]);
   blockSet$ = new BehaviorSubject<BlockSet | null>(null);
 
-  public bounds: Bounds = [0, 0, 0, 0];
 
   constructor(
     private userService: UserService,
@@ -41,7 +39,6 @@ export class WorkspaceService {
     });
     this.startAutorestore();
     this.startAutosave();
-    this.bounds = getBounds(enumerateAll());
   }
 
   setBlockSet(blockSetId: BlockSetId): void {

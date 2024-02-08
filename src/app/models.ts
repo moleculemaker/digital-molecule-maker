@@ -56,9 +56,16 @@ export type ChemicalPropertyAggregationStrategy =
   | 'chemicalFormula'
   | 'smiles';
 
+export interface DFTData {
+  "DBA_Name": string;
+  "Predicted_SO": number;
+  "Predicted_T80": number;
+}
+
 export class Coordinates {
   x: number;
   y: number;
+
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
@@ -69,6 +76,7 @@ export class Molecule {
   position: Coordinates;
   label: string;
   blockList: Block[];
+
   constructor(position: Coordinates, blockList: Block[]) {
     this.position = position;
     this.blockList = blockList;

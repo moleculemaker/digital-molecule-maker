@@ -198,21 +198,26 @@
 
     <div class="prototype-range-filter">
       <h5>Predicted SO (Spectral Overlap): {{ xRange[0].toFixed(2) }} % - {{ xRange[1].toFixed((2)) }}%</h5>
-      <p-slider
-        [(ngModel)]="xRange"
-        [range]="true"
-        [min]="xRangeMax[0]"
-        [max]="xRangeMax[1]"
-        [step]="(xRangeMax[1] - xRangeMax[0])/  100"
-      ></p-slider>
+      <div style="margin: 16px 0">
+        <p-slider
+          style="margin: 16px 0"
+          [(ngModel)]="xRange"
+          [range]="true"
+          [min]="xRangeMax[0]"
+          [max]="xRangeMax[1]"
+          [step]="(xRangeMax[1] - xRangeMax[0])/  100"
+        ></p-slider>
+      </div>
       <h5>Predicted T80: {{ yRange[0].toFixed(2) }}s - {{ yRange[1].toFixed(2) }}s</h5>
-      <p-slider
-        [(ngModel)]="yRange"
-        [range]="true"
-        [min]="yRangeMax[0]"
-        [max]="yRangeMax[1]"
-        [step]="(yRangeMax[1] - yRangeMax[0])/  100"
-      ></p-slider>
+      <div style="margin: 16px 0">
+        <p-slider
+          [(ngModel)]="yRange"
+          [range]="true"
+          [min]="yRangeMax[0]"
+          [max]="yRangeMax[1]"
+          [step]="(yRangeMax[1] - yRangeMax[0])/  100"
+        ></p-slider>
+      </div>
     </div>
 
     <div
