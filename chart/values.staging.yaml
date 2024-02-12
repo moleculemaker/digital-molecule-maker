@@ -7,5 +7,5 @@ ingress:
     traefik.ingress.kubernetes.io/router.tls: "true"
 
 config:
-  hostname: "https://dmm.backend.staging.mmli1.ncsa.illinois.edu"
+  hostname: "https://dmm.fastapi.staging.mmli1.ncsa.illinois.edu"
 
