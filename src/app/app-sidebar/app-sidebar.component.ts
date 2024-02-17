@@ -50,9 +50,9 @@ export class AppSidebarComponent implements OnInit {
         blocks.forEach((block) => {
           this.labelList.push(block.properties[blockSet.labelProperty.key]);
         });
-      processBlockArray(blockSet.blocks[BlockType.Start]);
-      processBlockArray(blockSet.blocks[BlockType.Middle]);
-      processBlockArray(blockSet.blocks[BlockType.End]);
+      for (let i = 0; i < blockSet.moleculeSize; ++i) {
+        processBlockArray(blockSet.getBlocksByPosition(i));
+      }
       this.fuse = new Fuse(this.labelList, {
         includeScore: true,
         isCaseSensitive: true,
@@ -119,93 +119,12 @@ export class AppSidebarComponent implements OnInit {
 
   //********************************************
   getBlockData(): Block[] {
-    if (this.functionModeEnabled) {
-      if (!this.blockSet) return [];
-
-      const currentMolecule = this.moleculeList[0];
-
-      const getBlocksOfType = (type: BlockType) =>
-        this.blockData?.blocks[type] ?? [];
-
-      if (this.colorFilter.length == 0) {
-        return Object.values(BlockType).flatMap(
-          (type) => this.blockData?.blocks[type] ?? [],
-        );
-      }
-
-      const startingLambdaMax = currentMolecule
-        ? aggregateProperty(currentMolecule, this.blockSet.primaryProperty)
-        : 0;
-
-      const excludedTypes = new Set(
-        currentMolecule?.blockList.map((block) => block.type) ?? [],
-      );
-
-      const availableTypes = Object.values(BlockType).filter(
-        (t) => !excludedTypes.has(t),
-      );
-
-      const viableBlocks = Object.fromEntries(
-        Object.values(BlockType).map((type) => [type, new Set<Block>()]),
-      );
-
-      const enumerate = (
-        curBlocks: Block[],
-        accumulatedLambdaMax: number,
-        remainingTypes: BlockType[],
-      ) => {
-        if (!remainingTypes.length) {
-          if (
-            this.colorFilter.some((color) => {
-              const { min, max } = LambdaMaxRangeForColor[color];
-              return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
-            })
-          ) {
-            curBlocks.forEach((block) => viableBlocks[block.type].add(block));
-          }
-          return;
-        }
-        const [nextType, ...nextRemainingTypes] = remainingTypes;
-        for (const nextBlock of getBlocksOfType(nextType)) {
-          enumerate(
-            [...curBlocks, nextBlock],
-            accumulatedLambdaMax + nextBlock.properties.lambdaMaxShift,
-            nextRemainingTypes,
-          );
-        }
-      };
-
-      enumerate([], startingLambdaMax, availableTypes);
-
-      return [
-        ...viableBlocks[BlockType.Start],
-        ...viableBlocks[BlockType.Middle],
-        ...viableBlocks[BlockType.End],
-      ];
-    } else {
-      let blocks: Block[] = [];
-      const blockTypes = this.typeFilter.length
-        ? this.typeFilter
-        : ['start', 'middle', 'end'];
-      if (this.blockSet) {
-        blockTypes.forEach((blockType) => {
-          const blockTypeEnum = this.getKeyByValue(blockType);
-          if (blockTypeEnum) {
-            this.blockData?.blocks[blockTypeEnum].forEach((block) => {
-              if (
-                this.filteredBlocks.some(
-                  (e) =>
-                    e === block.properties[this.blockSet!.labelProperty.key],
-                )
-              ) {
-                blocks.push(block);
-              }
-            });
-          }
-        });
-      }
-      return blocks;
+    const blocks: Block[] = [];
+    if (!this.blockSet) return blocks;
+    for (let i = 0; i < this.blockSet?.moleculeSize; ++i) {
+      blocks.push(...this.blockSet.getBlocksByPosition(i));
     }
+    return blocks;
   }
 
   //********************************************

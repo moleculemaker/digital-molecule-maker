@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Block, BlockSet, BlockType } from '../models';
 import { ActivatedRoute } from '@angular/router';
+import { ColorWheelBlockSet } from '../block-sets/ColorWheel';
 
 export enum BlockSetId {
   ColorWheel = 'COLOR_WHEEL',
@@ -14,11 +15,6 @@ export enum BlockSetId {
   providedIn: 'root',
 })
 export class BlockService {
-  urls = new Map<BlockSetId, string>([
-    [BlockSetId.ColorWheel, 'assets/blocks/10x10x10palette/blocks.json'],
-    [BlockSetId.OPV, 'assets/blocks/opv/blocks.json'],
-  ]);
-
   private _blockSet$ = new BehaviorSubject<BlockSet | null>(null);
 
   /**
@@ -39,6 +35,7 @@ export class BlockService {
 
   constructor(
     private http: HttpClient,
+    private injector: Injector,
     route: ActivatedRoute,
   ) {
     route.queryParamMap.subscribe((queryParamMap) => {
@@ -50,20 +47,27 @@ export class BlockService {
       ) {
         blockSetId = queryParamMap.get('blockSet')! as BlockSetId;
       }
-      this.getBlockSet(blockSetId).subscribe((blockSet) => {
-        this._blockSet$.next(blockSet);
-      });
+
+      this.loadBlockSet(blockSetId);
     });
   }
 
-  private getBlockSet(blockSetId: BlockSetId): Observable<BlockSet> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'my-auth-token',
-      }),
-    };
+  private loadBlockSet(blockSetId: BlockSetId): void {
+    const blockSet = this.getBlockSetImpl(blockSetId);
+    blockSet.initialized$.subscribe((initialized) => {
+      if (initialized) {
+        this._blockSet$.next(blockSet);
+      }
+    });
+  }
 
-    return this.http.get<BlockSet>(this.urls.get(blockSetId)!, httpOptions);
+  private getBlockSetImpl(blockSetId: BlockSetId): BlockSet {
+    switch (blockSetId) {
+      case BlockSetId.ColorWheel: {
+        return this.injector.get(ColorWheelBlockSet);
+      }
+      case BlockSetId.OPV:
+        throw 'Not Implemented';
+    }
   }
 }

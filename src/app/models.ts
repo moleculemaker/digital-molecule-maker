@@ -1,3 +1,5 @@
+import { BehaviorSubject } from 'rxjs';
+
 export interface EnvVars {
   hostname: string;
 }
@@ -17,17 +19,57 @@ export interface Block {
   properties: { [label: string]: any };
 }
 
-export interface BlockSet {
-  id: string;
-  labelProperty: BlockPropertyDefinition;
-  primaryProperty: BlockPropertyDefinition;
-  firstTierProperties: BlockPropertyDefinition[];
-  secondTierProperties: BlockPropertyDefinition[];
-  blocks: {
-    [BlockType.Start]: Block[];
-    [BlockType.Middle]: Block[];
-    [BlockType.End]: Block[];
-  };
+export abstract class BlockSet {
+  protected _initialized$ = new BehaviorSubject(false);
+
+  protected _finalize() {
+    this._initialized$.next(true);
+  }
+
+  /**
+   * Some fields might be populated asynchronously.
+   * Subscribe to wait for initialization to complete.
+   */
+  get initialized$() {
+    return this._initialized$.asObservable();
+  }
+
+  /**
+   * Some fields might be populated asynchronously.
+   * Read this value to check for current initialization state.
+   */
+  get initialized(): boolean {
+    return this._initialized$.value;
+  }
+
+  abstract id: string;
+  /**
+   * Make sure `initialized` is `true` before accessing this property
+   */
+  abstract labelProperty: BlockPropertyDefinition;
+  /**
+   * Make sure `initialized` is `true` before accessing this property
+   */
+  abstract primaryProperty: BlockPropertyDefinition;
+  /**
+   * Make sure `initialized` is `true` before accessing this property
+   */
+  abstract firstTierProperties: BlockPropertyDefinition[];
+  /**
+   * Make sure `initialized` is `true` before accessing this property
+   */
+  abstract secondTierProperties: BlockPropertyDefinition[];
+  /**
+   * Number of blocks in a complete molecule.
+   * Make sure `initialized` is `true` before accessing this property
+   */
+  abstract moleculeSize: number;
+  /**
+   * Get all blocks that can be placed at index `i`.
+   * `i` must be smaller than `moleculeSize`.
+   * Make sure `initialized` is `true` before calling this method
+   */
+  abstract getBlocksByPosition(i: number): Block[];
 }
 
 export interface RigJob {
@@ -77,14 +119,15 @@ export interface User {
 }
 
 export function getBlockSetScale(blockSet: BlockSet, target: number): number {
-  const maxHeightOrWidth = Math.max(
-    ...blockSet.blocks[BlockType.Start].map((block) => block.height),
-    ...blockSet.blocks[BlockType.Middle].map((block) => block.height),
-    ...blockSet.blocks[BlockType.End].map((block) => block.height),
-    ...blockSet.blocks[BlockType.Start].map((block) => block.width),
-    ...blockSet.blocks[BlockType.Middle].map((block) => block.width),
-    ...blockSet.blocks[BlockType.End].map((block) => block.width),
-  );
+  let maxHeightOrWidth = 0;
+  for (let i = 0; i < blockSet.moleculeSize; ++i) {
+    maxHeightOrWidth = Math.max(
+      maxHeightOrWidth,
+      ...blockSet
+        .getBlocksByPosition(i)
+        .flatMap((block) => [block.width, block.height]),
+    );
+  }
   return target / maxHeightOrWidth;
 }
 
