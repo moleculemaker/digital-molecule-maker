@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, withLatestFrom } from 'rxjs/operators';
-
-import { Molecule, User, ViewMode } from '../models';
+import { Block, Coordinates, Molecule, User, ViewMode } from '../models';
 import { UserService } from './user.service';
+import { isEmpty, updateAt } from '../utils/Array';
+import { BlockService } from './block.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +16,93 @@ export class WorkspaceService {
 
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
 
-  constructor(private userService: UserService) {
+  get moleculeList(): Molecule[] {
+    return this.moleculeList$.value;
+  }
+
+  constructor(
+    private userService: UserService,
+    private blockService: BlockService,
+  ) {
     this.startAutorestore();
     this.startAutosave();
+  }
+
+  addMolecule(molecule: Molecule) {
+    this.moleculeList$.next([...this.moleculeList, molecule]);
+  }
+
+  getMolecule(moleculeIndex: number) {
+    return this.moleculeList$.value[moleculeIndex];
+  }
+
+  updateMoleculePosition(moleculeIndex: number, dx: number, dy: number) {
+    const molecule = this.getMolecule(moleculeIndex);
+    if (molecule) {
+      const { x, y } = molecule.position;
+      this.moleculeList$.next(
+        updateAt(this.moleculeList, moleculeIndex, {
+          ...molecule,
+          position: new Coordinates(x + dx, y + dy),
+        }),
+      );
+    }
+  }
+
+  removeMolecule(moleculeIndex: number) {
+    const removed = this.getMolecule(moleculeIndex);
+    this.moleculeList$.next([
+      ...this.moleculeList.slice(0, moleculeIndex),
+      ...this.moleculeList.slice(moleculeIndex + 1),
+    ]);
+    return removed;
+  }
+
+  placeInitialBlock(coordinates: Coordinates, initialBlock: Block) {
+    const blockList: (Block | null)[] = Array(
+      this.blockService.blockSet?.moleculeSize,
+    ).fill(null);
+    blockList[initialBlock.index] = initialBlock;
+    this.moleculeList$.next([
+      ...this.moleculeList,
+      new Molecule(coordinates, blockList),
+    ]);
+  }
+
+  placeBlock(moleculeIndex: number, blockIndex: number, block: Block) {
+    const molecule = this.getMolecule(moleculeIndex);
+    if (molecule) {
+      this.moleculeList$.next(
+        updateAt(this.moleculeList, moleculeIndex, {
+          ...molecule,
+          blockList: updateAt(molecule.blockList, blockIndex, block),
+        }),
+      );
+    }
+  }
+
+  /**
+   * Returns a boolean that indicates whether the containing molecule is also removed,
+   * which happens when its `blockList` becomes empty.
+   */
+  removeBlock(moleculeIndex: number, blockIndex: number) {
+    const molecule = this.moleculeList[moleculeIndex];
+    if (molecule) {
+      const newBlockList = updateAt(molecule.blockList, blockIndex, null);
+      if (isEmpty(newBlockList)) {
+        this.removeMolecule(moleculeIndex);
+        return true;
+      } else {
+        this.moleculeList$.next(
+          updateAt(this.moleculeList, moleculeIndex, {
+            ...molecule,
+            blockList: newBlockList,
+          }),
+        );
+        return false;
+      }
+    }
+    return false;
   }
 
   toggle() {

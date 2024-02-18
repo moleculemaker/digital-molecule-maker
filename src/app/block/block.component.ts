@@ -10,9 +10,10 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import 'external-svg-loader';
-import { Block, BlockType, ViewMode } from '../models';
+import { Block, ViewMode } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
+import { BlockService } from '../services/block.service';
 
 @Component({
   selector: 'block',
@@ -65,7 +66,8 @@ export class BlockComponent implements OnInit {
   }
 
   constructor(
-    public workspaceService: WorkspaceService,
+    workspaceService: WorkspaceService,
+    private blockService: BlockService,
     private cd: ChangeDetectorRef,
   ) {
     workspaceService.viewMode$.subscribe((viewMode) => {
@@ -73,6 +75,10 @@ export class BlockComponent implements OnInit {
       this.flipped = false;
       this.cd.markForCheck();
     });
+  }
+
+  get type() {
+    return this.isStart() ? 'start' : this.isEnd() ? 'end' : 'middle';
   }
 
   @HostListener('click')
@@ -309,8 +315,8 @@ export class BlockComponent implements OnInit {
     const length = coords.length + (close ? 1 : -1);
 
     for (let i = 0; i < length; i++) {
-      const a = coords[i % coords.length];
-      const b = coords[(i + 1) % coords.length];
+      const a = coords[i % coords.length]!;
+      const b = coords[(i + 1) % coords.length]!;
 
       //added to allow override of radius at coordinate level
       let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
@@ -348,12 +354,12 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   isStart() {
-    return this.block.type === BlockType.Start;
+    return this.block.index === 0;
   }
 
   //********************************************
   isEnd() {
-    return this.block.type === BlockType.End;
+    return this.block.index === this.blockService.blockSet!.moleculeSize - 1;
   }
 
   //********************************************
@@ -379,7 +385,7 @@ export class BlockComponent implements OnInit {
   //********************************************
   //todo: determine if this should be a separate property to control it, for now, show the add block structure if no svgUrl has been added
   isAddBlock() {
-    return !this.block.svgUrl ? true : false;
+    return !this.block.svgUrl;
   }
 
   get textColor() {

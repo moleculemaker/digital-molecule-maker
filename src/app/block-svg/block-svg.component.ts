@@ -12,9 +12,15 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Block, BlockSet, BlockType } from '../models';
+import { Block, Molecule } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
+import { BlockService } from '../services/block.service';
+
+export const BLOCK_WIDTH = 100;
+export const BLOCK_HEIGHT = 100;
+export const BLOCK_PADDING_X = 20 * 4;
+export const BLOCK_PADDING_Y = 20 * 1.5;
 
 @Component({
   selector: '[dmm-block-svg]',
@@ -23,17 +29,17 @@ import { WorkspaceService } from '../services/workspace.service';
 })
 export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
-  lambdaMax: number = 0;
-
-  @Input()
-  asIcon = false; // currently using this just to control x offset when rendering inside the properties overlay
-  // consider handling that offset in the parent component, in the containing <g>
+  molecule!: Molecule;
 
   @Input()
   block!: Block;
 
   @Input()
-  blockSet?: BlockSet;
+  lambdaMax: number = 0;
+
+  @Input()
+  asIcon = false; // currently using this just to control x offset when rendering inside the properties overlay
+  // consider handling that offset in the parent component, in the containing <g>
 
   @Input()
   closeOverlayObservable?: Observable<void>;
@@ -42,16 +48,9 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   overlayOrigin!: CdkOverlayOrigin;
 
   @Output()
-  deleteBlock = new EventEmitter<BlockType>();
+  deleteBlock = new EventEmitter<void>();
 
-  blockWidth = 100;
-  blockHeight = 100;
   scale = 1;
-
-  padding = {
-    x: 20 * 4,
-    y: 20 * 1.5,
-  };
 
   strokeWidth = 4;
   strokeDasharray = '';
@@ -70,15 +69,24 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   isInfoPanelOpen = false;
   _eventsSubscription?: Subscription;
 
-  popupoffsetX = 0;
-
   positionPairs!: ConnectionPositionPair[];
+
+  constructor(
+    private workspaceService: WorkspaceService,
+    private blockService: BlockService,
+  ) {}
 
   get viewMode$() {
     return this.workspaceService.viewMode$;
   }
 
-  constructor(public workspaceService: WorkspaceService) {}
+  get type() {
+    return this.isStart() ? 'start' : this.isEnd() ? 'end' : 'middle';
+  }
+
+  get blockSet() {
+    return this.blockService.blockSet!;
+  }
 
   ngOnInit(): void {
     if (this.closeOverlayObservable) {
@@ -141,26 +149,19 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     this.mouseDown = false;
   }
 
-  onClick(): void {
-    alert(this.block.type);
-  }
-
   get centerX() {
     let minX = this.strokeWidth + this.borderOffset;
-    if (!this.asIcon && this.isMiddle()) {
-      minX += this.blockWidth + this.padding.x;
-      this.imageZoomAndPanMatrix[4] = minX + 60;
-    } else if (!this.asIcon && this.isEnd()) {
-      minX += 2 * (this.blockWidth + this.padding.x);
+    if (!this.asIcon) {
+      minX += this.block.index * (BLOCK_WIDTH + BLOCK_PADDING_X);
       this.imageZoomAndPanMatrix[4] = minX + 60;
     }
-    let maxX = this.blockWidth + this.padding.x + minX;
+    let maxX = BLOCK_WIDTH + BLOCK_PADDING_X + minX;
     return (minX + maxX) / 2;
   }
 
   get centerY() {
     let minY = this.strokeWidth + this.borderOffset;
-    let maxY = this.blockHeight + this.padding.y + this.borderOffset;
+    let maxY = BLOCK_HEIGHT + BLOCK_PADDING_Y + this.borderOffset;
     return (minY + maxY) / 2;
   }
 
@@ -178,24 +179,21 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   drawBlock() {
     this.scale = Math.min(
-      this.blockHeight / this.block.height,
-      this.blockWidth / this.block.width,
+      BLOCK_HEIGHT / this.block.height,
+      BLOCK_WIDTH / this.block.width,
     );
     let path = '';
-    let hasRightTab = !this.isEnd() && !this.isAddBlock() ? true : false;
+    let hasRightTab = !this.isEnd() && !this.isAddBlock();
     let minX = this.strokeWidth + this.borderOffset;
     let minY = this.strokeWidth + this.borderOffset;
 
-    if (!this.asIcon && this.isMiddle()) {
-      minX += this.blockWidth + this.padding.x;
-      this.imageZoomAndPanMatrix[4] = minX + 60;
-    } else if (!this.asIcon && this.isEnd()) {
-      minX += 2 * (this.blockWidth + this.padding.x);
+    if (!this.asIcon) {
+      minX += this.block.index * (BLOCK_WIDTH + BLOCK_PADDING_X);
       this.imageZoomAndPanMatrix[4] = minX + 60;
     }
 
-    let maxX = this.blockWidth + this.padding.x + minX;
-    let maxY = this.blockHeight + this.padding.y + this.borderOffset;
+    let maxX = BLOCK_WIDTH + BLOCK_PADDING_X + minX;
+    let maxY = BLOCK_HEIGHT + BLOCK_PADDING_Y + this.borderOffset;
 
     let closePath = true;
 
@@ -276,8 +274,8 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     const length = coords.length + (close ? 1 : -1);
 
     for (let i = 0; i < length; i++) {
-      const a = coords[i % coords.length];
-      const b = coords[(i + 1) % coords.length];
+      const a = coords[i % coords.length]!;
+      const b = coords[(i + 1) % coords.length]!;
 
       //added to allow override of radius at coordinate level
       let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
@@ -315,41 +313,34 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   // Check if the block is placeholder for another block
   isAddBlock() {
-    return !this.asIcon && !this.block.svgUrl ? true : false;
+    return !this.asIcon && !this.block.svgUrl;
   }
 
   // check if it's a starting block
   isStart() {
-    return this.block.type === BlockType.Start;
+    return this.block.index === 0;
   }
 
   // check if it's a middle block
   isMiddle() {
-    return this.block.type === BlockType.Middle;
+    return !this.isStart() && !this.isEnd();
   }
 
   // check if it's an ending block
   isEnd() {
-    return this.block.type === BlockType.End;
+    return this.block.index === this.blockService.blockSet!.moleculeSize - 1;
   }
 
   calculateDeletePositionX() {
-    let minX = this.strokeWidth + this.borderOffset;
+    let minX =
+      this.strokeWidth +
+      this.borderOffset +
+      this.block.index * (BLOCK_WIDTH + BLOCK_PADDING_X);
 
-    if (this.isMiddle()) {
-      minX += this.blockWidth + this.padding.x;
-    } else if (this.isEnd()) {
-      minX += 2 * (this.blockWidth + this.padding.x);
-    }
-
-    return (this.blockWidth + this.padding.x) / 2 + minX;
+    return (BLOCK_WIDTH + BLOCK_PADDING_X) / 2 + minX;
   }
 
   calculateDeletePositionY() {
-    return this.blockHeight + this.padding.y;
-  }
-
-  removeBlock() {
-    this.deleteBlock.emit(this.block.type);
+    return BLOCK_HEIGHT + BLOCK_PADDING_Y;
   }
 }

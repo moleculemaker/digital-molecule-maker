@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Block, BlockSet, BlockType } from '../models';
+import { BlockSet } from '../models';
 import { ActivatedRoute } from '@angular/router';
 import { ColorWheelBlockSet } from '../block-sets/ColorWheel';
 

@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 
-export interface DroppableEvent {
+export interface DroppableEvent<DataT = any> {
   nativeEvent: PointerEvent;
   group: string;
-  data: any;
+  data: DataT;
 }
 
 @Injectable({

@@ -32,6 +32,8 @@ import {
   BlockSet,
   Molecule,
 } from '../models';
+import { CartService } from '../services/cart.service';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: 'panel',
@@ -65,19 +67,10 @@ import {
 })
 export class PanelComponent implements OnInit {
   @Input()
-  cartMoleculeList: Molecule[] = [];
-
-  @Input()
   blockSet?: BlockSet;
 
   @Output()
   onClose = new EventEmitter();
-
-  @Output()
-  onSubmit = new EventEmitter<Molecule[]>();
-
-  @Output()
-  onSendBackToWorkspace = new EventEmitter<string>();
 
   isPanelActive = true;
 
@@ -88,15 +81,19 @@ export class PanelComponent implements OnInit {
   moleculeNamePlaceholder = 'Molecule Name';
 
   //********************************************
-  constructor() {}
+  constructor(
+    private cartService: CartService,
+    private workspaceService: WorkspaceService,
+  ) {}
+
+  get cartMoleculeList() {
+    return this.cartService.moleculeList;
+  }
 
   //********************************************
   ngOnInit(): void {
     this.openFirstPanel();
   }
-
-  //********************************************
-  ngAfterViewInit() {}
 
   //********************************************
   nextStep() {
@@ -161,13 +158,16 @@ export class PanelComponent implements OnInit {
   }
 
   submitMolecules(): void {
-    this.onSubmit.emit(this.cartMoleculeList);
+    this.cartService.sendToLab();
     // for now, use the second panel as the success message
     this.nextStep();
   }
 
-  sendBackToWorkspace(moleculeId: number) {
-    this.onSendBackToWorkspace.emit(moleculeId.toString());
+  sendBackToWorkspace(moleculeCartId: number) {
+    const molecule = this.cartService.remove(moleculeCartId);
+    if (molecule) {
+      this.workspaceService.addMolecule(molecule);
+    }
   }
 
   getAggregateProperty(

@@ -1,13 +1,6 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { BlockSize } from '../block/block.component';
-import {
-  Block,
-  BlockSet,
-  BlockType,
-  Molecule,
-  aggregateProperty,
-  getBlockSetScale,
-} from '../models';
+import { Block, BlockSet, getBlockSetScale } from '../models';
 import Fuse from 'fuse.js';
 import {
   animate,
@@ -65,12 +58,6 @@ export class AppSidebarComponent implements OnInit {
     }
   }
 
-  @Input()
-  currentBlockType = BlockType.Start;
-  //  currentBlockType:String = 'start'; //todo: need to change this to different structure like selecting the actual tab data instead of just the index
-
-  currentToggle = 'build';
-  BlockSize = BlockSize; // for use in template
   blockLevelScale = 1;
 
   blockData: BlockSet | null = null;
@@ -102,11 +89,6 @@ export class AppSidebarComponent implements OnInit {
   ngOnInit(): void {}
 
   //********************************************
-  onChangeToggle(newToggle: string) {
-    this.currentToggle = newToggle;
-  }
-
-  //********************************************
   getSearchPlaceholder(): string {
     return this.moleculeSearch.length == 0 ? this.searchPlaceholder : '';
   }
@@ -124,12 +106,6 @@ export class AppSidebarComponent implements OnInit {
   //********************************************
   getBlockDataLength() {
     return this.getBlockData().length;
-  }
-
-  //********************************************
-  getBlockDataKeys(): BlockType[] {
-    //todo: fix this code so it properly returns the data keys instead of hard coding
-    return [BlockType.Start, BlockType.Middle, BlockType.End];
   }
 
   //********************************************
@@ -176,15 +152,6 @@ export class AppSidebarComponent implements OnInit {
   removeMoleculeFromSearch(molecule: any) {
     //todo: remove the specific molecule from the search, for now, just clear off the last one
     this.moleculeSearch.pop();
-  }
-
-  getKeyByValue(value: string) {
-    const indexOfS = Object.values(BlockType).indexOf(
-      value as unknown as BlockType,
-    );
-    const key = Object.keys(BlockType)[indexOfS];
-    const enumKey: BlockType = (<any>BlockType)[key];
-    return enumKey;
   }
 
   searchBlock(event: any) {

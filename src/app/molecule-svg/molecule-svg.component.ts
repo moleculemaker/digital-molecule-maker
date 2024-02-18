@@ -16,12 +16,12 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import {
   aggregateProperty,
-  BlockSet,
-  BlockType,
   Molecule,
-  Coordinates,
   BlockPropertyDefinition,
 } from '../models';
+import { WorkspaceService } from '../services/workspace.service';
+import { BlockService } from '../services/block.service';
+import { isFull } from '../utils/Array';
 
 @Component({
   selector: '[dmm-molecule-svg]',
@@ -30,16 +30,22 @@ import {
 })
 export class MoleculeSvgComponent implements OnInit {
   @Input()
-  interactive = true;
+  molecule!: Molecule;
 
   @Input()
-  blockSet?: BlockSet;
+  interactive = true;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
 
   @Output()
-  deleteMolecule = new EventEmitter();
+  deleteMolecule = new EventEmitter<void>();
+
+  /**
+   * Emits the index of the block to be deleted
+   */
+  @Output()
+  deleteBlock = new EventEmitter<number>();
 
   @Output()
   addToCart = new EventEmitter();
@@ -51,10 +57,18 @@ export class MoleculeSvgComponent implements OnInit {
   positionPairs!: ConnectionPositionPair[];
   positionEditName!: ConnectionPositionPair[];
 
-  @Input()
-  molecule!: Molecule;
+  constructor(
+    private blockService: BlockService,
+    private changeDetector: ChangeDetectorRef,
+  ) {}
 
-  constructor(private changeDetector: ChangeDetectorRef) {}
+  get isComplete() {
+    return isFull(this.molecule.blockList);
+  }
+
+  get blockSet() {
+    return this.blockService.blockSet!;
+  }
 
   ngOnInit(): void {
     this.changeDetector.detectChanges();
@@ -136,21 +150,6 @@ export class MoleculeSvgComponent implements OnInit {
 
   showEditName() {
     this.isEditNamePanelOpen = true;
-  }
-
-  removeMolecule() {
-    this.deleteMolecule.emit();
-  }
-
-  onRemoveBlock(type: BlockType) {
-    if (this.molecule) {
-      this.molecule.blockList = this.molecule?.blockList.filter(
-        (block) => block.type != type,
-      );
-      if (!this.molecule.blockList.length) {
-        this.removeMolecule();
-      }
-    }
   }
 
   onEnterInput(event: Event, newMoleculeName: string) {

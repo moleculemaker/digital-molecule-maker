@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, withLatestFrom } from 'rxjs/operators';
 
-import { Molecule, User } from '../models';
+import { Molecule, RigJob, User } from '../models';
 import { UserService } from './user.service';
+import { RigService } from './rig.service';
+import { BlockService } from './block.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +13,52 @@ import { UserService } from './user.service';
 export class CartService {
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
 
-  constructor(private userService: UserService) {
+  get moleculeList() {
+    return this.moleculeList$.value;
+  }
+
+  constructor(
+    private userService: UserService,
+    private blockService: BlockService,
+    private rigService: RigService,
+  ) {
     this.startAutorestore();
     this.startAutosave();
   }
 
-  updateMoleculeList(list: Molecule[]): void {
-    this.moleculeList$.next(list);
+  add(molecule: Molecule) {
+    this.moleculeList$.next([...this.moleculeList, molecule]);
   }
 
-  getMoleculeList(): Observable<Molecule[]> {
-    return this.moleculeList$.asObservable();
+  remove(index: number) {
+    const removed = this.moleculeList[index];
+    this.moleculeList$.next([
+      ...this.moleculeList.slice(0, index),
+      ...this.moleculeList.slice(index + 1),
+    ]);
+    return removed;
+  }
+
+  sendToLab() {
+    const rigJobs: RigJob[] = [];
+
+    this.moleculeList.forEach((molecule) => {
+      const rigJob: RigJob = {
+        block_set_id: this.blockService.blockSet!.id,
+        block_ids: [
+          molecule.blockList[0]!.id,
+          molecule.blockList[1]!.id,
+          molecule.blockList[2]!.id,
+        ],
+        molecule_name: molecule.label,
+      };
+
+      rigJobs.push(rigJob);
+    });
+
+    this.rigService.submitReactions(rigJobs).subscribe((resp) => {
+      console.log('Submitted molecules in Cart', resp);
+    });
   }
 
   private startAutorestore(): void {
@@ -32,7 +69,7 @@ export class CartService {
         const restored = localStorage.getItem(this.getLocalStorageKey(user));
         if (restored) {
           try {
-            this.updateMoleculeList(JSON.parse(restored));
+            this.moleculeList$.next(JSON.parse(restored));
           } catch (e: unknown) {
             // JSON.parse throws SyntaxError
             console.error('Failed to restore workspace from localStorage', e);
@@ -42,7 +79,7 @@ export class CartService {
   }
 
   private startAutosave(): void {
-    this.getMoleculeList()
+    this.moleculeList$
       .pipe(
         withLatestFrom(this.userService.getUser()),
         filter(([moleculeList, user]) => !!user),

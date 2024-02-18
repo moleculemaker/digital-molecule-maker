@@ -1,4 +1,5 @@
 <svg:g
+  xmlns:svg="http://www.w3.org/2000/svg"
   class="molecule"
   (mouseenter)="onMouseEnter()"
   (mouseleave)="onMouseLeave()"
@@ -50,22 +51,26 @@
     <text x="20" y="10">{{ molecule.label }}</text>
   </g>
 
-  <g class="blocks" *ngFor="let block of molecule?.blockList">
+  <g
+    class="blocks"
+    *ngFor="let block of molecule.blockList; let blockIndex = index"
+  >
     <g
       dmm-block-svg
-      [lambdaMax]="getAggregateProperty(molecule, blockSet!.primaryProperty)"
+      *ngIf="block"
+      [molecule]="molecule"
       [block]="block"
-      [blockSet]="blockSet"
-      (deleteBlock)="onRemoveBlock($event)"
+      [lambdaMax]="getAggregateProperty(molecule, blockSet.primaryProperty)"
       [closeOverlayObservable]="closeOverlayObservable"
       [overlayOrigin]="trigger"
+      (deleteBlock)="deleteBlock.emit(blockIndex)"
     ></g>
   </g>
 
   <g
     class="delete_molecule_button"
     *ngIf="!isEditNamePanelOpen"
-    (click)="removeMolecule()"
+    (click)="deleteMolecule.emit()"
   >
     <circle class="outline" cx="570" cy="15" r="12" />
 
@@ -99,7 +104,7 @@
     [blockOrMolecule]="molecule"
     [blockSet]="blockSet"
     [tags]="[]"
-    [enableAddToCart]="molecule.blockList.length == 3"
+    [enableAddToCart]="isComplete"
     (close)="isInfoPanelOpen = !isInfoPanelOpen"
     (addToCart)="addMoleculeToCart()"
   >

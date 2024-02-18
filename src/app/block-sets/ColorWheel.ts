@@ -57,6 +57,15 @@ export class ColorWheelBlockSet extends BlockSet {
       .get<ColorWheelBlockSetJSON>(ASSET_URL, httpOptions)
       .subscribe((json) => {
         this._json = json;
+        this._json.blocks.start.forEach((block) => {
+          block.index = 0;
+        });
+        this._json.blocks.middle.forEach((block) => {
+          block.index = 1;
+        });
+        this._json.blocks.end.forEach((block) => {
+          block.index = 2;
+        });
         this.resolveSVGDimensions().subscribe(() => {
           this._initialized$.next(true);
         });
@@ -68,7 +77,7 @@ export class ColorWheelBlockSet extends BlockSet {
       this._json.blocks.start,
       this._json.blocks.middle,
       this._json.blocks.end,
-    ][i];
+    ][i]!;
   }
 
   private resolveSVGDimensions(): Observable<any> {

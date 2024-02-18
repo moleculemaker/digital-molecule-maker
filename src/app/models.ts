@@ -4,15 +4,12 @@ export interface EnvVars {
   hostname: string;
 }
 
-export enum BlockType {
-  Start = 'start',
-  Middle = 'middle',
-  End = 'end',
-}
-
 export interface Block {
-  type: BlockType;
   id: number;
+  /**
+   * index in the `Molecule.blockList` array
+   */
+  index: number;
   svgUrl: string;
   width: number;
   height: number;
@@ -103,12 +100,11 @@ export class Coordinates {
 }
 
 export class Molecule {
-  position: Coordinates;
-  label: string;
-  blockList: Block[];
-  constructor(position: Coordinates, blockList: Block[]) {
-    this.position = position;
-    this.blockList = blockList;
+  label: string = '';
+  constructor(
+    public position: Coordinates,
+    public blockList: (Block | null)[],
+  ) {
     this.label = 'NewMolecule';
   }
 }
@@ -195,11 +191,13 @@ export function aggregateProperty(
 ): any {
   if (property.aggregationStrategy === 'sum') {
     return molecule.blockList
+      .filter((x): x is Block => !!x)
       .map((block) => block.properties[property.key])
       .reduce((acc, cur) => acc + cur, 0);
   } else if (property.aggregationStrategy === 'chemicalFormula') {
     let returnVal = '';
     const concatenatedFormula = molecule.blockList
+      .filter((x): x is Block => !!x)
       .map((block) => block.properties[property.key])
       .join('');
     if (concatenatedFormula.length > 0) {
@@ -207,7 +205,7 @@ export function aggregateProperty(
       const processSubstring = (substring: string) => {
         const match = substring.match(/([A-Za-z]+)(\d*)/);
         if (match) {
-          const atom = match[1];
+          const atom = match[1]!;
           const count = parseInt(match[2] || '1', 10);
           if (atomCounts.has(atom)) {
             atomCounts.set(atom, atomCounts.get(atom)! + count);
@@ -249,6 +247,7 @@ export function aggregateProperty(
     return returnVal;
   } else if (property.aggregationStrategy === 'smiles') {
     return molecule.blockList
+      .filter((x): x is Block => !!x)
       .map((block) => block.properties[property.key])
       .join('-');
   }

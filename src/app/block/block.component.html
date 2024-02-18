@@ -4,7 +4,7 @@
   *ngIf="imageWidth"
   [style.height.px]="blockHeight + this.padding.y"
   [style.width.px]="blockWidth + this.padding.x"
-  [class]="['block_' + block.type, 'size_' + size]"
+  [class]="['block_' + type, 'size_' + size]"
   [class.dashes]="isAddBlock()"
 >
   <div

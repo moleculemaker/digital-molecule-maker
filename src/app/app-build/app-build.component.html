@@ -1,7 +1,4 @@
-<app-sidebar
-  [blockSet]="blockSet"
-  [currentBlockType]="currentTab"
-></app-sidebar>
+<app-sidebar [blockSet]="blockSet"></app-sidebar>
 
 <div class="canvas_container" dfDropZone (drop)="dropped($event)">
   <div class="canvas_toolbar">
@@ -54,11 +51,8 @@
 
   <panel
     *ngIf="isShowingCart && blockSet"
-    [cartMoleculeList]="cartMoleculeList"
     [blockSet]="blockSet"
     (onClose)="onPanelClose()"
-    (onSubmit)="sendToLab($event)"
-    (onSendBackToWorkspace)="addToWorkSpace($event)"
   ></panel>
 
   <div class="canvas_send_to_lab" [class.active]="isShowingSendToLab">
@@ -82,20 +76,20 @@
       [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'"
     >
       <g
-        (mouseenter)="onMouseEnter(moleculeId)"
-        (mousedown)="onMoveStart($event, moleculeId)"
+        *ngFor="let molecule of workspaceMoleculeList; let index = index"
+        (mouseenter)="onMouseEnter(index)"
+        (mousedown)="onMoveStart($event, index)"
         (mouseleave)="onMouseLeave()"
-        *ngFor="let molecule of moleculeList; let moleculeId = index"
         [attr.transform]="
           'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'
         "
       >
         <g
           dmm-molecule-svg
-          [blockSet]="blockSet"
           [molecule]="molecule"
-          (deleteMolecule)="onRemoveMolecule(moleculeId)"
-          (addToCart)="addMoleculeToCart(moleculeId)"
+          (deleteMolecule)="onRemoveMolecule(index)"
+          (deleteBlock)="onRemoveBlock(index, $event)"
+          (addToCart)="addMoleculeToCart(index)"
           [closeOverlayObservable]="closeOverlay.asObservable()"
         ></g>
       </g>
