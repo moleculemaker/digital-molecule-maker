@@ -74,13 +74,11 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   positionPairs!: ConnectionPositionPair[];
 
-  functionModeEnabled = false;
-
-  constructor(public workspaceService: WorkspaceService) {
-    workspaceService.functionMode$.subscribe((enabled) => {
-      this.functionModeEnabled = enabled;
-    });
+  get viewMode$() {
+    return this.workspaceService.viewMode$;
   }
+
+  constructor(public workspaceService: WorkspaceService) {}
 
   ngOnInit(): void {
     if (this.closeOverlayObservable) {

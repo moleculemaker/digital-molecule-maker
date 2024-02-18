@@ -34,7 +34,7 @@
   <div class="filters">
     <div class="row">
       <div class="toggle_button" (click)="toggle()">
-        {{ functionModeEnabled ? "function" : "structure" }}
+        {{ viewMode$ | async }}
       </div>
 
       <div class="search">
@@ -87,7 +87,7 @@
     </div>
 
     <div class="control_bar">
-      <ng-template [ngIf]="!functionModeEnabled">
+      <ng-template [ngIf]="(viewMode$ | async) === 'structure'">
         <div
           class="type"
           *ngFor="let type of allTypeFilters"
@@ -158,7 +158,7 @@
         </div>
       </ng-template>
 
-      <ng-template [ngIf]="functionModeEnabled">
+      <ng-template [ngIf]="(viewMode$ | async) === 'function'">
         <div class="row">
           <div
             *ngFor="

@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import 'external-svg-loader';
-import { Block, BlockType } from '../models';
+import { Block, BlockType, ViewMode } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 
@@ -56,18 +56,20 @@ export class BlockComponent implements OnInit {
   tabWidth = 20; //px wide    related to margin-left in app-build.scss - if you adjust one, adjust the other
 
   flipped = false;
-  _functionModeEnabled = false;
+  viewMode!: ViewMode;
 
   get functionModeEnabled() {
-    return this._functionModeEnabled !== this.flipped;
+    // either `this.viewMode === 'function' && this.flipped === false`
+    // or `this.viewMode !== 'function' && this.flipped === true`
+    return (this.viewMode === 'function') !== this.flipped;
   }
 
   constructor(
     public workspaceService: WorkspaceService,
     private cd: ChangeDetectorRef,
   ) {
-    workspaceService.functionMode$.subscribe((enabled) => {
-      this._functionModeEnabled = enabled;
+    workspaceService.viewMode$.subscribe((viewMode) => {
+      this.viewMode = viewMode;
       this.flipped = false;
       this.cd.markForCheck();
     });

@@ -131,6 +131,64 @@ export function getBlockSetScale(blockSet: BlockSet, target: number): number {
   return target / maxHeightOrWidth;
 }
 
+export type ViewMode = 'structure' | 'function';
+
+/**
+ * Defines a filter than can be applied to a block or list of blocks
+ */
+export type FilterDescriptor<BlockOrBlockListT> = {
+  availableIn: ViewMode[];
+} & (
+  | {
+      type: 'categories';
+      /**
+       * Initial selected categories
+       */
+      initialValue: string[];
+      /**
+       * all possible categories to select from
+       */
+      categories: string[];
+      /**
+       * Derive the classifications of a block or list of blocks that will be tested against selected categories.
+       * The filter accepts the block or list of blocks if it's classified into any one of the selected categories.
+       */
+      mapArgToValue(arg: BlockOrBlockListT): string[];
+    }
+  | {
+      type: 'range';
+      /**
+       * Initial lower bound and upper bound that the filtered property will be tested against
+       */
+      initialValue: [number, number];
+      /**
+       * Lowest possible lower bound
+       */
+      min: number;
+      /**
+       * Highest possible upper bound
+       */
+      max: number;
+      /**
+       * Derive the property value from a block or list of blocks that will be tested against the value range
+       */
+      mapArgToValue(arg: BlockOrBlockListT): number;
+    }
+);
+
+/**
+ * A stateful filter instance created from a `FilterDescriptor`
+ */
+export type Filter<BlockOrBlockListT> =
+  | {
+      descriptor: FilterDescriptor<BlockOrBlockListT> & { type: 'categories' };
+      value$: BehaviorSubject<string[]>;
+    }
+  | {
+      descriptor: FilterDescriptor<BlockOrBlockListT> & { type: 'range' };
+      value$: BehaviorSubject<[number, number]>;
+    };
+
 export function aggregateProperty(
   molecule: Molecule,
   property: BlockPropertyDefinition,

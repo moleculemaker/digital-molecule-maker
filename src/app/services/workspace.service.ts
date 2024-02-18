@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, withLatestFrom } from 'rxjs/operators';
 
-import { Molecule, User } from '../models';
+import { Molecule, User, ViewMode } from '../models';
 import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorkspaceService {
-  private _functionMode = true;
+  static initialViewMode: ViewMode = 'function';
+
+  viewMode$ = new BehaviorSubject<ViewMode>(WorkspaceService.initialViewMode);
 
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
-  functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
 
   constructor(private userService: UserService) {
     this.startAutorestore();
@@ -20,7 +21,9 @@ export class WorkspaceService {
   }
 
   toggle() {
-    this.functionMode$.next((this._functionMode = !this._functionMode));
+    this.viewMode$.next(
+      this.viewMode$.value === 'function' ? 'structure' : 'function',
+    );
   }
 
   updateMoleculeList(list: Molecule[]): void {

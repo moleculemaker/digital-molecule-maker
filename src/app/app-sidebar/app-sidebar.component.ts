@@ -92,16 +92,10 @@ export class AppSidebarComponent implements OnInit {
   isSidebarExpanded = true;
   isShowingFilters = false;
 
-  moleculeList: Molecule[] = [];
-  functionModeEnabled = true;
+  constructor(private workspaceService: WorkspaceService) {}
 
-  constructor(private workspaceService: WorkspaceService) {
-    this.workspaceService.functionMode$.subscribe((enabled) => {
-      this.functionModeEnabled = enabled;
-    });
-    this.workspaceService.moleculeList$.subscribe((moleculeList) => {
-      this.moleculeList = moleculeList;
-    });
+  get viewMode$() {
+    return this.workspaceService.viewMode$;
   }
 
   //********************************************
