@@ -1,6 +1,11 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { BlockSize } from '../block/block.component';
-import { Block, BlockSet, getBlockSetScale } from '../models';
+import {
+  Block,
+  BlockSet,
+  getBlockSetScale,
+  SourceCategoricalFilter,
+  SourceRangeFilter,
+} from '../models';
 import Fuse from 'fuse.js';
 import {
   animate,
@@ -11,6 +16,8 @@ import {
 } from '@angular/animations';
 import { WorkspaceService } from '../services/workspace.service';
 import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
+import { map } from 'rxjs/operators';
+import { BlockService } from '../services/block.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -43,9 +50,7 @@ export class AppSidebarComponent implements OnInit {
         blocks.forEach((block) => {
           this.labelList.push(block.properties[blockSet.labelProperty.key]);
         });
-      for (let i = 0; i < blockSet.moleculeSize; ++i) {
-        processBlockArray(blockSet.getBlocksByPosition(i));
-      }
+      processBlockArray(blockSet.getAllBlocks());
       this.fuse = new Fuse(this.labelList, {
         includeScore: true,
         isCaseSensitive: true,
@@ -79,10 +84,35 @@ export class AppSidebarComponent implements OnInit {
   isSidebarExpanded = true;
   isShowingFilters = false;
 
-  constructor(private workspaceService: WorkspaceService) {}
+  constructor(
+    private workspaceService: WorkspaceService,
+    private blockService: BlockService,
+  ) {}
 
   get viewMode$() {
     return this.workspaceService.viewMode$;
+  }
+
+  get sourceCategoricalFilters$() {
+    return this.workspaceService.filters$.pipe(
+      map((filters) =>
+        filters.filter(
+          (filter): filter is SourceCategoricalFilter =>
+            filter.type === 'source_categories',
+        ),
+      ),
+    );
+  }
+
+  get sourceRangeFilters$() {
+    return this.workspaceService.filters$.pipe(
+      map((filters) =>
+        filters.filter(
+          (filter): filter is SourceRangeFilter =>
+            filter.type === 'source_range',
+        ),
+      ),
+    );
   }
 
   //********************************************
@@ -95,17 +125,16 @@ export class AppSidebarComponent implements OnInit {
 
   //********************************************
   getBlockData(): Block[] {
-    const blocks: Block[] = [];
-    if (!this.blockSet) return blocks;
-    for (let i = 0; i < this.blockSet?.moleculeSize; ++i) {
-      blocks.push(...this.blockSet.getBlocksByPosition(i));
-    }
-    return blocks;
-  }
-
-  //********************************************
-  getBlockDataLength() {
-    return this.getBlockData().length;
+    const blockSet = this.blockService.blockSet!;
+    if (!blockSet) return [];
+    const activeFilters = this.workspaceService.filters;
+    const activeMolecule = this.workspaceService.moleculeList[0];
+    return blockSet.getAvailableBlocks(
+      activeMolecule
+        ? activeMolecule.blockList
+        : Array(blockSet.moleculeSize).fill(null),
+      activeFilters,
+    );
   }
 
   //********************************************
@@ -119,20 +148,6 @@ export class AppSidebarComponent implements OnInit {
   toggleFilters(override?: boolean) {
     this.isShowingFilters =
       typeof override != 'undefined' ? override : !this.isShowingFilters;
-  }
-
-  //********************************************
-  onClickType(type: string) {
-    if (type == 'all') {
-      this.typeFilter = [];
-    } else {
-      if (this.typeFilter.includes(type)) {
-        let index = this.typeFilter.indexOf(type);
-        this.typeFilter.splice(index, 1);
-      } else {
-        this.typeFilter.push(type);
-      }
-    }
   }
 
   onClickColorType(type: ColorKeyT) {

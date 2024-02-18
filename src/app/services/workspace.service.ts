@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, withLatestFrom } from 'rxjs/operators';
-import { Block, Coordinates, Molecule, User, ViewMode } from '../models';
+import {
+  Block,
+  Coordinates,
+  Filter,
+  Molecule,
+  User,
+  ViewMode,
+} from '../models';
 import { UserService } from './user.service';
 import { isEmpty, updateAt } from '../utils/Array';
 import { BlockService } from './block.service';
@@ -16,14 +23,41 @@ export class WorkspaceService {
 
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
 
-  get moleculeList(): Molecule[] {
+  filters$ = new BehaviorSubject<Filter[]>([]);
+
+  get moleculeList() {
     return this.moleculeList$.value;
+  }
+
+  get filters() {
+    return this.filters$.value;
   }
 
   constructor(
     private userService: UserService,
     private blockService: BlockService,
   ) {
+    // Which filters are active depends on both the block set and the view mode
+    combineLatest([this.viewMode$, this.blockService.blockSet$]).subscribe(
+      ([viewMode, blockSet]) => {
+        this.filters$.next(
+          blockSet.filterDescriptors
+            .filter((descriptor) => descriptor.availableIn.includes(viewMode))
+            .map((descriptor) => {
+              /**
+               * Used `any` because it's hard to communicate to TypeScript that `meta` and `value$` have matching types.
+               * For type-checking to work, this statement had to be duplicated for each case in the tagged union.
+               */
+              return {
+                type: descriptor.type,
+                meta: descriptor,
+                value$: new BehaviorSubject(descriptor.initialValue),
+              } as Filter;
+            }),
+        );
+      },
+    );
+
     this.startAutorestore();
     this.startAutosave();
   }

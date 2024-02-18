@@ -1,11 +1,12 @@
 import { BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 export interface EnvVars {
   hostname: string;
 }
 
 export interface Block {
-  id: number;
+  id: string;
   /**
    * index in the `Molecule.blockList` array
    */
@@ -16,6 +17,9 @@ export interface Block {
   properties: { [label: string]: any };
 }
 
+@Injectable({
+  providedIn: 'root',
+})
 export abstract class BlockSet {
   protected _initialized$ = new BehaviorSubject(false);
 
@@ -57,6 +61,14 @@ export abstract class BlockSet {
    */
   abstract secondTierProperties: BlockPropertyDefinition[];
   /**
+   * All filters that are available/visible in the current view mode are applied in the following order:
+   * - Apply `target_*` filters to all possible final outcomes of the current active molecule in the
+   *   workspace. A block is accepted if it's possible to construct a molecule that passes the target filter after
+   *   adding the block to the current active molecule in the workspace.
+   * - Apply `source_*` filters to the remaining blocks
+   */
+  abstract filterDescriptors: FilterDescriptor[];
+  /**
    * Number of blocks in a complete molecule.
    * Make sure `initialized` is `true` before accessing this property
    */
@@ -66,12 +78,91 @@ export abstract class BlockSet {
    * `i` must be smaller than `moleculeSize`.
    * Make sure `initialized` is `true` before calling this method
    */
-  abstract getBlocksByPosition(i: number): Block[];
+  abstract getBlocksByPosition(index: number): Block[];
+
+  getAllBlocks() {
+    const res: Block[] = [];
+    for (let i = 0; i < this.moleculeSize; ++i) {
+      res.push(...this.getBlocksByPosition(i));
+    }
+    return res;
+  }
+
+  /**
+   * This method recursively generates all possible outcomes starting from the provided block list
+   * and filters the results based on the specified target filters.
+   */
+  getAllOutcomes(
+    startingFrom: (Block | null)[],
+    targetFilters: TargetFilter[],
+  ) {
+    const res: Block[][] = [];
+    const curBlocks = startingFrom.slice();
+
+    const enumerate = (curIndex: number) => {
+      if (curIndex === this.moleculeSize) {
+        // the molecule is complete
+        const blocks = curBlocks.slice() as Block[];
+        if (acceptBlockList(blocks, targetFilters)) {
+          res.push(blocks);
+        }
+        return;
+      }
+
+      if (startingFrom[curIndex]) {
+        // use the already selected block
+        enumerate(curIndex + 1);
+      } else {
+        // enumerate all possibilities
+        for (let block of this.getBlocksByPosition(curIndex)) {
+          curBlocks[curIndex] = block;
+          enumerate(curIndex + 1);
+          curBlocks[curIndex] = null;
+        }
+      }
+    };
+    return res;
+  }
+
+  getAvailableBlocks(
+    startingFrom: (Block | null)[],
+    filters: Filter[],
+  ): Block[] {
+    const sourceFilters = filters.filter(
+      (f): f is SourceFilter =>
+        f.type === 'source_categories' || f.type === 'source_range',
+    );
+    const targetFilters = filters.filter(
+      (f): f is TargetFilter =>
+        f.type === 'target_categories' || f.type === 'target_range',
+    );
+
+    // accepted by target filters
+    let firstPass: Block[] = this.getAllBlocks();
+
+    if (targetFilters.length) {
+      // only include blocks from which a valid molecule can be made
+      const filteredOutcomes = this.getAllOutcomes(startingFrom, targetFilters);
+      const added = new Set<string>();
+      firstPass.length = 0;
+      for (let blockList of filteredOutcomes) {
+        for (let block of blockList) {
+          if (!added.has(block.id)) {
+            added.add(block.id);
+            firstPass.push(block);
+          }
+        }
+      }
+    }
+
+    // accepted by both target and source filters
+    return firstPass.filter((block) => acceptBlock(block, sourceFilters));
+  }
 }
 
 export interface RigJob {
   block_set_id: string;
-  block_ids: number[];
+  block_ids: string[];
   molecule_name: string;
   status?: string;
   user_or_group?: number;
@@ -115,75 +206,163 @@ export interface User {
 }
 
 export function getBlockSetScale(blockSet: BlockSet, target: number): number {
-  let maxHeightOrWidth = 0;
-  for (let i = 0; i < blockSet.moleculeSize; ++i) {
-    maxHeightOrWidth = Math.max(
-      maxHeightOrWidth,
-      ...blockSet
-        .getBlocksByPosition(i)
-        .flatMap((block) => [block.width, block.height]),
-    );
-  }
+  const maxHeightOrWidth = Math.max(
+    ...blockSet.getAllBlocks().flatMap((block) => [block.width, block.height]),
+  );
   return target / maxHeightOrWidth;
 }
 
 export type ViewMode = 'structure' | 'function';
 
-/**
- * Defines a filter than can be applied to a block or list of blocks
- */
-export type FilterDescriptor<BlockOrBlockListT> = {
+type FilterDescriptorCommonProps = {
   availableIn: ViewMode[];
-} & (
-  | {
-      type: 'categories';
-      /**
-       * Initial selected categories
-       */
-      initialValue: string[];
-      /**
-       * all possible categories to select from
-       */
-      categories: string[];
-      /**
-       * Derive the classifications of a block or list of blocks that will be tested against selected categories.
-       * The filter accepts the block or list of blocks if it's classified into any one of the selected categories.
-       */
-      mapArgToValue(arg: BlockOrBlockListT): string[];
-    }
-  | {
-      type: 'range';
-      /**
-       * Initial lower bound and upper bound that the filtered property will be tested against
-       */
-      initialValue: [number, number];
-      /**
-       * Lowest possible lower bound
-       */
-      min: number;
-      /**
-       * Highest possible upper bound
-       */
-      max: number;
-      /**
-       * Derive the property value from a block or list of blocks that will be tested against the value range
-       */
-      mapArgToValue(arg: BlockOrBlockListT): number;
-    }
-);
+  /**
+   * The component class that provides UI for the filter. After a `Filter` instance is created based on this descriptor,
+   * a corresponding instance of this class will also be created, and its template will be bound to `filter.value$`.
+   */
+  Component: any;
+};
 
-/**
- * A stateful filter instance created from a `FilterDescriptor`
- */
-export type Filter<BlockOrBlockListT> =
-  | {
-      descriptor: FilterDescriptor<BlockOrBlockListT> & { type: 'categories' };
-      value$: BehaviorSubject<string[]>;
+export type CategoricalFilterDescriptorProps = FilterDescriptorCommonProps & {
+  /**
+   * Initial selected categories
+   */
+  initialValue: string[];
+  /**
+   * all possible categories to select from
+   */
+  categories: string[];
+  /**
+   * Render textual description of filter state
+   */
+  renderToText?(value: string[]): string;
+};
+
+export type RangeFilterDescriptorProps = FilterDescriptorCommonProps & {
+  /**
+   * Initial lower bound and upper bound that the filtered property will be tested against
+   */
+  initialValue: [number, number];
+  /**
+   * Lowest possible lower bound
+   */
+  min: number;
+  /**
+   * Highest possible upper bound
+   */
+  max: number;
+  /**
+   * Render textual description of filter state
+   */
+  renderToText?(value: [number, number]): string;
+};
+
+export type SourceCategoricalFilterDescriptor =
+  CategoricalFilterDescriptorProps & {
+    type: 'source_categories';
+    /**
+     * Derive the classifications of a block that will be tested against selected categories.
+     * The filter accepts the block if it's classified into any one of the selected categories.
+     */
+    mapArgToValue(arg: Block): string[];
+  };
+
+export type TargetCategoricalFilterDescriptor =
+  CategoricalFilterDescriptorProps & {
+    type: 'target_categories';
+    /**
+     * Derive the classifications of a list of blocks that will be tested against selected categories.
+     * The filter accepts the list of blocks if it's classified into any one of the selected categories.
+     */
+    mapArgToValue(arg: Block[]): string[];
+  };
+
+export type SourceRangeFilterDescriptor = RangeFilterDescriptorProps & {
+  type: 'source_range';
+  /**
+   * Derive the property value from a block that will be tested against the value range
+   */
+  mapArgToValue(arg: Block): number;
+};
+
+export type TargetRangeFilterDescriptor = RangeFilterDescriptorProps & {
+  type: 'target_range';
+  /**
+   * Derive the property value from a list of blocks that will be tested against the value range
+   */
+  mapArgToValue(arg: Block[]): number;
+};
+
+export type FilterDescriptor =
+  | SourceCategoricalFilterDescriptor
+  | SourceRangeFilterDescriptor
+  | TargetCategoricalFilterDescriptor
+  | TargetRangeFilterDescriptor;
+
+export type SourceCategoricalFilter = {
+  type: 'source_categories';
+  meta: SourceCategoricalFilterDescriptor;
+  value$: BehaviorSubject<string[]>;
+};
+
+export type SourceRangeFilter = {
+  type: 'source_range';
+  meta: SourceRangeFilterDescriptor;
+  value$: BehaviorSubject<[number, number]>;
+};
+
+export type TargetCategoricalFilter = {
+  type: 'target_categories';
+  meta: TargetCategoricalFilterDescriptor;
+  value$: BehaviorSubject<string[]>;
+};
+
+export type TargetRangeFilter = {
+  type: 'target_range';
+  meta: TargetRangeFilterDescriptor;
+  value$: BehaviorSubject<[number, number]>;
+};
+
+export type SourceFilter = SourceCategoricalFilter | SourceRangeFilter;
+
+export type TargetFilter = TargetCategoricalFilter | TargetRangeFilter;
+
+export type Filter = SourceFilter | TargetFilter;
+
+export function acceptBlock(block: Block, filters: SourceFilter[]) {
+  return filters.every((f) => _acceptBlock(block, f));
+}
+
+export function acceptBlockList(blocks: Block[], filters: TargetFilter[]) {
+  return filters.every((f) => _acceptBlockList(blocks, f));
+}
+
+function _acceptBlock(block: Block, filter: SourceFilter) {
+  switch (filter.type) {
+    case 'source_range': {
+      const value = filter.meta.mapArgToValue(block);
+      const [min, max] = filter.value$.value;
+      return value >= min && value <= max;
     }
-  | {
-      descriptor: FilterDescriptor<BlockOrBlockListT> & { type: 'range' };
-      value$: BehaviorSubject<[number, number]>;
-    };
+    case 'source_categories': {
+      const categories = filter.meta.mapArgToValue(block);
+      return categories.some((c) => filter.value$.value.includes(c));
+    }
+  }
+}
+function _acceptBlockList(blocks: Block[], filter: TargetFilter) {
+  switch (filter.type) {
+    case 'target_range': {
+      const value = filter.meta.mapArgToValue(blocks);
+      const [min, max] = filter.value$.value;
+      return value >= min && value <= max;
+    }
+    case 'target_categories': {
+      const categories = filter.meta.mapArgToValue(blocks);
+      return categories.some((c) => filter.value$.value.includes(c));
+    }
+  }
+}
 
 export function aggregateProperty(
   molecule: Molecule,

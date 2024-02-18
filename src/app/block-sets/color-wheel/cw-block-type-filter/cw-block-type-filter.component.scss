@@ -1,0 +1,200 @@
+/**************** block css ******************/
+
+@use "sass:math";
+@import "../../../styles/core";
+
+$toggle_button_count: 2;
+$sidebar_width: 500px;
+
+//**************** custom mixins ******************
+
+@mixin type_color($name) {
+  &.type_#{$name} {
+    .molecule_svg {
+      path {
+        fill: color_variable(#{"block_" + $name});
+        stroke: color_variable(#{"block_" + $name + "_border"});
+      }
+    }
+  }
+}
+
+//**************** css ******************
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+
+.control_bar {
+  display: flex;
+  align-items: center;
+  gap: $padding * 0.25;
+  flex-wrap: wrap;
+
+  margin: {
+    top: $padding * 0.5;
+  }
+
+  .type {
+    cursor: pointer;
+    position: relative;
+
+    user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: $padding * 0.25;
+
+    height: 1.5rem;
+
+    padding: ($padding * 0.25) ($padding * 0.5);
+
+    border: 1px solid color_variable("interface_border");
+
+    @include border-radius($border_radius);
+
+    &.has_selected_type {
+      &:not(.selected) {
+        &:not(:hover) {
+          color: color_variable("text_faded");
+
+          @include opacity(50);
+
+          .molecule_svg {
+            path {
+              fill: #ccc;
+              stroke: #888;
+            }
+          }
+        }
+      }
+    }
+
+    &.selected {
+      border: {
+        color: color_variable("button_selected");
+      }
+    }
+
+    &:hover {
+      border: {
+        color: color_variable("button_hover");
+      }
+
+      @include opacity(100);
+    }
+
+    @include type_color("start");
+    @include type_color("middle");
+    @include type_color("end");
+
+    .label {
+      font: {
+        size: 0.75rem;
+      }
+      text: {
+        transform: uppercase;
+      }
+    }
+  }
+
+  .spacer {
+    flex-grow: 1;
+  }
+}
+
+.toggle_filters_btn {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: color_variable("interface_faded");
+
+  padding: {
+    top: $padding * 0.5;
+    bottom: $padding * 0.5;
+  }
+
+  &:hover {
+    color: color_variable("button_hover");
+  }
+
+  &.expanded {
+    svg {
+      @include rotate(-90deg);
+    }
+  }
+
+  svg {
+    @include rotate(90deg);
+  }
+}
+
+.extra_filters {
+  overflow: hidden;
+
+  .container {
+    padding: {
+      top: $padding;
+    }
+  }
+
+  .tags {
+    .tag {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: $padding * 0.2;
+
+      background: none;
+      border: 1px solid color_variable("tag_background");
+
+      svg {
+        .star {
+          fill: color_variable("primary");
+          stroke-width: 0px;
+        }
+      }
+
+      &.selected {
+        color: color_variable("background");
+        background: {
+          color: color_variable("interface_selected");
+        }
+
+        border: {
+          color: color_variable("interface_selected");
+        }
+
+        svg {
+          .star {
+            fill: color_variable("background");
+          }
+        }
+
+        &:hover {
+          background: {
+            color: color_variable("button_hover");
+          }
+
+          border: {
+            color: color_variable("button_hover");
+          }
+        }
+      }
+
+      &:hover {
+        background: {
+          color: color_variable("interface_hover");
+        }
+      }
+    }
+  }
+}

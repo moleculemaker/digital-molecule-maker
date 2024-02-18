@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BlockSet } from '../models';
 import { ActivatedRoute } from '@angular/router';
-import { ColorWheelBlockSet } from '../block-sets/ColorWheel';
+import { ColorWheelBlockSet } from '../block-sets/color-wheel';
 
 export enum BlockSetId {
   ColorWheel = 'COLOR_WHEEL',

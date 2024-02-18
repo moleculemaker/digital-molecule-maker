@@ -1,9 +1,15 @@
 import { forkJoin, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Block, BlockPropertyDefinition, BlockSet } from '../models';
+import {
+  Block,
+  BlockPropertyDefinition,
+  BlockSet,
+  FilterDescriptor,
+} from '../../models';
 import { Injectable } from '@angular/core';
-import { getSVGViewBox } from '../utils/SVG';
+import { getSVGViewBox } from '../../utils/SVG';
 import { map, tap } from 'rxjs/operators';
+import { CWBlockTypeFilterComponent } from './cw-block-type-filter/cw-block-type-filter.component';
 
 type ColorWheelBlockSetJSON = {
   id: string;
@@ -42,6 +48,24 @@ export class ColorWheelBlockSet extends BlockSet {
     return this._json.secondTierProperties;
   }
 
+  filterDescriptors: FilterDescriptor[] = [
+    {
+      type: 'source_categories',
+      availableIn: ['structure'],
+      Component: CWBlockTypeFilterComponent,
+      initialValue: ['start', 'end'],
+      categories: ['start', 'middle', 'end'],
+      mapArgToValue: (block) => {
+        if (block.index === 0) return ['start'];
+        if (block.index === 2) return ['end'];
+        return ['middle'];
+      },
+      renderToText: (selectedTypes) => {
+        return selectedTypes.join(',');
+      },
+    },
+  ];
+
   moleculeSize = 3;
 
   constructor(private http: HttpClient) {
@@ -67,7 +91,7 @@ export class ColorWheelBlockSet extends BlockSet {
           block.index = 2;
         });
         this.resolveSVGDimensions().subscribe(() => {
-          this._initialized$.next(true);
+          this._finalize();
         });
       });
   }
@@ -81,12 +105,8 @@ export class ColorWheelBlockSet extends BlockSet {
   }
 
   private resolveSVGDimensions(): Observable<any> {
-    const allBlocks = Array(this.moleculeSize)
-      .fill(0)
-      .flatMap((_, i) => this.getBlocksByPosition(i));
-
     return forkJoin(
-      allBlocks.map((block) =>
+      this.getAllBlocks().map((block) =>
         this.http.get(block.svgUrl, { responseType: 'text' }).pipe(
           map(getSVGViewBox),
           tap(([x, y, width, height]) => {

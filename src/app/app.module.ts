@@ -32,11 +32,15 @@ import { BlockSvgComponent } from './block-svg/block-svg.component';
 import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 
 import { TrackingService } from './services/tracking.service';
-import { EnvironmentService } from "./services/environment.service";
+import { EnvironmentService } from './services/environment.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
+import { CWBlockTypeFilterComponent } from './block-sets/color-wheel/cw-block-type-filter/cw-block-type-filter.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
-function initializeAppFactory(trackingService: TrackingService, envService: EnvironmentService) {
+function initializeAppFactory(
+  trackingService: TrackingService,
+  envService: EnvironmentService,
+) {
   return () => {
     return envService.loadEnvConfig('/assets/config/envvars.json');
   };
@@ -64,6 +68,7 @@ function initializeAppFactory(trackingService: TrackingService, envService: Envi
     BlockSvgComponent,
     OverlayComponent,
     MoleculeSvgComponent,
+    CWBlockTypeFilterComponent,
   ],
   imports: [
     BrowserModule,

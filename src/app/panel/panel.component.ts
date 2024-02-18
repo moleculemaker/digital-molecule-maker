@@ -67,7 +67,7 @@ import { WorkspaceService } from '../services/workspace.service';
 })
 export class PanelComponent implements OnInit {
   @Input()
-  blockSet?: BlockSet;
+  blockSet!: BlockSet;
 
   @Output()
   onClose = new EventEmitter();
