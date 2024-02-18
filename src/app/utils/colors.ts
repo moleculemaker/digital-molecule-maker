@@ -10,7 +10,7 @@ type ColorTypeDef = {
   max: number;
 };
 
-export const LambdaMaxRangeForColor = {
+export const LambdaMaxRangeForColor: Record<string, ColorTypeDef> = {
   yellow: {
     name: 'yellow',
     display: d3.color('yellow')!,
@@ -71,7 +71,7 @@ export const LambdaMaxRangeForColor = {
     min: 100,
     max: 280,
   },
-} as const;
+};
 
 export type ColorKeyT = keyof typeof LambdaMaxRangeForColor;
 
@@ -82,14 +82,14 @@ type HSLColorOptions = {
 };
 
 const colorStops: Array<ColorTypeDef> = [
-  LambdaMaxRangeForColor.uvc,
-  LambdaMaxRangeForColor.uvb,
-  LambdaMaxRangeForColor.uva,
-  LambdaMaxRangeForColor.yellow,
-  LambdaMaxRangeForColor.orange,
-  LambdaMaxRangeForColor.magenta,
-  LambdaMaxRangeForColor.blue,
-  LambdaMaxRangeForColor.cyan,
+  LambdaMaxRangeForColor.uvc!,
+  LambdaMaxRangeForColor.uvb!,
+  LambdaMaxRangeForColor.uva!,
+  LambdaMaxRangeForColor.yellow!,
+  LambdaMaxRangeForColor.orange!,
+  LambdaMaxRangeForColor.magenta!,
+  LambdaMaxRangeForColor.blue!,
+  LambdaMaxRangeForColor.cyan!,
 ];
 
 export function lambdaMaxToColor(

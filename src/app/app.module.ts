@@ -35,6 +35,7 @@ import { TrackingService } from './services/tracking.service';
 import { EnvironmentService } from './services/environment.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 import { CWBlockTypeFilterComponent } from './block-sets/color-wheel/cw-block-type-filter/cw-block-type-filter.component';
+import { CWColorFilterComponent } from './block-sets/color-wheel/cw-color-filter/cw-color-filter.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -69,6 +70,7 @@ function initializeAppFactory(
     OverlayComponent,
     MoleculeSvgComponent,
     CWBlockTypeFilterComponent,
+    CWColorFilterComponent,
   ],
   imports: [
     BrowserModule,

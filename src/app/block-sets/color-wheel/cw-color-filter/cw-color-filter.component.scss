@@ -8,14 +8,10 @@ $sidebar_width: 500px;
 
 //**************** custom mixins ******************
 
-@mixin type_color($name) {
-  &.type_#{$name} {
-    .molecule_svg {
-      path {
-        fill: color_variable(#{"block_" + $name});
-        stroke: color_variable(#{"block_" + $name + "_border"});
-      }
-    }
+@mixin type_color($color) {
+  &.color_type_#{"" + $color} {
+    background: rgba($color, 0.2);
+    flex-basis: calc(100% / 8);
   }
 }
 
@@ -90,9 +86,17 @@ $sidebar_width: 500px;
       @include opacity(100);
     }
 
-    @include type_color("start");
-    @include type_color("middle");
-    @include type_color("end");
+    &.color_type {
+      flex: 1;
+      .label {
+        font-size: 0.6rem;
+      }
+    }
+
+    $colors: yellow, orange, red, magenta, violet, blue, cyan;
+    @each $color in $colors {
+      @include type_color($color);
+    }
 
     .label {
       font: {

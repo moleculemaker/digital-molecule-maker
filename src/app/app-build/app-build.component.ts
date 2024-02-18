@@ -6,26 +6,16 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { BlockSize } from '../block/block.component';
-import {
-  Block,
-  BlockSet,
-  Coordinates,
-  getBlockSetScale,
-  Molecule,
-  RigJob,
-} from '../models';
+import { Block, BlockSet, Coordinates, TargetFilter } from '../models';
 
-import { BlockService, BlockSetId } from '../services/block.service';
+import { BlockService } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
-import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { CartService } from '../services/cart.service';
-import { lambdaMaxToColor } from '../utils/colors';
 import {
   BLOCK_HEIGHT,
   BLOCK_PADDING_X,
@@ -101,6 +91,34 @@ export class AppBuildComponent implements OnInit {
     });
 
     document.addEventListener('mouseup', (event) => this.onMoveStop(event));
+
+    // TODO: Remove this
+    this.getOutcomeFeedbackStream().subscribe(console.log);
+  }
+
+  // TODO: Move this method to the scatter plot component
+  getOutcomeFeedbackStream() {
+    return combineLatest([
+      this.workspaceService.filterChange$,
+      this.workspaceService.moleculeList$,
+    ]).pipe(
+      map(([_, moleculeList]) => {
+        const blockSet = this.blockService.blockSet!;
+        const targetFilters = this.workspaceService.filters.filter(
+          (f): f is TargetFilter =>
+            f.type === 'target_range' || f.type === 'target_categories',
+        );
+        const activeMolecule = moleculeList[0];
+        const startingFrom = activeMolecule
+          ? activeMolecule.blockList
+          : Array(blockSet.moleculeSize).fill(null);
+
+        return this.blockService.blockSet!.getAllOutcomes(
+          startingFrom,
+          targetFilters,
+        );
+      }),
+    );
   }
 
   //********************************************

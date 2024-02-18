@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { filter, withLatestFrom } from 'rxjs/operators';
+import { filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
   Block,
   Coordinates,
@@ -24,6 +24,16 @@ export class WorkspaceService {
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
 
   filters$ = new BehaviorSubject<Filter[]>([]);
+
+  /**
+   * Emits when any filter value changes or when filters are swapped as a result of view mode changes
+   */
+  filterChange$: Observable<void> = this.filters$.pipe(
+    switchMap((filters) =>
+      combineLatest(filters.map((filter) => filter.value$)),
+    ),
+    map(() => undefined),
+  );
 
   get moleculeList() {
     return this.moleculeList$.value;

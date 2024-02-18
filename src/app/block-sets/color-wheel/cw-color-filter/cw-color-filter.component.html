@@ -1,0 +1,43 @@
+<div class="control_bar">
+  <div class="row">
+    <div
+      class="type"
+      [class]="['type_all']"
+      [class.has_selected_type]="(value$ | async)!.length < allColors.length"
+      [class.selected]="(value$ | async)!.length === allColors.length"
+      [title]="'all blocks'"
+      (click)="reset()"
+    >
+      <div class="label">all</div>
+    </div>
+
+    <div
+      *ngFor="let color of visibleColors"
+      [class]="['type', 'color_type', 'color_type_' + color]"
+      [class.has_selected_type]="(value$ | async)!.length < allColors.length"
+      [class.selected]="
+        (value$ | async)!.length < allColors.length &&
+        (value$ | async)!.includes(color)
+      "
+      [title]="color + ' blocks'"
+      (click)="onClick(color)"
+    >
+      <div class="label">{{ labelForColor(color) }}</div>
+    </div>
+  </div>
+  <div class="row">
+    <div
+      *ngFor="let color of uvColors"
+      [class]="['type', 'color_type', 'color_type_' + color]"
+      [class.has_selected_type]="(value$ | async)!.length < allColors.length"
+      [class.selected]="
+        (value$ | async)!.length < allColors.length &&
+        (value$ | async)!.includes(color)
+      "
+      [title]="color + ' blocks'"
+      (click)="onClick(color)"
+    >
+      <div class="label">{{ labelForColor(color) }}</div>
+    </div>
+  </div>
+</div>

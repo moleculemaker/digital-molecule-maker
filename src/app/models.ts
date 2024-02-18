@@ -121,6 +121,9 @@ export abstract class BlockSet {
         }
       }
     };
+
+    enumerate(0);
+
     return res;
   }
 
@@ -155,8 +158,17 @@ export abstract class BlockSet {
       }
     }
 
+    const inUse = new Set<string>();
+    for (let block of startingFrom) {
+      if (block) {
+        inUse.add(block.id);
+      }
+    }
+
     // accepted by both target and source filters
-    return firstPass.filter((block) => acceptBlock(block, sourceFilters));
+    return firstPass.filter(
+      (block) => acceptBlock(block, sourceFilters) && !inUse.has(block.id),
+    );
   }
 }
 

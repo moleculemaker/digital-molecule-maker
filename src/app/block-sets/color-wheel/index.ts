@@ -10,6 +10,8 @@ import { Injectable } from '@angular/core';
 import { getSVGViewBox } from '../../utils/SVG';
 import { map, tap } from 'rxjs/operators';
 import { CWBlockTypeFilterComponent } from './cw-block-type-filter/cw-block-type-filter.component';
+import { LambdaMaxRangeForColor } from '../../utils/colors';
+import { CWColorFilterComponent } from './cw-color-filter/cw-color-filter.component';
 
 type ColorWheelBlockSetJSON = {
   id: string;
@@ -25,6 +27,18 @@ type ColorWheelBlockSetJSON = {
 };
 
 const ASSET_URL = 'assets/blocks/10x10x10palette/blocks.json';
+const ALL_COLORS = [
+  'uva',
+  'uvb',
+  'uvc',
+  'yellow',
+  'orange',
+  'red',
+  'magenta',
+  'violet',
+  'blue',
+  'cyan',
+];
 
 @Injectable({
   providedIn: 'root',
@@ -53,15 +67,30 @@ export class ColorWheelBlockSet extends BlockSet {
       type: 'source_categories',
       availableIn: ['structure'],
       Component: CWBlockTypeFilterComponent,
-      initialValue: ['start', 'end'],
+      initialValue: ['start', 'middle', 'end'],
       categories: ['start', 'middle', 'end'],
       mapArgToValue: (block) => {
         if (block.index === 0) return ['start'];
         if (block.index === 2) return ['end'];
         return ['middle'];
       },
-      renderToText: (selectedTypes) => {
-        return selectedTypes.join(',');
+    },
+    {
+      type: 'target_categories',
+      availableIn: ['function'],
+      Component: CWColorFilterComponent,
+      initialValue: ALL_COLORS,
+      categories: ALL_COLORS,
+      mapArgToValue: (blocks) => {
+        const lambdaMax = blocks.reduce(
+          (lambdaMax, block) => lambdaMax + block.properties.lambdaMaxShift,
+          0,
+        );
+        const color = ALL_COLORS.find((color) => {
+          const { min, max } = LambdaMaxRangeForColor[color]!;
+          return lambdaMax >= min && lambdaMax <= max;
+        });
+        return color ? [color] : [];
       },
     },
   ];

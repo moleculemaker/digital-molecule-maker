@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <div *ngFor="let filter of sourceCategoricalFilters$ | async">
+    <ng-container *ngFor="let filter of sourceCategoricalFilters$ | async">
       <ng-container
         *ngComponentOutlet="
           filter.meta.Component;
@@ -97,46 +97,48 @@
         "
       >
       </ng-container>
-    </div>
+    </ng-container>
 
-    <ng-template [ngIf]="(viewMode$ | async) === 'function'">
-      <div class="control_bar">
-        <div class="row">
-          <div
-            *ngFor="
-              let type of $any([
-                'yellow',
-                'orange',
-                'red',
-                'magenta',
-                'violet',
-                'blue',
-                'cyan'
-              ])
-            "
-            [class]="['type', 'color_type', 'color_type_' + type]"
-            [class.has_selected_type]="colorFilter.length > 0"
-            [class.selected]="colorFilter.includes(type)"
-            [title]="type + ' blocks'"
-            (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
-          >
-            <div class="label">{{ labelForColor(type) }}</div>
-          </div>
-        </div>
-        <div class="row">
-          <div
-            *ngFor="let type of $any(['uva', 'uvb', 'uvc'])"
-            [class]="['type', 'color_type', 'color_type_' + type]"
-            [class.has_selected_type]="colorFilter.length > 0"
-            [class.selected]="colorFilter.includes(type)"
-            [title]="type + ' blocks'"
-            (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
-          >
-            <div class="label">{{ labelForColor(type) }}</div>
-          </div>
-        </div>
-      </div>
-    </ng-template>
+    <ng-container *ngFor="let filter of targetCategoricalFilters$ | async">
+      <ng-container
+        *ngComponentOutlet="
+          filter.meta.Component;
+          inputs: {
+            categories: filter.meta.categories,
+            value$: filter.value$
+          }
+        "
+      >
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngFor="let filter of sourceRangeFilters$ | async">
+      <ng-container
+        *ngComponentOutlet="
+          filter.meta.Component;
+          inputs: {
+            min: filter.meta.min,
+            max: filter.meta.max,
+            value$: filter.value$
+          }
+        "
+      >
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngFor="let filter of targetRangeFilters$ | async">
+      <ng-container
+        *ngComponentOutlet="
+          filter.meta.Component;
+          inputs: {
+            min: filter.meta.min,
+            max: filter.meta.max,
+            value$: filter.value$
+          }
+        "
+      >
+      </ng-container>
+    </ng-container>
 
     <div
       class="extra_filters"

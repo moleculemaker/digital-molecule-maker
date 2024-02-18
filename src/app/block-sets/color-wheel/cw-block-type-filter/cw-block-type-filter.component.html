@@ -2,7 +2,7 @@
   <div
     class="type"
     [class]="['type_all']"
-    [class.has_selected_type]="true"
+    [class.has_selected_type]="(value$ | async)!.length < blockTypes.length"
     [class.selected]="(value$ | async)!.length === 3"
     [title]="'all blocks'"
     (click)="reset()"
@@ -11,10 +11,13 @@
   </div>
   <div
     class="type"
-    *ngFor="let type of categories"
+    *ngFor="let type of blockTypes"
     [class]="['type_' + type]"
-    [class.has_selected_type]="true"
-    [class.selected]="(value$ | async)!.includes(type)"
+    [class.has_selected_type]="(value$ | async)!.length < blockTypes.length"
+    [class.selected]="
+      (value$ | async)!.length < blockTypes.length &&
+      (value$ | async)!.includes(type)
+    "
     [title]="type + ' blocks'"
     (click)="onClick(type)"
   >

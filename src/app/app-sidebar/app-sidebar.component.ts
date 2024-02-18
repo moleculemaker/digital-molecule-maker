@@ -1,10 +1,19 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   Block,
   BlockSet,
   getBlockSetScale,
   SourceCategoricalFilter,
   SourceRangeFilter,
+  TargetCategoricalFilter,
+  TargetRangeFilter,
 } from '../models';
 import Fuse from 'fuse.js';
 import {
@@ -15,9 +24,9 @@ import {
   trigger,
 } from '@angular/animations';
 import { WorkspaceService } from '../services/workspace.service';
-import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { BlockService } from '../services/block.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -40,10 +49,14 @@ export class AppSidebarComponent implements OnInit {
 
   @HostBinding('class') sidebarClasses: string = 'expanded';
 
+  @ViewChild('tray')
+  tray!: ElementRef<HTMLDivElement>;
+
   @Input()
   get blockSet(): BlockSet | null {
     return this.blockData;
   }
+
   set blockSet(blockSet: BlockSet | null) {
     if (blockSet) {
       const processBlockArray = (blocks: Block[]) =>
@@ -72,14 +85,6 @@ export class AppSidebarComponent implements OnInit {
   moleculeSearch = [
     { chemicalFormula: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S' },
   ]; //array of molecules to search by
-
-  typeFilter: string[] = []; //array of types to filter by (only used in showing the blocks?)
-  allTypeFilters = ['all', 'start', 'middle', 'end'];
-
-  colorFilter: ColorKeyT[] = [];
-  labelForColor(key: ColorKeyT) {
-    return LambdaMaxRangeForColor[key].name;
-  }
 
   isSidebarExpanded = true;
   isShowingFilters = false;
@@ -115,8 +120,34 @@ export class AppSidebarComponent implements OnInit {
     );
   }
 
+  get targetCategoricalFilters$() {
+    return this.workspaceService.filters$.pipe(
+      map((filters) =>
+        filters.filter(
+          (filter): filter is TargetCategoricalFilter =>
+            filter.type === 'target_categories',
+        ),
+      ),
+    );
+  }
+
+  get targetRangeFilters$() {
+    return this.workspaceService.filters$.pipe(
+      map((filters) =>
+        filters.filter(
+          (filter): filter is TargetRangeFilter =>
+            filter.type === 'target_range',
+        ),
+      ),
+    );
+  }
+
   //********************************************
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.workspaceService.filterChange$.subscribe(() => {
+      this.tray.nativeElement.scrollTop = 0;
+    });
+  }
 
   //********************************************
   getSearchPlaceholder(): string {
@@ -148,15 +179,6 @@ export class AppSidebarComponent implements OnInit {
   toggleFilters(override?: boolean) {
     this.isShowingFilters =
       typeof override != 'undefined' ? override : !this.isShowingFilters;
-  }
-
-  onClickColorType(type: ColorKeyT) {
-    if (this.colorFilter.includes(type)) {
-      let index = this.colorFilter.indexOf(type);
-      this.colorFilter.splice(index, 1);
-    } else {
-      this.colorFilter.push(type);
-    }
   }
 
   toggle() {
