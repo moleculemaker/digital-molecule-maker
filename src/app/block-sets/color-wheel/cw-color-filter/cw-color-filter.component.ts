@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ColorKeyT, LambdaMaxRangeForColor } from '../../../utils/colors';
+import { LambdaMaxRangeForColor } from 'app/utils/colors';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({

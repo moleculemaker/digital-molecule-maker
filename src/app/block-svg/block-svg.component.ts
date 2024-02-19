@@ -18,7 +18,6 @@ import {
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, Molecule } from '../models';
-import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 import { BlockService } from '../services/block.service';
 
@@ -40,9 +39,6 @@ export class BlockSvgComponent
 
   @Input()
   block!: Block;
-
-  @Input()
-  lambdaMax: number = 0;
 
   @Input()
   asIcon = false; // currently using this just to control x offset when rendering inside the properties overlay

@@ -96,6 +96,7 @@
 >
   <dmm-overlay
     *ngIf="block"
+    [molecule]="molecule"
     [block]="block"
     [tags]="[]"
     (close)="isInfoPanelOpen = !isInfoPanelOpen"

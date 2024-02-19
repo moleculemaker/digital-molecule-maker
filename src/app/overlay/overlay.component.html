@@ -8,24 +8,21 @@
 
   <div class="overlay_container">
     <!-- todo: confirm that we are actually showing this in this version. if not, hide this code -->
-    <!-- <div class="overlay_preview">
-      <div class="overlay_image">
-        <svg *ngIf="getMode() === 'block'" viewBox="0 0 300 300">
-          <dmm-block-svg
-            [lambdaMax]="$any(blockOrMolecule).properties['lambdaMaxShift']"
-            [block]="$any(blockOrMolecule)"
-            [blockSet]="blockSet!"
-            [asIcon]="true"
-          ></dmm-block-svg>
-        </svg>
-        <svg *ngIf="getMode() === 'molecule'" viewBox="0 0 600 200">
-          <dmm-molecule-svg
-            [molecule]="$any(blockOrMolecule)"
-            [blockSet]="blockSet!"
-          ></dmm-molecule-svg>
-        </svg>
-      </div>
-    </div> -->
+    <!--    <div class="overlay_preview">-->
+    <!--      <div class="overlay_image">-->
+    <!--        <svg *ngIf="molecule && block" viewBox="0 0 300 300">-->
+    <!--          <g-->
+    <!--            dmm-block-svg-->
+    <!--            [molecule]="molecule"-->
+    <!--            [block]="block"-->
+    <!--            [asIcon]="true"-->
+    <!--          ></g>-->
+    <!--        </svg>-->
+    <!--        <svg *ngIf="molecule && !block" viewBox="0 0 600 200">-->
+    <!--          <g dmm-molecule-svg [molecule]="molecule"></g>-->
+    <!--        </svg>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
     <ng-container *ngIf="block; then blockProperties; else moleculeProperties">
     </ng-container>
