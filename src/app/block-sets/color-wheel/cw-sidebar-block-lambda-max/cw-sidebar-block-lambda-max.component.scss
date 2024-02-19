@@ -1,0 +1,11 @@
+:host {
+  text {
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+  }
+  &:hover {
+    text {
+      transform: translateY(-40px);
+    }
+  }
+}

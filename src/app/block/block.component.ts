@@ -4,16 +4,19 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
-  TemplateRef,
   HostListener,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ViewContainerRef,
+  createComponent,
+  EnvironmentInjector,
+  ComponentRef,
 } from '@angular/core';
 import 'external-svg-loader';
 import { Block, ViewMode } from '../models';
-import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 import { BlockService } from '../services/block.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'block',
@@ -30,6 +33,9 @@ export class BlockComponent implements OnInit {
   imageHeight = 0;
 
   @ViewChild('svgImage') svg: ElementRef | null = null;
+
+  @ViewChild('functionModeOutlet', { read: ViewContainerRef })
+  functionModeOutlet!: ViewContainerRef;
 
   padding = {
     x: 20 * 4,
@@ -59,6 +65,8 @@ export class BlockComponent implements OnInit {
   flipped = false;
   viewMode!: ViewMode;
 
+  functionModeComponentRef: ComponentRef<unknown> | null = null;
+
   get functionModeEnabled() {
     // either `this.viewMode === 'function' && this.flipped === false`
     // or `this.viewMode !== 'function' && this.flipped === true`
@@ -69,12 +77,25 @@ export class BlockComponent implements OnInit {
     workspaceService: WorkspaceService,
     private blockService: BlockService,
     private cd: ChangeDetectorRef,
+    private environmentInjector: EnvironmentInjector,
   ) {
     workspaceService.viewMode$.subscribe((viewMode) => {
       this.viewMode = viewMode;
       this.flipped = false;
       this.cd.markForCheck();
     });
+  }
+
+  get blockSet() {
+    return this.blockService.blockSet!;
+  }
+
+  get primaryProperty() {
+    return this.block.properties[this.blockSet.primaryProperty.key];
+  }
+
+  get FunctionModeComponent() {
+    return this.blockSet.SidebarBlockSVGFunctionModeContentComponent;
   }
 
   get type() {
@@ -86,14 +107,16 @@ export class BlockComponent implements OnInit {
     this.flipped = !this.flipped;
   }
 
-  hovered = false;
+  hovered$ = new BehaviorSubject(false);
+
   @HostListener('pointerenter')
   onPointerEnter() {
-    this.hovered = true;
+    this.hovered$.next(true);
   }
+
   @HostListener('pointerleave')
   onPointerLeave() {
-    this.hovered = false;
+    this.hovered$.next(false);
   }
 
   // @HostListener('mouseover')
@@ -181,7 +204,44 @@ export class BlockComponent implements OnInit {
   }
 
   //********************************************
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    /**
+     * Creating component instance and setting inputs manually instead of using `*ngComponentOutlet` due to a
+     * long-standing bug in Angular -- Dynamically created components always have their host elements created in the
+     * `xhtml` namespace, whereas SVG requires all elements to be in the `svg` namespace.
+     * Currently, the only workaround is to manually call `createElementNS` DOM API with a `svg` namespace URI.
+     * See this open issue: https://github.com/angular/angular/issues/10404.
+     */
+    this.functionModeComponentRef = createComponent(
+      this.FunctionModeComponent, // this is the dynamic plug-in component provided by the block set
+      {
+        environmentInjector: this.environmentInjector,
+        hostElement: document.createElementNS(
+          'http://www.w3.org/2000/svg',
+          'g',
+        ),
+      },
+    );
+    // TODO: these seem to be one-time assignments, no bindings are created if inputs are set this way
+    this.functionModeComponentRef.setInput(
+      'primaryProperty',
+      this.primaryProperty,
+    );
+    this.functionModeComponentRef.setInput('minX', this.minX);
+    this.functionModeComponentRef.setInput('maxX', this.maxX);
+    this.functionModeComponentRef.setInput('minY', this.minY);
+    this.functionModeComponentRef.setInput('maxY', this.maxY);
+    this.functionModeComponentRef.setInput(
+      'hovered$',
+      this.hovered$.asObservable(),
+    );
+    this.functionModeOutlet.insert(this.functionModeComponentRef.hostView);
+    this.cd.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.functionModeComponentRef?.destroy();
+  }
 
   //********************************************
   onLoadSVG(event: any) {
@@ -201,20 +261,20 @@ export class BlockComponent implements OnInit {
     return '0 0 ' + width + ' ' + height;
   }
 
-  get centerX() {
-    let minX = this.strokeWidth;
-    let maxX = this.blockWidth + this.padding.x - this.strokeWidth;
-    return (minX + maxX) / 2;
+  get minX() {
+    return this.strokeWidth;
   }
 
-  get centerY() {
-    let minY = this.strokeWidth;
-    let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
-    return (minY + maxY) / 2;
+  get maxX() {
+    return this.blockWidth + this.padding.x - this.strokeWidth;
   }
 
-  get lambdaMax() {
-    return this.block.properties['lambdaMaxShift'];
+  get minY() {
+    return this.strokeWidth;
+  }
+
+  get maxY() {
+    return this.blockHeight + this.padding.y - this.strokeWidth;
   }
 
   //********************************************
@@ -386,18 +446,6 @@ export class BlockComponent implements OnInit {
   //todo: determine if this should be a separate property to control it, for now, show the add block structure if no svgUrl has been added
   isAddBlock() {
     return !this.block.svgUrl;
-  }
-
-  get textColor() {
-    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
-  }
-
-  get fillColor() {
-    return lambdaMaxToColor(this.block.properties['lambdaMaxShift']);
-  }
-
-  get strokeColor() {
-    return this.fillColor.darker();
   }
 }
 

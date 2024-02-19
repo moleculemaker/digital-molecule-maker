@@ -13,6 +13,8 @@ import { LambdaMaxRangeForColor } from '../../utils/colors';
 import { CWColorFilterComponent } from './cw-color-filter/cw-color-filter.component';
 import { getChemicalFormula, getSMILES } from '../../utils/formulas';
 import { BlockSet } from '../block-set';
+import { CWSidebarBlockLambdaMaxComponent } from './cw-sidebar-block-lambda-max/cw-sidebar-block-lambda-max.component';
+import { CWWorkspaceBlockLambdaMaxComponent } from './cw-workspace-block-lambda-max/cw-workspace-block-lambda-max.component';
 
 type ColorWheelBlockSetJSON = {
   id: string;
@@ -45,6 +47,11 @@ const ALL_COLORS = [
   providedIn: 'root',
 })
 export class ColorWheelBlockSet extends BlockSet {
+  SidebarBlockSVGFunctionModeContentComponent =
+    CWSidebarBlockLambdaMaxComponent;
+  WorkspaceBlockSVGFunctionModeContentComponent =
+    CWWorkspaceBlockLambdaMaxComponent;
+
   id: string = 'COLOR_WHEEL';
 
   _json!: ColorWheelBlockSetJSON;

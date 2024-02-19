@@ -9,7 +9,7 @@
 >
   <div
     class="overlay"
-    [style.opacity]="functionModeEnabled ? (hovered ? 0.5 : 0) : 1"
+    [style.opacity]="functionModeEnabled ? ((hovered$ | async) ? 0.5 : 0) : 1"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -78,25 +78,18 @@
     >
       <path
         [attr.d]="drawBlock()"
-        [attr.fill]="fillColor"
-        [attr.opacity]="hovered ? 0.2 : 1"
-        [attr.stroke]="strokeColor"
+        [attr.fill]="
+          FunctionModeComponent?.backgroundFill?.(primaryProperty) ?? 'gray'
+        "
+        [attr.opacity]="(hovered$ | async) ? 0.2 : 1"
+        [attr.stroke]="
+          FunctionModeComponent?.backgroundStroke?.(primaryProperty) ?? 'gray'
+        "
         [attr.stroke-dasharray]="strokeDasharray"
         [attr.stroke-width]="strokeWidth"
       ></path>
 
-      <text
-        [attr.x]="centerX"
-        [attr.y]="centerY"
-        [style.transform]="hovered ? 'translateY(-40px)' : 'none'"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        font-weight="bold"
-        font-size="20px"
-        [attr.fill]="textColor"
-      >
-        +{{ block.properties["lambdaMaxShift"] }} nm
-      </text>
+      <ng-container #functionModeOutlet></ng-container>
 
       <!-- + add block icon -->
       <g *ngIf="isAddBlock()">

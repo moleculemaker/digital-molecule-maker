@@ -15,6 +15,9 @@ import {
   providedIn: 'root',
 })
 export abstract class BlockSet {
+  abstract SidebarBlockSVGFunctionModeContentComponent: any;
+  abstract WorkspaceBlockSVGFunctionModeContentComponent: any;
+
   protected _initialized$ = new BehaviorSubject(false);
 
   protected _finalize() {

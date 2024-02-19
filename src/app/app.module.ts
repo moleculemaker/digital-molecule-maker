@@ -36,6 +36,8 @@ import { EnvironmentService } from './services/environment.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 import { CWBlockTypeFilterComponent } from './block-sets/color-wheel/cw-block-type-filter/cw-block-type-filter.component';
 import { CWColorFilterComponent } from './block-sets/color-wheel/cw-color-filter/cw-color-filter.component';
+import { CWSidebarBlockLambdaMaxComponent } from './block-sets/color-wheel/cw-sidebar-block-lambda-max/cw-sidebar-block-lambda-max.component';
+import { CWWorkspaceBlockLambdaMaxComponent } from './block-sets/color-wheel/cw-workspace-block-lambda-max/cw-workspace-block-lambda-max.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -71,6 +73,8 @@ function initializeAppFactory(
     MoleculeSvgComponent,
     CWBlockTypeFilterComponent,
     CWColorFilterComponent,
+    CWSidebarBlockLambdaMaxComponent,
+    CWWorkspaceBlockLambdaMaxComponent,
   ],
   imports: [
     BrowserModule,
