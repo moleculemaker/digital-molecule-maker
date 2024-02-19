@@ -4,14 +4,14 @@ import {
   Block,
   MolecularPropertyDefinition,
   FilterDescriptor,
-} from '../../models';
+} from 'app/models';
 import { Injectable } from '@angular/core';
-import { getSVGViewBox } from '../../utils/SVG';
+import { getSVGViewBox } from 'app/utils/SVG';
 import { map, tap } from 'rxjs/operators';
 import { CWBlockTypeFilterComponent } from './cw-block-type-filter/cw-block-type-filter.component';
-import { LambdaMaxRangeForColor } from '../../utils/colors';
+import { LambdaMaxRangeForColor } from 'app/utils/colors';
 import { CWColorFilterComponent } from './cw-color-filter/cw-color-filter.component';
-import { getChemicalFormula, getSMILES } from '../../utils/formulas';
+import { getChemicalFormula, getSMILES } from 'app/utils/formulas';
 import { BlockSet } from '../block-set';
 import { CWSidebarBlockLambdaMaxComponent } from './cw-sidebar-block-lambda-max/cw-sidebar-block-lambda-max.component';
 import { CWWorkspaceBlockLambdaMaxComponent } from './cw-workspace-block-lambda-max/cw-workspace-block-lambda-max.component';
