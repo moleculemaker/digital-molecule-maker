@@ -8,8 +8,6 @@ import {
 } from '@angular/core';
 import {
   Block,
-  BlockSet,
-  getBlockSetScale,
   SourceCategoricalFilter,
   SourceRangeFilter,
   TargetCategoricalFilter,
@@ -27,6 +25,7 @@ import { WorkspaceService } from '../services/workspace.service';
 import { map, switchMap } from 'rxjs/operators';
 import { BlockService } from '../services/block.service';
 import { combineLatest } from 'rxjs';
+import { BlockSet, getBlockSetScale } from '../block-sets/block-set';
 
 @Component({
   selector: 'app-sidebar',

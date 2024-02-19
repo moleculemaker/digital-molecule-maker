@@ -2,9 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { BlockSet } from '../models';
 import { ActivatedRoute } from '@angular/router';
 import { ColorWheelBlockSet } from '../block-sets/color-wheel';
+import { BlockSet } from '../block-sets/block-set';
 
 export enum BlockSetId {
   ColorWheel = 'COLOR_WHEEL',

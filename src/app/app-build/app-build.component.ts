@@ -10,7 +10,7 @@ import { combineLatest, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { Block, BlockSet, Coordinates, TargetFilter } from '../models';
+import { Block, Coordinates, TargetFilter } from '../models';
 
 import { BlockService } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
@@ -21,6 +21,7 @@ import {
   BLOCK_PADDING_X,
   BLOCK_WIDTH,
 } from '../block-svg/block-svg.component';
+import { BlockSet } from '../block-sets/block-set';
 
 @UntilDestroy()
 @Component({

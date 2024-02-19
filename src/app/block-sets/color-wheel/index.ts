@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   Block,
   MolecularPropertyDefinition,
-  BlockSet,
   FilterDescriptor,
 } from '../../models';
 import { Injectable } from '@angular/core';
@@ -13,6 +12,7 @@ import { CWBlockTypeFilterComponent } from './cw-block-type-filter/cw-block-type
 import { LambdaMaxRangeForColor } from '../../utils/colors';
 import { CWColorFilterComponent } from './cw-color-filter/cw-color-filter.component';
 import { getChemicalFormula, getSMILES } from '../../utils/formulas';
+import { BlockSet } from '../block-set';
 
 type ColorWheelBlockSetJSON = {
   id: string;
