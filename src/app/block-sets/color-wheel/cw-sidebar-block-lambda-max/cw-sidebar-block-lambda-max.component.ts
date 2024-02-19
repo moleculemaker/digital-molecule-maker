@@ -39,6 +39,4 @@ export class CWSidebarBlockLambdaMaxComponent {
       ? lambdaMaxToColor(this.lambdaMax).darker()
       : 'white';
   }
-
-  protected readonly onmousedown = onmousedown;
 }

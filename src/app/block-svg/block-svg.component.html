@@ -17,23 +17,22 @@
       <path
         [attr.d]="drawBlock()"
         class="molecule-block"
-        [attr.fill]="fillColor"
-        [attr.stroke]="strokeColor"
+        [attr.fill]="
+          FunctionModeComponent?.backgroundFill?.(
+            moleculePrimaryProperty,
+            blockPrimaryProperty
+          ) ?? 'gray'
+        "
+        [attr.stroke]="
+          FunctionModeComponent?.backgroundStroke?.(
+            moleculePrimaryProperty,
+            blockPrimaryProperty
+          ) ?? 'gray'
+        "
         [attr.stroke-dasharray]="strokeDasharray"
         [attr.stroke-width]="strokeWidth"
       ></path>
-
-      <text
-        [attr.x]="centerX"
-        [attr.y]="centerY"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        font-weight="bold"
-        font-size="20px"
-        [attr.fill]="textColor"
-      >
-        +{{ block.properties["lambdaMaxShift"] }} nm
-      </text>
+      <ng-container #functionModeOutlet></ng-container>
     </g>
   </ng-template>
 

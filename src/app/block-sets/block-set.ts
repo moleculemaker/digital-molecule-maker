@@ -181,6 +181,16 @@ export abstract class BlockSet {
     blockList: (Block | null)[],
     property: MolecularPropertyDefinition,
   ): string;
+
+  /**
+   * This can be implemented by either table lookup or runtime calculation based on block properties
+   * @param blockList a list of blocks whose property is to be predicted
+   * @param property must be a numerical chemical property
+   */
+  abstract predictChemicalProperty(
+    blockList: (Block | null)[],
+    property: MolecularPropertyDefinition,
+  ): number;
 }
 
 export function getBlockSetScale(blockSet: BlockSet, target: number): number {

@@ -222,7 +222,6 @@ export class BlockComponent implements OnInit {
         ),
       },
     );
-    // TODO: these seem to be one-time assignments, no bindings are created if inputs are set this way
     this.functionModeComponentRef.setInput(
       'primaryProperty',
       this.primaryProperty,

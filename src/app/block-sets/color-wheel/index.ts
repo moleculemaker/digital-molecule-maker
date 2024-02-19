@@ -177,4 +177,21 @@ export class ColorWheelBlockSet extends BlockSet {
         return '';
     }
   }
+
+  predictChemicalProperty(
+    blockList: (Block | null)[],
+    property: MolecularPropertyDefinition,
+  ): number {
+    switch (property.key) {
+      case 'lambdaMaxShift':
+      case 'molecularWeight':
+        return blockList.reduce(
+          (total, block) =>
+            total + (block ? Number(block.properties[property.key]) : 0),
+          0,
+        );
+      default:
+        return NaN;
+    }
+  }
 }

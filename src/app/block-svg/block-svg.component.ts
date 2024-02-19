@@ -5,11 +5,16 @@ import {
   OnDestroy,
   OnInit,
   Input,
-  TemplateRef,
   ViewChild,
   SimpleChanges,
   Output,
   EventEmitter,
+  ViewContainerRef,
+  AfterViewInit,
+  createComponent,
+  ComponentRef,
+  EnvironmentInjector,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Block, Molecule } from '../models';
@@ -27,7 +32,9 @@ export const BLOCK_PADDING_Y = 20 * 1.5;
   templateUrl: './block-svg.component.html',
   styleUrls: ['./block-svg.component.scss'],
 })
-export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
+export class BlockSvgComponent
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy
+{
   @Input()
   molecule!: Molecule;
 
@@ -49,6 +56,11 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output()
   deleteBlock = new EventEmitter<void>();
+
+  @ViewChild('functionModeOutlet', { read: ViewContainerRef })
+  functionModeOutlet!: ViewContainerRef;
+
+  functionModeComponentRef: ComponentRef<unknown> | null = null;
 
   scale = 1;
 
@@ -74,6 +86,8 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private workspaceService: WorkspaceService,
     private blockService: BlockService,
+    private environmentInjector: EnvironmentInjector,
+    private cd: ChangeDetectorRef,
   ) {}
 
   get viewMode$() {
@@ -86,6 +100,21 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   get blockSet() {
     return this.blockService.blockSet!;
+  }
+
+  get blockPrimaryProperty() {
+    return this.block.properties[this.blockSet.primaryProperty.key];
+  }
+
+  get moleculePrimaryProperty() {
+    return this.blockSet.predictChemicalProperty(
+      this.molecule.blockList,
+      this.blockSet.primaryProperty,
+    );
+  }
+
+  get FunctionModeComponent() {
+    return this.blockSet.WorkspaceBlockSVGFunctionModeContentComponent;
   }
 
   ngOnInit(): void {
@@ -107,8 +136,43 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     ];
   }
 
+  ngAfterViewInit() {
+    /**
+     * Creating component instance and setting inputs manually instead of using `*ngComponentOutlet` due to a
+     * long-standing bug in Angular -- Dynamically created components always have their host elements created in the
+     * `xhtml` namespace, whereas SVG requires all elements to be in the `svg` namespace.
+     * Currently, the only workaround is to manually call `createElementNS` DOM API with a `svg` namespace URI.
+     * See this open issue: https://github.com/angular/angular/issues/10404.
+     */
+    this.functionModeComponentRef = createComponent(
+      this.FunctionModeComponent, // this is the dynamic plug-in component provided by the block set
+      {
+        environmentInjector: this.environmentInjector,
+        hostElement: document.createElementNS(
+          'http://www.w3.org/2000/svg',
+          'g',
+        ),
+      },
+    );
+    this.functionModeComponentRef.setInput(
+      'moleculePrimaryProperty',
+      this.moleculePrimaryProperty,
+    );
+    this.functionModeComponentRef.setInput(
+      'blockPrimaryProperty',
+      this.blockPrimaryProperty,
+    );
+    this.functionModeComponentRef.setInput('minX', this.minX);
+    this.functionModeComponentRef.setInput('maxX', this.maxX);
+    this.functionModeComponentRef.setInput('minY', this.minY);
+    this.functionModeComponentRef.setInput('maxY', this.maxY);
+    this.functionModeOutlet.insert(this.functionModeComponentRef.hostView);
+    this.cd.detectChanges();
+  }
+
   ngOnDestroy() {
     if (this._eventsSubscription) this._eventsSubscription.unsubscribe();
+    this.functionModeComponentRef?.destroy();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -149,32 +213,25 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     this.mouseDown = false;
   }
 
-  get centerX() {
-    let minX = this.strokeWidth + this.borderOffset;
+  get minX() {
+    let res = this.strokeWidth + this.borderOffset;
     if (!this.asIcon) {
-      minX += this.block.index * (BLOCK_WIDTH + BLOCK_PADDING_X);
-      this.imageZoomAndPanMatrix[4] = minX + 60;
+      res += this.block.index * (BLOCK_WIDTH + BLOCK_PADDING_X);
+      // this.imageZoomAndPanMatrix[4] = res + 60;
     }
-    let maxX = BLOCK_WIDTH + BLOCK_PADDING_X + minX;
-    return (minX + maxX) / 2;
+    return res;
   }
 
-  get centerY() {
-    let minY = this.strokeWidth + this.borderOffset;
-    let maxY = BLOCK_HEIGHT + BLOCK_PADDING_Y + this.borderOffset;
-    return (minY + maxY) / 2;
+  get maxX() {
+    return BLOCK_WIDTH + BLOCK_PADDING_X + this.minX;
   }
 
-  get textColor() {
-    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
+  get minY() {
+    return this.strokeWidth + this.borderOffset;
   }
 
-  get fillColor() {
-    return lambdaMaxToColor(this.lambdaMax);
-  }
-
-  get strokeColor() {
-    return this.fillColor.darker();
+  get maxY() {
+    return BLOCK_HEIGHT + BLOCK_PADDING_Y + this.borderOffset;
   }
 
   drawBlock() {
