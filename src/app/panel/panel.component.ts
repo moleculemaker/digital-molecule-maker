@@ -26,14 +26,10 @@ import {
   slideInReverse,
   slideOutReverse,
 } from './panel.animations';
-import {
-  aggregateProperty,
-  BlockPropertyDefinition,
-  BlockSet,
-  Molecule,
-} from '../models';
+import { MolecularPropertyDefinition, Molecule } from '../models';
 import { CartService } from '../services/cart.service';
 import { WorkspaceService } from '../services/workspace.service';
+import { BlockService } from '../services/block.service';
 
 @Component({
   selector: 'panel',
@@ -66,9 +62,6 @@ import { WorkspaceService } from '../services/workspace.service';
   ],
 })
 export class PanelComponent implements OnInit {
-  @Input()
-  blockSet!: BlockSet;
-
   @Output()
   onClose = new EventEmitter();
 
@@ -84,7 +77,12 @@ export class PanelComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private workspaceService: WorkspaceService,
+    private blockService: BlockService,
   ) {}
+
+  get blockSet() {
+    return this.blockService.blockSet;
+  }
 
   get cartMoleculeList() {
     return this.cartService.moleculeList;
@@ -170,10 +168,13 @@ export class PanelComponent implements OnInit {
     }
   }
 
-  getAggregateProperty(
+  getPropertyDisplayString(
     molecule: Molecule,
-    property: BlockPropertyDefinition,
-  ): any {
-    return aggregateProperty(molecule, property);
+    property: MolecularPropertyDefinition,
+  ) {
+    return this.blockSet?.getMolecularPropertyDisplayString(
+      molecule.blockList,
+      property,
+    );
   }
 }

@@ -93,7 +93,7 @@ export class AppBuildComponent implements OnInit {
     document.addEventListener('mouseup', (event) => this.onMoveStop(event));
 
     // TODO: Remove this
-    this.getOutcomeFeedbackStream().subscribe(console.log);
+    this.getOutcomeFeedbackStream().subscribe(console.debug);
   }
 
   // TODO: Move this method to the scatter plot component

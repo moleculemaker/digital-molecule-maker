@@ -3,35 +3,30 @@
   "labelProperty": {
     "key": "chemicalFormula",
     "label": "Chemical Formula",
-    "displayStrategy": "chemicalFormula",
-    "aggregationStrategy": "chemicalFormula"
+    "displayStrategy": "chemicalFormula"
   },
   "primaryProperty": {
     "key": "lambdaMaxShift",
     "label": "Lambda Max Shift (nm)",
-    "displayStrategy": "default",
-    "aggregationStrategy": "sum"
+    "displayStrategy": "default"
   },
   "firstTierProperties": [
     {
       "key": "chemicalFormula",
       "label": "Chemical Formula",
-      "displayStrategy": "chemicalFormula",
-      "aggregationStrategy": "chemicalFormula"
+      "displayStrategy": "chemicalFormula"
     },
     {
       "key": "lambdaMaxShift",
       "label": "Lambda Max Shift (nm)",
-      "displayStrategy": "default",
-      "aggregationStrategy": "sum"
+      "displayStrategy": "default"
     }
   ],
   "secondTierProperties": [
     {
       "key": "molecularWeight",
       "label": "Molecular Weight",
-      "displayStrategy": "default",
-      "aggregationStrategy": "sum"
+      "displayStrategy": "default"
     }
   ],
   "blocks": {

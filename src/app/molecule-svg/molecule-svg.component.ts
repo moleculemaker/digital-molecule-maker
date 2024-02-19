@@ -14,12 +14,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import {
-  aggregateProperty,
-  Molecule,
-  BlockPropertyDefinition,
-} from '../models';
-import { WorkspaceService } from '../services/workspace.service';
+import { Molecule, MolecularPropertyDefinition } from '../models';
 import { BlockService } from '../services/block.service';
 import { isFull } from '../utils/Array';
 
@@ -169,12 +164,5 @@ export class MoleculeSvgComponent implements OnInit {
 
   addMoleculeToCart() {
     this.addToCart.emit();
-  }
-
-  getAggregateProperty(
-    molecule: Molecule,
-    property: BlockPropertyDefinition,
-  ): any {
-    return aggregateProperty(molecule, property);
   }
 }

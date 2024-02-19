@@ -49,11 +49,7 @@
     </div>
   </div>
 
-  <panel
-    *ngIf="isShowingCart && blockSet"
-    [blockSet]="blockSet"
-    (onClose)="onPanelClose()"
-  ></panel>
+  <panel *ngIf="isShowingCart" (onClose)="onPanelClose()"></panel>
 
   <div class="canvas_send_to_lab" [class.active]="isShowingSendToLab">
     <div class="modal_container">

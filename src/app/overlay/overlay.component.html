@@ -27,23 +27,16 @@
       </div>
     </div> -->
 
-    <ng-container
-      *ngIf="
-        getMode() === 'block';
-        then blockProperties;
-        else moleculeProperties
-      "
-    >
+    <ng-container *ngIf="block; then blockProperties; else moleculeProperties">
     </ng-container>
 
     <ng-template #blockProperties>
+      <!--  TODO: this is hardcoded. need to support variable number of blocks  -->
       <div
         class="overlay_content"
-        *ngFor="let type of ['start', 'middle', 'end']"
+        *ngFor="let type of ['start', 'middle', 'end']; let i = index"
       >
-        <ng-container
-          *ngIf="blockOrMolecule && $any(blockOrMolecule).type === type"
-        >
+        <ng-container *ngIf="block!.index === i">
           <div [class]="['indicator_' + type]"></div>
           <div class="tags" *ngIf="tags">
             <div class="tag" *ngFor="let tag of tags">{{ tag }}</div>
@@ -51,11 +44,7 @@
 
           <div
             class="properties"
-            *ngIf="
-              blockSet &&
-              blockOrMolecule &&
-              blockSet.firstTierProperties.length > 0
-            "
+            *ngIf="blockSet && blockSet.firstTierProperties.length > 0"
           >
             <div
               class="tag"
@@ -65,7 +54,7 @@
               <div class="value">
                 <span
                   [innerHtml]="
-                    $any(blockOrMolecule).properties[property.key]
+                    block!.properties[property.key]
                       | chemicalProperty: property.displayStrategy
                   "
                 ></span>
@@ -113,7 +102,7 @@
                   <div class="value">
                     <span
                       [innerHtml]="
-                        $any(blockOrMolecule).properties[property.key]
+                        block!.properties[property.key]
                           | chemicalProperty: property.displayStrategy
                       "
                     ></span>
@@ -169,7 +158,7 @@
                 >Show less</ng-container
               >
               <ng-container *ngIf="!isOverlayPropExpanded"
-                >More {{ getMode() }} properties</ng-container
+                >More block properties</ng-container
               >
             </div>
           </div>
@@ -185,11 +174,7 @@
 
         <div
           class="properties"
-          *ngIf="
-            blockSet &&
-            blockOrMolecule &&
-            blockSet.firstTierProperties.length > 0
-          "
+          *ngIf="blockSet && blockSet.firstTierProperties.length > 0"
         >
           <div
             class="tag"
@@ -199,7 +184,7 @@
             <div class="value">
               <span
                 [innerHtml]="
-                  getAggregateProperty($any(blockOrMolecule), property)
+                  getPropertyDisplayString(molecule!, property)
                     | chemicalProperty: property.displayStrategy
                 "
               ></span>
@@ -248,7 +233,7 @@
                 <div class="value">
                   <span
                     [innerHtml]="
-                      getAggregateProperty($any(blockOrMolecule), property)
+                      getPropertyDisplayString(molecule!, property)
                         | chemicalProperty: property.displayStrategy
                     "
                   ></span>
@@ -302,7 +287,7 @@
 
             <ng-container *ngIf="isOverlayPropExpanded">Show less</ng-container>
             <ng-container *ngIf="!isOverlayPropExpanded"
-              >More {{ getMode() }} properties</ng-container
+              >More molecule properties</ng-container
             >
           </div>
         </div>
@@ -374,7 +359,7 @@
       </button> -->
 
     <button
-      *ngIf="getMode() === 'molecule'"
+      *ngIf="molecule"
       [disabled]="!enableAddToCart"
       class="button button_add_to_cart"
       (click)="onAddToCart()"

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ChemicalPropertyDisplayStrategy } from '../models';
+import { MolecularPropertyDisplayStrategy } from '../models';
 
 @Pipe({
   name: 'chemicalProperty',
@@ -8,7 +8,7 @@ import { ChemicalPropertyDisplayStrategy } from '../models';
 export class ChemicalPropertyPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
-  transform(value: any, strategy: ChemicalPropertyDisplayStrategy): any {
+  transform(value: any, strategy: MolecularPropertyDisplayStrategy): any {
     let returnVal: any = value;
     if (strategy === 'default') {
       // no need to change anything

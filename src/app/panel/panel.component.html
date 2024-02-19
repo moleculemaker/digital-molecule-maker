@@ -88,7 +88,7 @@
               <div
                 class="value"
                 [innerHtml]="
-                  getAggregateProperty(molecule, blockSet.labelProperty)
+                  getPropertyDisplayString(molecule, blockSet.labelProperty)
                     | chemicalProperty: blockSet.labelProperty.displayStrategy
                 "
               ></div>
@@ -99,7 +99,7 @@
               <div
                 class="value"
                 [innerHtml]="
-                  getAggregateProperty(molecule, blockSet.primaryProperty)
+                  getPropertyDisplayString(molecule, blockSet.primaryProperty)
                     | chemicalProperty: blockSet.primaryProperty.displayStrategy
                 "
               ></div>

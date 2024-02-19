@@ -16,13 +16,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  aggregateProperty,
-  Block,
-  BlockPropertyDefinition,
-  BlockSet,
-  Molecule,
-} from '../models';
+import { Block, MolecularPropertyDefinition, Molecule } from '../models';
+import { BlockService } from '../services/block.service';
 
 @Component({
   selector: 'dmm-overlay',
@@ -41,10 +36,10 @@ import {
 })
 export class OverlayComponent implements OnInit {
   @Input()
-  blockOrMolecule: Block | Molecule | null = null;
+  block: Block | null = null;
 
   @Input()
-  blockSet: BlockSet | null = null;
+  molecule: Molecule | null = null;
 
   @Input()
   tags: any[] = [];
@@ -70,7 +65,11 @@ export class OverlayComponent implements OnInit {
 
   isOverlayPropExpanded = false;
 
-  constructor() {}
+  constructor(private blockService: BlockService) {}
+
+  get blockSet() {
+    return this.blockService.blockSet;
+  }
 
   ngOnInit(): void {}
 
@@ -82,22 +81,13 @@ export class OverlayComponent implements OnInit {
     this.addToCart.emit();
   }
 
-  getMode(): 'block' | 'molecule' | null {
-    let returnVal: 'block' | 'molecule' | null = null;
-    if (this.blockOrMolecule) {
-      if ('blockList' in this.blockOrMolecule) {
-        returnVal = 'molecule';
-      } else {
-        returnVal = 'block';
-      }
-    }
-    return returnVal;
-  }
-
-  getAggregateProperty(
+  getPropertyDisplayString(
     molecule: Molecule,
-    property: BlockPropertyDefinition,
-  ): any {
-    return aggregateProperty(molecule, property);
+    property: MolecularPropertyDefinition,
+  ) {
+    return this.blockSet?.getMolecularPropertyDisplayString(
+      molecule.blockList,
+      property,
+    );
   }
 }

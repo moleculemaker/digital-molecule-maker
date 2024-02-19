@@ -60,7 +60,6 @@
       *ngIf="block"
       [molecule]="molecule"
       [block]="block"
-      [lambdaMax]="getAggregateProperty(molecule, blockSet.primaryProperty)"
       [closeOverlayObservable]="closeOverlayObservable"
       [overlayOrigin]="trigger"
       (deleteBlock)="deleteBlock.emit(blockIndex)"
@@ -100,9 +99,8 @@
   [cdkConnectedOverlayPositions]="positionPairs"
 >
   <dmm-overlay
-    *ngIf="blockSet && molecule"
-    [blockOrMolecule]="molecule"
-    [blockSet]="blockSet"
+    *ngIf="molecule"
+    [molecule]="molecule"
     [tags]="[]"
     [enableAddToCart]="isComplete"
     (close)="isInfoPanelOpen = !isInfoPanelOpen"

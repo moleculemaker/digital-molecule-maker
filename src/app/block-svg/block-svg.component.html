@@ -95,9 +95,8 @@
   [cdkConnectedOverlayPositions]="positionPairs"
 >
   <dmm-overlay
-    *ngIf="block && blockSet"
-    [blockOrMolecule]="block"
-    [blockSet]="blockSet"
+    *ngIf="block"
+    [block]="block"
     [tags]="[]"
     (close)="isInfoPanelOpen = !isInfoPanelOpen"
   >

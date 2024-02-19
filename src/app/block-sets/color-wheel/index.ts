@@ -2,7 +2,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   Block,
-  BlockPropertyDefinition,
+  MolecularPropertyDefinition,
   BlockSet,
   FilterDescriptor,
 } from '../../models';
@@ -12,13 +12,14 @@ import { map, tap } from 'rxjs/operators';
 import { CWBlockTypeFilterComponent } from './cw-block-type-filter/cw-block-type-filter.component';
 import { LambdaMaxRangeForColor } from '../../utils/colors';
 import { CWColorFilterComponent } from './cw-color-filter/cw-color-filter.component';
+import { getChemicalFormula, getSMILES } from '../../utils/formulas';
 
 type ColorWheelBlockSetJSON = {
   id: string;
-  labelProperty: BlockPropertyDefinition;
-  primaryProperty: BlockPropertyDefinition;
-  firstTierProperties: BlockPropertyDefinition[];
-  secondTierProperties: BlockPropertyDefinition[];
+  labelProperty: MolecularPropertyDefinition;
+  primaryProperty: MolecularPropertyDefinition;
+  firstTierProperties: MolecularPropertyDefinition[];
+  secondTierProperties: MolecularPropertyDefinition[];
   blocks: {
     start: Block[];
     middle: Block[];
@@ -147,93 +148,26 @@ export class ColorWheelBlockSet extends BlockSet {
     );
   }
 
-  filter() {
-    // if (this.functionModeEnabled) {
-    //   if (!this.blockSet) return [];
-    //
-    //   const currentMolecule = this.moleculeList[0];
-    //
-    //   const getBlocksOfType = (type: BlockType) =>
-    //     this.blockData?.blocks[type] ?? [];
-    //
-    //   if (this.colorFilter.length == 0) {
-    //     return Object.values(BlockType).flatMap(
-    //       (type) => this.blockData?.blocks[type] ?? [],
-    //     );
-    //   }
-    //
-    //   const startingLambdaMax = currentMolecule
-    //     ? aggregateProperty(currentMolecule, this.blockSet.primaryProperty)
-    //     : 0;
-    //
-    //   const excludedTypes = new Set(
-    //     currentMolecule?.blockList.map((block) => block.type) ?? [],
-    //   );
-    //
-    //   const availableTypes = Object.values(BlockType).filter(
-    //     (t) => !excludedTypes.has(t),
-    //   );
-    //
-    //   const viableBlocks = Object.fromEntries(
-    //     Object.values(BlockType).map((type) => [type, new Set<Block>()]),
-    //   );
-    //
-    //   const enumerate = (
-    //     curBlocks: Block[],
-    //     accumulatedLambdaMax: number,
-    //     remainingTypes: BlockType[],
-    //   ) => {
-    //     if (!remainingTypes.length) {
-    //       if (
-    //         this.colorFilter.some((color) => {
-    //           const { min, max } = LambdaMaxRangeForColor[color];
-    //           return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
-    //         })
-    //       ) {
-    //         curBlocks.forEach((block) => viableBlocks[block.type].add(block));
-    //       }
-    //       return;
-    //     }
-    //     const [nextType, ...nextRemainingTypes] = remainingTypes;
-    //     for (const nextBlock of getBlocksOfType(nextType)) {
-    //       enumerate(
-    //         [...curBlocks, nextBlock],
-    //         accumulatedLambdaMax + nextBlock.properties.lambdaMaxShift,
-    //         nextRemainingTypes,
-    //       );
-    //     }
-    //   };
-    //
-    //   enumerate([], startingLambdaMax, availableTypes);
-    //
-    //   return [
-    //     ...viableBlocks[BlockType.Start],
-    //     ...viableBlocks[BlockType.Middle],
-    //     ...viableBlocks[BlockType.End],
-    //   ];
-    // } else {
-    //   let blocks: Block[] = [];
-    //   const blockTypes = this.typeFilter.length
-    //     ? this.typeFilter
-    //     : ['start', 'middle', 'end'];
-    //   if (this.blockSet) {
-    //     blockTypes.forEach((blockType) => {
-    //       const blockTypeEnum = this.getKeyByValue(blockType);
-    //       if (blockTypeEnum) {
-    //         this.blockData?.blocks[blockTypeEnum].forEach((block) => {
-    //           if (
-    //             this.filteredBlocks.some(
-    //               (e) =>
-    //                 e === block.properties[this.blockSet!.labelProperty.key],
-    //             )
-    //           ) {
-    //             blocks.push(block);
-    //           }
-    //         });
-    //       }
-    //     });
-    //   }
-    //   return blocks;
-    // }
+  getMolecularPropertyDisplayString(
+    blockList: (Block | null)[],
+    property: MolecularPropertyDefinition,
+  ): string {
+    switch (property.key) {
+      case 'chemicalFormula':
+        return getChemicalFormula(blockList);
+      case 'smiles':
+        return getSMILES(blockList);
+      case 'lambdaMaxShift':
+      case 'molecularWeight':
+        return String(
+          blockList.reduce(
+            (total, block) =>
+              total + (block ? Number(block.properties[property.key]) : 0),
+            0,
+          ),
+        );
+      default:
+        return '';
+    }
   }
 }
