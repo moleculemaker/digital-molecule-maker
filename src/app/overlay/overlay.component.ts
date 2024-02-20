@@ -81,11 +81,18 @@ export class OverlayComponent implements OnInit {
     this.addToCart.emit();
   }
 
-  getPropertyDisplayString(
+  getBlockPropertyDisplayString(
+    block: Block,
+    property: MolecularPropertyDefinition,
+  ) {
+    return this.blockSet?.getBlockPropertyDisplayString(block, property);
+  }
+
+  getMoleculePropertyDisplayString(
     molecule: Molecule,
     property: MolecularPropertyDefinition,
   ) {
-    return this.blockSet?.getMolecularPropertyDisplayString(
+    return this.blockSet?.getMoleculePropertyDisplayString(
       molecule.blockList,
       property,
     );

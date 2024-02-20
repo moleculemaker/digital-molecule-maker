@@ -91,7 +91,10 @@ export class BlockComponent implements OnInit {
   }
 
   get primaryProperty() {
-    return this.block.properties[this.blockSet.primaryProperty.key];
+    return this.blockSet.getBlockChemicalProperty(
+      this.block,
+      this.blockSet.primaryProperty,
+    );
   }
 
   get FunctionModeComponent() {

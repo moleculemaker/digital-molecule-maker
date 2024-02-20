@@ -1,0 +1,12 @@
+:host {
+  text {
+    pointer-events: none;
+    transform-origin: center;
+    transition: all 0.2s ease-in-out;
+  }
+  &:hover {
+    text {
+      transform: translateY(-40px);
+    }
+  }
+}

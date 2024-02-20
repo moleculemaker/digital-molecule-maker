@@ -50,8 +50,9 @@
               <div class="label" [innerHtml]="property.label"></div>
               <div class="value">
                 <span
+                  *ngIf="block"
                   [innerHtml]="
-                    block!.properties[property.key]
+                    getBlockPropertyDisplayString(block, property)
                       | chemicalProperty: property.displayStrategy
                   "
                 ></span>
@@ -98,8 +99,9 @@
                   <div class="label" [innerHtml]="property.label"></div>
                   <div class="value">
                     <span
+                      *ngIf="block"
                       [innerHtml]="
-                        block!.properties[property.key]
+                        getBlockPropertyDisplayString(block, property)
                           | chemicalProperty: property.displayStrategy
                       "
                     ></span>
@@ -181,7 +183,7 @@
             <div class="value">
               <span
                 [innerHtml]="
-                  getPropertyDisplayString(molecule!, property)
+                  getMoleculePropertyDisplayString(molecule!, property)
                     | chemicalProperty: property.displayStrategy
                 "
               ></span>
@@ -230,7 +232,7 @@
                 <div class="value">
                   <span
                     [innerHtml]="
-                      getPropertyDisplayString(molecule!, property)
+                      getMoleculePropertyDisplayString(molecule!, property)
                         | chemicalProperty: property.displayStrategy
                     "
                   ></span>

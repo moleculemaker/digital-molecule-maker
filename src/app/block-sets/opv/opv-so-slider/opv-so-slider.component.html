@@ -1,0 +1,14 @@
+<div style="padding: 10px 20px">
+  <h5>
+    Target Spectral Overlap: {{ (value$ | async)![0] }} -
+    {{ (value$ | async)![1] }}
+  </h5>
+  <p-slider
+    [min]="min"
+    [max]="max"
+    [step]="0.01"
+    [ngModel]="value$ | async"
+    (ngModelChange)="value$.next($event)"
+    [range]="true"
+  ></p-slider>
+</div>

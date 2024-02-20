@@ -155,7 +155,21 @@ export class ColorWheelBlockSet extends BlockSet {
     );
   }
 
-  getMolecularPropertyDisplayString(
+  getBlockPropertyDisplayString(
+    block: Block,
+    property: MolecularPropertyDefinition,
+  ): string {
+    return String(block.properties[property.key]);
+  }
+
+  getBlockChemicalProperty(
+    block: Block,
+    property: MolecularPropertyDefinition,
+  ): number {
+    return Number(block.properties[property.key]);
+  }
+
+  getMoleculePropertyDisplayString(
     blockList: (Block | null)[],
     property: MolecularPropertyDefinition,
   ): string {

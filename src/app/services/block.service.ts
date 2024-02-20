@@ -5,6 +5,7 @@ import { filter } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ColorWheelBlockSet } from '../block-sets/color-wheel';
 import { BlockSet } from '../block-sets/block-set';
+import { OPVBlockSet } from '../block-sets/opv';
 
 export enum BlockSetId {
   ColorWheel = 'COLOR_WHEEL',
@@ -66,7 +67,10 @@ export class BlockService {
       case BlockSetId.ColorWheel: {
         return this.injector.get(ColorWheelBlockSet);
       }
-      case BlockSetId.OPV:
+      case BlockSetId.OPV: {
+        return this.injector.get(OPVBlockSet);
+      }
+      default:
         throw 'Not Implemented';
     }
   }

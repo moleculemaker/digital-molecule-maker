@@ -3,35 +3,30 @@
   "labelProperty": {
     "key": "smiles",
     "label": "SMILES",
-    "displayStrategy": "default",
-    "aggregationStrategy": "smiles"
+    "displayStrategy": "default"
   },
   "primaryProperty": {
     "key": "molecularWeight",
     "label": "Molecular Weight",
-    "displayStrategy": "default",
-    "aggregationStrategy": "sum"
+    "displayStrategy": "default"
   },
   "firstTierProperties": [
     {
       "key": "smiles",
       "label": "SMILES",
-      "displayStrategy": "default",
-      "aggregationStrategy": "smiles"
+      "displayStrategy": "default"
     },
     {
       "key": "molecularWeight",
       "label": "Molecular Weight",
-      "displayStrategy": "default",
-      "aggregationStrategy": "sum"
+      "displayStrategy": "default"
     }
   ],
   "secondTierProperties": [
     {
       "key": "chemicalFormula",
       "label": "Chemical Formula",
-      "displayStrategy": "chemicalFormula",
-      "aggregationStrategy": "chemicalFormula"
+      "displayStrategy": "chemicalFormula"
     }
   ],
   "blocks": {

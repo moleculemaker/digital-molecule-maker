@@ -143,7 +143,10 @@ export class AppSidebarComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
-    this.workspaceService.filterChange$.subscribe(() => {
+    combineLatest([
+      this.workspaceService.filterChange$,
+      this.workspaceService.moleculeList$,
+    ]).subscribe(() => {
       this.tray.nativeElement.scrollTop = 0;
     });
   }
@@ -164,6 +167,14 @@ export class AppSidebarComponent implements OnInit {
         ? activeMolecule.blockList
         : Array(blockSet.moleculeSize).fill(null),
       activeFilters,
+    );
+  }
+
+  getBlockPrimaryPropertyDisplayString(block: Block) {
+    if (!this.blockSet) return '';
+    return this.blockSet.getBlockPropertyDisplayString(
+      block,
+      this.blockSet.primaryProperty,
     );
   }
 

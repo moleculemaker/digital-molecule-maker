@@ -172,7 +172,7 @@ export class PanelComponent implements OnInit {
     molecule: Molecule,
     property: MolecularPropertyDefinition,
   ) {
-    return this.blockSet?.getMolecularPropertyDisplayString(
+    return this.blockSet?.getMoleculePropertyDisplayString(
       molecule.blockList,
       property,
     );

@@ -98,11 +98,14 @@ export class BlockSvgComponent
     return this.blockService.blockSet!;
   }
 
-  get blockPrimaryProperty() {
-    return this.block.properties[this.blockSet.primaryProperty.key];
+  get blockPrimaryProperty(): number {
+    return this.blockSet.getBlockChemicalProperty(
+      this.block,
+      this.blockSet.primaryProperty,
+    );
   }
 
-  get moleculePrimaryProperty() {
+  get moleculePrimaryProperty(): number {
     return this.blockSet.predictChemicalProperty(
       this.molecule.blockList,
       this.blockSet.primaryProperty,

@@ -177,8 +177,13 @@ export abstract class BlockSet {
    * Subclasses of `BlockSet` could implement arbitrary strategies for generating the display strings.
    * Consumers of this method should be agnostic about the semantics of the string.
    */
-  abstract getMolecularPropertyDisplayString(
+  abstract getMoleculePropertyDisplayString(
     blockList: (Block | null)[],
+    property: MolecularPropertyDefinition,
+  ): string;
+
+  abstract getBlockPropertyDisplayString(
+    block: Block,
     property: MolecularPropertyDefinition,
   ): string;
 
@@ -189,6 +194,11 @@ export abstract class BlockSet {
    */
   abstract predictChemicalProperty(
     blockList: (Block | null)[],
+    property: MolecularPropertyDefinition,
+  ): number;
+
+  abstract getBlockChemicalProperty(
+    block: Block,
     property: MolecularPropertyDefinition,
   ): number;
 }

@@ -38,6 +38,11 @@ import { CWBlockTypeFilterComponent } from './block-sets/color-wheel/cw-block-ty
 import { CWColorFilterComponent } from './block-sets/color-wheel/cw-color-filter/cw-color-filter.component';
 import { CWSidebarBlockLambdaMaxComponent } from './block-sets/color-wheel/cw-sidebar-block-lambda-max/cw-sidebar-block-lambda-max.component';
 import { CWWorkspaceBlockLambdaMaxComponent } from './block-sets/color-wheel/cw-workspace-block-lambda-max/cw-workspace-block-lambda-max.component';
+import { OPVSidebarBlockSOComponent } from './block-sets/opv/opv-sidebar-block-so/opv-sidebar-block-so.component';
+import { OPVWorkspaceBlockSOComponent } from './block-sets/opv/opv-workspace-block-so/opv-workspace-block-so.component';
+import { OpvSoSliderComponent } from './block-sets/opv/opv-so-slider/opv-so-slider.component';
+
+import { SliderModule } from 'primeng/slider';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -75,6 +80,9 @@ function initializeAppFactory(
     CWColorFilterComponent,
     CWSidebarBlockLambdaMaxComponent,
     CWWorkspaceBlockLambdaMaxComponent,
+    OPVSidebarBlockSOComponent,
+    OPVWorkspaceBlockSOComponent,
+    OpvSoSliderComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +96,7 @@ function initializeAppFactory(
     }),
     DragDropModule,
     OverlayModule,
+    SliderModule,
   ],
   providers: [
     {
