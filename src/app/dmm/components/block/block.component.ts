@@ -208,37 +208,40 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   ngAfterViewInit() {
-    /**
-     * Creating component instance and setting inputs manually instead of using `*ngComponentOutlet` due to a
-     * long-standing bug in Angular -- Dynamically created components always have their dmm elements created in the
-     * `xhtml` namespace, whereas SVG requires all elements to be in the `svg` namespace.
-     * Currently, the only workaround is to manually call `createElementNS` DOM API with a `svg` namespace URI.
-     * See this open issue: https://github.com/angular/angular/issues/10404.
-     */
-    this.functionModeComponentRef = createComponent(
-      this.FunctionModeComponent, // this is the dynamic plug-in component provided by the block set
-      {
-        environmentInjector: this.environmentInjector,
-        hostElement: document.createElementNS(
-          'http://www.w3.org/2000/svg',
-          'g',
-        ),
-      },
-    );
-    this.functionModeComponentRef.setInput(
-      'primaryProperty',
-      this.primaryProperty,
-    );
-    this.functionModeComponentRef.setInput('minX', this.minX);
-    this.functionModeComponentRef.setInput('maxX', this.maxX);
-    this.functionModeComponentRef.setInput('minY', this.minY);
-    this.functionModeComponentRef.setInput('maxY', this.maxY);
-    this.functionModeComponentRef.setInput(
-      'hovered$',
-      this.hovered$.asObservable(),
-    );
-    this.functionModeOutlet.insert(this.functionModeComponentRef.hostView);
-    this.cd.detectChanges();
+    // wait until this change detection cycle is complete
+    queueMicrotask(() => {
+      /**
+       * Creating component instance and setting inputs manually instead of using `*ngComponentOutlet` due to a
+       * long-standing bug in Angular -- Dynamically created components always have their dmm elements created in the
+       * `xhtml` namespace, whereas SVG requires all elements to be in the `svg` namespace.
+       * Currently, the only workaround is to manually call `createElementNS` DOM API with a `svg` namespace URI.
+       * See this open issue: https://github.com/angular/angular/issues/10404.
+       */
+      this.functionModeComponentRef = createComponent(
+        this.FunctionModeComponent, // this is the dynamic plug-in component provided by the block set
+        {
+          environmentInjector: this.environmentInjector,
+          hostElement: document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'g',
+          ),
+        },
+      );
+      this.functionModeComponentRef.setInput(
+        'primaryProperty',
+        this.primaryProperty,
+      );
+      this.functionModeComponentRef.setInput('minX', this.minX);
+      this.functionModeComponentRef.setInput('maxX', this.maxX);
+      this.functionModeComponentRef.setInput('minY', this.minY);
+      this.functionModeComponentRef.setInput('maxY', this.maxY);
+      this.functionModeComponentRef.setInput(
+        'hovered$',
+        this.hovered$.asObservable(),
+      );
+      this.functionModeOutlet.insert(this.functionModeComponentRef.hostView);
+      this.cd.markForCheck();
+    });
   }
 
   ngOnDestroy(): void {
