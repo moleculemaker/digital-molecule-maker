@@ -41,14 +41,11 @@ export class Coordinates {
   }
 }
 
-export class Molecule {
-  label: string = '';
-  constructor(
-    public position: Coordinates,
-    public blockList: (Block | null)[],
-  ) {
-    this.label = 'NewMolecule';
-  }
+export interface Molecule {
+  id: number;
+  label: string;
+  position: Coordinates;
+  blockList: (Block | null)[];
 }
 
 export interface User {

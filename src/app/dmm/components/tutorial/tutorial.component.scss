@@ -1,0 +1,161 @@
+/**************** tutorial css ******************/
+
+@import "../../styles/core";
+
+//**************** custom mixins ******************
+
+//**************** animations ******************
+
+//**************** css ******************
+
+:host {
+}
+
+.tutorial {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: get_index(tutorial);
+
+  background: {
+    color: color_variable(
+      "tutorial_background"
+    ); // rgba(get_color('background'), .85);
+  }
+
+  .step {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 100;
+
+    width: 24rem;
+
+    background: {
+      color: color_variable("background");
+    }
+
+    padding: ($padding * 2) ($padding * 1.5);
+
+    @include translate(-50%, -50%);
+    @include border-radius($border_radius * 2);
+    @include shadow(8px, rgba(#000, 0.1), 5px, 5px);
+
+    &.wide {
+      width: 40rem;
+    }
+
+    &.step_welcome {
+    }
+
+    &.step_workspace {
+      left: auto;
+      right: $padding;
+      top: 130px;
+
+      @include translate(0%, 0%);
+    }
+
+    &.step_blocks {
+      left: $padding;
+      top: auto;
+      bottom: $padding;
+
+      @include translate(0%, 0%);
+    }
+
+    .content {
+      font: {
+        size: 0.9rem;
+      }
+      line: {
+        height: 140%;
+      }
+
+      .center {
+        text: {
+          align: center;
+        }
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+
+        margin: {
+          top: $padding;
+        }
+      }
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: $padding * 0.5;
+
+      margin: {
+        top: $padding * 1.5;
+      }
+
+      button {
+        flex-grow: 1;
+
+        cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: $padding * 0.25;
+
+        padding: ($padding * 0.65) ($padding * 0.5);
+
+        color: color_variable("background");
+        background: {
+          color: color_variable("button");
+        }
+
+        border: 1px solid color_variable("button");
+
+        @include border-radius($border_radius);
+
+        &:not(.full) {
+          max: {
+            width: 14rem;
+          }
+        }
+
+        &:hover {
+          background: {
+            color: color_variable("button_hover");
+          }
+
+          border: {
+            color: color_variable("button_hover");
+          }
+        }
+
+        &.button_outline:not(:hover) {
+          color: color_variable("button_border");
+          background: none;
+
+          border: {
+            color: color_variable("button_border");
+          }
+        }
+      }
+    }
+  }
+
+  h3 {
+    margin: {
+      top: 0px;
+    }
+  }
+
+  strong {
+    color: color_variable("primary");
+  }
+}

@@ -1,0 +1,70 @@
+//**************** styles ******************
+//this css library should only be loaded ONCE PER PAGE (or web component)
+//load _core.scss directly if only needing the supporting css colors, variables, mixins, and other functionality
+
+@import "core";
+
+/*
+
+*************** theme - override as needed *****************
+example: document.documentElement.style.setProperty('--text-color', '#ff0000');
+
+*/
+
+//create a variable for every color
+//color variables will be -dash based plus -color
+// example: violation_high_hover would convert to --violation-high-hover-color
+
+//TODO if restoring check always on case, too: gene navigator "Events" row, at least
+:host {
+  @each $name, $color in $colors {
+    --#{str-replace($name, '_', '-')}-color: #{$color};
+  }
+}
+
+//**************** css libraries ******************
+
+@import "core/reset";
+
+//load custom css for common elements
+@import "tags";
+
+//**************** css ******************
+
+//dmm css (think of this as the body tag for the web component)
+:host {
+  display: block;
+
+  color: color_variable("text");
+  background: {
+    color: color_variable("background");
+  }
+
+  font: {
+    family: $font_family;
+    //size: .9em;  --- if put this here each level of nested component decreases font size
+  }
+  line: {
+    height: 130%;
+  }
+}
+
+/*
+main {
+  max: {
+    width: 1200px;
+  }
+
+  margin: {
+    right: auto;
+    left: auto;
+  }
+  font: {
+    size: .81em; // .81 = .9 x .9 which was effectively what we were getting before I introduced the generic pages and moved font-size out of :dmm
+  }
+}
+*/
+
+//**************** google webfont ******************
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;600;700&family=Montserrat:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap");

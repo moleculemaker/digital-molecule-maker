@@ -1,4 +1,4 @@
-import { Block } from '../models';
+import { Block } from 'app/models';
 
 export function getChemicalFormula(blockList: (Block | null)[]) {
   let returnVal = '';

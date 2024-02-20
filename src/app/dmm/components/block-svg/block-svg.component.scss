@@ -1,0 +1,138 @@
+//**************** custom mixins ******************
+@import "../../styles/core";
+
+@mixin block_style($name) {
+  &.block_#{$name} {
+    &.not_selected:not(:hover) {
+      .block_background {
+        fill: color_variable("block_" + $name + "_notselected");
+      }
+
+      .block_border {
+        stroke: color_variable("block_" + $name + "_notselected_border");
+      }
+    }
+
+    .block_background {
+      fill: color_variable("block_" + $name);
+      stroke-miterlimit: 10;
+      stroke-width: 5;
+      stroke-linejoin: round;
+    }
+
+    .block_border {
+      stroke: color_variable("block_" + $name + "_border");
+    }
+  }
+}
+
+.molecule-block {
+  @include transition((stroke 0.5s ease-out, fill 0.8s ease-out));
+}
+
+.block_container {
+  position: relative;
+
+  // @include box-sizing(border-box);
+
+  @include block_style("start");
+  @include block_style("middle");
+  @include block_style("end");
+
+  // z-index: get_index(modal);
+
+  &:hover {
+    cursor: pointer;
+
+    .block_background {
+      fill: color_variable("block_hover");
+      @include transition(none);
+    }
+
+    .block_border {
+      stroke: color_variable("block_hover_border");
+      @include transition(none);
+    }
+
+    .delete_block_button {
+      display: inline;
+    }
+  }
+
+  &.selected:not(:hover) {
+    .block_background {
+      fill: color_variable("block_hover");
+    }
+
+    .block_border {
+      stroke: color_variable("block_hover_border");
+    }
+  }
+
+  .block_background {
+    @include transition(
+      #{fill 0.2s easing($ease-in),
+      stroke 0.2s easing($ease-in)}
+    );
+  }
+
+  .block_border {
+    @include transition(
+      #{fill 0.2s easing($ease-in),
+      stroke 0.2s easing($ease-in)}
+    );
+  }
+
+  .delete_block_button {
+    display: none;
+    cursor: pointer;
+
+    .outline {
+      fill: color_variable("background");
+
+      stroke: color_variable("molecule_border");
+      stroke-width: 2px;
+    }
+
+    .icon {
+      color: color_variable("molecule_border");
+    }
+
+    &:hover {
+      .outline {
+        stroke: color_variable("molecule_hover_text");
+      }
+
+      .icon {
+        color: color_variable("molecule_hover_text");
+      }
+    }
+  }
+
+  g.image {
+    g {
+      fill: white;
+      width: 100%;
+      height: 100%;
+
+      ::ng-deep text {
+        isolation: isolate;
+        // TODO determine best way to handle font size (had been font-size:10px, but best size depends on the svg dimensions; currently setting directly in the svgs)
+        font-family: Arial-BoldMT, Arial;
+        font-weight: 400;
+      }
+
+      ::ng-deep .connection_out {
+        stroke: white;
+        fill: #ffb800;
+        stroke-miterlimit: 10;
+      }
+
+      ::ng-deep .connection_in {
+        stroke: white;
+        fill: #e64fff;
+        stroke-miterlimit: 10;
+      }
+    }
+  }
+}

@@ -1,0 +1,259 @@
+/**************** app-build css ******************/
+
+@import "../../styles/core";
+
+$analyze_panel_width: 420px;
+
+//**************** custom mixins ******************
+
+//**************** css ******************
+
+:host {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: get_index(interface_canvas);
+
+  display: flex;
+
+  app-sidebar {
+    z-index: get_index(interface_sidebar);
+  }
+
+  .canvas_container {
+    position: relative;
+    flex-grow: 1;
+  }
+
+  .canvas_toolbar {
+    position: absolute;
+    right: $padding;
+    top: $padding;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    gap: $padding * 0.5;
+
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: $padding * 0.25;
+
+      padding: ($padding * 0.5) ($padding * 0.75);
+
+      font: {
+        size: 0.75rem;
+      }
+    }
+  }
+
+  .canvas {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 100;
+
+    display: flex;
+
+    @include translate(
+      -50%,
+      (-160px * 0.5)
+    ); //-50% use -px to keep the molecule from jumping around between short / tall blocks
+
+    block {
+      position: relative;
+
+      &:nth-child(0) {
+        z-index: 100;
+      }
+
+      &:nth-child(1) {
+        z-index: 90;
+      }
+
+      &:nth-child(2) {
+        z-index: 80;
+      }
+
+      & + block {
+        margin: {
+          left: -44px; //related to tabWidth in block.component.ts - if you adjust one, adjust the other
+        }
+      }
+    }
+  }
+
+  .canvas_controls {
+    position: absolute;
+    right: $padding;
+    bottom: $padding;
+    z-index: 100;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    .button {
+      & + .button {
+        margin: {
+          top: $padding * 0.5;
+        }
+      }
+    }
+  }
+
+  .canvas_analyze {
+    position: absolute;
+    //    left: 0px;
+    left: 100%;
+    top: 0px;
+    bottom: 0px;
+    z-index: get_index(modal);
+
+    width: 420px;
+
+    padding: $padding;
+
+    background: {
+      color: color_variable("modal_background");
+    }
+
+    border: {
+      left: 1px solid color_variable("interface_border");
+    }
+
+    @include box-sizing(border-box);
+    @include transition(#{transform 0.2s easing($ease-out-cubic)});
+
+    &.active {
+      @include translate(-100%, 0%);
+    }
+
+    .output {
+      margin: {
+        bottom: $padding;
+      }
+    }
+
+    .button {
+      display: inline-block;
+    }
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min: {
+      width: 36px;
+      height: 36px;
+    }
+
+    background: {
+      color: color_variable("button_background");
+    }
+
+    padding: ($padding * 0.5);
+
+    border: 1px solid color_variable("interface_border");
+
+    @include box-sizing(border-box);
+    @include border-radius($border_radius);
+    @include transition(#{background-color 0.2s easing($ease-in)});
+
+    &:not([disabled]) {
+      cursor: pointer;
+
+      &:hover {
+        color: color_variable("background");
+        background: {
+          color: color_variable("button_hover");
+        }
+
+        @include transition(none);
+      }
+    }
+
+    &[disabled] {
+      cursor: not-allowed;
+
+      @include opacity(20);
+    }
+
+    //icon - todo change to icon class for more precise control if needed
+    svg {
+      &.inline {
+        display: inline-block;
+
+        margin: {
+          right: ($padding * 0.25);
+        }
+
+        @include scale(0.8);
+      }
+    }
+  }
+
+  .canvas_send_to_lab {
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: get_index(modal);
+
+    padding: $padding;
+
+    background: {
+      color: color_variable("modal_background");
+    }
+
+    &.active {
+      display: flex;
+    }
+
+    .button {
+      display: inline-block;
+    }
+  }
+
+  .modal_container {
+    background: {
+      color: color_variable("background");
+    }
+
+    padding: ($padding * 2);
+
+    border: 2px solid color_variable("interface_border");
+
+    @include border-radius($interface_radius);
+
+    .button {
+      min: {
+        width: 100px;
+      }
+
+      text: {
+        align: center;
+      }
+    }
+  }
+
+  .svg_workspace {
+    height: 100%;
+    width: 100%;
+
+    g {
+      transform-origin: 50% 50%;
+    }
+  }
+}

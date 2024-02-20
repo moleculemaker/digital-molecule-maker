@@ -1,6 +1,6 @@
 import { Component, Input, HostListener } from '@angular/core';
 import 'external-svg-loader';
-import { lambdaMaxToColor } from 'app/utils/colors';
+import { lambdaMaxToColor } from 'app/block-sets/color-wheel/colors';
 import { Observable } from 'rxjs';
 
 @Component({

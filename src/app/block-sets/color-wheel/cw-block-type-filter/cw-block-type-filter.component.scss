@@ -1,7 +1,7 @@
 /**************** block css ******************/
 
 @use "sass:math";
-@import "app/styles/core";
+@import "../../../dmm/styles/core";
 
 $toggle_button_count: 2;
 $sidebar_width: 500px;

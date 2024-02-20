@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CanActivateSurveyCode } from './guards/survey-code.guard';
-import { UserService } from './services/user.service';
+import { CanActivateSurveyCode } from 'app/dmm/guards/survey-code.guard';
+import { UserService } from 'app/dmm/services/user.service';
 
-import { AppBuildComponent } from './app-build/app-build.component';
-import { PromptType, SplashComponent } from './splash/splash.component';
+import { AppBuildComponent } from 'app/dmm/components/app-build/app-build.component';
+import {
+  PromptType,
+  SplashComponent,
+} from 'app/dmm/components/splash/splash.component';
 
 const routes: Routes = [
   {

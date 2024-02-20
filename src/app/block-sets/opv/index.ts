@@ -8,12 +8,12 @@ import {
 import { Injectable } from '@angular/core';
 import { getSVGViewBox } from 'app/utils/SVG';
 import { map, mergeMap, tap } from 'rxjs/operators';
-import { CWBlockTypeFilterComponent } from '../color-wheel/cw-block-type-filter/cw-block-type-filter.component';
 import { getChemicalFormula, getSMILES } from 'app/utils/formulas';
-import { BlockSet } from '../block-set';
+import { BlockSet } from 'app/block-set';
 import { OPVSidebarBlockSOComponent } from './opv-sidebar-block-so/opv-sidebar-block-so.component';
 import { OPVWorkspaceBlockSOComponent } from './opv-workspace-block-so/opv-workspace-block-so.component';
 import { OpvSoSliderComponent } from './opv-so-slider/opv-so-slider.component';
+import { CWBlockTypeFilterComponent } from '../color-wheel/cw-block-type-filter/cw-block-type-filter.component';
 
 type OPVBlockSetJSON = {
   id: string;

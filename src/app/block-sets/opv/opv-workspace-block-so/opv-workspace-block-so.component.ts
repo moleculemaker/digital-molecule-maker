@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { lambdaMaxToColor } from 'app/utils/colors';
 import * as d3 from 'd3';
 
 @Component({

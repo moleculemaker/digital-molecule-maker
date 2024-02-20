@@ -10,30 +10,31 @@ import { NgxMatomoTrackerModule } from '@ngx-matomo/tracker';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { AppBuildComponent } from './app-build/app-build.component';
-import { AppHeaderComponent } from './app-header/app-header.component';
-import { AppSidebarComponent } from './app-sidebar/app-sidebar.component';
+import { AppBuildComponent } from './dmm/components/app-build/app-build.component';
+import { AppHeaderComponent } from './dmm/components/app-header/app-header.component';
+import { AppSidebarComponent } from './dmm/components/app-sidebar/app-sidebar.component';
 
-import { BlockComponent } from './block/block.component';
-import { InplaceComponent } from './inplace/inplace.component';
-import { PanelComponent } from './panel/panel.component';
-import { SplashComponent } from './splash/splash.component';
-import { TutorialComponent } from './tutorial/tutorial.component';
+import { BlockComponent } from './dmm/components/block/block.component';
+import { InplaceComponent } from './dmm/components/inplace/inplace.component';
+import { PanelComponent } from './dmm/components/panel/panel.component';
+import { SplashComponent } from './dmm/components/splash/splash.component';
+import { TutorialComponent } from './dmm/components/tutorial/tutorial.component';
 
 import { OverlayModule } from '@angular/cdk/overlay';
-import { OverlayComponent } from './overlay/overlay.component';
+import { OverlayComponent } from './dmm/components/overlay/overlay.component';
 
-import { DraggableDirective } from './drag-drop-utilities/draggable/draggable.directive';
-import { DraggableHelperDirective } from './drag-drop-utilities/draggable/draggable-helper.directive';
+import { DraggableDirective } from './dmm/drag-drop-utilities/draggable/draggable.directive';
+import { DraggableHelperDirective } from './dmm/drag-drop-utilities/draggable/draggable-helper.directive';
 
-import { DroppableDirective } from './drag-drop-utilities/droppable/droppable.directive';
-import { DropZoneDirective } from './drag-drop-utilities/droppable/drop-zone.directive';
-import { BlockSvgComponent } from './block-svg/block-svg.component';
-import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
+import { DroppableDirective } from './dmm/drag-drop-utilities/droppable/droppable.directive';
+import { DropZoneDirective } from './dmm/drag-drop-utilities/droppable/drop-zone.directive';
+import { BlockSvgComponent } from './dmm/components/block-svg/block-svg.component';
+import { MoleculeSvgComponent } from './dmm/components/molecule-svg/molecule-svg.component';
 
-import { TrackingService } from './services/tracking.service';
-import { EnvironmentService } from './services/environment.service';
-import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
+import { TrackingService } from './dmm/services/tracking.service';
+import { EnvironmentService } from './dmm/services/environment.service';
+import { ChemicalPropertyPipe } from './dmm/pipes/chemical-property.pipe';
+
 import { CWBlockTypeFilterComponent } from './block-sets/color-wheel/cw-block-type-filter/cw-block-type-filter.component';
 import { CWColorFilterComponent } from './block-sets/color-wheel/cw-color-filter/cw-color-filter.component';
 import { CWSidebarBlockLambdaMaxComponent } from './block-sets/color-wheel/cw-sidebar-block-lambda-max/cw-sidebar-block-lambda-max.component';

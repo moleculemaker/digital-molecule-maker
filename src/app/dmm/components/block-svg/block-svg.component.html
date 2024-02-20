@@ -1,0 +1,108 @@
+<svg:g
+  [attr.transform]="'translate(0 11)'"
+  class="block_container"
+  [class]="['block_' + type]"
+  [class.selected]="isInfoPanelOpen"
+  [class.not_selected]="!isInfoPanelOpen && false"
+  [class.dashes]="isAddBlock()"
+  (mouseover)="onMouseOver($event)"
+  (mouseout)="onMouseOut($event)"
+  (mousedown)="onMouseDown()"
+  (mousemove)="onMouseMove()"
+  (mouseup)="onMouseUp()"
+  xmlns:svg="http://www.w3.org/2000/svg"
+>
+  <g [style.hideen]="(viewMode$ | async) === 'function' ? '' : 'none'">
+    <path
+      [attr.d]="drawBlock()"
+      class="molecule-block"
+      [attr.fill]="
+        FunctionModeComponent?.backgroundFill?.(
+          moleculePrimaryProperty,
+          blockPrimaryProperty
+        ) ?? 'gray'
+      "
+      [attr.stroke]="
+        FunctionModeComponent?.backgroundStroke?.(
+          moleculePrimaryProperty,
+          blockPrimaryProperty
+        ) ?? 'gray'
+      "
+      [attr.stroke-dasharray]="strokeDasharray"
+      [attr.stroke-width]="strokeWidth"
+    ></path>
+    <ng-container #functionModeOutlet></ng-container>
+  </g>
+
+  <g [style.display]="(viewMode$ | async) === 'structure' ? '' : 'none'">
+    <g>
+      <path
+        class="block_background block_border"
+        [attr.d]="path"
+        [attr.stroke-dasharray]="strokeDasharray"
+        [attr.stroke-width]="strokeWidth"
+      ></path>
+    </g>
+
+    <g
+      [attr.transform]="'matrix(' + imageZoomAndPanMatrix.join(' ') + ')'"
+      class="image"
+    >
+      <g
+        #svgImage
+        *ngIf="block.svgUrl"
+        [attr.data-src]="block.svgUrl"
+        [attr.transform]="'scale(' + scale + ')'"
+        data-cache="disabled"
+      ></g>
+    </g>
+  </g>
+
+  <g class="delete_block_button" (click)="deleteBlock.emit()">
+    <circle
+      class="outline"
+      [attr.cx]="calculateDeletePositionX()"
+      [attr.cy]="calculateDeletePositionY() + 14"
+      r="12"
+    ></circle>
+
+    <g
+      class="icon"
+      [attr.transform]="
+        'translate(' +
+        (calculateDeletePositionX() - 6) +
+        ',' +
+        (calculateDeletePositionY() + 8) +
+        ') scale(' +
+        12 / 18 +
+        ')'
+      "
+    >
+      <path
+        d="M9 10.8666L2.46667 17.3999C2.22223 17.6444 1.91112 17.7666 1.53334 17.7666C1.15556 17.7666 0.844448 17.6444 0.600004 17.3999C0.355559 17.1555 0.233337 16.8444 0.233337 16.4666C0.233337 16.0888 0.355559 15.7777 0.600004 15.5333L7.13334 8.99994L0.600004 2.46661C0.355559 2.22216 0.233337 1.91105 0.233337 1.53328C0.233337 1.1555 0.355559 0.844387 0.600004 0.599943C0.844448 0.355498 1.15556 0.233276 1.53334 0.233276C1.91112 0.233276 2.22223 0.355498 2.46667 0.599943L9 7.13328L15.5333 0.599943C15.7778 0.355498 16.0889 0.233276 16.4667 0.233276C16.8444 0.233276 17.1556 0.355498 17.4 0.599943C17.6444 0.844387 17.7667 1.1555 17.7667 1.53328C17.7667 1.91105 17.6444 2.22216 17.4 2.46661L10.8667 8.99994L17.4 15.5333C17.6444 15.7777 17.7667 16.0888 17.7667 16.4666C17.7667 16.8444 17.6444 17.1555 17.4 17.3999C17.1556 17.6444 16.8444 17.7666 16.4667 17.7666C16.0889 17.7666 15.7778 17.6444 15.5333 17.3999L9 10.8666Z"
+        fill="currentColor"
+      ></path>
+    </g>
+  </g>
+</svg:g>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="overlayOrigin"
+  [cdkConnectedOverlayOpen]="isInfoPanelOpen"
+  [cdkConnectedOverlayPositions]="positionPairs"
+>
+  <dmm-overlay
+    *ngIf="block"
+    [molecule]="molecule"
+    [block]="block"
+    [tags]="[]"
+    (close)="isInfoPanelOpen = !isInfoPanelOpen"
+  >
+    <ng-template let-overlay #templateAdditionalProperties>
+      <!-- <p>testing that this will show up</p> -->
+    </ng-template>
+
+    <ng-template let-overlay #templateFooter> </ng-template>
+  </dmm-overlay>
+</ng-template>

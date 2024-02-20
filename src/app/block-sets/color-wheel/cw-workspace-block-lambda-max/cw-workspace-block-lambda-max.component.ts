@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { lambdaMaxToColor } from 'app/utils/colors';
+import { lambdaMaxToColor } from 'app/block-sets/color-wheel/colors';
 
 @Component({
   selector: 'dmm-cw-workspace-block-lambda-max',
