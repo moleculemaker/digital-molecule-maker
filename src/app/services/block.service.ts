@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
+import { delayWhen, map, tap } from 'rxjs/operators';
 import { Block, BlockSet, BlockType } from '../models';
+import { getSVGViewBox } from '../utils/svg';
 
 export enum BlockSetId {
   ColorWheel = 'COLOR_WHEEL',
@@ -28,6 +29,28 @@ export class BlockService {
       }),
     };
 
-    return this.http.get<BlockSet>(this.urls.get(blockSetId)!, httpOptions);
+    return this.http
+      .get<BlockSet>(this.urls.get(blockSetId)!, httpOptions)
+      .pipe(
+        delayWhen((blockSet) =>
+          forkJoin(
+            [
+              ...blockSet.blocks.start,
+              ...blockSet.blocks.middle,
+              ...blockSet.blocks.end,
+            ].map((block) => this.patchSvgDimensions(block)),
+          ),
+        ),
+      );
+  }
+
+  private patchSvgDimensions(block: Block) {
+    return this.http.get(block.svgUrl, { responseType: 'text' }).pipe(
+      map(getSVGViewBox),
+      tap(([x, y, width, height]) => {
+        block.width = width;
+        block.height = height;
+      }),
+    );
   }
 }
