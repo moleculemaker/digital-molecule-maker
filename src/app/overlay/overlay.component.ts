@@ -62,7 +62,9 @@ export class OverlayComponent implements OnInit {
   addToCart = new EventEmitter<void>();
 
   @ContentChild('templateAdditionalProperties')
-  templateAdditionalProperties: TemplateRef<HTMLElement> | null = null;
+  templateAdditionalProperties: TemplateRef<{
+    $implicit: OverlayComponent;
+  }> | null = null;
   @ContentChild('templateFooter')
   templateFooter: TemplateRef<HTMLElement> | null = null;
 
