@@ -14,7 +14,6 @@ import { BlockSize } from '../block/block.component';
 import {
   Block,
   BlockSet,
-  BlockType,
   Coordinates,
   getBlockSetScale,
   Molecule,
@@ -41,7 +40,6 @@ export class AppBuildComponent implements OnInit {
   isShowingSendToLab = false;
   isShowingCart = false;
 
-  currentTab = BlockType.Start;
   BlockSize = BlockSize; // for template
   svgScale = 1;
 
@@ -217,7 +215,7 @@ export class AppBuildComponent implements OnInit {
     if (this.hoveredMolecule != undefined) {
       this.moleculeList[this.hoveredMolecule].blockList = this.moleculeList[
         this.hoveredMolecule
-      ].blockList.filter((block) => block.type != event.data.type);
+      ].blockList.filter((block) => block.index != event.data.index);
       this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
     } else {
       // if (event.data.type == BlockType.Start) {
@@ -233,7 +231,6 @@ export class AppBuildComponent implements OnInit {
     // object to the service, and then subscribing to the service for updates
     this.workspaceService.updateMoleculeList(this.moleculeList);
     this.changeDetector.detectChanges();
-    event.data.selected = true;
     this.closeOverlay.next();
   }
 

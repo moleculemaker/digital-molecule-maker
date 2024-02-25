@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable } from 'rxjs';
 import { delayWhen, map, tap } from 'rxjs/operators';
-import { Block, BlockSet, BlockType } from '../models';
+import { Block, BlockSet } from '../models';
 import { getSVGViewBox } from '../utils/svg';
 
 export enum BlockSetId {
@@ -34,11 +34,7 @@ export class BlockService {
       .pipe(
         delayWhen((blockSet) =>
           forkJoin(
-            [
-              ...blockSet.blocks.start,
-              ...blockSet.blocks.middle,
-              ...blockSet.blocks.end,
-            ].map((block) => this.patchSvgDimensions(block)),
+            blockSet.blocks.map((block) => this.patchSvgDimensions(block)),
           ),
         ),
       );

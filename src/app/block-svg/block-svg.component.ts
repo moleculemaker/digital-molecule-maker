@@ -12,7 +12,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Block, BlockSet, BlockType } from '../models';
+import { Block, BlockSet } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 
@@ -33,16 +33,13 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   block!: Block;
 
   @Input()
-  blockSet?: BlockSet;
+  blockSet!: BlockSet;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
 
-  @Input()
-  overlayOrigin!: CdkOverlayOrigin;
-
   @Output()
-  deleteBlock = new EventEmitter<BlockType>();
+  deleteBlock = new EventEmitter<number>();
 
   blockWidth = 100;
   blockHeight = 100;
@@ -80,6 +77,10 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     workspaceService.functionMode$.subscribe((enabled) => {
       this.functionModeEnabled = enabled;
     });
+  }
+
+  get blockType() {
+    return this.isStart() ? 'start' : this.isEnd() ? 'end' : 'middle';
   }
 
   ngOnInit(): void {
@@ -141,10 +142,6 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
       this.dragging = false;
     }
     this.mouseDown = false;
-  }
-
-  onClick(): void {
-    alert(this.block.type);
   }
 
   get centerX() {
@@ -322,17 +319,17 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   // check if it's a starting block
   isStart() {
-    return this.block.type === BlockType.Start;
+    return this.block.index === 0;
   }
 
   // check if it's a middle block
   isMiddle() {
-    return this.block.type === BlockType.Middle;
+    return !this.isStart() && !this.isEnd();
   }
 
   // check if it's an ending block
   isEnd() {
-    return this.block.type === BlockType.End;
+    return this.block.index === this.blockSet.moleculeSize - 1;
   }
 
   calculateDeletePositionX() {
@@ -352,6 +349,6 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   removeBlock() {
-    this.deleteBlock.emit(this.block.type);
+    this.deleteBlock.emit(this.block.index);
   }
 }

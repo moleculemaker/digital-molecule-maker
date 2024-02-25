@@ -3,11 +3,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
+import { Block } from '../../models';
 
 export interface DroppableEvent {
   nativeEvent: PointerEvent;
   group: string;
-  data: any;
+  data: Block;
 }
 
 @Injectable({

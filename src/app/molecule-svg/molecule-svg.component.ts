@@ -17,7 +17,6 @@ import { Observable, Subscription } from 'rxjs';
 import {
   aggregateProperty,
   BlockSet,
-  BlockType,
   Molecule,
   Coordinates,
   BlockPropertyDefinition,
@@ -33,7 +32,7 @@ export class MoleculeSvgComponent implements OnInit {
   interactive = true;
 
   @Input()
-  blockSet?: BlockSet;
+  blockSet!: BlockSet;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
@@ -142,10 +141,10 @@ export class MoleculeSvgComponent implements OnInit {
     this.deleteMolecule.emit();
   }
 
-  onRemoveBlock(type: BlockType) {
+  onRemoveBlock(index: number) {
     if (this.molecule) {
       this.molecule.blockList = this.molecule?.blockList.filter(
-        (block) => block.type != type,
+        (block) => block.index != index,
       );
       if (!this.molecule.blockList.length) {
         this.removeMolecule();

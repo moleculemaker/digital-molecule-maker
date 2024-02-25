@@ -58,7 +58,6 @@
       [blockSet]="blockSet"
       (deleteBlock)="onRemoveBlock($event)"
       [closeOverlayObservable]="closeOverlayObservable"
-      [overlayOrigin]="trigger"
     ></g>
   </g>
 
@@ -96,7 +95,7 @@
 >
   <dmm-overlay
     *ngIf="blockSet && molecule"
-    [blockOrMolecule]="molecule"
+    [molecule]="molecule"
     [blockSet]="blockSet"
     [tags]="[]"
     [enableAddToCart]="molecule.blockList.length == 3"
