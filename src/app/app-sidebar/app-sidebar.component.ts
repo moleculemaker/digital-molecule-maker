@@ -114,6 +114,9 @@ export class AppSidebarComponent implements OnInit {
   getBlockData(): Block[] {
     const blockSet = this.blockSet;
     if (!blockSet) return [];
+
+    const byIndex = (a: Block, b: Block) => a.index - b.index;
+
     if (this.functionModeEnabled) {
       const currentMolecule = this.moleculeList[0];
 
@@ -121,7 +124,7 @@ export class AppSidebarComponent implements OnInit {
         blockSet.blocks.filter((block) => block.index === index);
 
       if (this.colorFilter.length == 0) {
-        return blockSet.blocks;
+        return blockSet.blocks.sort(byIndex);
       }
 
       const startingLambdaMax = currentMolecule
@@ -165,7 +168,7 @@ export class AppSidebarComponent implements OnInit {
 
       enumerate(0, [], startingLambdaMax);
 
-      return [...viableBlocks];
+      return [...viableBlocks].sort(byIndex);
     } else {
       let blocks: Block[] = [];
       const blockTypes = this.typeFilter.length
@@ -194,7 +197,7 @@ export class AppSidebarComponent implements OnInit {
             });
         });
       }
-      return blocks;
+      return blocks.sort(byIndex);
     }
   }
 

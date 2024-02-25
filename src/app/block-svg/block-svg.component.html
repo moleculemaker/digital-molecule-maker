@@ -1,7 +1,6 @@
 <svg:g
   cdkOverlayOrigin
   #trigger="cdkOverlayOrigin"
-  [attr.transform]="'translate(0 11)'"
   class="block_container"
   [class]="['block_' + blockType]"
   [class.selected]="isInfoPanelOpen"
@@ -16,7 +15,7 @@
   <ng-template [ngIf]="functionModeEnabled">
     <g>
       <path
-        [attr.d]="drawBlock()"
+        [attr.d]="path"
         class="molecule-block"
         [attr.fill]="fillColor"
         [attr.stroke]="strokeColor"
@@ -48,14 +47,13 @@
     </g>
 
     <g
-      [attr.transform]="'matrix(' + imageZoomAndPanMatrix.join(' ') + ')'"
+      [attr.transform]="'matrix(' + transformMatrix.join(' ') + ')'"
       class="image"
     >
       <g
         #svgImage
         *ngIf="block.svgUrl"
         [attr.data-src]="block.svgUrl"
-        [attr.transform]="'scale(' + scale + ')'"
         data-cache="disabled"
       />
     </g>
@@ -64,8 +62,8 @@
   <g class="delete_block_button" (click)="removeBlock()">
     <circle
       class="outline"
-      [attr.cx]="calculateDeletePositionX()"
-      [attr.cy]="calculateDeletePositionY() + 14"
+      [attr.cx]="deleteButtonPositionX"
+      [attr.cy]="deleteButtonPositionY"
       r="12"
     />
 
@@ -73,12 +71,12 @@
       class="icon"
       [attr.transform]="
         'translate(' +
-        (calculateDeletePositionX() - 6) +
+        deleteButtonPositionX +
         ',' +
-        (calculateDeletePositionY() + 8) +
+        deleteButtonPositionY +
         ') scale(' +
         12 / 18 +
-        ')'
+        ') translate(-9, -9)'
       "
     >
       <path

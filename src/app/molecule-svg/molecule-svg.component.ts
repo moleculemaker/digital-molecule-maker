@@ -21,6 +21,11 @@ import {
   Coordinates,
   BlockPropertyDefinition,
 } from '../models';
+import {
+  BLOCK_HEIGHT,
+  BLOCK_WIDTH,
+  BORDER_WIDTH,
+} from '../block-svg/block-svg.component';
 
 @Component({
   selector: '[dmm-molecule-svg]',
@@ -54,6 +59,14 @@ export class MoleculeSvgComponent implements OnInit {
   molecule!: Molecule;
 
   constructor(private changeDetector: ChangeDetectorRef) {}
+
+  get moleculeWidth() {
+    return this.blockSet.moleculeSize * BLOCK_WIDTH + 2 * BORDER_WIDTH;
+  }
+
+  get moleculeHeight() {
+    return BLOCK_HEIGHT + 2 * BORDER_WIDTH;
+  }
 
   ngOnInit(): void {
     this.changeDetector.detectChanges();

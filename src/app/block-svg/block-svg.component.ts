@@ -16,6 +16,22 @@ import { Block, BlockSet } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 
+const BLOCK_CONTENT_WIDTH = 100;
+const BLOCK_CONTENT_HEIGHT = 100;
+const PADDING_X = 20 * 4;
+const PADDING_Y = 20 * 1.5;
+const BORDER_RADIUS = 4;
+const BORDER_WIDTH = 15;
+const TAB_OFFSET = 20; //px down from top
+const TAB_HEIGHT = 28; //px tall (middle of tab)
+const TAB_WIDTH = 20; //px wide tab
+
+const BLOCK_WIDTH = BLOCK_CONTENT_WIDTH + PADDING_X;
+const BLOCK_HEIGHT = BLOCK_CONTENT_HEIGHT + PADDING_Y;
+
+// `molecule-svg` requires these values for layout
+export { BLOCK_WIDTH, BLOCK_HEIGHT, BORDER_WIDTH };
+
 @Component({
   selector: '[dmm-block-svg]',
   templateUrl: './block-svg.component.html',
@@ -24,10 +40,6 @@ import { WorkspaceService } from '../services/workspace.service';
 export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   lambdaMax: number = 0;
-
-  @Input()
-  asIcon = false; // currently using this just to control x offset when rendering inside the properties overlay
-  // consider handling that offset in the parent component, in the containing <g>
 
   @Input()
   block!: Block;
@@ -41,37 +53,34 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   @Output()
   deleteBlock = new EventEmitter<number>();
 
-  blockWidth = 100;
-  blockHeight = 100;
-  scale = 1;
-
-  padding = {
-    x: 20 * 4,
-    y: 20 * 1.5,
-  };
-
-  strokeWidth = 4;
   strokeDasharray = '';
-
-  borderRadius = 4;
-  borderOffset = 15;
-
-  tabOffset = 20; //px down from top
-  tabHeight = 28; //px tall (middle of tab)
-  tabWidth = 20; //px wide tab
-
-  imageZoomAndPanMatrix = [1, 0, 0, 1, 60, 20 + this.borderOffset];
-
-  path = '';
+  strokeWidth = 5;
 
   isInfoPanelOpen = false;
   _eventsSubscription?: Subscription;
 
-  popupoffsetX = 0;
-
   positionPairs!: ConnectionPositionPair[];
 
   functionModeEnabled = false;
+
+  // layout properties
+  transformMatrix = [1, 0, 0, 1, 0, 0];
+
+  scale = 1;
+  minX = 0;
+  maxX = 0;
+  minY = 0;
+  maxY = 0;
+  centerX = 0;
+  centerY = 0;
+  imageWidth = 0;
+  imageHeight = 0;
+  imageOriginX = 0;
+  imageOriginY = 0;
+  deleteButtonPositionX = 0;
+  deleteButtonPositionY = 0;
+
+  path = '';
 
   constructor(public workspaceService: WorkspaceService) {
     workspaceService.functionMode$.subscribe((enabled) => {
@@ -100,6 +109,39 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
         overlayY: 'top',
       },
     ];
+
+    this.minX = BORDER_WIDTH + BLOCK_WIDTH * this.block.index;
+    this.maxX = this.minX + BLOCK_WIDTH;
+    this.centerX = (this.minX + this.maxX) / 2;
+
+    this.minY = BORDER_WIDTH;
+    this.maxY = BORDER_WIDTH + BLOCK_HEIGHT;
+    this.centerY = (this.minY + this.maxY) / 2;
+
+    this.deleteButtonPositionX = this.centerX;
+    this.deleteButtonPositionY = BLOCK_HEIGHT + 14;
+
+    this.scale = Math.min(
+      BLOCK_CONTENT_HEIGHT / this.block.height,
+      BLOCK_CONTENT_WIDTH / this.block.width,
+    );
+
+    this.imageWidth = this.block.width * this.scale;
+    this.imageHeight = this.block.height * this.scale;
+
+    this.imageOriginX = this.minX + (BLOCK_WIDTH - this.imageWidth) / 2;
+    this.imageOriginY = this.minY + (BLOCK_HEIGHT - this.imageHeight) / 2;
+
+    this.transformMatrix = [
+      this.scale,
+      0,
+      0,
+      this.scale,
+      this.imageOriginX,
+      this.imageOriginY,
+    ];
+
+    this.path = this.drawBlock();
   }
 
   ngOnDestroy() {
@@ -144,25 +186,6 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     this.mouseDown = false;
   }
 
-  get centerX() {
-    let minX = this.strokeWidth + this.borderOffset;
-    if (!this.asIcon && this.isMiddle()) {
-      minX += this.blockWidth + this.padding.x;
-      this.imageZoomAndPanMatrix[4] = minX + 60;
-    } else if (!this.asIcon && this.isEnd()) {
-      minX += 2 * (this.blockWidth + this.padding.x);
-      this.imageZoomAndPanMatrix[4] = minX + 60;
-    }
-    let maxX = this.blockWidth + this.padding.x + minX;
-    return (minX + maxX) / 2;
-  }
-
-  get centerY() {
-    let minY = this.strokeWidth + this.borderOffset;
-    let maxY = this.blockHeight + this.padding.y + this.borderOffset;
-    return (minY + maxY) / 2;
-  }
-
   get textColor() {
     return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
   }
@@ -175,26 +198,10 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     return this.fillColor.darker();
   }
 
-  drawBlock() {
-    this.scale = Math.min(
-      this.blockHeight / this.block.height,
-      this.blockWidth / this.block.width,
-    );
+  private drawBlock() {
     let path = '';
-    let hasRightTab = !this.isEnd() && !this.isAddBlock() ? true : false;
-    let minX = this.strokeWidth + this.borderOffset;
-    let minY = this.strokeWidth + this.borderOffset;
-
-    if (!this.asIcon && this.isMiddle()) {
-      minX += this.blockWidth + this.padding.x;
-      this.imageZoomAndPanMatrix[4] = minX + 60;
-    } else if (!this.asIcon && this.isEnd()) {
-      minX += 2 * (this.blockWidth + this.padding.x);
-      this.imageZoomAndPanMatrix[4] = minX + 60;
-    }
-
-    let maxX = this.blockWidth + this.padding.x + minX;
-    let maxY = this.blockHeight + this.padding.y + this.borderOffset;
+    let hasRightTab = !this.isEnd() && !this.isAddBlock();
+    const { minX, maxX, minY, maxY } = this;
 
     let closePath = true;
 
@@ -209,23 +216,18 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
     //right tab (override radius)
     if (hasRightTab) {
-      coords.push({ x: maxX, y: this.tabOffset + this.borderOffset });
+      coords.push({ x: maxX, y: TAB_OFFSET + BORDER_WIDTH });
       coords.push({
-        x: maxX + this.tabWidth,
-        y: this.tabOffset + this.tabWidth + this.borderOffset,
+        x: maxX + TAB_WIDTH,
+        y: TAB_OFFSET + TAB_WIDTH + BORDER_WIDTH,
       });
       coords.push({
-        x: maxX + this.tabWidth,
-        y: this.tabOffset + this.tabWidth + this.tabHeight + this.borderOffset,
+        x: maxX + TAB_WIDTH,
+        y: TAB_OFFSET + TAB_WIDTH + TAB_HEIGHT + BORDER_WIDTH,
       });
       coords.push({
         x: maxX,
-        y:
-          this.tabOffset +
-          this.tabWidth +
-          this.tabHeight +
-          this.tabWidth +
-          this.borderOffset,
+        y: TAB_OFFSET + TAB_WIDTH + TAB_HEIGHT + TAB_WIDTH + BORDER_WIDTH,
       });
     }
 
@@ -239,26 +241,21 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.isStart() && !this.isAddBlock()) {
       coords.push({
         x: minX,
-        y:
-          this.tabOffset +
-          this.tabWidth +
-          this.tabHeight +
-          this.tabWidth +
-          this.borderOffset,
+        y: TAB_OFFSET + TAB_WIDTH + TAB_HEIGHT + TAB_WIDTH + BORDER_WIDTH,
       });
       coords.push({
-        x: minX + this.tabWidth,
-        y: this.tabOffset + this.tabWidth + this.tabHeight + this.borderOffset,
+        x: minX + TAB_WIDTH,
+        y: TAB_OFFSET + TAB_WIDTH + TAB_HEIGHT + BORDER_WIDTH,
       });
       coords.push({
-        x: minX + this.tabWidth,
-        y: this.tabOffset + this.tabWidth + this.borderOffset,
+        x: minX + TAB_WIDTH,
+        y: TAB_OFFSET + TAB_WIDTH + BORDER_WIDTH,
       });
-      coords.push({ x: minX, y: this.tabOffset + this.borderOffset });
+      coords.push({ x: minX, y: TAB_OFFSET + BORDER_WIDTH });
     }
 
     //generate rounded corner path
-    path = this.createRoundedPath(coords, this.borderRadius, closePath);
+    path = this.createRoundedPath(coords, BORDER_RADIUS, closePath);
 
     return path;
   }
@@ -314,7 +311,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
 
   // Check if the block is placeholder for another block
   isAddBlock() {
-    return !this.asIcon && !this.block.svgUrl ? true : false;
+    return !this.block.svgUrl;
   }
 
   // check if it's a starting block
@@ -322,30 +319,9 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     return this.block.index === 0;
   }
 
-  // check if it's a middle block
-  isMiddle() {
-    return !this.isStart() && !this.isEnd();
-  }
-
   // check if it's an ending block
   isEnd() {
     return this.block.index === this.blockSet.moleculeSize - 1;
-  }
-
-  calculateDeletePositionX() {
-    let minX = this.strokeWidth + this.borderOffset;
-
-    if (this.isMiddle()) {
-      minX += this.blockWidth + this.padding.x;
-    } else if (this.isEnd()) {
-      minX += 2 * (this.blockWidth + this.padding.x);
-    }
-
-    return (this.blockWidth + this.padding.x) / 2 + minX;
-  }
-
-  calculateDeletePositionY() {
-    return this.blockHeight + this.padding.y;
   }
 
   removeBlock() {
