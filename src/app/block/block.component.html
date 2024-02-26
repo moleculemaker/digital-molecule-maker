@@ -95,7 +95,9 @@
         font-size="20px"
         [attr.fill]="textColor"
       >
-        +{{ lookupProperty([block], blockSet, blockSet.primaryProperty) }}
+        +{{
+          lookupProperty([block], blockSet, blockSet.functionalProperties[0])
+        }}
         nm
       </text>
 

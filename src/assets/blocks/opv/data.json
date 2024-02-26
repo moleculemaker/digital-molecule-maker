@@ -11,6 +11,18 @@
     "label": "Molecular Weight",
     "displayStrategy": "default"
   },
+  "functionalProperties": [
+    {
+      "key": "SO_mean",
+      "label": "Mean Predicted SO",
+      "displayStrategy": "default"
+    },
+    {
+      "key": "T80_mean",
+      "label": "Mean Predicted T80",
+      "displayStrategy": "default"
+    }
+  ],
   "firstTierProperties": [
     {
       "key": "smiles",

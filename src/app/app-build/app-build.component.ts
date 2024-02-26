@@ -25,7 +25,6 @@ import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.servi
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { CartService } from '../services/cart.service';
-import { lambdaMaxToColor } from '../utils/colors';
 
 @UntilDestroy()
 @Component({

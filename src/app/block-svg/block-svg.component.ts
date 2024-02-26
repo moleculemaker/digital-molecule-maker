@@ -12,7 +12,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Block, BlockSet } from '../models';
+import { Block, BlockSet, Molecule } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 import { lookupProperty } from '../lookup';
@@ -40,10 +40,10 @@ export { BLOCK_WIDTH, BLOCK_HEIGHT, BORDER_WIDTH };
 })
 export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
-  lambdaMax: number = 0;
+  block!: Block;
 
   @Input()
-  block!: Block;
+  molecule!: Molecule;
 
   @Input()
   blockSet!: BlockSet;
@@ -188,11 +188,21 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get textColor() {
-    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
+    const lambdaMax = +lookupProperty(
+      this.molecule.blockList,
+      this.blockSet,
+      this.blockSet.functionalProperties[0],
+    );
+    return lambdaMax < 380 ? this.fillColor.darker() : 'white';
   }
 
   get fillColor() {
-    return lambdaMaxToColor(this.lambdaMax);
+    const lambdaMax = +lookupProperty(
+      this.molecule.blockList,
+      this.blockSet,
+      this.blockSet.functionalProperties[0],
+    );
+    return lambdaMaxToColor(lambdaMax);
   }
 
   get strokeColor() {

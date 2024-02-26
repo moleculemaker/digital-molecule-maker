@@ -87,10 +87,12 @@ export class BlockComponent implements OnInit {
   }
 
   hovered = false;
+
   @HostListener('pointerenter')
   onPointerEnter() {
     this.hovered = true;
   }
+
   @HostListener('pointerleave')
   onPointerLeave() {
     this.hovered = false;
@@ -211,14 +213,6 @@ export class BlockComponent implements OnInit {
     let minY = this.strokeWidth;
     let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
     return (minY + maxY) / 2;
-  }
-
-  get lambdaMax() {
-    return lookupProperty(
-      [this.block],
-      this.blockSet,
-      this.blockSet.primaryProperty,
-    );
   }
 
   //********************************************
@@ -393,7 +387,12 @@ export class BlockComponent implements OnInit {
   }
 
   get textColor() {
-    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
+    const lambdaMax = lookupProperty(
+      [this.block],
+      this.blockSet,
+      this.blockSet.functionalProperties[0],
+    );
+    return lambdaMax < 380 ? this.fillColor.darker() : 'white';
   }
 
   get fillColor() {
@@ -402,7 +401,7 @@ export class BlockComponent implements OnInit {
         lookupProperty(
           [this.block],
           this.blockSet,
-          this.blockSet.primaryProperty,
+          this.blockSet.functionalProperties[0],
         ),
       ),
     );

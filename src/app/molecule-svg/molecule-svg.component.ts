@@ -178,6 +178,4 @@ export class MoleculeSvgComponent implements OnInit {
   addMoleculeToCart() {
     this.addToCart.emit();
   }
-
-  getPredictedProperty = lookupProperty;
 }

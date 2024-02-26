@@ -57,14 +57,8 @@
   <g class="blocks" *ngFor="let block of molecule?.blockList">
     <g
       dmm-block-svg
-      [lambdaMax]="
-        +getPredictedProperty(
-          molecule.blockList,
-          blockSet!,
-          blockSet!.primaryProperty
-        )
-      "
       [block]="block"
+      [molecule]="molecule"
       [blockSet]="blockSet"
       (deleteBlock)="onRemoveBlock($event)"
       [closeOverlayObservable]="closeOverlayObservable"

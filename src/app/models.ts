@@ -20,6 +20,7 @@ export interface BlockSet {
   moleculeSize: number;
   labelProperty: ChemicalPropertyDefinition;
   primaryProperty: ChemicalPropertyDefinition;
+  functionalProperties: ChemicalPropertyDefinition[];
   firstTierProperties: ChemicalPropertyDefinition[];
   secondTierProperties: ChemicalPropertyDefinition[];
   blocks: Block[][];

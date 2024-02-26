@@ -11,6 +11,13 @@
     "label": "Lambda Max Shift (nm)",
     "displayStrategy": "default"
   },
+  "functionalProperties": [
+    {
+      "key": "lambdaMaxShift",
+      "label": "Lambda Max Shift (nm)",
+      "displayStrategy": "default"
+    }
+  ],
   "firstTierProperties": [
     {
       "key": "chemicalFormula",
