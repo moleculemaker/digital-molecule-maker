@@ -13,6 +13,7 @@ import 'external-svg-loader';
 import { Block, BlockSet } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
+import { lookupProperty } from '../lookup';
 
 @Component({
   selector: 'block',
@@ -213,7 +214,11 @@ export class BlockComponent implements OnInit {
   }
 
   get lambdaMax() {
-    return this.block.properties['lambdaMaxShift'];
+    return lookupProperty(
+      [this.block],
+      this.blockSet,
+      this.blockSet.primaryProperty,
+    );
   }
 
   //********************************************
@@ -392,12 +397,22 @@ export class BlockComponent implements OnInit {
   }
 
   get fillColor() {
-    return lambdaMaxToColor(this.block.properties['lambdaMaxShift']);
+    return lambdaMaxToColor(
+      Number(
+        lookupProperty(
+          [this.block],
+          this.blockSet,
+          this.blockSet.primaryProperty,
+        ),
+      ),
+    );
   }
 
   get strokeColor() {
     return this.fillColor.darker();
   }
+
+  lookupProperty = lookupProperty;
 }
 
 export enum BlockSize {

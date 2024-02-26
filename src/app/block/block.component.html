@@ -95,7 +95,8 @@
         font-size="20px"
         [attr.fill]="textColor"
       >
-        +{{ block.properties["lambdaMaxShift"] }} nm
+        +{{ lookupProperty([block], blockSet, blockSet.primaryProperty) }}
+        nm
       </text>
 
       <!-- + add block icon -->

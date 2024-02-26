@@ -303,7 +303,7 @@
           <div class="formula">
             <div
               *ngIf="
-                block.properties[blockSet!.labelProperty.key]
+                lookupProperty([block], blockSet!, blockSet!.labelProperty)
                   | chemicalProperty: blockSet!.labelProperty.displayStrategy;
                 let label
               "
@@ -333,7 +333,7 @@
           </div>
           <div class="weight">
             {{ blockSet!.primaryProperty.label }}:
-            {{ block.properties[blockSet!.primaryProperty.key] }}
+            {{ lookupProperty([block], blockSet!, blockSet!.primaryProperty) }}
           </div>
         </div>
 

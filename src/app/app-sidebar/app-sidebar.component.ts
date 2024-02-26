@@ -1,12 +1,6 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { BlockSize } from '../block/block.component';
-import {
-  Block,
-  BlockSet,
-  Molecule,
-  aggregateProperty,
-  getBlockSetScale,
-} from '../models';
+import { Block, BlockSet, Molecule, getBlockSetScale } from '../models';
 import Fuse from 'fuse.js';
 import {
   animate,
@@ -17,6 +11,7 @@ import {
 } from '@angular/animations';
 import { WorkspaceService } from '../services/workspace.service';
 import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
+import { applyTargetFilter, FilterDefinition, lookupProperty } from '../lookup';
 
 @Component({
   selector: 'app-sidebar',
@@ -47,9 +42,11 @@ export class AppSidebarComponent implements OnInit {
     if (blockSet) {
       const processBlockArray = (blocks: Block[]) =>
         blocks.forEach((block) => {
-          this.labelList.push(block.properties[blockSet.labelProperty.key]);
+          this.labelList.push(
+            String(lookupProperty([block], blockSet, blockSet.labelProperty)),
+          );
         });
-      processBlockArray(blockSet.blocks);
+      processBlockArray(blockSet.blocks.flat());
       this.fuse = new Fuse(this.labelList, {
         includeScore: true,
         isCaseSensitive: true,
@@ -115,60 +112,23 @@ export class AppSidebarComponent implements OnInit {
     const blockSet = this.blockSet;
     if (!blockSet) return [];
 
-    const byIndex = (a: Block, b: Block) => a.index - b.index;
-
     if (this.functionModeEnabled) {
-      const currentMolecule = this.moleculeList[0];
-
-      const getBlocksAt = (index: number): Block[] =>
-        blockSet.blocks.filter((block) => block.index === index);
-
       if (this.colorFilter.length == 0) {
-        return blockSet.blocks.sort(byIndex);
+        return blockSet.blocks.flat();
       }
-
-      const startingLambdaMax = currentMolecule
-        ? aggregateProperty(currentMolecule, blockSet.primaryProperty)
-        : 0;
-
-      const excludedIndices = new Set(
-        currentMolecule?.blockList.map((block) => block.index),
-      );
-
-      const viableBlocks = new Set<Block>();
-
-      const enumerate = (
-        curIndex: number,
-        curBlocks: Block[],
-        accumulatedLambdaMax: number,
-      ) => {
-        if (curIndex === blockSet.moleculeSize) {
-          if (
-            this.colorFilter.some((color) => {
+      return applyTargetFilter(
+        {
+          select: [blockSet.primaryProperty],
+          accept: ([lambdaMax]) => {
+            return this.colorFilter.some((color) => {
               const { min, max } = LambdaMaxRangeForColor[color];
-              return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
-            })
-          ) {
-            curBlocks.forEach((block) => viableBlocks.add(block));
-          }
-          return;
-        }
-        if (excludedIndices.has(curIndex)) {
-          enumerate(curIndex + 1, curBlocks, accumulatedLambdaMax);
-        } else {
-          for (const nextBlock of getBlocksAt(curIndex)) {
-            enumerate(
-              curIndex + 1,
-              [...curBlocks, nextBlock],
-              accumulatedLambdaMax + nextBlock.properties.lambdaMaxShift,
-            );
-          }
-        }
-      };
-
-      enumerate(0, [], startingLambdaMax);
-
-      return [...viableBlocks].sort(byIndex);
+              return lambdaMax >= min && lambdaMax <= max;
+            });
+          },
+        },
+        this.moleculeList[0]?.blockList ?? [],
+        blockSet,
+      );
     } else {
       let blocks: Block[] = [];
       const blockTypes = this.typeFilter.length
@@ -177,6 +137,7 @@ export class AppSidebarComponent implements OnInit {
       if (this.blockSet) {
         blockTypes.forEach((blockType) => {
           blockSet.blocks
+            .flat()
             ?.filter((block) => {
               if (block.index === 0) {
                 return blockType === 'start';
@@ -189,7 +150,9 @@ export class AppSidebarComponent implements OnInit {
             ?.forEach((block) => {
               if (
                 this.filteredBlocks.some(
-                  (e) => e === block.properties[blockSet.labelProperty.key],
+                  (e) =>
+                    e ===
+                    lookupProperty([block], blockSet, blockSet.labelProperty),
                 )
               ) {
                 blocks.push(block);
@@ -197,7 +160,7 @@ export class AppSidebarComponent implements OnInit {
             });
         });
       }
-      return blocks.sort(byIndex);
+      return blocks;
     }
   }
 
@@ -273,4 +236,6 @@ export class AppSidebarComponent implements OnInit {
       console.log(error);
     }
   }
+
+  lookupProperty = lookupProperty;
 }

@@ -15,6 +15,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Block, BlockSet } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
+import { lookupProperty } from '../lookup';
 
 const BLOCK_CONTENT_WIDTH = 100;
 const BLOCK_CONTENT_HEIGHT = 100;
@@ -327,4 +328,6 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   removeBlock() {
     this.deleteBlock.emit(this.block.index);
   }
+
+  lookupProperty = lookupProperty;
 }

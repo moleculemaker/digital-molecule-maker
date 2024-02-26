@@ -12,5 +12,5 @@
 <text x="0" y="0" transform="matrix(0.1 0 0 0.1 120.008 91.3)" font-size="200px">NO</text>
 <text x="0" y="0" transform="matrix(0.1 0 0 0.1 150.008 95.6)" font-size="150px"> 2</text>
 <path transform="matrix(0.1 0 0 0.1 -455.65 -594.4)" d="M 5731.8,6715.57 L 5725.8,6725.96 L 5579.39,6641.43 L 5579.39,6634.5 L 5585.39,6631.04 L 5731.8,6715.57 Z " />
-<path class="connection_in" stroke-width="18px"transform="matrix(0.1 0 0 0.1 -455.65 -594.4)" d="M 4606.59,6165.5 A 172.8,172.8 0 1 0 4952.19,6165.5A 172.8,172.8 0 1 0 4606.59,6165.5Z " />
+<path class="connection_in" stroke-width="18px" transform="matrix(0.1 0 0 0.1 -455.65 -594.4)" d="M 4606.59,6165.5 A 172.8,172.8 0 1 0 4952.19,6165.5A 172.8,172.8 0 1 0 4606.59,6165.5Z " />
 </svg>

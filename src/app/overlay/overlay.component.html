@@ -16,7 +16,7 @@
             <div class="value">
               <span
                 [innerHtml]="
-                  block.properties[property.key]
+                  lookupProperty([block], blockSet, property)
                     | chemicalProperty: property.displayStrategy
                 "
               ></span>
@@ -64,7 +64,7 @@
                 <div class="value">
                   <span
                     [innerHtml]="
-                      block.properties[property.key]
+                      lookupProperty([block], blockSet, property)
                         | chemicalProperty: property.displayStrategy
                     "
                   ></span>
@@ -144,7 +144,7 @@
             <div class="value">
               <span
                 [innerHtml]="
-                  getAggregateProperty(molecule, property)
+                  lookupProperty(molecule.blockList, blockSet, property)
                     | chemicalProperty: property.displayStrategy
                 "
               ></span>
@@ -193,7 +193,7 @@
                 <div class="value">
                   <span
                     [innerHtml]="
-                      getAggregateProperty(molecule, property)
+                      lookupProperty(molecule.blockList, blockSet, property)
                         | chemicalProperty: property.displayStrategy
                     "
                   ></span>
