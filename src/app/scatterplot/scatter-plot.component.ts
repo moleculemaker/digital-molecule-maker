@@ -13,6 +13,8 @@ type Point = {
   key: string;
   x: number;
   y: number;
+  xNormalized: number;
+  yNormalized: number;
   focus: boolean;
 };
 
@@ -48,11 +50,13 @@ export class ScatterPlotComponent {
       ({ entry, isReachable }) => ({
         key: entry.key,
         focus: isReachable,
-        x:
+        x: Number(entry[this.xAxis.key]),
+        y: Number(entry[this.yAxis.key]),
+        xNormalized:
           ((Number(entry[this.xAxis.key]) - this.xAxis.min) /
             (this.xAxis.max - this.xAxis.min)) *
           1000,
-        y:
+        yNormalized:
           ((this.yAxis.max - Number(entry[this.yAxis.key])) /
             (this.yAxis.max - this.yAxis.min)) *
           1000,
