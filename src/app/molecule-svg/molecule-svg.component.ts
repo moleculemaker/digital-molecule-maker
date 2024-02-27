@@ -17,11 +17,15 @@ import { Observable, Subscription } from 'rxjs';
 import {
   aggregateProperty,
   BlockSet,
-  BlockType,
   Molecule,
   Coordinates,
   BlockPropertyDefinition,
 } from '../models';
+import {
+  BLOCK_HEIGHT,
+  BLOCK_WIDTH,
+  BORDER_WIDTH,
+} from '../block-svg/block-svg.component';
 
 @Component({
   selector: '[dmm-molecule-svg]',
@@ -33,7 +37,7 @@ export class MoleculeSvgComponent implements OnInit {
   interactive = true;
 
   @Input()
-  blockSet?: BlockSet;
+  blockSet!: BlockSet;
 
   @Input()
   closeOverlayObservable?: Observable<void>;
@@ -55,6 +59,14 @@ export class MoleculeSvgComponent implements OnInit {
   molecule!: Molecule;
 
   constructor(private changeDetector: ChangeDetectorRef) {}
+
+  get moleculeWidth() {
+    return this.blockSet.moleculeSize * BLOCK_WIDTH + 2 * BORDER_WIDTH;
+  }
+
+  get moleculeHeight() {
+    return BLOCK_HEIGHT + 2 * BORDER_WIDTH;
+  }
 
   ngOnInit(): void {
     this.changeDetector.detectChanges();
@@ -142,10 +154,10 @@ export class MoleculeSvgComponent implements OnInit {
     this.deleteMolecule.emit();
   }
 
-  onRemoveBlock(type: BlockType) {
+  onRemoveBlock(index: number) {
     if (this.molecule) {
       this.molecule.blockList = this.molecule?.blockList.filter(
-        (block) => block.type != type,
+        (block) => block.index != index,
       );
       if (!this.molecule.blockList.length) {
         this.removeMolecule();

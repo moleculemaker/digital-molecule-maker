@@ -41,10 +41,13 @@ import {
 })
 export class OverlayComponent implements OnInit {
   @Input()
-  blockOrMolecule: Block | Molecule | null = null;
+  block: Block | null = null;
 
   @Input()
-  blockSet: BlockSet | null = null;
+  molecule: Molecule | null = null;
+
+  @Input()
+  blockSet!: BlockSet;
 
   @Input()
   tags: any[] = [];
@@ -82,16 +85,12 @@ export class OverlayComponent implements OnInit {
     this.addToCart.emit();
   }
 
-  getMode(): 'block' | 'molecule' | null {
-    let returnVal: 'block' | 'molecule' | null = null;
-    if (this.blockOrMolecule) {
-      if ('blockList' in this.blockOrMolecule) {
-        returnVal = 'molecule';
-      } else {
-        returnVal = 'block';
-      }
-    }
-    return returnVal;
+  get blockType() {
+    return this.block!.index === 0
+      ? 'start'
+      : this.block!.index === this.blockSet.moleculeSize - 1
+      ? 'end'
+      : 'middle';
   }
 
   getAggregateProperty(

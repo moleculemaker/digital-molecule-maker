@@ -2,14 +2,8 @@ export interface EnvVars {
   hostname: string;
 }
 
-export enum BlockType {
-  Start = 'start',
-  Middle = 'middle',
-  End = 'end',
-}
-
 export interface Block {
-  type: BlockType;
+  index: number;
   id: number;
   svgUrl: string;
   width: number;
@@ -19,15 +13,12 @@ export interface Block {
 
 export interface BlockSet {
   id: string;
+  moleculeSize: number;
   labelProperty: BlockPropertyDefinition;
   primaryProperty: BlockPropertyDefinition;
   firstTierProperties: BlockPropertyDefinition[];
   secondTierProperties: BlockPropertyDefinition[];
-  blocks: {
-    [BlockType.Start]: Block[];
-    [BlockType.Middle]: Block[];
-    [BlockType.End]: Block[];
-  };
+  blocks: Block[];
 }
 
 export interface RigJob {
@@ -78,12 +69,7 @@ export interface User {
 
 export function getBlockSetScale(blockSet: BlockSet, target: number): number {
   const maxHeightOrWidth = Math.max(
-    ...blockSet.blocks[BlockType.Start].map((block) => block.height),
-    ...blockSet.blocks[BlockType.Middle].map((block) => block.height),
-    ...blockSet.blocks[BlockType.End].map((block) => block.height),
-    ...blockSet.blocks[BlockType.Start].map((block) => block.width),
-    ...blockSet.blocks[BlockType.Middle].map((block) => block.width),
-    ...blockSet.blocks[BlockType.End].map((block) => block.width),
+    ...blockSet.blocks.flatMap((block) => [block.height, block.width]),
   );
   return target / maxHeightOrWidth;
 }

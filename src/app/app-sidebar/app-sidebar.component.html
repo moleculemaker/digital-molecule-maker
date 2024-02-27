@@ -295,16 +295,16 @@
           </div> -->
 
           <div class="block_wrapper">
-            <block [block]="block"></block>
+            <block [block]="block" [blockSet]="blockSet!"></block>
           </div>
         </div>
 
-        <div *ngIf="blockSet" class="info">
+        <div class="info">
           <div class="formula">
             <div
               *ngIf="
-                block.properties[blockSet.labelProperty.key]
-                  | chemicalProperty: blockSet.labelProperty.displayStrategy;
+                block.properties[blockSet!.labelProperty.key]
+                  | chemicalProperty: blockSet!.labelProperty.displayStrategy;
                 let label
               "
               class="formula_label"
@@ -332,13 +332,13 @@
             </svg>
           </div>
           <div class="weight">
-            {{ blockSet.primaryProperty.label }}:
-            {{ block.properties[blockSet.primaryProperty.key] }}
+            {{ blockSet!.primaryProperty.label }}:
+            {{ block.properties[blockSet!.primaryProperty.key] }}
           </div>
         </div>
 
         <div *dfDraggableHelper class="dragging_helper">
-          <block [block]="block"></block>
+          <block [block]="block" [blockSet]="blockSet!"></block>
         </div>
       </div>
     </div>

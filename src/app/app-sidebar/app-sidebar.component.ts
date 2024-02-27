@@ -3,7 +3,6 @@ import { BlockSize } from '../block/block.component';
 import {
   Block,
   BlockSet,
-  BlockType,
   Molecule,
   aggregateProperty,
   getBlockSetScale,
@@ -50,9 +49,7 @@ export class AppSidebarComponent implements OnInit {
         blocks.forEach((block) => {
           this.labelList.push(block.properties[blockSet.labelProperty.key]);
         });
-      processBlockArray(blockSet.blocks[BlockType.Start]);
-      processBlockArray(blockSet.blocks[BlockType.Middle]);
-      processBlockArray(blockSet.blocks[BlockType.End]);
+      processBlockArray(blockSet.blocks);
       this.fuse = new Fuse(this.labelList, {
         includeScore: true,
         isCaseSensitive: true,
@@ -64,10 +61,6 @@ export class AppSidebarComponent implements OnInit {
       this.blockLevelScale = getBlockSetScale(blockSet, 200);
     }
   }
-
-  @Input()
-  currentBlockType = BlockType.Start;
-  //  currentBlockType:String = 'start'; //todo: need to change this to different structure like selecting the actual tab data instead of just the index
 
   currentToggle = 'build';
   BlockSize = BlockSize; // for use in template
@@ -119,69 +112,63 @@ export class AppSidebarComponent implements OnInit {
 
   //********************************************
   getBlockData(): Block[] {
-    if (this.functionModeEnabled) {
-      if (!this.blockSet) return [];
+    const blockSet = this.blockSet;
+    if (!blockSet) return [];
 
+    const byIndex = (a: Block, b: Block) => a.index - b.index;
+
+    if (this.functionModeEnabled) {
       const currentMolecule = this.moleculeList[0];
 
-      const getBlocksOfType = (type: BlockType) =>
-        this.blockData?.blocks[type] ?? [];
+      const getBlocksAt = (index: number): Block[] =>
+        blockSet.blocks.filter((block) => block.index === index);
 
       if (this.colorFilter.length == 0) {
-        return Object.values(BlockType).flatMap(
-          (type) => this.blockData?.blocks[type] ?? [],
-        );
+        return blockSet.blocks.sort(byIndex);
       }
 
       const startingLambdaMax = currentMolecule
-        ? aggregateProperty(currentMolecule, this.blockSet.primaryProperty)
+        ? aggregateProperty(currentMolecule, blockSet.primaryProperty)
         : 0;
 
-      const excludedTypes = new Set(
-        currentMolecule?.blockList.map((block) => block.type) ?? [],
+      const excludedIndices = new Set(
+        currentMolecule?.blockList.map((block) => block.index),
       );
 
-      const availableTypes = Object.values(BlockType).filter(
-        (t) => !excludedTypes.has(t),
-      );
-
-      const viableBlocks = Object.fromEntries(
-        Object.values(BlockType).map((type) => [type, new Set<Block>()]),
-      );
+      const viableBlocks = new Set<Block>();
 
       const enumerate = (
+        curIndex: number,
         curBlocks: Block[],
         accumulatedLambdaMax: number,
-        remainingTypes: BlockType[],
       ) => {
-        if (!remainingTypes.length) {
+        if (curIndex === blockSet.moleculeSize) {
           if (
             this.colorFilter.some((color) => {
               const { min, max } = LambdaMaxRangeForColor[color];
               return accumulatedLambdaMax >= min && accumulatedLambdaMax <= max;
             })
           ) {
-            curBlocks.forEach((block) => viableBlocks[block.type].add(block));
+            curBlocks.forEach((block) => viableBlocks.add(block));
           }
           return;
         }
-        const [nextType, ...nextRemainingTypes] = remainingTypes;
-        for (const nextBlock of getBlocksOfType(nextType)) {
-          enumerate(
-            [...curBlocks, nextBlock],
-            accumulatedLambdaMax + nextBlock.properties.lambdaMaxShift,
-            nextRemainingTypes,
-          );
+        if (excludedIndices.has(curIndex)) {
+          enumerate(curIndex + 1, curBlocks, accumulatedLambdaMax);
+        } else {
+          for (const nextBlock of getBlocksAt(curIndex)) {
+            enumerate(
+              curIndex + 1,
+              [...curBlocks, nextBlock],
+              accumulatedLambdaMax + nextBlock.properties.lambdaMaxShift,
+            );
+          }
         }
       };
 
-      enumerate([], startingLambdaMax, availableTypes);
+      enumerate(0, [], startingLambdaMax);
 
-      return [
-        ...viableBlocks[BlockType.Start],
-        ...viableBlocks[BlockType.Middle],
-        ...viableBlocks[BlockType.End],
-      ];
+      return [...viableBlocks].sort(byIndex);
     } else {
       let blocks: Block[] = [];
       const blockTypes = this.typeFilter.length
@@ -189,34 +176,34 @@ export class AppSidebarComponent implements OnInit {
         : ['start', 'middle', 'end'];
       if (this.blockSet) {
         blockTypes.forEach((blockType) => {
-          const blockTypeEnum = this.getKeyByValue(blockType);
-          if (blockTypeEnum) {
-            this.blockData?.blocks[blockTypeEnum].forEach((block) => {
+          blockSet.blocks
+            ?.filter((block) => {
+              if (block.index === 0) {
+                return blockType === 'start';
+              } else if (block.index === blockSet.moleculeSize - 1) {
+                return blockType === 'end';
+              } else {
+                return blockType === 'middle';
+              }
+            })
+            ?.forEach((block) => {
               if (
                 this.filteredBlocks.some(
-                  (e) =>
-                    e === block.properties[this.blockSet!.labelProperty.key],
+                  (e) => e === block.properties[blockSet.labelProperty.key],
                 )
               ) {
                 blocks.push(block);
               }
             });
-          }
         });
       }
-      return blocks;
+      return blocks.sort(byIndex);
     }
   }
 
   //********************************************
   getBlockDataLength() {
     return this.getBlockData().length;
-  }
-
-  //********************************************
-  getBlockDataKeys(): BlockType[] {
-    //todo: fix this code so it properly returns the data keys instead of hard coding
-    return [BlockType.Start, BlockType.Middle, BlockType.End];
   }
 
   //********************************************
@@ -263,15 +250,6 @@ export class AppSidebarComponent implements OnInit {
   removeMoleculeFromSearch(molecule: any) {
     //todo: remove the specific molecule from the search, for now, just clear off the last one
     this.moleculeSearch.pop();
-  }
-
-  getKeyByValue(value: string) {
-    const indexOfS = Object.values(BlockType).indexOf(
-      value as unknown as BlockType,
-    );
-    const key = Object.keys(BlockType)[indexOfS];
-    const enumKey: BlockType = (<any>BlockType)[key];
-    return enumKey;
   }
 
   searchBlock(event: any) {

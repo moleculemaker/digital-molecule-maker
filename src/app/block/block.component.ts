@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import 'external-svg-loader';
-import { Block, BlockType } from '../models';
+import { Block, BlockSet } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
 
@@ -23,6 +23,9 @@ import { WorkspaceService } from '../services/workspace.service';
 export class BlockComponent implements OnInit {
   @Input()
   block!: Block;
+
+  @Input()
+  blockSet!: BlockSet;
 
   size = BlockSize.Small;
   imageWidth = 0;
@@ -71,6 +74,10 @@ export class BlockComponent implements OnInit {
       this.flipped = false;
       this.cd.markForCheck();
     });
+  }
+
+  get blockType() {
+    return this.isStart() ? 'start' : this.isEnd() ? 'end' : 'middle';
   }
 
   @HostListener('click')
@@ -346,12 +353,12 @@ export class BlockComponent implements OnInit {
 
   //********************************************
   isStart() {
-    return this.block.type === BlockType.Start;
+    return this.block.index === 0;
   }
 
   //********************************************
   isEnd() {
-    return this.block.type === BlockType.End;
+    return this.block.index === this.blockSet.moleculeSize - 1;
   }
 
   //********************************************

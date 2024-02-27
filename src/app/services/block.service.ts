@@ -2,12 +2,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable } from 'rxjs';
 import { delayWhen, map, tap } from 'rxjs/operators';
-import { Block, BlockSet, BlockType } from '../models';
+import { Block, BlockSet } from '../models';
 import { getSVGViewBox } from '../utils/svg';
 
 export enum BlockSetId {
   ColorWheel = 'COLOR_WHEEL',
   OPV = 'OPV',
+  // TODO: remove these
+  Test2Block = 'TEST_2_BLOCK',
+  Test4Block = 'TEST_4_BLOCK',
+  Test5Block = 'TEST_5_BLOCK',
 }
 
 @Injectable({
@@ -17,6 +21,10 @@ export class BlockService {
   urls = new Map<BlockSetId, string>([
     [BlockSetId.ColorWheel, 'assets/blocks/10x10x10palette/blocks.json'],
     [BlockSetId.OPV, 'assets/blocks/opv/blocks.json'],
+    // TODO: remove these
+    [BlockSetId.Test2Block, 'assets/blocks/___test___/2-block.json'],
+    [BlockSetId.Test4Block, 'assets/blocks/___test___/4-block.json'],
+    [BlockSetId.Test5Block, 'assets/blocks/___test___/5-block.json'],
   ]);
 
   constructor(private http: HttpClient) {}
@@ -34,11 +42,7 @@ export class BlockService {
       .pipe(
         delayWhen((blockSet) =>
           forkJoin(
-            [
-              ...blockSet.blocks.start,
-              ...blockSet.blocks.middle,
-              ...blockSet.blocks.end,
-            ].map((block) => this.patchSvgDimensions(block)),
+            blockSet.blocks.map((block) => this.patchSvgDimensions(block)),
           ),
         ),
       );

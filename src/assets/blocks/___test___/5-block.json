@@ -1,6 +1,6 @@
 {
-  "id": "ColorWheel_20230504",
-  "moleculeSize": 3,
+  "id": "DynamicSizingTest_5-Block",
+  "moleculeSize": 5,
   "labelProperty": {
     "key": "chemicalFormula",
     "label": "Chemical Formula",
@@ -49,7 +49,7 @@
       }
     },
     {
-      "index": 0,
+      "index": 1,
       "id": 2,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/S2.svg",
@@ -61,7 +61,7 @@
       }
     },
     {
-      "index": 0,
+      "index": 2,
       "id": 3,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/S3.svg",
@@ -73,7 +73,7 @@
       }
     },
     {
-      "index": 0,
+      "index": 3,
       "id": 4,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/S4.svg",
@@ -85,7 +85,7 @@
       }
     },
     {
-      "index": 0,
+      "index": 4,
       "id": 5,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/S5.svg",
@@ -109,7 +109,7 @@
       }
     },
     {
-      "index": 0,
+      "index": 1,
       "id": 7,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/S7.svg",
@@ -121,7 +121,7 @@
       }
     },
     {
-      "index": 0,
+      "index": 2,
       "id": 8,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/S8.svg",
@@ -133,7 +133,7 @@
       }
     },
     {
-      "index": 0,
+      "index": 3,
       "id": 9,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/S9.svg",
@@ -145,7 +145,7 @@
       }
     },
     {
-      "index": 0,
+      "index": 4,
       "id": 10,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/S10.svg",
@@ -157,7 +157,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 0,
       "id": 11,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/M1.svg",
@@ -181,7 +181,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 2,
       "id": 13,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/M3.svg",
@@ -193,7 +193,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 3,
       "id": 14,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/M4.svg",
@@ -205,7 +205,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 4,
       "id": 15,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/M5.svg",
@@ -217,7 +217,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 0,
       "id": 16,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/M6.svg",
@@ -241,7 +241,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 2,
       "id": 18,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/M8.svg",
@@ -253,7 +253,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 3,
       "id": 19,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/M9.svg",
@@ -265,7 +265,7 @@
       }
     },
     {
-      "index": 1,
+      "index": 4,
       "id": 20,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/M10.svg",
@@ -277,7 +277,7 @@
       }
     },
     {
-      "index": 2,
+      "index": 0,
       "id": 21,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/E1.svg",
@@ -289,7 +289,7 @@
       }
     },
     {
-      "index": 2,
+      "index": 1,
       "id": 22,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/E2.svg",
@@ -313,7 +313,7 @@
       }
     },
     {
-      "index": 2,
+      "index": 3,
       "id": 24,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/E4.svg",
@@ -325,7 +325,7 @@
       }
     },
     {
-      "index": 2,
+      "index": 4,
       "id": 25,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/E5.svg",
@@ -337,7 +337,7 @@
       }
     },
     {
-      "index": 2,
+      "index": 0,
       "id": 26,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/E6.svg",
@@ -349,7 +349,7 @@
       }
     },
     {
-      "index": 2,
+      "index": 1,
       "id": 27,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/E7.svg",
@@ -373,7 +373,7 @@
       }
     },
     {
-      "index": 2,
+      "index": 3,
       "id": 29,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/E9.svg",
@@ -385,7 +385,7 @@
       }
     },
     {
-      "index": 2,
+      "index": 4,
       "id": 30,
       "label": "",
       "svgUrl": "assets/blocks/10x10x10palette/E10.svg",
