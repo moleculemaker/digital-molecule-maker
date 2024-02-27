@@ -1,4 +1,10 @@
-<app-sidebar [blockSet]="blockSet"></app-sidebar>
+<app-sidebar *ngIf="blockSet" [blockSet]="blockSet"></app-sidebar>
+
+<dmm-scatterplot
+  *ngIf="blockSet"
+  [blockSet]="blockSet"
+  [blockList]="moleculeList[0]?.blockList ?? []"
+></dmm-scatterplot>
 
 <div class="canvas_container" dfDropZone (drop)="dropped($event)">
   <div class="canvas_toolbar">
@@ -91,6 +97,7 @@
           dmm-molecule-svg
           [blockSet]="blockSet"
           [molecule]="molecule"
+          (deleteBlock)="onRemoveBlock(moleculeId, $event)"
           (deleteMolecule)="onRemoveMolecule(moleculeId)"
           (addToCart)="addMoleculeToCart(moleculeId)"
           [closeOverlayObservable]="closeOverlay.asObservable()"

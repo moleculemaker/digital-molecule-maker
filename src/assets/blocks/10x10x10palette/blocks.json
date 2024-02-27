@@ -16,6 +16,11 @@
       "key": "lambdaMaxShift",
       "label": "Lambda Max Shift (nm)",
       "displayStrategy": "default"
+    },
+    {
+      "key": "molecularWeight",
+      "label": "Molecular Weight",
+      "displayStrategy": "default"
     }
   ],
   "firstTierProperties": [

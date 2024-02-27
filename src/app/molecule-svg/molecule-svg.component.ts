@@ -41,6 +41,9 @@ export class MoleculeSvgComponent implements OnInit {
   deleteMolecule = new EventEmitter();
 
   @Output()
+  deleteBlock = new EventEmitter<number>();
+
+  @Output()
   addToCart = new EventEmitter();
 
   isInfoPanelOpen = false;
@@ -150,14 +153,7 @@ export class MoleculeSvgComponent implements OnInit {
   }
 
   onRemoveBlock(index: number) {
-    if (this.molecule) {
-      this.molecule.blockList = this.molecule?.blockList.filter(
-        (block) => block.index != index,
-      );
-      if (!this.molecule.blockList.length) {
-        this.removeMolecule();
-      }
-    }
+    this.deleteBlock.emit(index);
   }
 
   onEnterInput(event: Event, newMoleculeName: string) {

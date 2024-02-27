@@ -1,0 +1,30 @@
+<svg viewBox="0 0 1000 1000">
+  <circle
+    *ngFor="let p of allPoints; trackBy: pointTrackBy"
+    [attr.cx]="p.x"
+    [attr.cy]="p.y"
+    [attr.r]="20"
+    [attr.fill]="
+      isColorWheel
+        ? lambdaMaxToColor(p.x, { opacity: 0.02 })
+        : 'rgba(0,0,0, 0.02)'
+    "
+  ></circle>
+  <circle
+    *ngFor="let p of allPoints; trackBy: pointTrackBy"
+    [attr.cx]="p.x"
+    [attr.cy]="p.y"
+    [attr.r]="10"
+    [attr.stroke-width]="1"
+    [attr.stroke]="
+      isColorWheel
+        ? lambdaMaxToColor(p.x, { opacity: p.focus ? 1 : 0 })
+        : 'rgba(0,0,0,' + (p.focus ? 1 : 0) + ')'
+    "
+    [attr.fill]="
+      isColorWheel
+        ? lambdaMaxToColor(p.x, { opacity: p.focus ? 0.8 : 0 })
+        : 'rgba(0,0,0,' + (p.focus ? 0.5 : 0) + ')'
+    "
+  ></circle>
+</svg>

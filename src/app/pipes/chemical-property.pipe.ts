@@ -12,6 +12,9 @@ export class ChemicalPropertyPipe implements PipeTransform {
     let returnVal: any = value;
     if (strategy === 'default') {
       // no need to change anything
+      if (typeof value === 'number') {
+        returnVal = returnVal.toFixed(4);
+      }
     } else if (strategy === 'chemicalFormula') {
       returnVal = this.sanitizer.bypassSecurityTrustHtml(
         value.replace(/(\d+)/g, '<sub>$1</sub>'),

@@ -13,7 +13,7 @@
   (mouseup)="onMouseUp()"
 >
   <ng-template [ngIf]="functionModeEnabled">
-    <g>
+    <g *ngIf="blockSet.id === 'ColorWheel_20230504'">
       <path
         [attr.d]="path"
         class="molecule-block"
@@ -32,9 +32,38 @@
         [attr.fill]="textColor"
       >
         +{{
-          lookupProperty([block], blockSet, blockSet.functionalProperties[0])
+          lookupProperty([block], blockSet, blockSet.functionalProperties[0]!)
         }}
         nm
+      </text>
+    </g>
+    <g *ngIf="blockSet.id === 'OPV_20230504'">
+      <path
+        [attr.d]="path"
+        class="molecule-block"
+        [attr.fill]="fillColor"
+        [attr.stroke]="strokeColor"
+        [attr.stroke-dasharray]="strokeDasharray"
+        [attr.stroke-width]="strokeWidth"
+      ></path>
+      <text
+        [attr.x]="centerX"
+        [attr.y]="centerY"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        font-weight="bold"
+        font-size="20px"
+        [attr.fill]="textColor"
+      >
+        SO:
+        {{
+          (+lookupProperty(
+            [block],
+            blockSet,
+            blockSet.functionalProperties[0]!
+          )).toFixed(2)
+        }}
+        %
       </text>
     </g>
   </ng-template>

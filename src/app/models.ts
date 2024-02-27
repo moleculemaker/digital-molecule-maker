@@ -1,3 +1,5 @@
+import { BlockSetId } from './services/block.service';
+
 export interface EnvVars {
   hostname: string;
 }
@@ -15,12 +17,18 @@ export interface LookupTableEntry {
   [property: string]: number | string;
 }
 
+export interface FunctionalPropertyDefinition
+  extends ChemicalPropertyDefinition {
+  min: number;
+  max: number;
+}
+
 export interface BlockSet {
-  id: string;
+  id: BlockSetId;
   moleculeSize: number;
   labelProperty: ChemicalPropertyDefinition;
   primaryProperty: ChemicalPropertyDefinition;
-  functionalProperties: ChemicalPropertyDefinition[];
+  functionalProperties: FunctionalPropertyDefinition[];
   firstTierProperties: ChemicalPropertyDefinition[];
   secondTierProperties: ChemicalPropertyDefinition[];
   blocks: Block[][];

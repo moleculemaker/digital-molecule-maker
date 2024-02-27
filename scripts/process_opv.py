@@ -71,14 +71,22 @@ def get_dft_prediction(donor_id, bridge_id, acceptor_id):
     return dft_predictions[dba_key]
 
 
-def get_statistical_predictions(donor, bridge, acceptor):
+block_counts = [3, 7, 100]
+
+
+def get_statistical_predictions(donor_id, bridge_id, acceptor_id):
     """
     For any vacant position, either leave it empty or pick an available block,
     E.g. If the user hasn't chosen a bridge, then try B0 (no bridge), B1, B2, ..., etc.
     """
-    d_choices = [donor['id']] if donor else range(len(blocks_by_index[0]) + 1)
-    b_choices = [bridge['id']] if bridge else range(len(blocks_by_index[1]) + 1)
-    a_choices = [acceptor['id']] if acceptor else range(len(blocks_by_index[2]) + 1)
+    # d_choices = [donor_id] if donor_id else range(len(blocks_by_index[0]) + 1)
+    # b_choices = [bridge_id] if bridge_id else range(len(blocks_by_index[1]) + 1)
+    # a_choices = [acceptor_id] if acceptor_id else range(len(blocks_by_index[2]) + 1)
+
+    # TODO: When the actual data becomes available, recover the commented-out version above.
+    d_choices = [donor_id] if donor_id else range(block_counts[0] + 1)
+    b_choices = [bridge_id] if bridge_id else range(block_counts[1] + 1)
+    a_choices = [acceptor_id] if acceptor_id else range(block_counts[2] + 1)
 
     so_predictions = []
     t80_predictions = []
@@ -100,25 +108,42 @@ def get_statistical_predictions(donor, bridge, acceptor):
 def generate_lookup_table():
     block_set['table'] = {}
 
-    for donor, bridge, acceptor in itertools.product(*blocks_by_index):
-        d_id = donor['id'] if donor else 0
-        b_id = bridge['id'] if bridge else 0
-        a_id = acceptor['id'] if acceptor else 0
+    # for donor, bridge, acceptor in itertools.product(*blocks_by_index):
+    #     d_id = donor['id'] if donor else 0
+    #     b_id = bridge['id'] if bridge else 0
+    #     a_id = acceptor['id'] if acceptor else 0
+
+    # TODO: Generate mock data for now. When the actual data becomes available, recover the commented-out version above.
+    for d_id, b_id, a_id in itertools.product(*[range(n + 1) for n in block_counts]):
         key = f'{d_id}:{b_id}:{a_id}'
+        donors, bridges, acceptors = blocks_by_index
+
+        donor = (donors[d_id] if d_id in donors else donors[1]) if d_id else None
+        bridge = (bridges[b_id] if b_id in bridges else bridges[1]) if b_id else None
+        acceptor = (acceptors[a_id] if a_id in acceptors else acceptors[1]) if a_id else None
 
         block_set['table'][key] = {
             'key': key,
             'chemicalFormula': combine_chemical_formulas(donor, bridge, acceptor),
             'smiles': combine('smiles', '')(donor, bridge, acceptor),
             'molecularWeight': combine('molecularWeight', 0)(donor, bridge, acceptor),
-            **get_statistical_predictions(donor, bridge, acceptor)
+            **get_statistical_predictions(d_id, b_id, a_id)
         }
+
+
+def resolve_functional_property_ranges():
+    for prop in block_set['functionalProperties']:
+        all_values = [entry[prop['key']] for entry in block_set['table'].values()
+                      if '0' not in entry['key'].split(':')]
+        prop['min'] = min(all_values)
+        prop['max'] = max(all_values)
 
 
 process_blocks()
 load_donor_bridge_id_mapping()
 load_dft_predictions()
 generate_lookup_table()
+resolve_functional_property_ranges()
 
 with open(os.path.join(workdir, 'data.json'), 'w') as file:
     json.dump(block_set, file, indent=2)

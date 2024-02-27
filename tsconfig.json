@@ -12,6 +12,7 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "noUncheckedIndexedAccess": true,
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",

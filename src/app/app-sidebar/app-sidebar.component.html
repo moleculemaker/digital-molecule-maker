@@ -87,7 +87,7 @@
     </div>
 
     <div class="control_bar">
-      <ng-template [ngIf]="!functionModeEnabled">
+      <ng-container *ngIf="!functionModeEnabled">
         <div
           class="type"
           *ngFor="let type of allTypeFilters"
@@ -156,44 +156,76 @@
             </svg>
           </ng-container>
         </div>
-      </ng-template>
+      </ng-container>
 
-      <ng-template [ngIf]="functionModeEnabled">
-        <div class="row">
-          <div
-            *ngFor="
-              let type of $any([
-                'yellow',
-                'orange',
-                'red',
-                'magenta',
-                'violet',
-                'blue',
-                'cyan'
-              ])
-            "
-            [class]="['type', 'color_type', 'color_type_' + type]"
-            [class.has_selected_type]="colorFilter.length > 0"
-            [class.selected]="colorFilter.includes(type)"
-            [title]="type + ' blocks'"
-            (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
-          >
-            <div class="label">{{ labelForColor(type) }}</div>
+      <ng-container *ngIf="functionModeEnabled">
+        <ng-container *ngIf="blockSet?.id === 'ColorWheel_20230504'">
+          <div class="row">
+            <div
+              *ngFor="
+                let type of $any([
+                  'yellow',
+                  'orange',
+                  'red',
+                  'magenta',
+                  'violet',
+                  'blue',
+                  'cyan'
+                ])
+              "
+              [class]="['type', 'color_type', 'color_type_' + type]"
+              [class.has_selected_type]="colorFilter.length > 0"
+              [class.selected]="colorFilter.includes(type)"
+              [title]="type + ' blocks'"
+              (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
+            >
+              <div class="label">{{ labelForColor(type) }}</div>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div
-            *ngFor="let type of $any(['uva', 'uvb', 'uvc'])"
-            [class]="['type', 'color_type', 'color_type_' + type]"
-            [class.has_selected_type]="colorFilter.length > 0"
-            [class.selected]="colorFilter.includes(type)"
-            [title]="type + ' blocks'"
-            (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
-          >
-            <div class="label">{{ labelForColor(type) }}</div>
+          <div class="row">
+            <div
+              *ngFor="let type of $any(['uva', 'uvb', 'uvc'])"
+              [class]="['type', 'color_type', 'color_type_' + type]"
+              [class.has_selected_type]="colorFilter.length > 0"
+              [class.selected]="colorFilter.includes(type)"
+              [title]="type + ' blocks'"
+              (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
+            >
+              <div class="label">{{ labelForColor(type) }}</div>
+            </div>
           </div>
-        </div>
-      </ng-template>
+        </ng-container>
+        <ng-container *ngIf="blockSet?.id === 'OPV_20230504'">
+          <div class="prototype-range-filter">
+            <h5>
+              Predicted SO:
+              {{ xRange[0].toFixed(2) }} % - {{ xRange[1].toFixed(2) }} %
+            </h5>
+            <div style="margin: 16px 0">
+              <p-slider
+                [(ngModel)]="xRange"
+                [range]="true"
+                [min]="xAxis.min"
+                [max]="xAxis.max"
+                [step]="(xAxis.max - xAxis.min) / 100"
+              ></p-slider>
+            </div>
+            <h5>
+              Predicted T80: {{ yRange[0].toFixed(2) }}s -
+              {{ yRange[1].toFixed(2) }}s
+            </h5>
+            <div style="margin: 16px 0">
+              <p-slider
+                [(ngModel)]="yRange"
+                [range]="true"
+                [min]="yAxis.min"
+                [max]="yAxis.max"
+                [step]="(yAxis.max - yAxis.min) / 100"
+              ></p-slider>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
     </div>
 
     <div
@@ -263,7 +295,7 @@
 
     <div class="content" #tray>
       <div
-        *ngFor="let block of getBlockData()"
+        *ngFor="let block of availableBlocks"
         dfDroppable
         [dfDroppableData]="block"
         class="item"
@@ -333,7 +365,10 @@
           </div>
           <div class="weight">
             {{ blockSet!.primaryProperty.label }}:
-            {{ lookupProperty([block], blockSet!, blockSet!.primaryProperty) }}
+            {{
+              lookupProperty([block], blockSet!, blockSet!.primaryProperty)
+                | chemicalProperty: blockSet!.primaryProperty.displayStrategy
+            }}
           </div>
         </div>
 

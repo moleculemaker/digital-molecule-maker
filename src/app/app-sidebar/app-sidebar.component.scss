@@ -194,6 +194,7 @@ $sidebar_width: 500px;
     }
 
     .control_bar {
+      width: 100%;
       display: flex;
       align-items: center;
       gap: $padding * 0.25;
@@ -884,5 +885,13 @@ $sidebar_width: 500px;
       .block_container {
       }
     }
+  }
+}
+
+.prototype-range-filter {
+  width: 100%;
+  padding: 0 16px;
+  h5 {
+    margin: 8px 0;
   }
 }
