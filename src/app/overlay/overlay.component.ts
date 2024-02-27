@@ -107,8 +107,8 @@ export class OverlayComponent implements OnChanges, OnDestroy {
       const donorId = blockList.find((b) => b.index === 0)!.id;
       const bridgeId = blockList.find((b) => b.index === 1)!.id;
       const acceptorId = blockList.find((b) => b.index === 2)!.id;
-      const donorKey = String.fromCharCode(65 + donorId);
-      const acceptorKey = String.fromCharCode(75 + acceptorId);
+      const donorKey = String.fromCharCode(64 + donorId);
+      const acceptorKey = String.fromCharCode(74 + acceptorId);
       $3Dmol.get(
         `assets/blocks/10x10x10palette/mol2/${donorKey}_${bridgeId}_${acceptorKey}.mol2`,
         (data: string) => {
