@@ -44,22 +44,6 @@ export class ScatterPlotComponent {
   pointTrackBy: TrackByFunction<Point> = (index, point) => point.key;
 
   get allPoints(): Point[] {
-    console.log(
-      getAllOutcomes(this.blockList, this.blockSet).map(
-        ({ entry, isReachable }) => ({
-          key: entry.key,
-          focus: isReachable,
-          x:
-            ((Number(entry[this.xAxis.key]) - this.xAxis.min) /
-              (this.xAxis.max - this.xAxis.min)) *
-            1000,
-          y:
-            ((this.yAxis.max - Number(entry[this.yAxis.key])) /
-              (this.yAxis.max - this.yAxis.min)) *
-            1000,
-        }),
-      ),
-    );
     return getAllOutcomes(this.blockList, this.blockSet).map(
       ({ entry, isReachable }) => ({
         key: entry.key,
