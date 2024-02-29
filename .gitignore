@@ -47,3 +47,6 @@ Thumbs.db
 
 # Fetched Helm dependencies
 chart/charts/
+
+# Data files
+*.xlsx

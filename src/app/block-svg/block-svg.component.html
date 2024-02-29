@@ -31,7 +31,10 @@
         font-size="20px"
         [attr.fill]="textColor"
       >
-        +{{ block.properties["lambdaMaxShift"] }} nm
+        +{{
+          lookupProperty([block], blockSet, blockSet.functionalProperties[0])
+        }}
+        nm
       </text>
     </g>
   </ng-template>

@@ -26,12 +26,8 @@ import {
   slideInReverse,
   slideOutReverse,
 } from './panel.animations';
-import {
-  aggregateProperty,
-  BlockPropertyDefinition,
-  BlockSet,
-  Molecule,
-} from '../models';
+import { BlockSet, Molecule } from '../models';
+import { lookupProperty } from '../lookup';
 
 @Component({
   selector: 'panel',
@@ -170,10 +166,5 @@ export class PanelComponent implements OnInit {
     this.onSendBackToWorkspace.emit(moleculeId.toString());
   }
 
-  getAggregateProperty(
-    molecule: Molecule,
-    property: BlockPropertyDefinition,
-  ): any {
-    return aggregateProperty(molecule, property);
-  }
+  getPredictedProperty = lookupProperty;
 }

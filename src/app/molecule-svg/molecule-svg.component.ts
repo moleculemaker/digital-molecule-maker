@@ -14,18 +14,13 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import {
-  aggregateProperty,
-  BlockSet,
-  Molecule,
-  Coordinates,
-  BlockPropertyDefinition,
-} from '../models';
+import { BlockSet, Molecule } from '../models';
 import {
   BLOCK_HEIGHT,
   BLOCK_WIDTH,
   BORDER_WIDTH,
 } from '../block-svg/block-svg.component';
+import { lookupProperty } from '../lookup';
 
 @Component({
   selector: '[dmm-molecule-svg]',
@@ -182,12 +177,5 @@ export class MoleculeSvgComponent implements OnInit {
 
   addMoleculeToCart() {
     this.addToCart.emit();
-  }
-
-  getAggregateProperty(
-    molecule: Molecule,
-    property: BlockPropertyDefinition,
-  ): any {
-    return aggregateProperty(molecule, property);
   }
 }

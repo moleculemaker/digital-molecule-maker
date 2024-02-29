@@ -13,6 +13,7 @@ import 'external-svg-loader';
 import { Block, BlockSet } from '../models';
 import { lambdaMaxToColor } from '../utils/colors';
 import { WorkspaceService } from '../services/workspace.service';
+import { lookupProperty } from '../lookup';
 
 @Component({
   selector: 'block',
@@ -86,10 +87,12 @@ export class BlockComponent implements OnInit {
   }
 
   hovered = false;
+
   @HostListener('pointerenter')
   onPointerEnter() {
     this.hovered = true;
   }
+
   @HostListener('pointerleave')
   onPointerLeave() {
     this.hovered = false;
@@ -210,10 +213,6 @@ export class BlockComponent implements OnInit {
     let minY = this.strokeWidth;
     let maxY = this.blockHeight + this.padding.y - this.strokeWidth;
     return (minY + maxY) / 2;
-  }
-
-  get lambdaMax() {
-    return this.block.properties['lambdaMaxShift'];
   }
 
   //********************************************
@@ -388,16 +387,31 @@ export class BlockComponent implements OnInit {
   }
 
   get textColor() {
-    return this.lambdaMax < 380 ? this.fillColor.darker() : 'white';
+    const lambdaMax = lookupProperty(
+      [this.block],
+      this.blockSet,
+      this.blockSet.functionalProperties[0],
+    );
+    return lambdaMax < 380 ? this.fillColor.darker() : 'white';
   }
 
   get fillColor() {
-    return lambdaMaxToColor(this.block.properties['lambdaMaxShift']);
+    return lambdaMaxToColor(
+      Number(
+        lookupProperty(
+          [this.block],
+          this.blockSet,
+          this.blockSet.functionalProperties[0],
+        ),
+      ),
+    );
   }
 
   get strokeColor() {
     return this.fillColor.darker();
   }
+
+  lookupProperty = lookupProperty;
 }
 
 export enum BlockSize {

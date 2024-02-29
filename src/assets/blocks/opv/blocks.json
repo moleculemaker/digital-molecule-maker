@@ -4,35 +4,42 @@
   "labelProperty": {
     "key": "smiles",
     "label": "SMILES",
-    "displayStrategy": "default",
-    "aggregationStrategy": "smiles"
+    "displayStrategy": "default"
   },
   "primaryProperty": {
     "key": "molecularWeight",
     "label": "Molecular Weight",
-    "displayStrategy": "default",
-    "aggregationStrategy": "sum"
+    "displayStrategy": "default"
   },
+  "functionalProperties": [
+    {
+      "key": "SO_mean",
+      "label": "Mean Predicted SO",
+      "displayStrategy": "default"
+    },
+    {
+      "key": "T80_mean",
+      "label": "Mean Predicted T80",
+      "displayStrategy": "default"
+    }
+  ],
   "firstTierProperties": [
     {
       "key": "smiles",
       "label": "SMILES",
-      "displayStrategy": "default",
-      "aggregationStrategy": "smiles"
+      "displayStrategy": "default"
     },
     {
       "key": "molecularWeight",
       "label": "Molecular Weight",
-      "displayStrategy": "default",
-      "aggregationStrategy": "sum"
+      "displayStrategy": "default"
     }
   ],
   "secondTierProperties": [
     {
       "key": "chemicalFormula",
       "label": "Chemical Formula",
-      "displayStrategy": "chemicalFormula",
-      "aggregationStrategy": "chemicalFormula"
+      "displayStrategy": "chemicalFormula"
     }
   ],
   "blocks": [
@@ -60,7 +67,7 @@
     },
     {
       "index": 1,
-      "id": 11,
+      "id": 1,
       "label": "",
       "svgUrl": "assets/blocks/opv/M1.svg",
       "properties": {
@@ -71,7 +78,7 @@
     },
     {
       "index": 1,
-      "id": 12,
+      "id": 2,
       "label": "",
       "svgUrl": "assets/blocks/opv/M2.svg",
       "properties": {
@@ -82,7 +89,7 @@
     },
     {
       "index": 1,
-      "id": 13,
+      "id": 3,
       "label": "",
       "svgUrl": "assets/blocks/opv/M3.svg",
       "properties": {
@@ -93,7 +100,7 @@
     },
     {
       "index": 1,
-      "id": 14,
+      "id": 4,
       "label": "",
       "svgUrl": "assets/blocks/opv/M4.svg",
       "properties": {
@@ -104,7 +111,7 @@
     },
     {
       "index": 2,
-      "id": 21,
+      "id": 1,
       "label": "",
       "svgUrl": "assets/blocks/opv/E1.svg",
       "properties": {
@@ -115,7 +122,7 @@
     },
     {
       "index": 2,
-      "id": 22,
+      "id": 2,
       "label": "",
       "svgUrl": "assets/blocks/opv/E2.svg",
       "properties": {
@@ -126,7 +133,7 @@
     },
     {
       "index": 2,
-      "id": 23,
+      "id": 3,
       "label": "",
       "svgUrl": "assets/blocks/opv/E3.svg",
       "properties": {
@@ -137,7 +144,7 @@
     },
     {
       "index": 2,
-      "id": 24,
+      "id": 4,
       "label": "",
       "svgUrl": "assets/blocks/opv/E4.svg",
       "properties": {
@@ -148,7 +155,7 @@
     },
     {
       "index": 2,
-      "id": 25,
+      "id": 5,
       "label": "",
       "svgUrl": "assets/blocks/opv/E5.svg",
       "properties": {
@@ -159,7 +166,7 @@
     },
     {
       "index": 2,
-      "id": 26,
+      "id": 6,
       "label": "",
       "svgUrl": "assets/blocks/opv/E6.svg",
       "properties": {
@@ -170,7 +177,7 @@
     },
     {
       "index": 2,
-      "id": 27,
+      "id": 7,
       "label": "",
       "svgUrl": "assets/blocks/opv/E7.svg",
       "properties": {
@@ -181,7 +188,7 @@
     },
     {
       "index": 2,
-      "id": 28,
+      "id": 8,
       "label": "",
       "svgUrl": "assets/blocks/opv/E8.svg",
       "properties": {
@@ -192,7 +199,7 @@
     },
     {
       "index": 2,
-      "id": 29,
+      "id": 9,
       "label": "",
       "svgUrl": "assets/blocks/opv/E9.svg",
       "properties": {
@@ -203,7 +210,7 @@
     },
     {
       "index": 2,
-      "id": 30,
+      "id": 10,
       "label": "",
       "svgUrl": "assets/blocks/opv/E10.svg",
       "properties": {

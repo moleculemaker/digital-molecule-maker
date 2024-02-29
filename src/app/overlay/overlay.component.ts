@@ -16,13 +16,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  aggregateProperty,
-  Block,
-  BlockPropertyDefinition,
-  BlockSet,
-  Molecule,
-} from '../models';
+import { Block, BlockSet, Molecule } from '../models';
+import { lookupProperty } from '../lookup';
 
 @Component({
   selector: 'dmm-overlay',
@@ -93,10 +88,5 @@ export class OverlayComponent implements OnInit {
       : 'middle';
   }
 
-  getAggregateProperty(
-    molecule: Molecule,
-    property: BlockPropertyDefinition,
-  ): any {
-    return aggregateProperty(molecule, property);
-  }
+  lookupProperty = lookupProperty;
 }
