@@ -7,9 +7,12 @@ $size: 300px;
   width: $size;
   height: $size;
   z-index: 200;
-  background: white;
-  //pointer-events: none;
+  pointer-events: none;
   svg {
+    rect {
+      opacity: 0.8;
+      fill: white;
+    }
     circle {
       transition: all 200ms ease-in;
     }
