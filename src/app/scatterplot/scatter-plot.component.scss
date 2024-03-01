@@ -7,11 +7,14 @@ $size: 300px;
   width: $size;
   height: $size;
   z-index: 200;
-  border: 1px solid lightgray;
   background: white;
   //pointer-events: none;
-}
-
-svg * {
-  transition: all 200ms ease-in;
+  svg {
+    circle {
+      transition: all 200ms ease-in;
+    }
+    .axis-label {
+      font-size: 40px;
+    }
+  }
 }
