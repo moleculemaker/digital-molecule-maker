@@ -1,6 +1,12 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { BlockSize } from '../block/block.component';
-import { Block, BlockSet, Molecule, getBlockSetScale } from '../models';
+import {
+  Block,
+  BlockSet,
+  FunctionalPropertyDefinition,
+  getBlockSetScale,
+  Molecule,
+} from '../models';
 import Fuse from 'fuse.js';
 import {
   animate,
@@ -11,7 +17,8 @@ import {
 } from '@angular/animations';
 import { WorkspaceService } from '../services/workspace.service';
 import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
-import { applyTargetFilter, FilterDefinition, lookupProperty } from '../lookup';
+import { applyTargetFilter, lookupProperty } from '../lookup';
+import { BlockSetId } from '../services/block.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -34,11 +41,14 @@ export class AppSidebarComponent implements OnInit {
 
   @HostBinding('class') sidebarClasses: string = 'expanded';
 
+  _blockSet!: BlockSet;
+
   @Input()
-  get blockSet(): BlockSet | null {
-    return this.blockData;
+  get blockSet(): BlockSet {
+    return this._blockSet;
   }
-  set blockSet(blockSet: BlockSet | null) {
+
+  set blockSet(blockSet: BlockSet) {
     if (blockSet) {
       const processBlockArray = (blocks: Block[]) =>
         blocks.forEach((block) => {
@@ -54,7 +64,7 @@ export class AppSidebarComponent implements OnInit {
         shouldSort: true,
       });
       this.filteredBlocks = this.labelList.slice();
-      this.blockData = blockSet;
+      this._blockSet = blockSet;
       this.blockLevelScale = getBlockSetScale(blockSet, 200);
     }
   }
@@ -63,20 +73,68 @@ export class AppSidebarComponent implements OnInit {
   BlockSize = BlockSize; // for use in template
   blockLevelScale = 1;
 
-  blockData: BlockSet | null = null;
   filteredBlocks: string[] = [];
+  availableBlocks: Block[] = [];
 
   searchPlaceholder = 'Search';
   moleculeSearch = [
     { chemicalFormula: 'C<sub>15</sub>H<sub>14</sub>BNO<sub>4</sub>S' },
   ]; //array of molecules to search by
 
-  typeFilter: string[] = []; //array of types to filter by (only used in showing the blocks?)
-  allTypeFilters = ['all', 'start', 'middle', 'end'];
+  // I. structure mode
 
-  colorFilter: ColorKeyT[] = [];
+  allTypeFilters = ['all', 'start', 'middle', 'end'];
+  _typeFilter: string[] = []; //array of types to filter by (only used in showing the blocks?)
+
+  get typeFilter() {
+    return this._typeFilter;
+  }
+
+  set typeFilter(typeFilter) {
+    this._typeFilter = typeFilter;
+    this.applyFilters();
+  }
+
+  // II. function mode (color wheel)
+
+  _colorFilter: ColorKeyT[] = [];
+
+  get colorFilter() {
+    return this._colorFilter;
+  }
+
+  set colorFilter(colorFilter) {
+    this._colorFilter = colorFilter;
+    this.applyFilters();
+  }
+
   labelForColor(key: ColorKeyT) {
     return LambdaMaxRangeForColor[key].name;
+  }
+
+  // III. function mode (OPV)
+
+  xAxis!: FunctionalPropertyDefinition;
+  yAxis!: FunctionalPropertyDefinition;
+  _xRange!: [number, number];
+  _yRange!: [number, number];
+
+  get xRange() {
+    return this._xRange;
+  }
+
+  set xRange(xRange) {
+    this._xRange = xRange;
+    this.applyFilters();
+  }
+
+  get yRange() {
+    return this._yRange;
+  }
+
+  set yRange(yRange) {
+    this._yRange = yRange;
+    this.applyFilters();
   }
 
   isSidebarExpanded = true;
@@ -88,14 +146,22 @@ export class AppSidebarComponent implements OnInit {
   constructor(private workspaceService: WorkspaceService) {
     this.workspaceService.functionMode$.subscribe((enabled) => {
       this.functionModeEnabled = enabled;
+      this.applyFilters();
     });
     this.workspaceService.moleculeList$.subscribe((moleculeList) => {
       this.moleculeList = moleculeList;
+      this.applyFilters();
     });
   }
 
   //********************************************
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.xAxis = this.blockSet.functionalProperties[0]!;
+    this.yAxis = this.blockSet.functionalProperties[1]!;
+    this._xRange = [this.xAxis.min, this.xAxis.max];
+    this._yRange = [this.yAxis.min, this.yAxis.max];
+    this.applyFilters();
+  }
 
   //********************************************
   onChangeToggle(newToggle: string) {
@@ -105,68 +171,6 @@ export class AppSidebarComponent implements OnInit {
   //********************************************
   getSearchPlaceholder(): string {
     return this.moleculeSearch.length == 0 ? this.searchPlaceholder : '';
-  }
-
-  //********************************************
-  getBlockData(): Block[] {
-    const blockSet = this.blockSet;
-    if (!blockSet) return [];
-
-    if (this.functionModeEnabled) {
-      if (this.colorFilter.length == 0) {
-        return blockSet.blocks.flat();
-      }
-      return applyTargetFilter(
-        {
-          select: [blockSet.primaryProperty],
-          accept: ([lambdaMax]) => {
-            return this.colorFilter.some((color) => {
-              const { min, max } = LambdaMaxRangeForColor[color];
-              return lambdaMax >= min && lambdaMax <= max;
-            });
-          },
-        },
-        this.moleculeList[0]?.blockList ?? [],
-        blockSet,
-      );
-    } else {
-      let blocks: Block[] = [];
-      const blockTypes = this.typeFilter.length
-        ? this.typeFilter
-        : ['start', 'middle', 'end'];
-      if (this.blockSet) {
-        blockTypes.forEach((blockType) => {
-          blockSet.blocks
-            .flat()
-            ?.filter((block) => {
-              if (block.index === 0) {
-                return blockType === 'start';
-              } else if (block.index === blockSet.moleculeSize - 1) {
-                return blockType === 'end';
-              } else {
-                return blockType === 'middle';
-              }
-            })
-            ?.forEach((block) => {
-              if (
-                this.filteredBlocks.some(
-                  (e) =>
-                    e ===
-                    lookupProperty([block], blockSet, blockSet.labelProperty),
-                )
-              ) {
-                blocks.push(block);
-              }
-            });
-        });
-      }
-      return blocks;
-    }
-  }
-
-  //********************************************
-  getBlockDataLength() {
-    return this.getBlockData().length;
   }
 
   //********************************************
@@ -189,9 +193,12 @@ export class AppSidebarComponent implements OnInit {
     } else {
       if (this.typeFilter.includes(type)) {
         let index = this.typeFilter.indexOf(type);
-        this.typeFilter.splice(index, 1);
+        this.typeFilter = [
+          ...this.typeFilter.slice(0, index),
+          ...this.typeFilter.slice(index + 1),
+        ];
       } else {
-        this.typeFilter.push(type);
+        this.typeFilter = [...this.typeFilter, type];
       }
     }
   }
@@ -199,14 +206,105 @@ export class AppSidebarComponent implements OnInit {
   onClickColorType(type: ColorKeyT) {
     if (this.colorFilter.includes(type)) {
       let index = this.colorFilter.indexOf(type);
-      this.colorFilter.splice(index, 1);
+      this.colorFilter = [
+        ...this.colorFilter.slice(0, index),
+        ...this.colorFilter.slice(index + 1),
+      ];
     } else {
-      this.colorFilter.push(type);
+      this.colorFilter = [...this.colorFilter, type];
     }
   }
 
   toggle() {
     this.workspaceService.toggle();
+  }
+
+  private applyFilters() {
+    if (this.functionModeEnabled) {
+      if (this.blockSet?.id === BlockSetId.ColorWheel) {
+        this.applyColorFilters();
+      } else if (this.blockSet?.id === BlockSetId.OPV) {
+        this.applyOPVFilters();
+      }
+    } else {
+      this.applyTypeFilters();
+    }
+  }
+
+  private applyTypeFilters() {
+    let blocks: Block[] = [];
+    const blockTypes = this.typeFilter.length
+      ? this.typeFilter
+      : ['start', 'middle', 'end'];
+    blockTypes.forEach((blockType) => {
+      this.blockSet.blocks
+        .flat()
+        ?.filter((block) => {
+          if (block.index === 0) {
+            return blockType === 'start';
+          } else if (block.index === this.blockSet.moleculeSize - 1) {
+            return blockType === 'end';
+          } else {
+            return blockType === 'middle';
+          }
+        })
+        ?.forEach((block) => {
+          if (
+            this.filteredBlocks.some(
+              (e) =>
+                e ===
+                lookupProperty(
+                  [block],
+                  this.blockSet,
+                  this.blockSet.labelProperty,
+                ),
+            )
+          ) {
+            blocks.push(block);
+          }
+        });
+    });
+    this.availableBlocks = blocks;
+  }
+
+  private applyColorFilters() {
+    this.availableBlocks = applyTargetFilter(
+      {
+        select: [this.blockSet.functionalProperties[0]!],
+        accept: ([lambdaMax]) => {
+          return (
+            !this.colorFilter.length ||
+            this.colorFilter.some((color) => {
+              const { min, max } = LambdaMaxRangeForColor[color];
+              return lambdaMax! >= min && lambdaMax! <= max;
+            })
+          );
+        },
+      },
+      this.moleculeList[0]?.blockList ?? [],
+      this.blockSet,
+    );
+  }
+
+  private applyOPVFilters() {
+    this.availableBlocks = applyTargetFilter(
+      {
+        select: [
+          this.blockSet.functionalProperties[0]!,
+          this.blockSet.functionalProperties[1]!,
+        ],
+        accept: ([so, t80]) => {
+          return (
+            so! >= this.xRange[0] &&
+            so! <= this.xRange[1] &&
+            t80! >= this.yRange[0] &&
+            t80! <= this.yRange[1]
+          );
+        },
+      },
+      this.moleculeList[0]?.blockList ?? [],
+      this.blockSet,
+    );
   }
 
   //********************************************

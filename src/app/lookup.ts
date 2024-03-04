@@ -25,7 +25,7 @@ export function contains(blockIdsA: number[], blockIdsB: number[]) {
   return true;
 }
 
-export function getAllOutcomes(blockList: Block[], blockSet: BlockSet) {
+export function getPossibleOutcomes(blockList: Block[], blockSet: BlockSet) {
   const currentBlockIds = blockListToBlockIds(blockList, blockSet);
   const res: LookupTableEntry[] = [];
   for (let entry of Object.values(blockSet.table)) {
@@ -37,10 +37,23 @@ export function getAllOutcomes(blockList: Block[], blockSet: BlockSet) {
   return res;
 }
 
+export function getAllOutcomes(blockList: Block[], blockSet: BlockSet) {
+  const currentBlockIds = blockListToBlockIds(blockList, blockSet);
+  return (
+    Object.values(blockSet.table)
+      // only include complete molecules
+      .filter((entry) => !keyToBlockIds(entry.key).includes(0))
+      .map((entry) => ({
+        entry,
+        isReachable: contains(keyToBlockIds(entry.key), currentBlockIds),
+      }))
+  );
+}
+
 export function getProperties(blockList: Block[], blockSet: BlockSet) {
   const blockIds = blockListToBlockIds(blockList, blockSet);
   const lookupKey = blockIds.join(':');
-  return blockSet.table[lookupKey];
+  return blockSet.table[lookupKey]!;
 }
 
 export function lookupProperty(
@@ -49,7 +62,7 @@ export function lookupProperty(
   property: ChemicalPropertyDefinition,
 ) {
   const entry = getProperties(blockList, blockSet);
-  return entry[property.key];
+  return entry[property.key]!;
 }
 
 export type FilterDefinition = {
@@ -63,16 +76,20 @@ export function applyTargetFilter(
   blockSet: BlockSet,
 ): Block[] {
   const usedIndices = startingFrom.map((block) => block.index);
-  const validOutcomes = getAllOutcomes(startingFrom, blockSet).filter((entry) =>
-    filter.accept(filter.select.map((def) => Number(entry[def.key]))),
+  const validOutcomes = getPossibleOutcomes(startingFrom, blockSet).filter(
+    (entry) =>
+      filter.accept(filter.select.map((def) => Number(entry[def.key]))),
   );
   const res = new Set<Block>();
   validOutcomes.forEach(({ key }) => {
     keyToBlockIds(key).forEach((id, index) => {
       if (!usedIndices.includes(index)) {
-        res.add(blockSet.blocks[index][id - 1]);
+        const block = blockSet.blocks[index]![id - 1]!;
+        if (block) res.add(block);
       }
     });
   });
-  return [...res];
+  return [...res].sort((a, b) =>
+    a.index === b.index ? a.id - b.id : a.index - b.index,
+  );
 }

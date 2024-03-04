@@ -1,0 +1,54 @@
+<svg viewBox="-80 -80 1160 1160">
+  <text
+    class="axis-label"
+    text-anchor="middle"
+    dominant-baseline="auto"
+    transform="translate(500 1080)"
+  >
+    {{ xAxis.label }}
+  </text>
+  <text
+    class="axis-label"
+    text-anchor="middle"
+    dominant-baseline="hanging"
+    transform="translate(-80 500) rotate(-90)"
+  >
+    {{ yAxis.label }}
+  </text>
+  <rect
+    x="-10"
+    y="-10"
+    height="1020"
+    width="1020"
+    fill="none"
+    stroke="gray"
+  ></rect>
+  <circle
+    *ngFor="let p of allPoints; trackBy: pointTrackBy"
+    [attr.cx]="p.xNormalized"
+    [attr.cy]="p.yNormalized"
+    [attr.r]="20"
+    [attr.fill]="
+      isColorWheel
+        ? lambdaMaxToColor(p.x, { opacity: 0.02 })
+        : 'rgba(0,0,0, 0.02)'
+    "
+  ></circle>
+  <circle
+    *ngFor="let p of allPoints; trackBy: pointTrackBy"
+    [attr.cx]="p.xNormalized"
+    [attr.cy]="p.yNormalized"
+    [attr.r]="10"
+    [attr.stroke-width]="1"
+    [attr.stroke]="
+      isColorWheel
+        ? lambdaMaxToColor(p.x, { opacity: p.focus ? 1 : 0 })
+        : 'rgba(0,0,0,' + (p.focus ? 1 : 0) + ')'
+    "
+    [attr.fill]="
+      isColorWheel
+        ? lambdaMaxToColor(p.x, { opacity: p.focus ? 0.8 : 0 })
+        : 'rgba(0,0,0,' + (p.focus ? 0.5 : 0) + ')'
+    "
+  ></circle>
+</svg>

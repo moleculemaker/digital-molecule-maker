@@ -313,8 +313,8 @@ export class BlockComponent implements OnInit {
     const length = coords.length + (close ? 1 : -1);
 
     for (let i = 0; i < length; i++) {
-      const a = coords[i % coords.length];
-      const b = coords[(i + 1) % coords.length];
+      const a = coords[i % coords.length]!;
+      const b = coords[(i + 1) % coords.length]!;
 
       //added to allow override of radius at coordinate level
       let thisRadius = a.radius && a.radius > 0 ? a.radius : radius;
@@ -390,7 +390,7 @@ export class BlockComponent implements OnInit {
     const lambdaMax = lookupProperty(
       [this.block],
       this.blockSet,
-      this.blockSet.functionalProperties[0],
+      this.blockSet.functionalProperties[0]!,
     );
     return lambdaMax < 380 ? this.fillColor.darker() : 'white';
   }
@@ -401,7 +401,7 @@ export class BlockComponent implements OnInit {
         lookupProperty(
           [this.block],
           this.blockSet,
-          this.blockSet.functionalProperties[0],
+          this.blockSet.functionalProperties[0]!,
         ),
       ),
     );

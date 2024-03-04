@@ -30,13 +30,19 @@ import { DroppableDirective } from './drag-drop-utilities/droppable/droppable.di
 import { DropZoneDirective } from './drag-drop-utilities/droppable/drop-zone.directive';
 import { BlockSvgComponent } from './block-svg/block-svg.component';
 import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
+import { ScatterPlotComponent } from './scatterplot/scatter-plot.component';
+
+import { SliderModule } from 'primeng/slider';
 
 import { TrackingService } from './services/tracking.service';
-import { EnvironmentService } from "./services/environment.service";
+import { EnvironmentService } from './services/environment.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
-function initializeAppFactory(trackingService: TrackingService, envService: EnvironmentService) {
+function initializeAppFactory(
+  trackingService: TrackingService,
+  envService: EnvironmentService,
+) {
   return () => {
     return envService.loadEnvConfig('/assets/config/envvars.json');
   };
@@ -64,6 +70,7 @@ function initializeAppFactory(trackingService: TrackingService, envService: Envi
     BlockSvgComponent,
     OverlayComponent,
     MoleculeSvgComponent,
+    ScatterPlotComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +84,7 @@ function initializeAppFactory(trackingService: TrackingService, envService: Envi
     }),
     DragDropModule,
     OverlayModule,
+    SliderModule,
   ],
   providers: [
     {

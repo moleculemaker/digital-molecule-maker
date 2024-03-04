@@ -6,6 +6,8 @@
 /out-tsc
 # Only exists if Bazel was run
 /bazel-out
+# Python scripts
+__pycache__/
 
 # dependencies
 /node_modules

@@ -158,9 +158,9 @@ export class AppBuildComponent implements OnInit {
       const rigJob: RigJob = {
         block_set_id: this.blockSet!.id,
         block_ids: [
-          molecule.blockList[0].id,
-          molecule.blockList[1].id,
-          molecule.blockList[2].id,
+          molecule.blockList[0]!.id,
+          molecule.blockList[1]!.id,
+          molecule.blockList[2]!.id,
         ],
         molecule_name: molecule.label,
       };
@@ -203,19 +203,21 @@ export class AppBuildComponent implements OnInit {
     const xAfterTransform = x - originX;
     const yAfterTransform = y - originY;
     return new Coordinates(
-      (xAfterTransform - this.zoomAndPanMatrix[4]) / this.zoomAndPanMatrix[0] +
+      (xAfterTransform - this.zoomAndPanMatrix[4]!) /
+        this.zoomAndPanMatrix[0]! +
         originX,
-      (yAfterTransform - this.zoomAndPanMatrix[5]) / this.zoomAndPanMatrix[3] +
+      (yAfterTransform - this.zoomAndPanMatrix[5]!) /
+        this.zoomAndPanMatrix[3]! +
         originY,
     );
   }
 
   dropped(event: DroppableEvent): void {
     if (this.hoveredMolecule != undefined) {
-      this.moleculeList[this.hoveredMolecule].blockList = this.moleculeList[
+      this.moleculeList[this.hoveredMolecule]!.blockList = this.moleculeList[
         this.hoveredMolecule
-      ].blockList.filter((block) => block.index != event.data.index);
-      this.moleculeList[this.hoveredMolecule].blockList.push(event.data);
+      ]!.blockList.filter((block) => block.index != event.data.index);
+      this.moleculeList[this.hoveredMolecule]!.blockList.push(event.data);
     } else {
       // if (event.data.type == BlockType.Start) {
       const newBlockList: Block[] = [event.data];
@@ -250,8 +252,8 @@ export class AppBuildComponent implements OnInit {
       this.closeOverlay.next();
 
       this._initialPosition = {
-        x: event.pageX - this.zoomAndPanMatrix[4],
-        y: event.pageY - this.zoomAndPanMatrix[5],
+        x: event.pageX - this.zoomAndPanMatrix[4]!,
+        y: event.pageY - this.zoomAndPanMatrix[5]!,
       };
     }
   }
@@ -274,13 +276,13 @@ export class AppBuildComponent implements OnInit {
         const mousePosition = this.getMousePosition(event);
         const dx =
           (mousePosition.x - this.startingMousePosition.x) /
-          this.zoomAndPanMatrix[0];
+          this.zoomAndPanMatrix[0]!;
         const dy =
           (mousePosition.y - this.startingMousePosition.y) /
-          this.zoomAndPanMatrix[3];
+          this.zoomAndPanMatrix[3]!;
 
-        this.moleculeList[moleculeIndex].position.x += dx;
-        this.moleculeList[moleculeIndex].position.y += dy;
+        this.moleculeList[moleculeIndex]!.position.x += dx;
+        this.moleculeList[moleculeIndex]!.position.y += dy;
 
         this.startingMousePosition = mousePosition;
       }
@@ -293,7 +295,12 @@ export class AppBuildComponent implements OnInit {
 
   onRemoveMolecule(moleculeId: number) {
     this.hoveredMolecule = undefined;
-    this.moleculeList.splice(moleculeId, 1);
+    this.workspaceService.removeMolecule(moleculeId);
+  }
+
+  onRemoveBlock(moleculeId: number, blockIndex: number) {
+    this.hoveredMolecule = undefined;
+    this.workspaceService.removeBlock(moleculeId, blockIndex);
   }
 
   closeMoleculePopup() {
@@ -316,13 +323,13 @@ export class AppBuildComponent implements OnInit {
       const mousePosition = this.getMousePosition(event);
       const dx =
         (mousePosition.x - this.startingMousePosition.x) /
-        this.zoomAndPanMatrix[0];
+        this.zoomAndPanMatrix[0]!;
       const dy =
         (mousePosition.y - this.startingMousePosition.y) /
-        this.zoomAndPanMatrix[3];
+        this.zoomAndPanMatrix[3]!;
 
-      this.moleculeList[this.draggedMoleculeIndex].position.x += dx;
-      this.moleculeList[this.draggedMoleculeIndex].position.y += dy;
+      this.moleculeList[this.draggedMoleculeIndex]!.position.x += dx;
+      this.moleculeList[this.draggedMoleculeIndex]!.position.y += dy;
 
       this.startingMousePosition = mousePosition;
     }
@@ -345,7 +352,7 @@ export class AppBuildComponent implements OnInit {
 
   addMoleculeToCart(moleculeId: number) {
     let moleculeToAdd = this.moleculeList.splice(moleculeId, 1);
-    this.cartMoleculeList.push(moleculeToAdd[0]);
+    this.cartMoleculeList.push(moleculeToAdd[0]!);
     this.closeOverlay.next();
     this.workspaceService.updateMoleculeList(this.moleculeList);
     this.cartService.updateMoleculeList(this.cartMoleculeList);
@@ -354,7 +361,7 @@ export class AppBuildComponent implements OnInit {
   addToWorkSpace(moleculeIdString: string) {
     let moleculeId: number = +moleculeIdString;
     let moleculeToAdd = this.cartMoleculeList.splice(moleculeId, 1);
-    this.moleculeList.push(moleculeToAdd[0]);
+    this.moleculeList.push(moleculeToAdd[0]!);
     this.changeDetector.detectChanges();
     this.workspaceService.updateMoleculeList(this.moleculeList);
     this.cartService.updateMoleculeList(this.cartMoleculeList);

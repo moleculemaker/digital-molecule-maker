@@ -1,12 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable } from 'rxjs';
-import { delayWhen, map, tap } from 'rxjs/operators';
 import { Block, BlockSet } from '../models';
 
 export enum BlockSetId {
-  ColorWheel = 'COLOR_WHEEL',
-  OPV = 'OPV',
+  ColorWheel = 'ColorWheel_20230504',
+  OPV = 'OPV_20230504',
 }
 
 @Injectable({

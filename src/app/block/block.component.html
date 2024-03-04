@@ -67,6 +67,7 @@
 
   <div class="overlay" [style.opacity]="functionModeEnabled ? 1 : 0">
     <svg
+      *ngIf="blockSet.id === 'ColorWheel_20230504'"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       [attr.viewBox]="
@@ -96,9 +97,71 @@
         [attr.fill]="textColor"
       >
         +{{
-          lookupProperty([block], blockSet, blockSet.functionalProperties[0])
+          lookupProperty([block], blockSet, blockSet.functionalProperties[0]!)
         }}
         nm
+      </text>
+
+      <!-- + add block icon -->
+      <g *ngIf="isAddBlock()">
+        <rect
+          width="6"
+          height="24"
+          x="50%"
+          y="50%"
+          fill="black"
+          style="transform: translate(-3px, -12px)"
+        />
+        <rect
+          width="24"
+          height="6"
+          x="50%"
+          y="50%"
+          fill="black"
+          style="transform: translate(-12px, -3px)"
+        />
+      </g>
+    </svg>
+
+    <svg
+      *ngIf="blockSet.id === 'OPV_20230504'"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      [attr.viewBox]="
+        '0 0 ' +
+        (blockWidth + this.padding.x) +
+        ' ' +
+        (blockHeight + this.padding.y)
+      "
+    >
+      <path
+        [attr.d]="drawBlock()"
+        [attr.fill]="fillColor"
+        [attr.opacity]="hovered ? 0.2 : 1"
+        [attr.stroke]="strokeColor"
+        [attr.stroke-dasharray]="strokeDasharray"
+        [attr.stroke-width]="strokeWidth"
+      ></path>
+
+      <text
+        [attr.x]="centerX"
+        [attr.y]="centerY"
+        [style.transform]="hovered ? 'translateY(-40px)' : 'none'"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        font-weight="bold"
+        font-size="20px"
+        [attr.fill]="textColor"
+      >
+        SO:
+        {{
+          (+lookupProperty(
+            [block],
+            blockSet,
+            blockSet.functionalProperties[0]!
+          )).toFixed(2)
+        }}
+        %
       </text>
 
       <!-- + add block icon -->

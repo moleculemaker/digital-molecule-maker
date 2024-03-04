@@ -1,0 +1,23 @@
+$size: 300px;
+
+:host {
+  position: absolute;
+  right: 16px;
+  top: 60px;
+  width: $size;
+  height: $size;
+  z-index: 200;
+  pointer-events: none;
+  svg {
+    rect {
+      opacity: 0.8;
+      fill: white;
+    }
+    circle {
+      transition: all 200ms ease-in;
+    }
+    .axis-label {
+      font-size: 46px;
+    }
+  }
+}

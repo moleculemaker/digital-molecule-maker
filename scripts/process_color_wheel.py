@@ -38,7 +38,7 @@ def generate_lookup_table():
         d_id = donor['id'] if donor else 0
         b_id = bridge['id'] if bridge else 0
         a_id = acceptor['id'] if acceptor else 0
-        key =  f'{d_id}:{b_id}:{a_id}'
+        key = f'{d_id}:{b_id}:{a_id}'
 
         block_set['table'][key] = {
             'key': key,
@@ -49,8 +49,17 @@ def generate_lookup_table():
         }
 
 
+def resolve_functional_property_ranges():
+    for prop in block_set['functionalProperties']:
+        all_values = [entry[prop['key']] for entry in block_set['table'].values()
+                      if '0' not in entry['key'].split(':')]
+        prop['min'] = min(all_values)
+        prop['max'] = max(all_values)
+
+
 process_blocks()
 generate_lookup_table()
+resolve_functional_property_ranges()
 
 with open(os.path.join(workdir, 'data.json'), 'w') as file:
     json.dump(block_set, file, indent=2)

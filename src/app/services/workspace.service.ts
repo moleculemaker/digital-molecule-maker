@@ -31,6 +31,26 @@ export class WorkspaceService {
     return this.moleculeList$.asObservable();
   }
 
+  removeMolecule(moleculeId: number) {
+    // TODO: should we use immutable data structures
+    const moleculesList = this.moleculeList$.value;
+    moleculesList.splice(moleculeId, 1);
+    this.moleculeList$.next(moleculesList);
+  }
+
+  removeBlock(moleculeId: number, blockIndex: number) {
+    // TODO: should we use immutable data structures
+    const moleculesList = this.moleculeList$.value;
+    const molecule = moleculesList[moleculeId]!;
+    molecule.blockList = molecule.blockList.filter(
+      (block) => block.index !== blockIndex,
+    );
+    if (!molecule.blockList.length) {
+      moleculesList.splice(moleculeId, 1);
+    }
+    this.moleculeList$.next(moleculesList);
+  }
+
   private startAutorestore(): void {
     this.userService
       .getUser()
