@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 138.8 57.067999999999984" style="background-color: #ffffff00" version="1.1">
+<g transform="matrix(1 0 0 1 -234.91099999999997 -704.916)">
+<text x="0" y="0" stroke="none" transform="matrix(0.1 0 0 0.1 298.202 722.916)" font-style="normal" font-weight="bold" font-size="200px" font-family="Arial">
+Se</text>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5592.98,8468.7 L 5588.21,8463.94 L 5589.27,8457.29 L 5860.26,8369.24 L 5863.97,8380.65 L 5592.98,8468.7 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5503.58,8743.84 L 5494.86,8731.84 L 5581.16,8466.23 L 5588.21,8463.94 L 5592.98,8468.7 L 5503.58,8743.84 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5467.26,8687.86 L 5455.85,8684.15 L 5521.57,8481.89 L 5532.98,8485.59 L 5467.26,8687.86 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5206.86,8743.84 L 5215.58,8731.84 L 5494.86,8731.84 L 5503.58,8743.84 L 5206.86,8743.84 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5266.74,8351.52 L 5273.8,8361.23 L 5129.27,8466.23 L 5122.22,8463.94 L 5121.17,8457.29 L 5266.74,8351.52 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5510.69,8415.03 L 5517.74,8405.32 L 5589.27,8457.29 L 5588.21,8463.94 L 5581.16,8466.23 L 5510.69,8415.03 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 4846.46,8380.65 L 4850.17,8369.24 L 5121.17,8457.29 L 5122.22,8463.94 L 5117.46,8468.7 L 4846.46,8380.65 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5117.46,8468.7 L 5122.22,8463.94 L 5129.27,8466.23 L 5215.58,8731.84 L 5206.86,8743.84 L 5117.46,8468.7 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5177.46,8485.59 L 5188.87,8481.89 L 5254.59,8684.15 L 5243.18,8687.86 L 5177.46,8485.59 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 4675.61,8382.11 A 144,144 0 1 0 4963.61,8382.11A 144,144 0 1 0 4675.61,8382.11Z " class="connection_in" stroke-width="18px"/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -230.65 -114.4)" d="M 5735.61,8392.11 A 144,144 0 1 0 6023.61,8392.11A 144,144 0 1 0 5735.61,8392.11Z " class="connection_out" stroke-width="18px"/>
+</g>
+</svg>
