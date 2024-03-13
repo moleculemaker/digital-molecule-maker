@@ -1,11 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { inject, NgModule } from '@angular/core';
+import {
+  RouterModule,
+  Routes,
+} from '@angular/router';
 
 import { CanActivateSurveyCode } from './guards/survey-code.guard';
 import { UserService } from './services/user.service';
 
 import { AppBuildComponent } from './app-build/app-build.component';
 import { PromptType, SplashComponent } from './splash/splash.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
@@ -25,7 +29,16 @@ const routes: Routes = [
   {
     path: 'build',
     component: AppBuildComponent,
-    canActivate: [CanActivateSurveyCode],
+    // canActivate: [CanActivateSurveyCode],
+    canActivate: [() => inject(UserService).canActivate()],
+  },
+  {
+    path: 'signin',
+    component: LoginComponent,
+  },
+  {
+    path: 'signup',
+    component: LoginComponent,
   },
 ];
 

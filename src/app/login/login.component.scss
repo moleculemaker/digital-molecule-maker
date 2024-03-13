@@ -1,0 +1,89 @@
+:host {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter';
+
+  .main {
+    width: 1080px;
+    padding-right: 626px;
+
+    h1 {
+      font-weight: 500;
+      font-size: 30px;
+    }
+
+    .input {
+      margin: 24px 0;
+
+      label, input {
+        display: block;
+        width: 100%;
+      }
+
+      label {
+        margin: 8px 0;
+      }
+
+
+      ::ng-deep p-password div {
+        width: 100%;
+      }
+
+      ::ng-deep input {
+        width: 100%;
+        background: #F8F8F8;
+        border: 1px solid #DEDEDE;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 14px;
+        color: black;
+
+        ::placeholder {
+          color: #959595;
+        }
+      }
+
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+
+      p-button {
+        flex: auto;
+
+        ::ng-deep button {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  ::ng-deep button {
+    height: 56px;
+    background: #DEDEDE;
+
+    &:active {
+      background: #AAAAAA;
+    }
+
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #000000;
+    border: none;
+    box-shadow: none;
+  }
+
+  a {
+    color: black;
+  }
+}

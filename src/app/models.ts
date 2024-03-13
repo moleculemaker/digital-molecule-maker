@@ -72,7 +72,10 @@ export class Molecule {
 }
 
 export interface User {
-  surveyCode: string;
+  name: string;
+  username: string;
+  access_token: string;
+  surveyCode?: string;
   // later: token(s), etc.
 }
 
