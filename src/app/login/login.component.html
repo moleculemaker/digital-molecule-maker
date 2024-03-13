@@ -9,7 +9,7 @@
     </div>
     <div class="input">
       <label>Password</label>
-      <p-password [(ngModel)]="password"  placeholder="Enter password"></p-password>
+      <p-password [(ngModel)]="password" [feedback]="false" placeholder="Enter password"></p-password>
     </div>
     <div class="buttons input">
       <p-button label="Login" (onClick)="login()"></p-button>
