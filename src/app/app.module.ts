@@ -33,10 +33,14 @@ import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 import { ScatterPlotComponent } from './scatterplot/scatter-plot.component';
 
 import { SliderModule } from 'primeng/slider';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
 
 import { TrackingService } from './services/tracking.service';
 import { EnvironmentService } from './services/environment.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
+import { LoginComponent } from './login/login.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -71,6 +75,7 @@ function initializeAppFactory(
     OverlayComponent,
     MoleculeSvgComponent,
     ScatterPlotComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +90,9 @@ function initializeAppFactory(
     DragDropModule,
     OverlayModule,
     SliderModule,
+    InputTextModule,
+    ButtonModule,
+    PasswordModule,
   ],
   providers: [
     {

@@ -1,0 +1,49 @@
+<div class="main">
+  <ng-container *ngIf="isLogin">
+    <h1 class="title">
+      Have an account?
+    </h1>
+    <div class="input">
+      <label>Username</label>
+      <input type="text" pInputText [(ngModel)]="username" placeholder="Enter username"/>
+    </div>
+    <div class="input">
+      <label>Password</label>
+      <p-password [(ngModel)]="password"  placeholder="Enter password"></p-password>
+    </div>
+    <div class="buttons input">
+      <p-button label="Login" (onClick)="login()"></p-button>
+      <p-button label="Continue as Guest"></p-button>
+    </div>
+    <div class="input">
+      Don’t have an account? <a routerLink="/signup">Sign up</a>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!isLogin">
+    <h1 class="title">
+      Sign Up
+    </h1>
+    <div class="input">
+      <label>Name</label>
+      <input type="text" pInputText [(ngModel)]="name" placeholder="Enter name"/>
+    </div>
+    <div class="input">
+      <label>Username</label>
+      <input type="text" pInputText [(ngModel)]="username" placeholder="Enter username"/>
+    </div>
+    <div class="input">
+      <label>Password</label>
+      <p-password [(ngModel)]="password"  placeholder="Enter password"></p-password>
+    </div>
+    <div class="input">
+      <label>Confirm Password</label>
+      <p-password [(ngModel)]="passwordConfirmed" [feedback]="false" placeholder="Re-enter password"></p-password>
+    </div>
+    <div class="input">
+      <p-button label="Create Account" (onClick)="signup()"></p-button>
+    </div>
+    <div class="input">
+      Already have an account? <a routerLink="/signin">Log in</a>
+    </div>
+  </ng-container>
+</div>
