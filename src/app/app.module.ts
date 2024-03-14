@@ -36,11 +36,17 @@ import { SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
+import { DialogModule } from 'primeng/dialog';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { MessagesModule } from 'primeng/messages';
 
 import { TrackingService } from './services/tracking.service';
 import { EnvironmentService } from './services/environment.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
 import { LoginComponent } from './login/login.component';
+import { GroupsComponent } from './groups/groups.component';
+import { GroupCartComponent } from './group-cart/group-cart.component';
+import { MoleculeSummaryComponent } from './molecule-summary/molecule-summary.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -76,6 +82,9 @@ function initializeAppFactory(
     MoleculeSvgComponent,
     ScatterPlotComponent,
     LoginComponent,
+    GroupsComponent,
+    GroupCartComponent,
+    MoleculeSummaryComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,6 +102,9 @@ function initializeAppFactory(
     InputTextModule,
     ButtonModule,
     PasswordModule,
+    DialogModule,
+    RadioButtonModule,
+    MessagesModule
   ],
   providers: [
     {

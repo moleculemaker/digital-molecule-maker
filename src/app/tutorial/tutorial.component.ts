@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'tutorial',
@@ -18,8 +16,14 @@ export class TutorialComponent implements OnInit {
     private route: ActivatedRoute,
   ) {}
 
+  disabled = false;
+
   //********************************************
   ngOnInit(): void {
+    if (localStorage.getItem('tutorial_off')) {
+      this.disabled = true;
+    }
+
     this.steps = [
       { id: 'welcome', class: '' },
       { id: 'workspace', class: '' },
@@ -48,6 +52,7 @@ export class TutorialComponent implements OnInit {
   //********************************************
   close() {
     this.currentStep = null;
+    localStorage.setItem('tutorial_off', 'true')
   }
 
   //********************************************

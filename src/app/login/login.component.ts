@@ -39,7 +39,7 @@ export class LoginComponent {
       })
       .subscribe((user) => {
         this.userService.setUser(user);
-        this.router.navigateByUrl('/build');
+        this.router.navigateByUrl('/groups');
       });
   }
 
@@ -53,7 +53,7 @@ export class LoginComponent {
       })
       .subscribe((user) => {
         this.userService.setUser(user);
-        this.router.navigateByUrl('/build');
+        this.router.navigateByUrl('/groups');
       });
   }
 

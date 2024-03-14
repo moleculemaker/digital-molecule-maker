@@ -14,6 +14,7 @@ export interface Block {
 
 export interface LookupTableEntry {
   key: string;
+
   [property: string]: number | string;
 }
 
@@ -54,6 +55,7 @@ export type ChemicalPropertyDisplayStrategy = 'default' | 'chemicalFormula';
 export class Coordinates {
   x: number;
   y: number;
+
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
@@ -61,14 +63,11 @@ export class Coordinates {
 }
 
 export class Molecule {
-  position: Coordinates;
-  label: string;
-  blockList: Block[];
-  constructor(position: Coordinates, blockList: Block[]) {
-    this.position = position;
-    this.blockList = blockList;
-    this.label = 'NewMolecule';
-  }
+  constructor(
+    public position: Coordinates,
+    public blockList: Block[],
+    public label = 'NewMolecule',
+  ) {}
 }
 
 export interface User {
@@ -77,6 +76,17 @@ export interface User {
   access_token: string;
   surveyCode?: string;
   // later: token(s), etc.
+}
+
+export interface UserGroup {
+  id: number;
+  name: string;
+  join_code: string;
+  block_set_id: BlockSetId;
+  members: Array<{
+    id: number;
+    name: string;
+  }>;
 }
 
 export function getBlockSetScale(blockSet: BlockSet, target: number): number {

@@ -20,7 +20,7 @@ import {
   RigJob,
 } from '../models';
 
-import { BlockService, BlockSetId } from '../services/block.service';
+import { BlockService } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
@@ -61,6 +61,7 @@ export class AppBuildComponent implements OnInit {
   draggedMolecule: any;
   startingMousePosition: { x: number; y: number } = { x: 0, y: 0 };
   draggedMoleculeIndex: number | undefined;
+
   constructor(
     private blockService: BlockService,
     private rigService: RigService,
@@ -79,15 +80,12 @@ export class AppBuildComponent implements OnInit {
     // moleculeList in the current session (which becomes a more interesting case
     // once sessions are persisted on the backend instead of in localStorage)
 
-    this.route.queryParamMap.subscribe((queryParamMap) => {
-      let blockSet = BlockSetId.ColorWheel;
-      if (
-        Object.values(BlockSetId).includes(
-          queryParamMap.get('blockSet') as BlockSetId,
-        )
-      ) {
-        blockSet = queryParamMap.get('blockSet')! as BlockSetId;
-      }
+    this.route.paramMap.subscribe((paramMap) => {
+      const groupId = Number(paramMap.get('groupId'));
+      this.workspaceService.setActiveGroup(groupId);
+    });
+
+    this.workspaceService.blockSet$.subscribe((blockSet) => {
       this.setBlockSet(blockSet);
     });
 
@@ -128,11 +126,11 @@ export class AppBuildComponent implements OnInit {
     document.addEventListener('mouseup', (event) => this.onMoveStop(event));
   }
 
-  setBlockSet(blockSetId: BlockSetId): void {
-    this.blockService.getBlockSet(blockSetId).subscribe((blockSet) => {
-      this.blockSet = blockSet;
+  setBlockSet(blockSet: BlockSet | null): void {
+    this.blockSet = blockSet;
+    if (blockSet) {
       this.svgScale = getBlockSetScale(blockSet, 70);
-    });
+    }
   }
 
   //********************************************
@@ -176,6 +174,7 @@ export class AppBuildComponent implements OnInit {
   onZoomIn(): void {
     this.zoomAndPanMatrix = this.zoomAndPanMatrix.map((val) => val * 1.1);
   }
+
   onZoomOut(): void {
     this.zoomAndPanMatrix = this.zoomAndPanMatrix.map((val) => val * 0.9);
   }

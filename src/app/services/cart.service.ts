@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, withLatestFrom } from 'rxjs/operators';
+import { filter, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Molecule, User } from '../models';
 import { UserService } from './user.service';
+import { WorkspaceService } from './workspace.service';
+import { HttpClient } from '@angular/common/http';
+import { EnvironmentService } from './environment.service';
+import { BlockSetId } from './block.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +15,14 @@ import { UserService } from './user.service';
 export class CartService {
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
 
-  constructor(private userService: UserService) {
-    this.startAutorestore();
-    this.startAutosave();
+  constructor(
+    private userService: UserService,
+    private workspaceService: WorkspaceService,
+    private envService: EnvironmentService,
+    private http: HttpClient,
+  ) {
+    // this.startAutorestore();
+    // this.startAutosave();
   }
 
   updateMoleculeList(list: Molecule[]): void {
@@ -22,6 +31,40 @@ export class CartService {
 
   getMoleculeList(): Observable<Molecule[]> {
     return this.moleculeList$.asObservable();
+  }
+
+  fetchGroupCart(groupId: number) {
+    const { hostname } = this.envService.getEnvConfig();
+    return this.http.get<
+      Array<{
+        name: string;
+        block_set_id: BlockSetId;
+        block_ids: number[];
+      }>
+    >(`${hostname}/groups/${groupId}/molecules`, {
+      headers: {
+        authorization: `Bearer ${this.userService.user$.value?.access_token}`,
+      },
+    });
+  }
+
+  addToGroupCart() {
+    const { hostname } = this.envService.getEnvConfig();
+    const group = this.workspaceService.group$.value!;
+    const data = this.moleculeList$.value.map((molecule) => ({
+      name: molecule.label,
+      block_set_id: group.block_set_id,
+      block_ids: molecule.blockList
+        .sort((a, b) => a.index - b.index)
+        .map((mol) => mol.id),
+    }));
+    return this.http
+      .post(`${hostname}/groups/${group.id}/molecules`, data, {
+        headers: {
+          authorization: `Bearer ${this.userService.user$.value?.access_token}`,
+        },
+      })
+      .pipe(tap(() => this.moleculeList$.next([])));
   }
 
   private startAutorestore(): void {

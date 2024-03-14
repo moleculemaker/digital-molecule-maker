@@ -2,21 +2,45 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, withLatestFrom } from 'rxjs/operators';
 
-import { Molecule, User } from '../models';
+import { BlockSet, Molecule, User, UserGroup } from '../models';
 import { UserService } from './user.service';
+import { BlockService } from './block.service';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { EnvironmentService } from './environment.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorkspaceService {
-  private _functionMode = true;
+  private _functionMode = false;
+
+  group$ = new BehaviorSubject<UserGroup | null>(null);
+  blockSet$ = new BehaviorSubject<BlockSet | null>(null);
 
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
   functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
 
-  constructor(private userService: UserService) {
-    this.startAutorestore();
-    this.startAutosave();
+  constructor(
+    private userService: UserService,
+    private blockService: BlockService,
+    private router: Router,
+  ) {
+    // this.startAutorestore();
+    // this.startAutosave();
+  }
+
+  setActiveGroup(groupId: number) {
+    this.group$.next(null);
+    this.blockSet$.next(null);
+    this.userService.getGroupInfo(groupId).subscribe((group) => {
+      this.blockService
+        .getBlockSet(group.block_set_id)
+        .subscribe((blockSet) => {
+          this.group$.next(group);
+          this.blockSet$.next(blockSet);
+        });
+    });
   }
 
   toggle() {
