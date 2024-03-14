@@ -1,0 +1,71 @@
+<h1 class="title" xmlns="http://www.w3.org/1999/html">Active Group Workspaces ({{ groups.length }})</h1>
+<div class="cards">
+  <div class="card" *ngFor="let group of groups">
+    <div class="name">{{ group.name }}</div>
+    <div class="field">
+      <div class="label">Join Code</div>
+      <div class="value">{{ group.join_code }}</div>
+    </div>
+    <div class="field">
+      <div class="label">Block Set ID</div>
+      <div class="value">{{ group.block_set_id }}</div>
+    </div>
+    <div class="field">
+      <div class="label">Number of Members</div>
+      <div class="value">{{ group.members.length }}</div>
+    </div>
+    <p-button label="Access Group Workspace" (onClick)="enterWorkspace(group.id)"></p-button>
+  </div>
+  <div class="card" (click)="joinCodePopupVisible = true">
+    <div class="create">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.375 2V32M32.375 17H2.375" stroke="#31509E" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round"/>
+      </svg>
+      <div class="text">Add a Group</div>
+    </div>
+  </div>
+</div>
+
+<p-dialog [modal]="true" [(visible)]="joinCodePopupVisible" [style]="{ width: '424px' }">
+  <div class="join-code-popup">
+    <ng-template [ngIf]="!joinCodeCreated" [ngIfElse]="nameInput">
+      <div class="join-code">
+        <div *ngFor="let digit of joinCode; index as i" class="join-code-digit">
+          {{ digit }}
+        </div>
+      </div>
+      <p-button class="button primary-button" label="Join Group" (onClick)="joinGroup()"></p-button>
+      <p-button class="button secondary-button" label="Create a Group" (onClick)="createJoinCode()"></p-button>
+    </ng-template>
+    <ng-template #nameInput>
+      <div class="input-label">Group Name</div>
+      <input type="text" pInputText [(ngModel)]="newGroupName" placeholder="Enter name"/>
+      <div class="input-label">Join Code</div>
+      <div class="join-code-preview">
+
+        <div>{{ joinCode.join('') }}</div>
+        <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg"
+             class="copy-button"
+             (click)="copyJoinCode()">
+          <path
+            d="M12.75 16.25V19.625C12.75 20.246 12.246 20.75 11.625 20.75H1.875C1.57663 20.75 1.29048 20.6315 1.0795 20.4205C0.868527 20.2095 0.75 19.9234 0.75 19.625V6.875C0.75 6.254 1.254 5.75 1.875 5.75H3.75C4.25257 5.74966 4.7543 5.79114 5.25 5.874M12.75 16.25H16.125C16.746 16.25 17.25 15.746 17.25 15.125V10.25C17.25 5.79 14.007 2.089 9.75 1.374C9.2543 1.29114 8.75257 1.24966 8.25 1.25H6.375C5.754 1.25 5.25 1.754 5.25 2.375V5.874M12.75 16.25H6.375C6.07663 16.25 5.79048 16.1315 5.5795 15.9205C5.36853 15.7095 5.25 15.4234 5.25 15.125V5.874M17.25 12.5V10.625C17.25 9.7299 16.8944 8.87145 16.2615 8.23852C15.6286 7.60558 14.7701 7.25 13.875 7.25H12.375C12.0766 7.25 11.7905 7.13148 11.5795 6.9205C11.3685 6.70952 11.25 6.42337 11.25 6.125V4.625C11.25 4.18179 11.1627 3.74292 10.9931 3.33345C10.8235 2.92397 10.5749 2.55191 10.2615 2.23852C9.94809 1.92512 9.57603 1.67652 9.16656 1.50691C8.75708 1.3373 8.31821 1.25 7.875 1.25H6.75"
+            stroke="#31509E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div style="margin: 24px 0">
+        <div *ngFor="let blockSetId of availableBlockSets" style="margin:10px 0">
+          <p-radioButton name="pizza" [value]="blockSetId" [(ngModel)]="newGroupBlockSetId"></p-radioButton>
+          <label style="margin-left: 10px">{{ blockSetId }}</label>
+        </div>
+      </div>
+
+      <p-button class="button primary-button" label="Begin Group Session" (onClick)="createGroup()"></p-button>
+    </ng-template>
+  </div>
+</p-dialog>
+
+<div class="error-message">
+  <p-messages [(value)]="errorMessages" [enableService]="false" [closable]="true"></p-messages>
+</div>

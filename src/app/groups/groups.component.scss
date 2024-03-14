@@ -1,0 +1,196 @@
+:host {
+  display: block;
+  height: 100%;
+  padding: 64px 116px;
+  overflow: scroll;
+
+  .title {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 24px;
+  }
+
+  .cards {
+    min-height: 256px;
+    margin: 48px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 52px;
+    align-items: stretch;
+  }
+
+  .card {
+    min-height: 256px;
+    width: 384px;
+    border: 1px solid #DEDEDE;
+    border-radius: 16px;
+    padding: 12px 24px;
+    font-family: 'Inter';
+
+    .create {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      .text {
+        margin: 16px;
+        font-weight: 600;
+        font-size: 16px;
+        color: #31509E;
+      }
+    }
+
+    .name {
+      font-weight: 700;
+      font-size: 16px;
+      color: #31509E;
+    }
+
+    .field {
+      margin: 16px 0;
+
+      .label {
+        margin: 6px 0;
+        font-weight: 700;
+        font-size: 12px;
+        color: #8E8E8E;
+      }
+
+      .value {
+        margin: 6px 0;
+        font-weight: 600;
+        font-size: 20px;
+      }
+    }
+
+    ::ng-deep button {
+      box-sizing: border-box;
+      height: 40px;
+      background: white;
+      border: 1px solid #31509E;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      color: #31509E;
+      font-family: 'Inter';
+    }
+  }
+
+  p-dialog {
+    width: 424px;
+
+    ::ng-deep .p-dialog-content {
+      padding: 0 48px 32px;
+
+
+      ::ng-deep button {
+        display: block;
+        height: 36px;
+        width: 100%;
+        border: none;
+        box-shadow: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
+        padding: 0;
+        font-family: 'Inter';
+      }
+
+      .secondary-button ::ng-deep button {
+        color: #31509E;
+        background: #FFFFFF;
+
+        &:active {
+          background: darken(#FFFFFF, 10%);
+        }
+      }
+
+      .primary-button ::ng-deep button {
+        color: #FFFFFF;
+        background: #31509E;
+
+        &:active {
+          background: darken(#31509E, 10%);
+        }
+      }
+
+    }
+
+    ::ng-deep .p-dialog-header {
+      padding: 16px;
+    }
+
+
+    .join-code-popup {
+
+      .join-code {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 24px;
+
+        .join-code-digit {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+          width: 56px;
+          height: 72px;
+          background: #F8F8F8;
+          border: 1px solid #DEDEDE;
+          border-radius: 8px;
+          font-family: 'Inter';
+          font-weight: 600;
+          font-size: 24px;
+        }
+      }
+
+
+      .input-label {
+        font-family: 'Inter';
+        font-weight: 400;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      ::ng-deep input {
+        margin-bottom: 24px;
+        width: 100%;
+        background: #F8F8F8;
+        border: 1px solid #DEDEDE;
+        border-radius: 16px;
+        font-weight: 700;
+        font-size: 14px;
+        color: black;
+
+        ::placeholder {
+          color: #959595;
+        }
+      }
+
+      .join-code-preview {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Inter';
+        font-weight: 600;
+        font-size: 24px;
+        color: #1E1E1E;
+      }
+
+      .copy-button {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.error-message {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+}

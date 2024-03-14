@@ -1,0 +1,68 @@
+:host {
+  height: 100%;
+  overflow: scroll;
+  display: block;
+
+  .main {
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: 64px 116px 76px;
+    position: relative;
+
+    .title {
+      font-family: 'Inter';
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    .molecules {
+      margin-top: 48px;
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 48px;
+      row-gap: 48px;
+
+      .molecule {
+        width: 530px;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+        margin: 16px 0;
+
+        & > * {
+          flex: auto;
+        }
+
+        & ::ng-deep button {
+          border: 1px solid #31509E;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 14px;
+          color: #31509E;
+          background: #FFFFFF;
+        }
+      }
+    }
+
+    .return-button {
+      margin-top: 156px;
+      font-weight: 700;
+      font-size: 24px;
+      display: flex;
+      justify-content: end;
+
+      ::ng-deep button {
+        width: 388px;
+        height: 85px;
+        background: #31509E;
+        border: 1px solid #31509E;
+        border-radius: 8px;
+        font-family: 'Inter';
+        font-style: normal;
+        color: #FFFFFF;
+      }
+    }
+  }
+}

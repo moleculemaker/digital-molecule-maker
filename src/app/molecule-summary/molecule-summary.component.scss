@@ -1,0 +1,278 @@
+/**************** panel css ******************/
+
+@import "../styles/core";
+
+//**************** css ******************
+
+.icon_inline {
+  display: inline-block;
+
+  position: relative;
+  top: 2px;
+
+  width: 12px;
+  height: 12px;
+
+  margin: {
+    left: $padding * 0.2;
+  }
+
+  text: {
+    decoration: none;
+  }
+}
+
+.molecule {
+  padding: $padding * 0.5;
+
+  border: 1px solid color_variable("interface_border");
+
+  @include border-radius($interface_radius * 0.5);
+
+  & + .molecule {
+    margin: {
+      top: $padding * 0.5;
+    }
+  }
+}
+
+.molecule_content {
+  display: flex;
+  //      flex-wrap: wrap;
+  align-items: stretch;
+  gap: $padding;
+
+  margin: {
+    top: $padding * 0.25;
+  }
+
+  .preview,
+  .info {
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: 50%;
+  }
+
+  .button {
+    padding: ($padding * 0.5);
+
+    font: {
+      size: 0.75rem;
+    }
+  }
+}
+
+.preview {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min: {
+    height: 5rem;
+  }
+
+  margin: {
+    //      right: -($padding * .75);
+    //      left: -($padding * .75);
+  }
+
+  background: {
+    color: color_variable("panel_preview_background");
+  }
+
+  @include border-radius($interface_radius * 0.5);
+
+  .icon_3d {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    right: $padding;
+    bottom: $padding;
+    z-index: 100;
+
+    width: 30px;
+    height: 30px;
+
+    background: {
+      color: color_variable("panel_preview_icon");
+    }
+
+    pointer-events: none;
+
+    @include border-radius(50%);
+
+    svg {
+      width: 50%;
+      height: 50%;
+    }
+  }
+}
+
+inplace {
+  margin: {
+    top: $padding * 0.25;
+  }
+  padding: $padding 0px;
+
+  .display_block {
+    @include border-radius($border_radius);
+  }
+
+  .label {
+    flex-grow: 1;
+
+    color: color_variable("primary");
+
+    font: {
+      weight: bold;
+    }
+
+    .placeholder {
+      color: color_variable("panel_text_faded");
+    }
+  }
+
+  .icon_inline {
+    top: 0px;
+  }
+
+  ::ng-deep .content_block {
+    button {
+      height: 2rem;
+
+      background: {
+        color: color_variable("interface_faded");
+      }
+
+      @include border-left-radius(0px);
+      @include box-sizing(border-box);
+
+      &:hover {
+        color: color_variable("background");
+        background: {
+          color: color_variable("button_hover");
+        }
+      }
+    }
+  }
+
+  input {
+    width: 100%;
+    height: 2rem;
+
+    margin: 0px;
+    padding: ($padding * 0.25) ($padding * 0.5);
+
+    font: {
+      family: $font_family;
+    }
+
+    border: 1px solid color_variable("interface_border");
+
+    @include border-left-radius($border_radius);
+    @include box-sizing(border-box);
+  }
+}
+
+.info {
+  .label {
+    color: color_variable("text_faded");
+
+    font: {
+      size: 0.65rem;
+    }
+  }
+
+  .value {
+    font: {
+      weight: bold;
+    }
+  }
+}
+
+:host ::ng-deep .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: $padding * 0.2;
+
+    background: none;
+
+    margin: {
+      top: $padding;
+    }
+    padding: ($padding * 0.75);
+
+    border: 0px;
+
+    text: {
+      align: initial;
+    }
+
+    @include box-sizing(border-box);
+    @include border-radius($interface_radius * 0.5);
+
+    & + .button {
+      margin: {
+        top: $padding * 0.5;
+      }
+    }
+
+    &.outline_button {
+      color: color_variable("button_border");
+
+      border: 1px solid color_variable("button_border");
+
+      @include transition(
+          #{color 0.2s easing($ease-in),
+          background-color 0.2s easing($ease-in)}
+      );
+    }
+
+    &:not(.outline_button) {
+      color: color_variable("background");
+      background: {
+        color: color_variable("button");
+      }
+
+      @include transition(
+          #{color 0.2s easing($ease-in),
+          background-color 0.2s easing($ease-in)}
+      );
+    }
+
+    &:not([disabled]) {
+      cursor: pointer;
+
+      &.outline_button {
+        &:hover {
+          color: color_variable("background");
+
+          background: {
+            color: color_variable("button_hover");
+          }
+
+          border: {
+            color: color_variable("button_hover");
+          }
+
+          @include transition(none);
+        }
+      }
+
+      &:not(.outline_button) {
+        &:hover {
+          background: {
+            color: color_variable("button_hover");
+          }
+
+          @include transition(none);
+        }
+      }
+    }
+  }
+
