@@ -1,0 +1,24 @@
+<div class="main">
+  <div class="title">Group Molecule Cart</div>
+  <div class="molecules" *ngIf="molecules.length; else placeholder">
+    <div class="molecule" *ngFor="let molecule of molecules">
+      <dmm-molecule-summary
+        [molecule]="molecule"
+        [blockSet]="blockSet!">
+        <div action class="action-buttons">
+          <p-button label="Compare"></p-button>
+          <p-button label="View Details"></p-button>
+        </div>
+      </dmm-molecule-summary>
+    </div>
+  </div>
+  <div class="return-button">
+    <p-button label="Return to Molecule Builder" (click)="goBackToWorkspace()"></p-button>
+  </div>
+</div>
+
+<ng-template #placeholder>
+  <p>
+    The cart is empty
+  </p>
+</ng-template>
