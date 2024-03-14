@@ -3,6 +3,7 @@ import operator
 import os
 import re
 from collections import Counter
+from math import ceil
 from xml.dom.minidom import parse
 
 
@@ -13,9 +14,9 @@ def combine(key, initial):
 
 
 def get_svg_dimensions(url):
-    dom = parse(os.path.join('../src', url))
+    dom = parse(os.path.join('./src', url))
     svg_el = dom.getElementsByTagName('svg')[0]
-    return [int(v) for v in svg_el.getAttribute('viewBox').split(' ')]
+    return [ceil(float(v)) for v in svg_el.getAttribute('viewBox').split(' ')]
 
 
 def combine_chemical_formulas(*blocks):

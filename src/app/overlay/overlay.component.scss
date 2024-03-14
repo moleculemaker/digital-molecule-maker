@@ -396,3 +396,20 @@
     }
   }
 }
+
+.main {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  div {
+    flex: auto;
+  }
+
+  .mol-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-right: 16px;
+    flex: none;
+  }
+}

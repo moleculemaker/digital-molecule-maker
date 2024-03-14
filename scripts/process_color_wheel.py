@@ -4,7 +4,7 @@ import os
 
 from utils import get_svg_dimensions, combine_chemical_formulas, combine
 
-workdir = '../src/assets/blocks/10x10x10palette'
+workdir = './src/assets/blocks/10x10x10palette'
 
 with open(os.path.join(workdir, 'blocks.json')) as file:
     block_set = json.load(file)
