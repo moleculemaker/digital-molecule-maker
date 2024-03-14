@@ -127,11 +127,11 @@
     <input
       type="text"
       #nameInput
-      (keyup.enter)="onEnterInput($event, nameInput.value)"
+      (keyup)="onEnterInput($event, nameInput.value)"
       placeholder="Enter Molecule Name"
     />
-    <div class="button" (click)="updateMoleculeLabel(nameInput.value)">
-      Update
-    </div>
+<!--    <div class="button" (click)="updateMoleculeLabel(nameInput.value)">-->
+<!--      Update-->
+<!--    </div>-->
   </div>
 </ng-template>

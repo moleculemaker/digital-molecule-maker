@@ -158,13 +158,12 @@ export class MoleculeSvgComponent implements OnInit {
 
   onEnterInput(event: Event, newMoleculeName: string) {
     const keyboardEvent = event as KeyboardEvent;
-    if (keyboardEvent.key === 'Enter') {
-      this.updateMoleculeLabel(newMoleculeName);
-    }
+    // if (keyboardEvent.key === 'Enter') {
+    this.updateMoleculeLabel(newMoleculeName);
+    // }
   }
 
   updateMoleculeLabel(newMoleculeName: string) {
-    this.isEditNamePanelOpen = false;
     const trimmedName = newMoleculeName.trim();
     if (trimmedName.length > 0) {
       this.molecule!.label = newMoleculeName;

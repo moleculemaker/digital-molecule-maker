@@ -140,5 +140,12 @@ export class OverlayComponent implements OnChanges, OnDestroy {
       : 'middle';
   }
 
+  get show3dMol() {
+    return (
+      this.blockSet.id === BlockSetId.ColorWheel &&
+      this.molecule?.blockList.length === 3
+    );
+  }
+
   lookupProperty = lookupProperty;
 }

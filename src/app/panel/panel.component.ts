@@ -28,6 +28,9 @@ import {
 } from './panel.animations';
 import { BlockSet, Molecule } from '../models';
 import { lookupProperty } from '../lookup';
+import { Router } from '@angular/router';
+import { CartService } from '../services/cart.service';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: 'panel',
@@ -81,10 +84,12 @@ export class PanelComponent implements OnInit {
   step = 0;
   maxSteps = 5;
 
-  moleculeNamePlaceholder = 'Molecule Name';
-
   //********************************************
-  constructor() {}
+  constructor(
+    private workspaceService: WorkspaceService,
+    private cartService: CartService,
+    private router: Router,
+  ) {}
 
   //********************************************
   ngOnInit(): void {
@@ -166,5 +171,12 @@ export class PanelComponent implements OnInit {
     this.onSendBackToWorkspace.emit(moleculeId.toString());
   }
 
-  getPredictedProperty = lookupProperty;
+  viewGroupCart() {
+    const groupId = this.workspaceService.group$.value?.id;
+    this.router.navigateByUrl(`/groups/${groupId}/cart`);
+  }
+
+  addToGroupCart() {
+    this.cartService.addToGroupCart().subscribe();
+  }
 }

@@ -14,4 +14,9 @@ export class AppHeaderComponent implements OnInit {
   onShowTutorial() {
     //todo: hook this up to the tutorial
   }
+
+  logout() {
+    localStorage.removeItem('dmm-user');
+    location.reload();
+  }
 }

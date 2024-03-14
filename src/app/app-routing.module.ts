@@ -1,8 +1,5 @@
 import { inject, NgModule } from '@angular/core';
-import {
-  RouterModule,
-  Routes,
-} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { CanActivateSurveyCode } from './guards/survey-code.guard';
 import { UserService } from './services/user.service';
@@ -10,6 +7,8 @@ import { UserService } from './services/user.service';
 import { AppBuildComponent } from './app-build/app-build.component';
 import { PromptType, SplashComponent } from './splash/splash.component';
 import { LoginComponent } from './login/login.component';
+import { GroupsComponent } from './groups/groups.component';
+import { GroupCartComponent } from './group-cart/group-cart.component';
 
 const routes: Routes = [
   {
@@ -19,19 +18,13 @@ const routes: Routes = [
       promptType: PromptType.None,
     },
   },
-  {
-    path: 'activity',
-    component: SplashComponent,
-    data: {
-      promptType: PromptType.Code,
-    },
-  },
-  {
-    path: 'build',
-    component: AppBuildComponent,
-    // canActivate: [CanActivateSurveyCode],
-    canActivate: [() => inject(UserService).canActivate()],
-  },
+  // {
+  //   path: 'activity',
+  //   component: SplashComponent,
+  //   data: {
+  //     promptType: PromptType.Code,
+  //   },
+  // },
   {
     path: 'signin',
     component: LoginComponent,
@@ -39,6 +32,33 @@ const routes: Routes = [
   {
     path: 'signup',
     component: LoginComponent,
+  },
+  {
+    path: 'groups',
+    component: GroupsComponent,
+    canActivate: [
+      () => {
+        return inject(UserService).canActivate();
+      },
+    ],
+  },
+  {
+    path: 'groups/:groupId/build',
+    component: AppBuildComponent,
+    canActivate: [
+      () => {
+        return inject(UserService).canActivate();
+      },
+    ],
+  },
+  {
+    path: 'groups/:groupId/cart',
+    component: GroupCartComponent,
+    canActivate: [
+      () => {
+        return inject(UserService).canActivate();
+      },
+    ],
   },
 ];
 

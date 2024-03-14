@@ -144,6 +144,10 @@ export class AppSidebarComponent implements OnInit {
   functionModeEnabled = true;
 
   constructor(private workspaceService: WorkspaceService) {
+  }
+
+  //********************************************
+  ngOnInit(): void {
     this.workspaceService.functionMode$.subscribe((enabled) => {
       this.functionModeEnabled = enabled;
       this.applyFilters();
@@ -152,10 +156,7 @@ export class AppSidebarComponent implements OnInit {
       this.moleculeList = moleculeList;
       this.applyFilters();
     });
-  }
 
-  //********************************************
-  ngOnInit(): void {
     this.xAxis = this.blockSet.functionalProperties[0]!;
     this.yAxis = this.blockSet.functionalProperties[1]!;
     this._xRange = [this.xAxis.min, this.xAxis.max];
