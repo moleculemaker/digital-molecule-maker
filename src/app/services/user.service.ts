@@ -59,6 +59,24 @@ export class UserService {
     });
   }
 
+  generateCode() {
+    const { hostname } = this.envService.getEnvConfig();
+    return this.http.post<{
+      expires_in: number;
+      code: string;
+    }>(
+      `${hostname}/auth/generate-code`,
+      {
+        expires_in: 24 * 60 * 60,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${this.user$.value?.access_token}`,
+        },
+      },
+    );
+  }
+
   createGroup(joinCode: string, name: string, blockSetId: BlockSetId) {
     const { hostname } = this.envService.getEnvConfig();
     return this.http.post<UserGroup[]>(

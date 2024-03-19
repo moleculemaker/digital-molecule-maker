@@ -81,7 +81,9 @@ export interface User {
 export interface UserGroup {
   id: number;
   name: string;
-  join_code: string;
+  join_code: {
+    code: string;
+  }
   block_set_id: BlockSetId;
   members: Array<{
     id: number;
