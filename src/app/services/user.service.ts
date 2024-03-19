@@ -27,7 +27,7 @@ export class UserService {
   canActivate() {
     const user = this.user$.value;
     if (!user) {
-      this.router.navigateByUrl('/signin', { replaceUrl: true });
+      this.router.navigateByUrl('/login', { replaceUrl: true });
     }
     return !!user;
   }

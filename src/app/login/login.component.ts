@@ -26,7 +26,7 @@ export class LoginComponent {
     private route: ActivatedRoute,
   ) {
     this.route.url.subscribe((urlSegments) => {
-      this.isLogin = urlSegments[0]?.path == 'signin';
+      this.isLogin = urlSegments[0]?.path == 'login';
     });
   }
 
@@ -57,7 +57,7 @@ export class LoginComponent {
       });
   }
 
-  navigateToBuild(): void {
-    this.router.navigate(['build']);
+  navigateToLogin(): void {
+    this.router.navigate(['']);
   }
 }

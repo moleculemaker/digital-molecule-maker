@@ -93,11 +93,11 @@ export class SplashComponent implements OnInit {
   onEnterCode(code: string): void {
     // TODO: validate code and display any error messages in template
     // this.userService.setUser({ surveyCode: code.trim() });
-    this.navigateToBuild(true);
+    this.navigateToLogin(true);
   }
 
-  navigateToBuild(code = false): void {
-    this.router.navigate(['signin'], { queryParams: { code } });
+  navigateToLogin(code = false): void {
+    this.router.navigate(['login']);
   }
 
   // accessor to allow using the PromptType enum in the template
