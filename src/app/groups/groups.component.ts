@@ -16,8 +16,8 @@ export class GroupsComponent {
 
   groups: UserGroup[] = [];
 
-  joinCode = Array(5).fill(' ');
-  curIndex = 0;
+  indices = [...Array(5).fill(0).keys()];
+  joinCode = ''
 
   newGroupName: string = '';
   availableBlockSets = [BlockSetId.ColorWheel, BlockSetId.OPV];
@@ -31,8 +31,7 @@ export class GroupsComponent {
   set joinCodePopupVisible(v) {
     this._joinCodePopupVisible = v;
     if (!v) {
-      this.joinCode = Array(5).fill(' ');
-      this.curIndex = 0;
+      this.joinCode = ''
       this.joinCodeCreated = false;
     }
   }
@@ -41,20 +40,18 @@ export class GroupsComponent {
 
   constructor(
     private userService: UserService,
-    private blockService: BlockService,
-    private workspaceService: WorkspaceService,
     private router: Router,
   ) {
     this.fetchGroups();
   }
 
-  @HostListener('document:keyup', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   onKeyUp(e: KeyboardEvent) {
     if (this.joinCodeCreated) return;
-    if (this.curIndex > 0 && e.key === 'Backspace') {
-      this.joinCode[--this.curIndex] = ' ';
-    } else if (this.curIndex < 5 && /^[A-Za-z0-9]$/.test(e.key)) {
-      this.joinCode[this.curIndex++] = e.key;
+    if (this.joinCode.length && e.key === 'Backspace') {
+      this.joinCode = this.joinCode.slice(0, -1);
+    } else if (this.joinCode.length < 5 && /^[a-z0-9]$/.test(e.key)) {
+      this.joinCode = this.joinCode + e.key.toUpperCase()
     }
   }
 
@@ -69,7 +66,7 @@ export class GroupsComponent {
   }
 
   joinGroup() {
-    this.userService.joinGroup(this.joinCode.join('')).subscribe(
+    this.userService.joinGroup(this.joinCode).subscribe(
       () => {
         this.fetchGroups();
         this.joinCodePopupVisible = false;
@@ -83,19 +80,16 @@ export class GroupsComponent {
   }
 
   createJoinCode() {
-    if (this.joinCode.every((digit) => /^[A-Za-z0-9]$/.test(digit))) {
+    this.userService.generateCode().subscribe(({code}) => {
+      this.joinCode = code;
       this.joinCodeCreated = true;
-    } else {
-      this.errorMessages = [
-        { severity: 'error', detail: `Join code must be 5 characters` },
-      ];
-    }
+    })
   }
 
   createGroup() {
     this.userService
       .createGroup(
-        this.joinCode.join(''),
+        this.joinCode,
         this.newGroupName,
         this.newGroupBlockSetId,
       )
@@ -111,6 +105,6 @@ export class GroupsComponent {
   }
 
   copyJoinCode() {
-    navigator.clipboard.writeText(this.joinCode.join(''));
+    navigator.clipboard.writeText(this.joinCode);
   }
 }

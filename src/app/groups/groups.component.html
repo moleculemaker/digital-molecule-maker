@@ -4,7 +4,7 @@
     <div class="name">{{ group.name }}</div>
     <div class="field">
       <div class="label">Join Code</div>
-      <div class="value">{{ group.join_code }}</div>
+      <div class="value">{{ group.join_code.code }}</div>
     </div>
     <div class="field">
       <div class="label">Block Set ID</div>
@@ -31,8 +31,8 @@
   <div class="join-code-popup">
     <ng-template [ngIf]="!joinCodeCreated" [ngIfElse]="nameInput">
       <div class="join-code">
-        <div *ngFor="let digit of joinCode; index as i" class="join-code-digit">
-          {{ digit }}
+        <div *ngFor="let i of indices" class="join-code-digit">
+          {{ joinCode[i] || '' }}
         </div>
       </div>
       <p-button class="button primary-button" label="Join Group" (onClick)="joinGroup()"></p-button>
@@ -44,7 +44,7 @@
       <div class="input-label">Join Code</div>
       <div class="join-code-preview">
 
-        <div>{{ joinCode.join('') }}</div>
+        <div>{{ joinCode }}</div>
         <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg"
              class="copy-button"
              (click)="copyJoinCode()">
