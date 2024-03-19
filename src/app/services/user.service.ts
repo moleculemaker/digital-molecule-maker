@@ -80,7 +80,7 @@ export class UserService {
   createGroup(joinCode: string, name: string, blockSetId: BlockSetId) {
     const { hostname } = this.envService.getEnvConfig();
     return this.http.post<UserGroup[]>(
-      `${hostname}/groups`,
+      `${hostname}/groups/`,
       {
         name,
         join_code: joinCode,
