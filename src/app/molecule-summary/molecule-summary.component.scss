@@ -42,6 +42,10 @@
   align-items: stretch;
   gap: $padding;
 
+  &.vertical {
+    flex-direction: column;
+  }
+
   margin: {
     top: $padding * 0.25;
   }

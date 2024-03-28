@@ -39,6 +39,8 @@ import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MessagesModule } from 'primeng/messages';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
 import { TrackingService } from './services/tracking.service';
 import { EnvironmentService } from './services/environment.service';
@@ -104,7 +106,9 @@ function initializeAppFactory(
     PasswordModule,
     DialogModule,
     RadioButtonModule,
-    MessagesModule
+    MessagesModule,
+    DropdownModule,
+    TableModule,
   ],
   providers: [
     {

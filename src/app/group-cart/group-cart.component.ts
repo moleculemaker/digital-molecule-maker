@@ -2,9 +2,12 @@ import { Component } from '@angular/core';
 import { WorkspaceService } from '../services/workspace.service';
 import { BlockSet, Coordinates, Molecule, UserGroup } from '../models';
 import { CartService } from '../services/cart.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { combineLatest } from 'rxjs';
+import { lookupProperty } from '../lookup';
+
+type ViewMode = 'gallery' | 'list';
 
 @Component({
   selector: 'dmm-group-cart',
@@ -15,6 +18,12 @@ export class GroupCartComponent {
   molecules: Molecule[] = [];
   group: UserGroup | null = null;
   blockSet: BlockSet | null = null;
+
+  viewModes: ViewMode[] = ['gallery', 'list'];
+  currentViewMode: ViewMode = 'gallery';
+
+  selected: Molecule[] = [];
+  comparisonViewOpen = false;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -51,7 +60,13 @@ export class GroupCartComponent {
     });
   }
 
+  removeFromSelected(molecule: Molecule) {
+    this.selected = this.selected.filter((m) => m !== molecule);
+  }
+
   goBackToWorkspace() {
     this.location.back();
   }
+
+  protected readonly lookupProperty = lookupProperty;
 }
