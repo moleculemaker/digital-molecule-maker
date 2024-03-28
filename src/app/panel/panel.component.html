@@ -1,39 +1,45 @@
 <div class="panel_container wide" [class.inactive]="!isPanelActive">
   <div
-    class="close_btn"
-    *ngIf="isPanelActive"
-    (click)="closeAll()"
-    @panelCloseButtonAnimation
-    (@panelCloseButtonAnimation.done)="onPanelAnimationEvent($event)"
-  >
-    <div class="icon">X</div>
-  </div>
-
-  <div
     class="panel"
     *ngIf="step == 1"
     [@panelAnimation]="isIncreasing ? 'increasing' : 'decreasing'"
   >
+    <svg
+      width="20" height="20" viewBox="0 0 20 20"
+      class="close_btn"
+      *ngIf="isPanelActive"
+      (click)="closeAll()"
+      @panelCloseButtonAnimation
+      (@panelCloseButtonAnimation.done)="onPanelAnimationEvent($event)"
+    >
+      <circle cx="10.5" cy="10" r="10"/>
+      <line x1="5.93529" y1="5.41895" x2="15.0465" y2="14.5302" stroke="#434343" stroke-width="3"
+            stroke-linecap="round"/>
+      <line x1="6.04775" y1="14.7812" x2="14.7371" y2="5.26683" stroke="#434343" stroke-width="3"
+            stroke-linecap="round"/>
+    </svg>
+
     <div class="panel_title">My Molecular Cart</div>
 
     <div class="molecules">
       <!-- todo: convert this molecule layout to be data driven -->
 
-      <dmm-molecule-summary
-        *ngFor="let molecule of cartMoleculeList; let moleculeId = index"
-        [molecule]="molecule"
-        [moleculeId]="moleculeId"
-        [blockSet]="blockSet!"
-      >
-        <!-- todo: add remove from cart functionality -->
-        <div
-          action
-          class="button outline_button"
-          (click)="sendBackToWorkspace(moleculeId)"
+      <div class="molecule" *ngFor="let molecule of cartMoleculeList; let moleculeId = index">
+        <dmm-molecule-summary
+          [molecule]="molecule"
+          [moleculeId]="moleculeId"
+          [blockSet]="blockSet!"
         >
-          Send back to workspace
-        </div>
-      </dmm-molecule-summary>
+          <!-- todo: add remove from cart functionality -->
+          <div
+            action
+            class="button outline_button"
+            (click)="sendBackToWorkspace(moleculeId)"
+          >
+            Send back to workspace
+          </div>
+        </dmm-molecule-summary>
+      </div>
 
     </div>
 
