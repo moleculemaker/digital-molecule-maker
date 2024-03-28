@@ -342,15 +342,19 @@ $panel_width_wide: 460px; //320px * 2;
     }
 
     &.outline_button {
-      font-size: 90%;
-      color: color_variable("button_border");
+      box-sizing: border-box;
+      width: 222px;
+      height: 40px;
+      border: 1px solid #31509E;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #31509E;
 
-      border: 1px solid color_variable("button_border");
-
-      @include transition(
-          #{color 0.2s easing($ease-in),
-          background-color 0.2s easing($ease-in)}
-      );
+      &:hover {
+        background: lighten(#31509E, 50%);
+      }
     }
 
     &:not(.outline_button) {
@@ -367,22 +371,6 @@ $panel_width_wide: 460px; //320px * 2;
 
     &:not([disabled]) {
       cursor: pointer;
-
-      &.outline_button {
-        &:hover {
-          color: color_variable("background");
-
-          background: {
-            color: color_variable("button_hover");
-          }
-
-          border: {
-            color: color_variable("button_hover");
-          }
-
-          @include transition(none);
-        }
-      }
 
       &:not(.outline_button) {
         &:hover {

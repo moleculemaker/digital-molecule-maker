@@ -195,84 +195,25 @@ inplace {
 }
 
 :host ::ng-deep .button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: $padding * 0.2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $padding * 0.2;
 
-    background: none;
+  background: none;
 
-    margin: {
-      top: $padding;
-    }
-    padding: ($padding * 0.75);
-
-    border: 0px;
-
-    text: {
-      align: initial;
-    }
-
-    @include box-sizing(border-box);
-    @include border-radius($interface_radius * 0.5);
-
-    & + .button {
-      margin: {
-        top: $padding * 0.5;
-      }
-    }
-
-    &.outline_button {
-      color: color_variable("button_border");
-
-      border: 1px solid color_variable("button_border");
-
-      @include transition(
-          #{color 0.2s easing($ease-in),
-          background-color 0.2s easing($ease-in)}
-      );
-    }
-
-    &:not(.outline_button) {
-      color: color_variable("background");
-      background: {
-        color: color_variable("button");
-      }
-
-      @include transition(
-          #{color 0.2s easing($ease-in),
-          background-color 0.2s easing($ease-in)}
-      );
-    }
-
-    &:not([disabled]) {
-      cursor: pointer;
-
-      &.outline_button {
-        &:hover {
-          color: color_variable("background");
-
-          background: {
-            color: color_variable("button_hover");
-          }
-
-          border: {
-            color: color_variable("button_hover");
-          }
-
-          @include transition(none);
-        }
-      }
-
-      &:not(.outline_button) {
-        &:hover {
-          background: {
-            color: color_variable("button_hover");
-          }
-
-          @include transition(none);
-        }
-      }
-    }
+  margin: {
+    top: $padding;
   }
+  padding: ($padding * 0.75);
+
+  border: 0px;
+
+  text: {
+    align: initial;
+  }
+
+  @include box-sizing(border-box);
+  @include border-radius($interface_radius * 0.5);
+}
 
