@@ -17,6 +17,9 @@ export class MoleculeSummaryComponent {
   @Input()
   blockSet!: BlockSet;
 
+  @Input()
+  vertical = false;
+
   moleculeNamePlaceholder = 'Molecule Name';
 
   getPredictedProperty = lookupProperty;
