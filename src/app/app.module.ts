@@ -49,6 +49,7 @@ import { LoginComponent } from './login/login.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupCartComponent } from './group-cart/group-cart.component';
 import { MoleculeSummaryComponent } from './molecule-summary/molecule-summary.component';
+import { BlockLibraryComponent } from './block-library/block-library.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -87,6 +88,7 @@ function initializeAppFactory(
     GroupsComponent,
     GroupCartComponent,
     MoleculeSummaryComponent,
+    BlockLibraryComponent,
   ],
   imports: [
     BrowserModule,

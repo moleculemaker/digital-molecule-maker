@@ -43,7 +43,7 @@
 
     </div>
 
-    <div class="group-cart-buttons">
+    <div *ngIf="group$ | async" class="group-cart-buttons">
       <p-button class="secondary-button" label="View Group Cart" (click)="viewGroupCart()">
       </p-button>
       <p-button class="primary-button" label="Add to Group Cart" (click)="addToGroupCart()">

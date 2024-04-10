@@ -9,6 +9,7 @@ import { PromptType, SplashComponent } from './splash/splash.component';
 import { LoginComponent } from './login/login.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupCartComponent } from './group-cart/group-cart.component';
+import {BlockLibraryComponent} from "./block-library/block-library.component";
 
 const routes: Routes = [
   {
@@ -32,6 +33,19 @@ const routes: Routes = [
   {
     path: 'signup',
     component: LoginComponent,
+  },
+  {
+    path: 'library',
+    component: BlockLibraryComponent
+  },
+  {
+    path: 'library/:blockSetId/build',
+    component: AppBuildComponent,
+    canActivate: [
+      () => {
+        return inject(UserService).canActivate();
+      },
+    ],
   },
   {
     path: 'groups',

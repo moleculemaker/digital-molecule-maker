@@ -91,6 +91,10 @@ export class PanelComponent implements OnInit {
     private router: Router,
   ) {}
 
+  get group$() {
+    return this.workspaceService.group$;
+  }
+
   //********************************************
   ngOnInit(): void {
     this.openFirstPanel();
