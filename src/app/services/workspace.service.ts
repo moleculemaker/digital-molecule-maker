@@ -4,7 +4,7 @@ import { filter, withLatestFrom } from 'rxjs/operators';
 
 import { BlockSet, Molecule, User, UserGroup } from '../models';
 import { UserService } from './user.service';
-import { BlockService } from './block.service';
+import { BlockService, BlockSetId } from './block.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
@@ -28,6 +28,13 @@ export class WorkspaceService {
   ) {
     // this.startAutorestore();
     // this.startAutosave();
+  }
+
+  setActiveBlockSet(blockSetId: BlockSetId) {
+    this.blockSet$.next(null);
+    this.blockService.getBlockSet(blockSetId).subscribe((blockSet) => {
+      this.blockSet$.next(blockSet);
+    });
   }
 
   setActiveGroup(groupId: number) {

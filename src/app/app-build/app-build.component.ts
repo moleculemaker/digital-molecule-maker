@@ -20,7 +20,7 @@ import {
   RigJob,
 } from '../models';
 
-import { BlockService } from '../services/block.service';
+import { BlockService, BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
@@ -82,7 +82,12 @@ export class AppBuildComponent implements OnInit {
 
     this.route.paramMap.subscribe((paramMap) => {
       const groupId = Number(paramMap.get('groupId'));
-      this.workspaceService.setActiveGroup(groupId);
+      const blockSetId = paramMap.get('blockSetId') as BlockSetId;
+      if (groupId) {
+        this.workspaceService.setActiveGroup(groupId);
+      } else {
+        this.workspaceService.setActiveBlockSet(blockSetId);
+      }
     });
 
     this.workspaceService.blockSet$.subscribe((blockSet) => {

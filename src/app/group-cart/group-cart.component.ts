@@ -49,14 +49,7 @@ export class GroupCartComponent {
 
   fetchGroupCart(groupId: number, blockSet: BlockSet) {
     this.cartService.fetchGroupCart(groupId).subscribe((molecules) => {
-      this.molecules = molecules.map(
-        (mol) =>
-          new Molecule(
-            new Coordinates(0, 0),
-            mol.block_ids.map((id, index) => blockSet.blocks[index]![id - 1]!),
-            mol.name,
-          ),
-      );
+      this.molecules = molecules;
     });
   }
 
