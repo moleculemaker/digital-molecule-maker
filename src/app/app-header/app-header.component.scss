@@ -6,7 +6,7 @@
 
 //**************** css ******************
 
-:host {
+.header {
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
@@ -39,8 +39,15 @@
     }
   }
 
-  .header_separator {
+  .header_title {
     flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 32px;
   }
 }
 
@@ -129,5 +136,55 @@ input[type="text"] {
     }
 
     @include transition(none);
+  }
+}
+
+.menu-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 46px;
+  width: 46px;
+  box-sizing: border-box;
+  background: #31509E;
+  border-radius: 32px;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 900;
+  font-size: 20px;
+  color: #F8F8F8;
+  cursor: pointer;
+  user-select: none;
+}
+
+$menu-background: #31509E;
+.menu {
+  padding: 8px 0;
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  width: 151px;
+  background: $menu-background;
+  border: 1px solid #DEDEDE;
+  border-radius: 8px;
+  z-index: 5000; // TODO: there must be a better way
+  user-select: none;
+
+  & > div {
+    padding: 4px 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #FFFFFF;
+    cursor: pointer;
+
+    &:hover {
+      background: lighten($menu-background, 5%);
+    }
+
+    &:active {
+      background: darken($menu-background, 5%);
+    }
   }
 }

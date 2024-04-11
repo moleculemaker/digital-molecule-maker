@@ -36,7 +36,12 @@ const routes: Routes = [
   },
   {
     path: 'library',
-    component: BlockLibraryComponent
+    component: BlockLibraryComponent,
+    canActivate: [
+      () => {
+        return inject(UserService).canActivate();
+      },
+    ],
   },
   {
     path: 'library/:blockSetId/build',

@@ -13,6 +13,8 @@
   font-family: 'Inter';
 
   .main {
+    z-index: get_index("splash") + 1;
+
     width: 1080px;
     padding-right: 626px;
 
@@ -674,8 +676,7 @@ $splash_form_field_width: 240px;
   right: 0px;
   top: 0px;
   bottom: 0px;
-  //z-index: get_index("splash");
-  z-index: -1;
+  z-index: get_index("splash");
 
   background: {
     color: color_variable("background");

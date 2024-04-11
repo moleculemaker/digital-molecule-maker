@@ -83,8 +83,12 @@ export interface UserGroup {
   name: string;
   join_code: {
     code: string;
-  }
+  };
   block_set_id: BlockSetId;
+  creator: {
+    id: number;
+    name: string;
+  };
   members: Array<{
     id: number;
     name: string;
