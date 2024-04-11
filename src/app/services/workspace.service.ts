@@ -31,6 +31,7 @@ export class WorkspaceService {
   }
 
   setActiveBlockSet(blockSetId: BlockSetId) {
+    this.group$.next(null);
     this.blockSet$.next(null);
     this.blockService.getBlockSet(blockSetId).subscribe((blockSet) => {
       this.blockSet$.next(blockSet);
