@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -12,6 +12,13 @@ import { CartService } from '../services/cart.service';
 })
 export class AppHeaderComponent implements OnInit {
   title$ = of('');
+
+  menuOpen = false;
+
+  @HostListener('document:click', [])
+  closeMenu() {
+    this.menuOpen = false;
+  }
 
   constructor(
     private userService: UserService,
@@ -43,8 +50,6 @@ export class AppHeaderComponent implements OnInit {
   get user$() {
     return this.userService.user$;
   }
-
-  menuOpen = false;
 
   //********************************************
   ngOnInit(): void {}
