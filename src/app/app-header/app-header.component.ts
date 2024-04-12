@@ -3,7 +3,7 @@ import { UserService } from '../services/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { WorkspaceService } from '../services/workspace.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ export class AppHeaderComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private workspaceService: WorkspaceService,
+    private cartService: CartService,
     private router: Router,
   ) {
     this.updateTitle(router.url);
@@ -34,7 +34,7 @@ export class AppHeaderComponent implements OnInit {
         map((user) => (user ? `${user.name}'s Workspace` : '')),
       );
     } else {
-      this.title$ = this.workspaceService.group$.pipe(
+      this.title$ = this.cartService.group$.pipe(
         map((group) => (group ? `${group.creator!.name}'s Classroom` : '')),
       );
     }

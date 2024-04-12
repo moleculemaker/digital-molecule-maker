@@ -24,7 +24,7 @@
     <div class="molecules">
       <!-- todo: convert this molecule layout to be data driven -->
 
-      <div class="molecule" *ngFor="let molecule of cartMoleculeList; let moleculeId = index">
+      <div class="molecule" *ngFor="let molecule of (personalCart$ | async); let moleculeId = index">
         <dmm-molecule-summary
           [molecule]="molecule"
           [moleculeId]="moleculeId"
@@ -34,7 +34,7 @@
           <div
             action
             class="button outline_button"
-            (click)="sendBackToWorkspace(moleculeId)"
+            (click)="sendBackToWorkspace(molecule)"
           >
             Send back to workspace
           </div>

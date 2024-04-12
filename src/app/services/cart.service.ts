@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { Coordinates, Molecule } from '../models';
+import {
+  BlockSet,
+  fromMoleculeDTO,
+  Molecule,
+  MoleculeDTO,
+  toMoleculeDTO,
+  UserGroup,
+} from '../models';
 import { UserService } from './user.service';
-import { WorkspaceService } from './workspace.service';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { BlockService, BlockSetId } from './block.service';
@@ -13,117 +19,123 @@ import { BlockService, BlockSetId } from './block.service';
   providedIn: 'root',
 })
 export class CartService {
-  moleculeList$ = new BehaviorSubject<Molecule[]>([]);
+  group$ = new BehaviorSubject<UserGroup | null>(null);
+  blockSet$ = new BehaviorSubject<BlockSet | null>(null);
+  personalCart$ = new BehaviorSubject<Molecule[]>([]);
+  groupCart$ = new BehaviorSubject<Molecule[]>([]);
 
   constructor(
     private userService: UserService,
-    private workspaceService: WorkspaceService,
-    private blockService: BlockService,
     private envService: EnvironmentService,
+    private blockService: BlockService,
     private http: HttpClient,
-  ) {
-    // this.startAutorestore();
-    // this.startAutosave();
+  ) {}
+
+  reset(groupId: number | null, blockSetId: BlockSetId | null) {
+    this.group$.next(null);
+    this.blockSet$.next(null);
+
+    if (groupId) {
+      this.userService.getGroupInfo(groupId).subscribe((group) => {
+        this.blockService
+          .getBlockSet(group.block_set_id)
+          .subscribe((blockSet) => {
+            this.group$.next(group);
+            this.blockSet$.next(blockSet);
+            this.fetchPersonalCart(blockSet);
+            this.fetchGroupCart(group, blockSet);
+          });
+      });
+    } else if (blockSetId) {
+      this.blockService.getBlockSet(blockSetId).subscribe((blockSet) => {
+        this.blockSet$.next(blockSet);
+        this.fetchPersonalCart(blockSet);
+      });
+    }
   }
 
-  updateMoleculeList(list: Molecule[]): void {
-    this.moleculeList$.next(list);
-  }
-
-  getMoleculeList(): Observable<Molecule[]> {
-    return this.moleculeList$.asObservable();
-  }
-
-  fetchGroupCart(groupId: number) {
+  fetchPersonalCart(blockSet: BlockSet) {
     const { hostname } = this.envService.getEnvConfig();
     return this.http
-      .get<
-        Array<{
-          name: string;
-          block_set_id: BlockSetId;
-          block_ids: number[];
-        }>
-      >(`${hostname}/groups/${groupId}/molecules`, {
+      .get<MoleculeDTO[]>(
+        `${hostname}/me/molecules?block_set_id=${blockSet.id}`,
+        {
+          headers: {
+            authorization: `Bearer ${this.userService.user$.value?.access_token}`,
+          },
+        },
+      )
+      .pipe(map((molecules) => molecules.map(fromMoleculeDTO(blockSet))))
+      .subscribe((molecules) => {
+        this.personalCart$.next(molecules);
+      });
+  }
+
+  addToPersonalCart(blockSet: BlockSet, molecule: Molecule) {
+    const { hostname } = this.envService.getEnvConfig();
+    return this.http
+      .post(`${hostname}/me/molecules`, toMoleculeDTO(blockSet)(molecule), {
         headers: {
           authorization: `Bearer ${this.userService.user$.value?.access_token}`,
         },
       })
-      .pipe(
-        mergeMap((molecules) => {
-          if (!molecules.length) return [];
-          return this.blockService.getBlockSet(molecules[0]!.block_set_id).pipe(
-            map((blockSet) =>
-              molecules.map(
-                (mol) =>
-                  new Molecule(
-                    new Coordinates(0, 0),
-                    mol.block_ids.map(
-                      (id, index) => blockSet.blocks[index]![id - 1]!,
-                    ),
-                    mol.name,
-                  ),
-              ),
-            ),
-          );
-        }),
-      );
+      .subscribe(() => {
+        this.fetchPersonalCart(blockSet);
+      });
   }
 
-  addToGroupCart() {
+  removeFromPersonalCart(blockSet: BlockSet, molecules: Molecule[]) {
     const { hostname } = this.envService.getEnvConfig();
-    const group = this.workspaceService.group$.value!;
-    const data = this.moleculeList$.value.map((molecule) => ({
-      name: molecule.label,
-      block_set_id: group.block_set_id,
-      block_ids: molecule.blockList
-        .sort((a, b) => a.index - b.index)
-        .map((mol) => mol.id),
-    }));
     return this.http
-      .post(`${hostname}/groups/${group.id}/molecules`, data, {
+      .patch(
+        `${hostname}/me/molecules`,
+        {
+          op: 'delete',
+          ids: molecules.map((m) => m.id),
+        },
+        {
+          headers: {
+            authorization: `Bearer ${this.userService.user$.value?.access_token}`,
+          },
+        },
+      )
+      .subscribe(() => {
+        this.fetchPersonalCart(blockSet);
+      });
+  }
+
+  fetchGroupCart(group: UserGroup, blockSet: BlockSet) {
+    const { hostname } = this.envService.getEnvConfig();
+    return this.http
+      .get<MoleculeDTO[]>(`${hostname}/groups/${group.id}/molecules`, {
         headers: {
           authorization: `Bearer ${this.userService.user$.value?.access_token}`,
         },
       })
-      .pipe(tap(() => this.moleculeList$.next([])));
+      .pipe(map((molecules) => molecules.map(fromMoleculeDTO(blockSet))))
+      .subscribe((molecules) => {
+        this.groupCart$.next(molecules);
+      });
   }
 
-  // private startAutorestore(): void {
-  //   this.userService
-  //     .getUser()
-  //     .pipe(filter((user) => !!user))
-  //     .subscribe((user) => {
-  //       const restored = localStorage.getItem(this.getLocalStorageKey(user));
-  //       if (restored) {
-  //         try {
-  //           this.updateMoleculeList(JSON.parse(restored));
-  //         } catch (e: unknown) {
-  //           // JSON.parse throws SyntaxError
-  //           console.error('Failed to restore workspace from localStorage', e);
-  //         }
-  //       }
-  //     });
-  // }
-  //
-  // private startAutosave(): void {
-  //   this.getMoleculeList()
-  //     .pipe(
-  //       withLatestFrom(this.userService.getUser()),
-  //       filter(([moleculeList, user]) => !!user),
-  //     )
-  //     .subscribe(([moleculeList, user]) => {
-  //       try {
-  //         localStorage.setItem(
-  //           this.getLocalStorageKey(user),
-  //           JSON.stringify(moleculeList),
-  //         );
-  //       } catch (e: unknown) {
-  //         console.error('Failed to save workspace to localStorage', e);
-  //       }
-  //     });
-  // }
-
-  // private getLocalStorageKey(user: User | null): string {
-  //   return 'CART_' + user?.surveyCode;
-  // }
+  addMyMoleculesToGroupCart() {
+    const { hostname } = this.envService.getEnvConfig();
+    const group = this.group$.value;
+    const blockSet = this.blockSet$.value;
+    const molecules = this.personalCart$.value;
+    if (!group || !blockSet) return;
+    this.http
+      .post(
+        `${hostname}/groups/${group.id}/molecules`,
+        molecules.map(toMoleculeDTO(blockSet)),
+        {
+          headers: {
+            authorization: `Bearer ${this.userService.user$.value?.access_token}`,
+          },
+        },
+      )
+      .subscribe(() => {
+        this.removeFromPersonalCart(blockSet, molecules);
+      });
+  }
 }

@@ -10,10 +10,8 @@ import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { BlockSize } from '../block/block.component';
 import {
   Block,
-  BlockSet,
   Coordinates,
   getBlockSetScale,
   Molecule,
@@ -39,61 +37,49 @@ export class AppBuildComponent implements OnInit {
   isShowingSendToLab = false;
   isShowingCart = false;
 
-  BlockSize = BlockSize; // for template
   svgScale = 1;
-
-  blockSet: BlockSet | null = null;
 
   zoomAndPanMatrix = [1, 0, 0, 1, 0, 0];
 
   moleculeList: Molecule[] = [];
-  cartMoleculeList: Molecule[] = [];
 
   hoveredMolecule?: number = undefined;
   spacebarPressed = false;
 
   panning = false;
-  isInfoPanelOpen = false;
   private _initialPosition!: { x: number; y: number };
   private _panElement!: HTMLElement;
   closeOverlay: Subject<void> = new Subject<void>();
   isDragging: boolean | undefined;
-  draggedMolecule: any;
   startingMousePosition: { x: number; y: number } = { x: 0, y: 0 };
   draggedMoleculeIndex: number | undefined;
 
   constructor(
-    private blockService: BlockService,
     private rigService: RigService,
     private workspaceService: WorkspaceService,
     private cartService: CartService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
-  ) {}
-
-  //********************************************
-  ngOnInit(): void {
-    // WorkspaceService will check for data from a previous session and, if found,
-    // will provide us with the restored moleculeList
-    // TODO: eventually, might want to ask the user whether to restore, especially
-    // if a restored value arrives after the user has begun populating a fresh
-    // moleculeList in the current session (which becomes a more interesting case
-    // once sessions are persisted on the backend instead of in localStorage)
-
+  ) {
     this.route.paramMap.subscribe((paramMap) => {
       const groupId = Number(paramMap.get('groupId'));
       const blockSetId = paramMap.get('blockSetId') as BlockSetId;
-      if (groupId) {
-        this.workspaceService.setActiveGroup(groupId);
-      } else {
-        this.workspaceService.setActiveBlockSet(blockSetId);
+      this.cartService.reset(groupId, blockSetId);
+      this.workspaceService.updateMoleculeList([]);
+    });
+    this.cartService.blockSet$.subscribe((blockSet) => {
+      if (blockSet) {
+        this.svgScale = getBlockSetScale(blockSet, 70);
       }
     });
+  }
 
-    this.workspaceService.blockSet$.subscribe((blockSet) => {
-      this.setBlockSet(blockSet);
-    });
+  get blockSet() {
+    return this.cartService.blockSet$.value;
+  }
 
+  //********************************************
+  ngOnInit(): void {
     this.workspaceService
       .getMoleculeList()
       .pipe(
@@ -102,17 +88,6 @@ export class AppBuildComponent implements OnInit {
       )
       .subscribe((moleculeList) => {
         this.moleculeList = moleculeList;
-        this.changeDetector.detectChanges();
-      });
-
-    this.cartService
-      .getMoleculeList()
-      .pipe(
-        untilDestroyed(this),
-        filter((moleculeList) => !!moleculeList),
-      )
-      .subscribe((moleculeList) => {
-        this.cartMoleculeList = moleculeList;
         this.changeDetector.detectChanges();
       });
 
@@ -131,11 +106,8 @@ export class AppBuildComponent implements OnInit {
     document.addEventListener('mouseup', (event) => this.onMoveStop(event));
   }
 
-  setBlockSet(blockSet: BlockSet | null): void {
-    this.blockSet = blockSet;
-    if (blockSet) {
-      this.svgScale = getBlockSetScale(blockSet, 70);
-    }
+  get personalCart$() {
+    return this.cartService.personalCart$;
   }
 
   //********************************************
@@ -354,20 +326,16 @@ export class AppBuildComponent implements OnInit {
     };
   }
 
-  addMoleculeToCart(moleculeId: number) {
-    let moleculeToAdd = this.moleculeList.splice(moleculeId, 1);
-    this.cartMoleculeList.push(moleculeToAdd[0]!);
+  addMoleculeToMyCart(molecule: Molecule) {
     this.closeOverlay.next();
-    this.workspaceService.updateMoleculeList(this.moleculeList);
-    this.cartService.updateMoleculeList(this.cartMoleculeList);
+    this.workspaceService.updateMoleculeList(
+      this.moleculeList.filter((m) => m !== molecule),
+    );
+    this.cartService.addToPersonalCart(this.blockSet!, molecule);
   }
 
-  addToWorkSpace(moleculeIdString: string) {
-    let moleculeId: number = +moleculeIdString;
-    let moleculeToAdd = this.cartMoleculeList.splice(moleculeId, 1);
-    this.moleculeList.push(moleculeToAdd[0]!);
-    this.changeDetector.detectChanges();
-    this.workspaceService.updateMoleculeList(this.moleculeList);
-    this.cartService.updateMoleculeList(this.cartMoleculeList);
+  sendBackToWorkspace(molecule: Molecule) {
+    this.workspaceService.updateMoleculeList([...this.moleculeList, molecule]);
+    this.cartService.removeFromPersonalCart(this.blockSet!, [molecule]);
   }
 }

@@ -99,6 +99,8 @@ $panel_width_wide: 460px; //320px * 2;
   top: 0px;
   bottom: 0px;
   z-index: get_index(panel);
+  display: flex;
+  flex-direction: column;
 
   overflow: {
     y: auto;
@@ -146,6 +148,8 @@ $panel_width_wide: 460px; //320px * 2;
   }
 
   .molecules {
+    flex: 1;
+    overflow: scroll;
     margin: {
       top: 18px;
     }
@@ -550,13 +554,10 @@ $panel_width_wide: 460px; //320px * 2;
 
 :host {
   .group-cart-buttons {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 32px;
+    padding-top: 32px;
     display: flex;
     gap: 24px;
+
 
     ::ng-deep button {
       display: block;

@@ -51,17 +51,16 @@
         />
       </svg>
 
-      My Molecule Cart ({{ this.cartMoleculeList.length }})
+      My Molecule Cart ({{ (personalCart$ | async)?.length }})
     </div>
   </div>
 
   <panel
     *ngIf="isShowingCart && blockSet"
-    [cartMoleculeList]="cartMoleculeList"
     [blockSet]="blockSet"
     (onClose)="onPanelClose()"
     (onSubmit)="sendToLab($event)"
-    (onSendBackToWorkspace)="addToWorkSpace($event)"
+    (onSendBackToWorkspace)="sendBackToWorkspace($event)"
   ></panel>
 
   <div class="canvas_send_to_lab" [class.active]="isShowingSendToLab">
@@ -99,7 +98,7 @@
           [molecule]="molecule"
           (deleteBlock)="onRemoveBlock(moleculeId, $event)"
           (deleteMolecule)="onRemoveMolecule(moleculeId)"
-          (addToCart)="addMoleculeToCart(moleculeId)"
+          (addToCart)="addMoleculeToMyCart(molecule)"
           [closeOverlayObservable]="closeOverlay.asObservable()"
         ></g>
       </g>
