@@ -17,7 +17,7 @@
   </div>
 
   <div class="header_block">
-    <div class="menu-button" (click)="menuOpen = !menuOpen">
+    <div class="menu-button"  (click)="$event.stopPropagation(); menuOpen = !menuOpen">
       {{ (user$ | async)?.name?.[0] | uppercase }}
     </div>
     <!--  <div *ngIf="false" class="code">183782</div>-->
@@ -30,19 +30,19 @@
 </div>
 
 
-<div *ngIf="menuOpen" class="menu" (click)="menuOpen = false">
-<!--  <div>-->
-<!--    Workspace-->
-<!--  </div>-->
+<div *ngIf="menuOpen" class="menu">
+  <!--  <div>-->
+  <!--    Workspace-->
+  <!--  </div>-->
   <div (click)="goToGroupsPage()">
     My Groups
   </div>
   <div (click)="goToBlockLibrary()">
     Block Library
   </div>
-<!--  <div>-->
-<!--    Settings-->
-<!--  </div>-->
+  <!--  <div>-->
+  <!--    Settings-->
+  <!--  </div>-->
   <div (click)="logout()">
     Log Out
   </div>
