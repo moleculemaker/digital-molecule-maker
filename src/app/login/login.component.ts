@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EnvironmentService } from '../services/environment.service';
 import { User } from '../models';
 import { UserService } from '../services/user.service';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'dmm-login',
@@ -17,6 +18,8 @@ export class LoginComponent {
   passwordConfirmed = '';
 
   isLogin = true;
+
+  errorMessages: Message[] = [];
 
   constructor(
     private http: HttpClient,
@@ -37,23 +40,43 @@ export class LoginComponent {
         username: this.username,
         password: this.password,
       })
-      .subscribe((user) => {
-        this.userService.setUser(user);
-        this.router.navigateByUrl('/library');
-      });
+      .subscribe(
+        (user) => {
+          this.userService.setUser(user);
+          this.router.navigateByUrl('/library');
+        },
+        (res: HttpErrorResponse) => {
+          this.errorMessages = [
+            { severity: 'error', detail: res.error.detail || res.statusText },
+          ];
+        },
+      );
   }
 
   signup() {
     const { hostname } = this.envService.getEnvConfig();
+    if (this.password !== this.passwordConfirmed) {
+      this.errorMessages = [
+        { severity: 'error', detail: `Passwords don't match` },
+      ];
+      return;
+    }
     this.http
       .post<User>(hostname + '/auth/register', {
         name: this.name,
         username: this.username,
         password: this.password,
       })
-      .subscribe((user) => {
-        this.userService.setUser(user);
-        this.router.navigateByUrl('/library');
-      });
+      .subscribe(
+        (user) => {
+          this.userService.setUser(user);
+          this.router.navigateByUrl('/library');
+        },
+        (res: HttpErrorResponse) => {
+          this.errorMessages = [
+            { severity: 'error', detail: res.error.detail || res.statusText },
+          ];
+        },
+      );
   }
 }

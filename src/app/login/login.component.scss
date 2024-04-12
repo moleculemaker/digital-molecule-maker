@@ -114,6 +114,15 @@
   }
 }
 
+.error-message {
+  z-index: get_index('splash') + 1;
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+}
+
+// copied from `SplashComponent`
+
 /**************** splash css ******************/
 
 $splash_padding: 20px; //padding around screen

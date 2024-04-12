@@ -78,6 +78,10 @@
       font-size: 16px;
       color: #31509E;
       font-family: 'Inter';
+
+      &:hover {
+        background: lighten(#31509E, 50%);
+      }
     }
   }
 
@@ -105,8 +109,8 @@
         color: #31509E;
         background: #FFFFFF;
 
-        &:active {
-          background: darken(#FFFFFF, 10%);
+        &:hover {
+          background: lighten(#31509E, 50%);
         }
       }
 
@@ -114,8 +118,8 @@
         color: #FFFFFF;
         background: #31509E;
 
-        &:active {
-          background: darken(#31509E, 10%);
+        &:hover {
+          background: lighten(#31509E, 10%);
         }
       }
 
@@ -187,6 +191,7 @@
       }
     }
   }
+
 }
 
 .error-message {
