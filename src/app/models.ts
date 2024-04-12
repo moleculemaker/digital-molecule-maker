@@ -36,6 +36,32 @@ export interface BlockSet {
   table: Record<string, LookupTableEntry>;
 }
 
+export const toMoleculeDTO =
+  (blockSet: BlockSet) =>
+  (molecule: Molecule): MoleculeDTO => {
+    return {
+      id: molecule.id,
+      name: molecule.label,
+      block_set_id: blockSet.id,
+      block_ids: molecule.blockList
+        .sort((a, b) => a.index - b.index)
+        .map((mol) => mol.id),
+    };
+  };
+
+export const fromMoleculeDTO =
+  (blockSet: BlockSet) =>
+  (moleculeDTO: MoleculeDTO): Molecule => {
+    return new Molecule(
+      new Coordinates(100, 100),
+      moleculeDTO.block_ids.map(
+        (id, index) => blockSet.blocks[index]![id - 1]!,
+      ),
+      moleculeDTO.name,
+      moleculeDTO.id,
+    );
+  };
+
 export interface RigJob {
   block_set_id: string;
   block_ids: number[];
@@ -67,7 +93,15 @@ export class Molecule {
     public position: Coordinates,
     public blockList: Block[],
     public label = 'NewMolecule',
+    public id: number = -1,
   ) {}
+}
+
+export interface MoleculeDTO {
+  id: number;
+  name: string;
+  block_set_id: string;
+  block_ids: number[];
 }
 
 export interface User {

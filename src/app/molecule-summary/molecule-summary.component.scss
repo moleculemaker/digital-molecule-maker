@@ -116,6 +116,20 @@
   }
 }
 
+.label {
+  flex-grow: 1;
+
+  color: color_variable("primary");
+
+  font: {
+    weight: bold;
+  }
+
+  .placeholder {
+    color: color_variable("panel_text_faded");
+  }
+}
+
 inplace {
   margin: {
     top: $padding * 0.25;
@@ -126,19 +140,6 @@ inplace {
     @include border-radius($border_radius);
   }
 
-  .label {
-    flex-grow: 1;
-
-    color: color_variable("primary");
-
-    font: {
-      weight: bold;
-    }
-
-    .placeholder {
-      color: color_variable("panel_text_faded");
-    }
-  }
 
   .icon_inline {
     top: 0px;

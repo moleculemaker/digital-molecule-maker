@@ -27,7 +27,6 @@ import {
   slideOutReverse,
 } from './panel.animations';
 import { BlockSet, Molecule } from '../models';
-import { lookupProperty } from '../lookup';
 import { Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
 import { WorkspaceService } from '../services/workspace.service';
@@ -64,9 +63,6 @@ import { WorkspaceService } from '../services/workspace.service';
 })
 export class PanelComponent implements OnInit {
   @Input()
-  cartMoleculeList: Molecule[] = [];
-
-  @Input()
   blockSet?: BlockSet;
 
   @Output()
@@ -76,7 +72,7 @@ export class PanelComponent implements OnInit {
   onSubmit = new EventEmitter<Molecule[]>();
 
   @Output()
-  onSendBackToWorkspace = new EventEmitter<string>();
+  onSendBackToWorkspace = new EventEmitter<Molecule>();
 
   isPanelActive = true;
 
@@ -91,8 +87,12 @@ export class PanelComponent implements OnInit {
     private router: Router,
   ) {}
 
+  get personalCart$() {
+    return this.cartService.personalCart$;
+  }
+
   get group$() {
-    return this.workspaceService.group$;
+    return this.cartService.group$;
   }
 
   //********************************************
@@ -166,21 +166,23 @@ export class PanelComponent implements OnInit {
   }
 
   submitMolecules(): void {
-    this.onSubmit.emit(this.cartMoleculeList);
+    // this.onSubmit.emit(this.cartMoleculeList);
     // for now, use the second panel as the success message
     this.nextStep();
   }
 
-  sendBackToWorkspace(moleculeId: number) {
-    this.onSendBackToWorkspace.emit(moleculeId.toString());
+  sendBackToWorkspace(molecule: Molecule) {
+    this.onSendBackToWorkspace.emit(molecule);
   }
 
   viewGroupCart() {
-    const groupId = this.workspaceService.group$.value?.id;
-    this.router.navigateByUrl(`/groups/${groupId}/cart`);
+    const group = this.group$.value;
+    if (group) {
+      this.router.navigateByUrl(`/groups/${group.id}/cart`);
+    }
   }
 
   addToGroupCart() {
-    this.cartService.addToGroupCart().subscribe();
+    this.cartService.addMyMoleculesToGroupCart();
   }
 }

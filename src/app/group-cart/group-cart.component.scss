@@ -56,7 +56,7 @@
       font-weight: 700;
       font-size: 24px;
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
 
       ::ng-deep button {
         width: 388px;
@@ -64,7 +64,7 @@
         background: #31509E;
         border: 1px solid #31509E;
         border-radius: 8px;
-        font-family: 'Inter';
+        font-family: 'Inter', sans-serif;
         font-style: normal;
         color: #FFFFFF;
       }
@@ -179,6 +179,7 @@
     .molecules {
       flex: auto;
       overflow: scroll;
+      margin: 32px 0;
 
       .molecule {
         margin: 20px 0;
@@ -187,11 +188,6 @@
   }
 
   .buttons {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 32px;
     display: flex;
     gap: 24px;
 
