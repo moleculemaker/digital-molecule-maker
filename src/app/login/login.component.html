@@ -48,6 +48,11 @@
   </ng-container>
 </div>
 
+<div class="error-message">
+  <p-messages [(value)]="errorMessages" [enableService]="false" [closable]="true"></p-messages>
+</div>
+
+<!--copied from `SplashComponent`-->
 <div class="splash">
   <div class="splash_background">
     <div class="background_green"></div>
