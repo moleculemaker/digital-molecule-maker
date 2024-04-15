@@ -102,46 +102,46 @@ export class MoleculeSvgComponent implements OnInit {
     if (this._eventsSubscription) this._eventsSubscription.unsubscribe();
   }
 
-  onMouseEnter() {
+  onPointerEnter() {
     //todo: eventually, we will try to support hover (instead of click) to show the overlay panel. note that the molecule AND individual blocks will show slightly different information (see designs). when we make this change, the overlay panel will need to have the position adjusted so the mouse can stay on the svg the entire time (or determine if we need to adjust the template completely (simple show/hide of a div instead of the cdkOverlay since it's positioned at the base of the DOM structure)
     //  this.isInfoPanelOpen = true;
   }
 
-  onMouseLeave() {
+  onPointerLeave() {
     //  this.isInfoPanelOpen = false;
   }
 
-  private mouseInside = false;
-  private mouseDown = false;
+  private pointerInside = false;
+  private pointerDown = false;
   private dragging = false;
 
-  onMouseOver(e: MouseEvent) {
-    this.mouseInside = true;
+  onPointerOver(e: PointerEvent) {
+    this.pointerInside = true;
   }
 
-  onMouseOut(e: MouseEvent) {
-    this.mouseInside = false;
+  onPointerOut(e: PointerEvent) {
+    this.pointerInside = false;
   }
 
-  onMouseDown() {
-    this.mouseDown = true;
+ onPointerDown() {
+    this.pointerDown = true;
   }
 
-  onMouseMove() {
-    if (this.mouseDown) {
+  onPointerMove() {
+    if (this.pointerDown) {
       this.dragging = true;
     }
   }
 
-  onMouseUp() {
+  onPointerUp() {
     if (!this.dragging) {
-      if (this.mouseDown && this.mouseInside) {
+      if (this.pointerDown && this.pointerInside) {
         this.isInfoPanelOpen = !this.isInfoPanelOpen;
       }
     } else {
       this.dragging = false;
     }
-    this.mouseDown = false;
+    this.pointerDown = false;
   }
 
   showEditName() {

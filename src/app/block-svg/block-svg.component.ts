@@ -155,36 +155,36 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private mouseDown = false;
+  private pointerDown = false;
   private dragging = false;
 
-  onMouseOver(e: MouseEvent) {
+  onPointerOver(e: PointerEvent) {
     e.stopPropagation();
   }
 
-  onMouseOut(e: MouseEvent) {
+  onPointerOut(e: PointerEvent) {
     e.stopPropagation();
   }
 
-  onMouseDown() {
-    this.mouseDown = true;
+  onPointerDown() {
+    this.pointerDown = true;
   }
 
-  onMouseMove() {
-    if (this.mouseDown) {
+  onPointerMove() {
+    if (this.pointerDown) {
       this.dragging = true;
     }
   }
 
-  onMouseUp() {
+  onPointerUp() {
     if (!this.dragging) {
-      if (this.mouseDown) {
+      if (this.pointerDown) {
         this.isInfoPanelOpen = !this.isInfoPanelOpen;
       }
     } else {
       this.dragging = false;
     }
-    this.mouseDown = false;
+    this.pointerDown = false;
   }
 
   get textColor() {

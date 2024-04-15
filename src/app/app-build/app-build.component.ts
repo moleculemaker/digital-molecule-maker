@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -51,7 +52,7 @@ export class AppBuildComponent implements OnInit {
   private _panElement!: HTMLElement;
   closeOverlay: Subject<void> = new Subject<void>();
   isDragging: boolean | undefined;
-  startingMousePosition: { x: number; y: number } = { x: 0, y: 0 };
+  startingPointerPosition: { x: number; y: number } = { x: 0, y: 0 };
   draggedMoleculeIndex: number | undefined;
 
   constructor(
@@ -102,8 +103,6 @@ export class AppBuildComponent implements OnInit {
         this.spacebarPressed = false;
       }
     });
-
-    document.addEventListener('mouseup', (event) => this.onMoveStop(event));
   }
 
   get personalCart$() {
@@ -197,7 +196,7 @@ export class AppBuildComponent implements OnInit {
     } else {
       // if (event.data.type == BlockType.Start) {
       const newBlockList: Block[] = [event.data];
-      const pos = this.getMousePosition(event.nativeEvent);
+      const pos = this.getPointerPosition(event.nativeEvent);
       const { x, y } = this.invertTransforms(pos.x, pos.y);
       const positionCoordinates = new Coordinates(x, y);
       const newMolecule = new Molecule(positionCoordinates, newBlockList);
@@ -211,15 +210,15 @@ export class AppBuildComponent implements OnInit {
     this.closeOverlay.next();
   }
 
-  onMouseEnter(moleculeId: number) {
+  onPointerEnter(moleculeId: number) {
     this.hoveredMolecule = moleculeId;
   }
 
-  onMouseLeave() {
+  onPointerLeave() {
     this.hoveredMolecule = undefined;
   }
 
-  onPanStart(event: MouseEvent) {
+  onPanStart(event: PointerEvent) {
     this.closeOverlay.next();
 
     if (this.spacebarPressed) {
@@ -234,7 +233,7 @@ export class AppBuildComponent implements OnInit {
     }
   }
 
-  onPan(event: MouseEvent) {
+  onPan(event: PointerEvent) {
     if (this.panning && this.spacebarPressed) {
       let dx = event.pageX - this._initialPosition.x;
       let dy = event.pageY - this._initialPosition.y;
@@ -249,23 +248,23 @@ export class AppBuildComponent implements OnInit {
         typeof moleculeIndex !== 'undefined' &&
         !this.spacebarPressed
       ) {
-        const mousePosition = this.getMousePosition(event);
+        const pointerPosition = this.getPointerPosition(event);
         const dx =
-          (mousePosition.x - this.startingMousePosition.x) /
+          (pointerPosition.x - this.startingPointerPosition.x) /
           this.zoomAndPanMatrix[0]!;
         const dy =
-          (mousePosition.y - this.startingMousePosition.y) /
+          (pointerPosition.y - this.startingPointerPosition.y) /
           this.zoomAndPanMatrix[3]!;
 
         this.moleculeList[moleculeIndex]!.position.x += dx;
         this.moleculeList[moleculeIndex]!.position.y += dy;
 
-        this.startingMousePosition = mousePosition;
+        this.startingPointerPosition = pointerPosition;
       }
     }
   }
 
-  onPanStop(event: MouseEvent) {
+  onPanStop(event: PointerEvent) {
     this.panning = false;
   }
 
@@ -283,42 +282,43 @@ export class AppBuildComponent implements OnInit {
     this.closeOverlay.next();
   }
 
-  onMoveStart(event: MouseEvent, moleculeIndex: number) {
+  onMoveStart(event: PointerEvent, moleculeIndex: number) {
     this.isDragging = true;
     this.draggedMoleculeIndex = moleculeIndex;
-    this.startingMousePosition = this.getMousePosition(event);
+    this.startingPointerPosition = this.getPointerPosition(event);
     this.closeMoleculePopup();
   }
 
-  onMove(event: MouseEvent) {
+  onMove(event: PointerEvent) {
     if (
       this.isDragging &&
       typeof this.draggedMoleculeIndex !== 'undefined' &&
       !this.spacebarPressed
     ) {
-      const mousePosition = this.getMousePosition(event);
+      const pointerPosition = this.getPointerPosition(event);
       const dx =
-        (mousePosition.x - this.startingMousePosition.x) /
+        (pointerPosition.x - this.startingPointerPosition.x) /
         this.zoomAndPanMatrix[0]!;
       const dy =
-        (mousePosition.y - this.startingMousePosition.y) /
+        (pointerPosition.y - this.startingPointerPosition.y) /
         this.zoomAndPanMatrix[3]!;
 
       this.moleculeList[this.draggedMoleculeIndex]!.position.x += dx;
       this.moleculeList[this.draggedMoleculeIndex]!.position.y += dy;
 
-      this.startingMousePosition = mousePosition;
+      this.startingPointerPosition = pointerPosition;
     }
   }
 
-  onMoveStop(event: MouseEvent) {
+  @HostListener('pointerup', ['$event'])
+  onMoveStop(event: PointerEvent) {
     if (this.isDragging) {
       this.isDragging = false;
       this.draggedMoleculeIndex = undefined;
     }
   }
 
-  getMousePosition(event: MouseEvent) {
+  getPointerPosition(event: PointerEvent) {
     const CTM = this.svgWorkspace!.nativeElement.getScreenCTM()!;
     return {
       x: (event.clientX - CTM.e) / CTM.a,

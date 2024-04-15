@@ -1,4 +1,5 @@
 <svg:g
+  xmlns:svg="http://www.w3.org/2000/svg"
   cdkOverlayOrigin
   #trigger="cdkOverlayOrigin"
   class="block_container"
@@ -6,11 +7,11 @@
   [class.selected]="isInfoPanelOpen"
   [class.not_selected]="!isInfoPanelOpen && false"
   [class.dashes]="isAddBlock()"
-  (mouseover)="onMouseOver($event)"
-  (mouseout)="onMouseOut($event)"
-  (mousedown)="onMouseDown()"
-  (mousemove)="onMouseMove()"
-  (mouseup)="onMouseUp()"
+  (pointerover)="onPointerOver($event)"
+  (pointerout)="onPointerOut($event)"
+  (pointerdown)="onPointerDown()"
+  (pointermove)="onPointerMove()"
+  (pointerup)="onPointerUp()"
 >
   <ng-template [ngIf]="functionModeEnabled">
     <g *ngIf="blockSet.id === 'ColorWheel_20230504'">
