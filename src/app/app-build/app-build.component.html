@@ -37,7 +37,7 @@
       </svg>
     </div>
 
-    <div class="button button_cart" (click)="toggleCartPanel()">
+    <div class="button button_cart" *ngIf="!isGuest" (click)="toggleCartPanel()">
       <svg
         width="20"
         height="18"

@@ -345,6 +345,14 @@ export class AppSidebarComponent implements OnInit {
     }
   }
 
+  selectFirstMolecule() {
+    const molecules = this.workspaceService.moleculeList$.value;
+    if (molecules[0]) {
+      this.workspaceService.selectedMolecule$.next(molecules[0]);
+      this.workspaceService.selectedBlock$.next(null);
+    }
+  }
+
   resetSelection() {
     this.workspaceService.selectedMolecule$.next(null);
     this.workspaceService.selectedBlock$.next(null);

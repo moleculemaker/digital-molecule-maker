@@ -19,11 +19,12 @@ import {
   RigJob,
 } from '../models';
 
-import { BlockService, BlockSetId } from '../services/block.service';
+import { BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { CartService } from '../services/cart.service';
+import { UserService } from '../services/user.service';
 
 @UntilDestroy()
 @Component({
@@ -59,6 +60,7 @@ export class AppBuildComponent implements OnInit {
     private rigService: RigService,
     private workspaceService: WorkspaceService,
     private cartService: CartService,
+    private userService: UserService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
   ) {
@@ -77,6 +79,10 @@ export class AppBuildComponent implements OnInit {
 
   get blockSet() {
     return this.cartService.blockSet$.value;
+  }
+
+  get isGuest() {
+    return this.userService.isGuest();
   }
 
   //********************************************

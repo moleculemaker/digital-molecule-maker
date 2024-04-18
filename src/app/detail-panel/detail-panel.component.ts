@@ -3,6 +3,7 @@ import { WorkspaceService } from '../services/workspace.service';
 import { CartService } from '../services/cart.service';
 import { lookupProperty } from '../lookup';
 import { Block, Coordinates, Molecule } from '../models';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'dmm-detail-panel',
@@ -19,6 +20,7 @@ export class DetailPanelComponent implements AfterViewChecked {
   constructor(
     private workspaceService: WorkspaceService,
     private cartService: CartService,
+    private userService: UserService,
     private elRef: ElementRef<Element>,
   ) {
     this.workspaceService.selectedMolecule$.subscribe((molecule) => {
@@ -65,7 +67,8 @@ export class DetailPanelComponent implements AfterViewChecked {
     return (
       blockSet &&
       this.molecule &&
-      this.molecule.blockList.length === blockSet.moleculeSize
+      this.molecule.blockList.length === blockSet.moleculeSize &&
+      !this.userService.isGuest()
     );
   }
 
