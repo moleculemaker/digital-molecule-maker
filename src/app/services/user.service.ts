@@ -8,6 +8,8 @@ import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { BlockSetId } from './block.service';
 
+export const GUEST_USER = 'guest';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -24,12 +26,29 @@ export class UserService {
     } catch {}
   }
 
-  canActivate() {
+  isLoggedIn() {
     const user = this.user$.value;
     if (!user) {
       this.router.navigateByUrl('/login', { replaceUrl: true });
     }
     return !!user;
+  }
+
+  isGuest() {
+    return this.user$.value?.username === GUEST_USER;
+  }
+
+  loginAsGuest() {
+    this.setUser({
+      name: 'Guest',
+      username: GUEST_USER,
+      access_token: '',
+    });
+  }
+
+  logout() {
+    this.setUser(null);
+    location.reload();
   }
 
   setUser(user: User | null): void {

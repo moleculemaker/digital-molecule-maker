@@ -33,6 +33,11 @@ export class LoginComponent {
     });
   }
 
+  loginAsGuest() {
+    this.userService.loginAsGuest();
+    this.router.navigateByUrl('/library');
+  }
+
   login() {
     const { hostname } = this.envService.getEnvConfig();
     this.http

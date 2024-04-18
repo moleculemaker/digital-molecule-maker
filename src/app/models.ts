@@ -109,7 +109,6 @@ export interface User {
   username: string;
   access_token: string;
   surveyCode?: string;
-  // later: token(s), etc.
 }
 
 export interface UserGroup {

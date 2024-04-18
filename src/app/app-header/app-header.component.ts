@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
+import { GUEST_USER, UserService } from '../services/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -38,7 +38,13 @@ export class AppHeaderComponent implements OnInit {
       this.title$ = of('');
     } else if (url.startsWith('/library/')) {
       this.title$ = this.userService.user$.pipe(
-        map((user) => (user ? `${user.name}'s Workspace` : '')),
+        map((user) =>
+          user
+            ? user.username === GUEST_USER
+              ? 'Guest Workspace'
+              : `${user.name}'s Workspace`
+            : '',
+        ),
       );
     } else {
       this.title$ = this.cartService.group$.pipe(
@@ -67,7 +73,8 @@ export class AppHeaderComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('dmm-user');
-    location.reload();
+    this.userService.logout();
   }
+
+  protected readonly GUEST_USER = GUEST_USER;
 }

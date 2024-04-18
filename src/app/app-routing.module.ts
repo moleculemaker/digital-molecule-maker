@@ -9,7 +9,7 @@ import { PromptType, SplashComponent } from './splash/splash.component';
 import { LoginComponent } from './login/login.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupCartComponent } from './group-cart/group-cart.component';
-import {BlockLibraryComponent} from "./block-library/block-library.component";
+import { BlockLibraryComponent } from './block-library/block-library.component';
 
 const routes: Routes = [
   {
@@ -19,13 +19,6 @@ const routes: Routes = [
       promptType: PromptType.None,
     },
   },
-  // {
-  //   path: 'activity',
-  //   component: SplashComponent,
-  //   data: {
-  //     promptType: PromptType.Code,
-  //   },
-  // },
   {
     path: 'login',
     component: LoginComponent,
@@ -39,7 +32,7 @@ const routes: Routes = [
     component: BlockLibraryComponent,
     canActivate: [
       () => {
-        return inject(UserService).canActivate();
+        return inject(UserService).isLoggedIn();
       },
     ],
   },
@@ -48,7 +41,7 @@ const routes: Routes = [
     component: AppBuildComponent,
     canActivate: [
       () => {
-        return inject(UserService).canActivate();
+        return inject(UserService).isLoggedIn();
       },
     ],
   },
@@ -57,7 +50,8 @@ const routes: Routes = [
     component: GroupsComponent,
     canActivate: [
       () => {
-        return inject(UserService).canActivate();
+        const userService = inject(UserService);
+        return userService.isLoggedIn() && !userService.isGuest();
       },
     ],
   },
@@ -66,7 +60,8 @@ const routes: Routes = [
     component: AppBuildComponent,
     canActivate: [
       () => {
-        return inject(UserService).canActivate();
+        const userService = inject(UserService);
+        return userService.isLoggedIn() && !userService.isGuest();
       },
     ],
   },
@@ -75,7 +70,8 @@ const routes: Routes = [
     component: GroupCartComponent,
     canActivate: [
       () => {
-        return inject(UserService).canActivate();
+        const userService = inject(UserService);
+        return userService.isLoggedIn() && !userService.isGuest();
       },
     ],
   },

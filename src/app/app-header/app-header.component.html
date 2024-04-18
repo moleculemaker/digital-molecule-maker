@@ -34,7 +34,7 @@
   <!--  <div>-->
   <!--    Workspace-->
   <!--  </div>-->
-  <div (click)="goToGroupsPage()">
+  <div *ngIf="(user$ | async)?.username != GUEST_USER" (click)="goToGroupsPage()">
     My Groups
   </div>
   <div (click)="goToBlockLibrary()">

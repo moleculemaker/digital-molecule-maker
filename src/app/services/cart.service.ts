@@ -59,6 +59,8 @@ export class CartService {
   }
 
   fetchPersonalCart(blockSet: BlockSet) {
+    if (this.userService.isGuest()) return;
+
     const { hostname } = this.envService.getEnvConfig();
     return this.http
       .get<MoleculeDTO[]>(
@@ -76,6 +78,8 @@ export class CartService {
   }
 
   addToPersonalCart(blockSet: BlockSet, molecule: Molecule) {
+    if (this.userService.isGuest()) return;
+
     const { hostname } = this.envService.getEnvConfig();
     return this.http
       .post(`${hostname}/me/molecules`, toMoleculeDTO(blockSet)(molecule), {
@@ -89,6 +93,8 @@ export class CartService {
   }
 
   removeFromPersonalCart(blockSet: BlockSet, molecules: Molecule[]) {
+    if (this.userService.isGuest()) return;
+
     const { hostname } = this.envService.getEnvConfig();
     return this.http
       .put(
@@ -109,6 +115,8 @@ export class CartService {
   }
 
   fetchGroupCart(group: UserGroup, blockSet: BlockSet) {
+    if (this.userService.isGuest()) return;
+
     const { hostname } = this.envService.getEnvConfig();
     return this.http
       .get<MoleculeDTO[]>(`${hostname}/groups/${group.id}/molecules`, {
@@ -123,6 +131,8 @@ export class CartService {
   }
 
   addMyMoleculesToGroupCart() {
+    if (this.userService.isGuest()) return;
+
     const { hostname } = this.envService.getEnvConfig();
     const group = this.group$.value;
     const blockSet = this.blockSet$.value;
