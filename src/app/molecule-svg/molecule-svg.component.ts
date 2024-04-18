@@ -12,15 +12,17 @@ import {
   OnChanges,
   AfterViewChecked,
   AfterViewInit,
+  HostListener,
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { BlockSet, Molecule } from '../models';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { Block, BlockSet, Molecule } from '../models';
 import {
   BLOCK_HEIGHT,
   BLOCK_WIDTH,
   BORDER_WIDTH,
 } from '../block-svg/block-svg.component';
 import { lookupProperty } from '../lookup';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: '[dmm-molecule-svg]',
@@ -43,20 +45,34 @@ export class MoleculeSvgComponent implements OnInit {
   @Output()
   deleteBlock = new EventEmitter<number>();
 
-  @Output()
-  addToCart = new EventEmitter();
-
-  isInfoPanelOpen = false;
   isEditNamePanelOpen = false;
 
   _eventsSubscription?: Subscription;
   positionPairs!: ConnectionPositionPair[];
   positionEditName!: ConnectionPositionPair[];
 
+  selected = false;
+  selectedBlock: Block | null = null;
+
   @Input()
   molecule!: Molecule;
 
-  constructor(private changeDetector: ChangeDetectorRef) {}
+  constructor(
+    private workspaceService: WorkspaceService,
+    private changeDetector: ChangeDetectorRef,
+  ) {
+    combineLatest([
+      this.workspaceService.selectedMolecule$,
+      this.workspaceService.selectedBlock$,
+    ]).subscribe(([molecule, block]) => {
+      this.selected = this.molecule === molecule;
+      if (this.selected) {
+        this.selectedBlock = block;
+      } else {
+        this.selectedBlock = null;
+      }
+    });
+  }
 
   get moleculeWidth() {
     return this.blockSet.moleculeSize * BLOCK_WIDTH + 2 * BORDER_WIDTH;
@@ -66,11 +82,22 @@ export class MoleculeSvgComponent implements OnInit {
     return BLOCK_HEIGHT + 2 * BORDER_WIDTH;
   }
 
+  @HostListener('click', ['$event'])
+  selectMolecule(event: MouseEvent) {
+    event.stopPropagation();
+    this.workspaceService.selectedBlock$.next(null);
+    this.workspaceService.selectedMolecule$.next(this.molecule);
+  }
+
+  selectBlock(block: Block) {
+    this.workspaceService.selectedMolecule$.next(this.molecule);
+    this.workspaceService.selectedBlock$.next(block);
+  }
+
   ngOnInit(): void {
     this.changeDetector.detectChanges();
     if (this.closeOverlayObservable) {
       this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
-        this.isInfoPanelOpen = false;
         this.isEditNamePanelOpen = false;
       });
     }
@@ -123,7 +150,7 @@ export class MoleculeSvgComponent implements OnInit {
     this.pointerInside = false;
   }
 
- onPointerDown() {
+  onPointerDown() {
     this.pointerDown = true;
   }
 
@@ -134,11 +161,7 @@ export class MoleculeSvgComponent implements OnInit {
   }
 
   onPointerUp() {
-    if (!this.dragging) {
-      if (this.pointerDown && this.pointerInside) {
-        this.isInfoPanelOpen = !this.isInfoPanelOpen;
-      }
-    } else {
+    if (this.dragging) {
       this.dragging = false;
     }
     this.pointerDown = false;
@@ -168,9 +191,5 @@ export class MoleculeSvgComponent implements OnInit {
     if (trimmedName.length > 0) {
       this.molecule!.label = newMoleculeName;
     }
-  }
-
-  addMoleculeToCart() {
-    this.addToCart.emit();
   }
 }

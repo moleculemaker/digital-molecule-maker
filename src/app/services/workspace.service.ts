@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Molecule } from '../models';
+import { Block, Molecule } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +9,15 @@ export class WorkspaceService {
   private _functionMode = false;
   functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
   moleculeList$ = new BehaviorSubject<Molecule[]>([]);
+  selectedMolecule$ = new BehaviorSubject<Molecule | null>(null);
+  selectedBlock$ = new BehaviorSubject<Block | null>(null);
+
+  reset() {
+    this.functionMode$.next(false);
+    this.moleculeList$.next([]);
+    this.selectedBlock$.next(null);
+    this.selectedMolecule$.next(null);
+  }
 
   toggle() {
     this.functionMode$.next((this._functionMode = !this._functionMode));

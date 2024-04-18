@@ -1,11 +1,7 @@
 <svg:g
   xmlns:svg="http://www.w3.org/2000/svg"
-  cdkOverlayOrigin
-  #trigger="cdkOverlayOrigin"
   class="block_container"
   [class]="['block_' + blockType]"
-  [class.selected]="isInfoPanelOpen"
-  [class.not_selected]="!isInfoPanelOpen && false"
   [class.dashes]="isAddBlock()"
   (pointerover)="onPointerOver($event)"
   (pointerout)="onPointerOut($event)"
@@ -119,24 +115,3 @@
     </g>
   </g>
 </svg:g>
-
-<ng-template
-  cdkConnectedOverlay
-  [cdkConnectedOverlayOrigin]="trigger"
-  [cdkConnectedOverlayOpen]="isInfoPanelOpen"
-  [cdkConnectedOverlayPositions]="positionPairs"
->
-  <dmm-overlay
-    *ngIf="block && blockSet"
-    [block]="block"
-    [blockSet]="blockSet"
-    [tags]="[]"
-    (close)="isInfoPanelOpen = !isInfoPanelOpen"
-  >
-    <ng-template let-overlay #templateAdditionalProperties>
-      <!-- <p>testing that this will show up</p> -->
-    </ng-template>
-
-    <ng-template let-overlay #templateFooter> </ng-template>
-  </dmm-overlay>
-</ng-template>

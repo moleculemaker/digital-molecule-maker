@@ -326,16 +326,13 @@ export class AppBuildComponent implements OnInit {
     };
   }
 
-  addMoleculeToMyCart(molecule: Molecule) {
-    this.closeOverlay.next();
-    this.workspaceService.updateMoleculeList(
-      this.moleculeList.filter((m) => m !== molecule),
-    );
-    this.cartService.addToPersonalCart(this.blockSet!, molecule);
-  }
-
   sendBackToWorkspace(molecule: Molecule) {
     this.workspaceService.updateMoleculeList([...this.moleculeList, molecule]);
     this.cartService.removeFromPersonalCart(this.blockSet!, [molecule]);
+  }
+
+  resetSelection() {
+    this.workspaceService.selectedMolecule$.next(null);
+    this.workspaceService.selectedBlock$.next(null);
   }
 }

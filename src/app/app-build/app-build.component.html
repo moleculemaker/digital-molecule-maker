@@ -78,6 +78,7 @@
     (pointerdown)="onPanStart($event)"
     (pointermove)="onPan($event); onMove($event)"
     (pointerup)="onPanStop($event)"
+    (click)="resetSelection()"
   >
     <!-- this outer-level group applies the zoom and pan -->
     <g
@@ -99,7 +100,6 @@
           [molecule]="molecule"
           (deleteBlock)="onRemoveBlock(moleculeId, $event)"
           (deleteMolecule)="onRemoveMolecule(moleculeId)"
-          (addToCart)="addMoleculeToMyCart(molecule)"
           [closeOverlayObservable]="closeOverlay.asObservable()"
         ></g>
       </g>

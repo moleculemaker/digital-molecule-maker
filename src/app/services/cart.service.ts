@@ -14,6 +14,7 @@ import { UserService } from './user.service';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentService } from './environment.service';
 import { BlockService, BlockSetId } from './block.service';
+import {WorkspaceService} from "./workspace.service";
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,7 @@ export class CartService {
     private userService: UserService,
     private envService: EnvironmentService,
     private blockService: BlockService,
+    private workspaceService: WorkspaceService,
     private http: HttpClient,
   ) {}
 
@@ -52,6 +54,8 @@ export class CartService {
         this.fetchPersonalCart(blockSet);
       });
     }
+
+    this.workspaceService.reset();
   }
 
   fetchPersonalCart(blockSet: BlockSet) {

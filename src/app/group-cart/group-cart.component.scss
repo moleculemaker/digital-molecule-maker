@@ -14,12 +14,12 @@
     }
 
     & ::ng-deep button {
-      border: 1px solid #31509E;
+      border: 1px solid #31509e;
       border-radius: 8px;
       font-weight: 600;
       font-size: 14px;
-      color: #31509E;
-      background: #FFFFFF;
+      color: #31509e;
+      background: #ffffff;
     }
   }
 
@@ -30,7 +30,7 @@
     position: relative;
 
     .title {
-      font-family: 'Inter';
+      font-family: "Inter", sans-serif;
       font-weight: 700;
       font-size: 24px;
     }
@@ -61,12 +61,12 @@
       ::ng-deep button {
         width: 388px;
         height: 85px;
-        background: #31509E;
-        border: 1px solid #31509E;
+        background: #31509e;
+        border: 1px solid #31509e;
         border-radius: 8px;
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
         font-style: normal;
-        color: #FFFFFF;
+        color: #ffffff;
       }
     }
   }
@@ -89,7 +89,7 @@
     .search {
       box-sizing: border-box;
       flex: 1;
-      background: #F8F8F8;
+      background: #f8f8f8;
       border: 1px solid #959595;
       border-radius: 16px;
       display: flex;
@@ -106,10 +106,9 @@
         background: none;
         border: none;
         outline: none;
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
         font-size: 20px;
       }
-
     }
   }
 
@@ -120,7 +119,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-
   }
 
   .comparison {
@@ -140,6 +138,9 @@
       .molecule {
         width: 380px;
         flex: none;
+        border: 1px solid #dedede;
+        border-radius: 16px;
+        padding: 32px;
       }
 
       ::ng-deep .molecule {
@@ -148,7 +149,6 @@
     }
   }
 
-
   .selection_panel {
     position: fixed;
     width: 564px;
@@ -156,7 +156,7 @@
     right: 0;
     bottom: 0;
     margin: 32px;
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
     transform: translateX(150%);
@@ -171,7 +171,7 @@
 
     .panel_title {
       margin-left: 10px;
-      font-family: 'Inter', sans-serif;
+      font-family: "Inter", sans-serif;
       font-weight: 700;
       font-size: 24px;
     }
@@ -201,23 +201,23 @@
       font-weight: 700;
       //font-size: 14px;
       padding: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: "Inter", sans-serif;
     }
 
     .secondary-button {
       flex: 1;
 
       ::ng-deep button {
-        color: #31509E;
-        background: #FFFFFF;
-        border: 1px solid #31509E;
+        color: #31509e;
+        background: #ffffff;
+        border: 1px solid #31509e;
 
         &:hover {
-          background: lighten(#31509E, 50%);
+          background: lighten(#31509e, 50%);
         }
 
         &:active {
-          background: darken(#FFFFFF, 10%);
+          background: darken(#ffffff, 10%);
         }
       }
     }
@@ -226,17 +226,24 @@
       flex: 1;
 
       ::ng-deep button {
-        color: #FFFFFF;
-        background: #31509E;
+        color: #ffffff;
+        background: #31509e;
 
         &:hover {
-          background: lighten(#31509E, 10%);
+          background: lighten(#31509e, 10%);
         }
 
         &:active {
-          background: darken(#31509E, 10%);
+          background: darken(#31509e, 10%);
         }
       }
     }
   }
+}
+
+.close_button {
+  position: absolute;
+  right: 24px;
+  top: 20px;
+  cursor: pointer;
 }

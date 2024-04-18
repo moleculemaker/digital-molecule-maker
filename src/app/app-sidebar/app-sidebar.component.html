@@ -27,355 +27,361 @@
   </div>
 
   <div class="tabs">
-    <div class="tab selected">Blocks</div>
-    <div class="tab">Molecules</div>
+    <div class="tab" [class.selected]="currentTab === 'blocks'" (click)="resetSelection()">Blocks</div>
+    <div class="tab" [class.selected]="currentTab === 'details'">Details</div>
   </div>
 
-  <div class="filters">
-    <div class="row">
-      <div class="toggle_button" (click)="toggle()">
-        {{ functionModeEnabled ? "function" : "structure" }}
-      </div>
-
-      <div class="search">
-        <div class="search_icon">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 19 19"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8 16C9.77498 15.9996 11.4988 15.4054 12.897 14.312L17.293 18.708L18.707 17.294L14.311 12.898C15.405 11.4997 15.9996 9.77544 16 8C16 3.589 12.411 0 8 0C3.589 0 0 3.589 0 8C0 12.411 3.589 16 8 16ZM8 2C11.309 2 14 4.691 14 8C14 11.309 11.309 14 8 14C4.691 14 2 11.309 2 8C2 4.691 4.691 2 8 2Z"
-              fill="currentColor"
-            />
-          </svg>
+  <ng-container *ngIf="currentTab === 'blocks'">
+    <div class="filters">
+      <div class="row">
+        <div class="toggle_button" (click)="toggle()">
+          {{ functionModeEnabled ? "function" : "structure" }}
         </div>
 
-        <ng-container *ngIf="moleculeSearch">
-          <!-- <div class="molecule_search"
-          *ngFor="let molecule of moleculeSearch"
-          (click)="removeMoleculeFromSearch(molecule)"
-        >
-          <div class="molecule">
-            <svg class="molecule_svg" width="18" height="18" viewBox="0 0 118 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.2,28.6L3,20.9c-0.6-0.5-0.9-1.2-0.9-2V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3
-              c0,1.6,0.7,3.2,2,4.2l9.2,7.7c0.6,0.5,0.9,1.2,0.9,2v16.4c0,0.8-0.3,1.5-0.9,2l-9.2,7.7c-1.3,1-2,2.6-2,4.2v14.3
-              c0,1.4-1.2,2.6-2.6,2.6H4.6C3.2,80,2,78.8,2,77.4V63.1c0-0.8,0.3-1.5,0.9-2l9.2-7.7c1.3-1,2-2.6,2-4.2V32.8
-              C14.2,31.1,13.4,29.6,12.2,28.6" fill="#2db89a" stroke-width="4" stroke="#13725d" />
+        <div class="search">
+          <div class="search_icon">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 19 19"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8 16C9.77498 15.9996 11.4988 15.4054 12.897 14.312L17.293 18.708L18.707 17.294L14.311 12.898C15.405 11.4997 15.9996 9.77544 16 8C16 3.589 12.411 0 8 0C3.589 0 0 3.589 0 8C0 12.411 3.589 16 8 16ZM8 2C11.309 2 14 4.691 14 8C14 11.309 11.309 14 8 14C4.691 14 2 11.309 2 8C2 4.691 4.691 2 8 2Z"
+                fill="currentColor"
+              />
             </svg>
-
-            <div class="label" [innerHtml]="molecule.chemicalFormula"></div>
-
-            <div class="remove_btn">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.00006 10.8666L2.46673 17.3999C2.22229 17.6444 1.91118 17.7666 1.5334 17.7666C1.15562 17.7666 0.844509 17.6444 0.600065 17.3999C0.35562 17.1555 0.233398 16.8444 0.233398 16.4666C0.233398 16.0888 0.35562 15.7777 0.600065 15.5333L7.1334 8.99994L0.600065 2.46661C0.35562 2.22216 0.233398 1.91105 0.233398 1.53328C0.233398 1.1555 0.35562 0.844387 0.600065 0.599943C0.844509 0.355498 1.15562 0.233276 1.5334 0.233276C1.91118 0.233276 2.22229 0.355498 2.46673 0.599943L9.00006 7.13328L15.5334 0.599943C15.7778 0.355498 16.089 0.233276 16.4667 0.233276C16.8445 0.233276 17.1556 0.355498 17.4001 0.599943C17.6445 0.844387 17.7667 1.1555 17.7667 1.53328C17.7667 1.91105 17.6445 2.22216 17.4001 2.46661L10.8667 8.99994L17.4001 15.5333C17.6445 15.7777 17.7667 16.0888 17.7667 16.4666C17.7667 16.8444 17.6445 17.1555 17.4001 17.3999C17.1556 17.6444 16.8445 17.7666 16.4667 17.7666C16.089 17.7666 15.7778 17.6444 15.5334 17.3999L9.00006 10.8666Z" fill="currentColor"/>
-              </svg>
-            </div>
           </div>
-        </div> -->
-        </ng-container>
 
-        <input
-          value=""
-          [placeholder]="getSearchPlaceholder()"
-          class="search_field"
-          (keyup)="searchBlock($event)"
-        />
+          <ng-container *ngIf="moleculeSearch">
+            <!-- <div class="molecule_search"
+            *ngFor="let molecule of moleculeSearch"
+            (click)="removeMoleculeFromSearch(molecule)"
+          >
+            <div class="molecule">
+              <svg class="molecule_svg" width="18" height="18" viewBox="0 0 118 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.2,28.6L3,20.9c-0.6-0.5-0.9-1.2-0.9-2V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3
+                c0,1.6,0.7,3.2,2,4.2l9.2,7.7c0.6,0.5,0.9,1.2,0.9,2v16.4c0,0.8-0.3,1.5-0.9,2l-9.2,7.7c-1.3,1-2,2.6-2,4.2v14.3
+                c0,1.4-1.2,2.6-2.6,2.6H4.6C3.2,80,2,78.8,2,77.4V63.1c0-0.8,0.3-1.5,0.9-2l9.2-7.7c1.3-1,2-2.6,2-4.2V32.8
+                C14.2,31.1,13.4,29.6,12.2,28.6" fill="#2db89a" stroke-width="4" stroke="#13725d" />
+              </svg>
+
+              <div class="label" [innerHtml]="molecule.chemicalFormula"></div>
+
+              <div class="remove_btn">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9.00006 10.8666L2.46673 17.3999C2.22229 17.6444 1.91118 17.7666 1.5334 17.7666C1.15562 17.7666 0.844509 17.6444 0.600065 17.3999C0.35562 17.1555 0.233398 16.8444 0.233398 16.4666C0.233398 16.0888 0.35562 15.7777 0.600065 15.5333L7.1334 8.99994L0.600065 2.46661C0.35562 2.22216 0.233398 1.91105 0.233398 1.53328C0.233398 1.1555 0.35562 0.844387 0.600065 0.599943C0.844509 0.355498 1.15562 0.233276 1.5334 0.233276C1.91118 0.233276 2.22229 0.355498 2.46673 0.599943L9.00006 7.13328L15.5334 0.599943C15.7778 0.355498 16.089 0.233276 16.4667 0.233276C16.8445 0.233276 17.1556 0.355498 17.4001 0.599943C17.6445 0.844387 17.7667 1.1555 17.7667 1.53328C17.7667 1.91105 17.6445 2.22216 17.4001 2.46661L10.8667 8.99994L17.4001 15.5333C17.6445 15.7777 17.7667 16.0888 17.7667 16.4666C17.7667 16.8444 17.6445 17.1555 17.4001 17.3999C17.1556 17.6444 16.8445 17.7666 16.4667 17.7666C16.089 17.7666 15.7778 17.6444 15.5334 17.3999L9.00006 10.8666Z" fill="currentColor"/>
+                </svg>
+              </div>
+            </div>
+          </div> -->
+          </ng-container>
+
+          <input
+            value=""
+            [placeholder]="getSearchPlaceholder()"
+            class="search_field"
+            (keyup)="searchBlock($event)"
+          />
+        </div>
       </div>
-    </div>
 
-    <div class="control_bar">
-      <ng-container *ngIf="!functionModeEnabled">
-        <div
-          class="type"
-          *ngFor="let type of allTypeFilters"
-          [class]="['type_' + type]"
-          [class.has_selected_type]="typeFilter.length > 0"
-          [class.selected]="
-            (type === 'all' && typeFilter.length === 3) ||
-            typeFilter.includes(type)
-          "
-          [title]="type + ' blocks'"
-          (click)="onClickType(type)"
-        >
-          <div class="label">{{ type }}</div>
+      <div class="control_bar">
+        <ng-container *ngIf="!functionModeEnabled">
+          <div
+            class="type"
+            *ngFor="let type of allTypeFilters"
+            [class]="['type_' + type]"
+            [class.has_selected_type]="typeFilter.length > 0"
+            [class.selected]="
+              (type === 'all' && typeFilter.length === 3) ||
+              typeFilter.includes(type)
+            "
+            [title]="type + ' blocks'"
+            (click)="onClickType(type)"
+          >
+            <div class="label">{{ type }}</div>
 
-          <ng-container *ngIf="type == 'start'">
-            <svg
-              class="molecule_svg"
-              width="18"
-              height="18"
-              viewBox="0 0 118 82"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M2,18.9V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3c0,1.6,0.7,3.2,2,4.2l9.2,7.7
+            <ng-container *ngIf="type == 'start'">
+              <svg
+                class="molecule_svg"
+                width="18"
+                height="18"
+                viewBox="0 0 118 82"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2,18.9V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3c0,1.6,0.7,3.2,2,4.2l9.2,7.7
     c0.6,0.5,0.9,1.2,0.9,2v16.4c0,0.8-0.3,1.5-0.9,2l-9.2,7.7c-1.3,1-2,2.6-2,4.2v14.3c0,1.4-1.2,2.6-2.6,2.6H4.6C3.2,80,2,78.8,2,77.4
     V63.1V18.9z"
-                stroke-width="4"
-              />
-            </svg>
-          </ng-container>
+                  stroke-width="4"
+                />
+              </svg>
+            </ng-container>
 
-          <ng-container *ngIf="type == 'middle'">
-            <svg
-              class="molecule_svg"
-              width="18"
-              height="18"
-              viewBox="0 0 118 82"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M2,18.9V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3c0,1.6,0.7,3.2,2,4.2l9.2,7.7
+            <ng-container *ngIf="type == 'middle'">
+              <svg
+                class="molecule_svg"
+                width="18"
+                height="18"
+                viewBox="0 0 118 82"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2,18.9V4.6C2,3.2,3.2,2,4.6,2h96.7c1.4,0,2.6,1.2,2.6,2.6v14.3c0,1.6,0.7,3.2,2,4.2l9.2,7.7
     c0.6,0.5,0.9,1.2,0.9,2v16.4c0,0.8-0.3,1.5-0.9,2l-9.2,7.7c-1.3,1-2,2.6-2,4.2v14.3c0,1.4-1.2,2.6-2.6,2.6H4.6C3.2,80,2,78.8,2,77.4
     V63.1V18.9z"
-                stroke-width="4"
-              />
-            </svg>
-          </ng-container>
+                  stroke-width="4"
+                />
+              </svg>
+            </ng-container>
 
-          <ng-container *ngIf="type == 'end'">
-            <svg
-              class="molecule_svg"
-              width="18"
-              height="18"
-              viewBox="0 0 118 82"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M103.8,18.9V4.6c0-1.4-1.2-2.6-2.6-2.6H4.6C3.2,2,2,3.2,2,4.6v14.3c0,0.8,0.3,1.5,0.9,2c0,0,9.2,7.7,9.2,7.7
+            <ng-container *ngIf="type == 'end'">
+              <svg
+                class="molecule_svg"
+                width="18"
+                height="18"
+                viewBox="0 0 118 82"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M103.8,18.9V4.6c0-1.4-1.2-2.6-2.6-2.6H4.6C3.2,2,2,3.2,2,4.6v14.3c0,0.8,0.3,1.5,0.9,2c0,0,9.2,7.7,9.2,7.7
       c1.3,1,2,2.6,2,4.2v16.4c0,1.6-0.7,3.2-2,4.2L3,61.1c-0.6,0.5-0.9,1.2-0.9,2v14.3C2,78.8,3.2,80,4.6,80h96.7c1.4,0,2.6-1.2,2.6-2.6
       V18.9z"
-                stroke-width="4"
-              />
-            </svg>
+                  stroke-width="4"
+                />
+              </svg>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="functionModeEnabled">
+          <ng-container *ngIf="blockSet?.id === 'ColorWheel_20230504'">
+            <div class="row">
+              <div
+                *ngFor="
+                  let type of $any([
+                    'yellow',
+                    'orange',
+                    'red',
+                    'magenta',
+                    'violet',
+                    'blue',
+                    'cyan'
+                  ])
+                "
+                [class]="['type', 'color_type', 'color_type_' + type]"
+                [class.has_selected_type]="colorFilter.length > 0"
+                [class.selected]="colorFilter.includes(type)"
+                [title]="type + ' blocks'"
+                (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
+              >
+                <div class="label">{{ labelForColor(type) }}</div>
+              </div>
+            </div>
+            <div class="row">
+              <div
+                *ngFor="let type of $any(['uva', 'uvb', 'uvc'])"
+                [class]="['type', 'color_type', 'color_type_' + type]"
+                [class.has_selected_type]="colorFilter.length > 0"
+                [class.selected]="colorFilter.includes(type)"
+                [title]="type + ' blocks'"
+                (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
+              >
+                <div class="label">{{ labelForColor(type) }}</div>
+              </div>
+            </div>
           </ng-container>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="functionModeEnabled">
-        <ng-container *ngIf="blockSet?.id === 'ColorWheel_20230504'">
-          <div class="row">
-            <div
-              *ngFor="
-                let type of $any([
-                  'yellow',
-                  'orange',
-                  'red',
-                  'magenta',
-                  'violet',
-                  'blue',
-                  'cyan'
-                ])
-              "
-              [class]="['type', 'color_type', 'color_type_' + type]"
-              [class.has_selected_type]="colorFilter.length > 0"
-              [class.selected]="colorFilter.includes(type)"
-              [title]="type + ' blocks'"
-              (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
-            >
-              <div class="label">{{ labelForColor(type) }}</div>
+          <ng-container *ngIf="blockSet?.id === 'OPV_20230504'">
+            <div class="prototype-range-filter">
+              <h5>
+                Predicted SO:
+                {{ xRange[0].toFixed(2) }} % - {{ xRange[1].toFixed(2) }} %
+              </h5>
+              <div style="margin: 16px 0">
+                <p-slider
+                  [(ngModel)]="xRange"
+                  [range]="true"
+                  [min]="xAxis.min"
+                  [max]="xAxis.max"
+                  [step]="(xAxis.max - xAxis.min) / 100"
+                ></p-slider>
+              </div>
+              <h5>
+                Predicted T80: {{ yRange[0].toFixed(2) }}s -
+                {{ yRange[1].toFixed(2) }}s
+              </h5>
+              <div style="margin: 16px 0">
+                <p-slider
+                  [(ngModel)]="yRange"
+                  [range]="true"
+                  [min]="yAxis.min"
+                  [max]="yAxis.max"
+                  [step]="(yAxis.max - yAxis.min) / 100"
+                ></p-slider>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div
-              *ngFor="let type of $any(['uva', 'uvb', 'uvc'])"
-              [class]="['type', 'color_type', 'color_type_' + type]"
-              [class.has_selected_type]="colorFilter.length > 0"
-              [class.selected]="colorFilter.includes(type)"
-              [title]="type + ' blocks'"
-              (click)="onClickColorType(type); tray.scrollTo({ top: 0 })"
-            >
-              <div class="label">{{ labelForColor(type) }}</div>
-            </div>
-          </div>
+          </ng-container>
         </ng-container>
-        <ng-container *ngIf="blockSet?.id === 'OPV_20230504'">
-          <div class="prototype-range-filter">
-            <h5>
-              Predicted SO:
-              {{ xRange[0].toFixed(2) }} % - {{ xRange[1].toFixed(2) }} %
-            </h5>
-            <div style="margin: 16px 0">
-              <p-slider
-                [(ngModel)]="xRange"
-                [range]="true"
-                [min]="xAxis.min"
-                [max]="xAxis.max"
-                [step]="(xAxis.max - xAxis.min) / 100"
-              ></p-slider>
-            </div>
-            <h5>
-              Predicted T80: {{ yRange[0].toFixed(2) }}s -
-              {{ yRange[1].toFixed(2) }}s
-            </h5>
-            <div style="margin: 16px 0">
-              <p-slider
-                [(ngModel)]="yRange"
-                [range]="true"
-                [min]="yAxis.min"
-                [max]="yAxis.max"
-                [step]="(yAxis.max - yAxis.min) / 100"
-              ></p-slider>
-            </div>
-          </div>
-        </ng-container>
-      </ng-container>
-    </div>
+      </div>
 
-    <div
-      class="extra_filters"
-      [@filtersExpand]="isShowingFilters ? 'expanded' : 'collapsed'"
-    >
-      <div class="container">
-        <div class="tags">
-          <!-- official tags -->
-          <div class="tag selected">High Luminance</div>
-          <div class="tag">Medical</div>
-          <div class="tag">Really long label that will clip</div>
+      <div
+        class="extra_filters"
+        [@filtersExpand]="isShowingFilters ? 'expanded' : 'collapsed'"
+      >
+        <div class="container">
+          <div class="tags">
+            <!-- official tags -->
+            <div class="tag selected">High Luminance</div>
+            <div class="tag">Medical</div>
+            <div class="tag">Really long label that will clip</div>
 
-          <!-- extra tags like favorites -->
-          <div class="tag selected">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <polygon
-                class="star"
-                points="12,1.3 14.6,9.5 23.2,9.5 16.2,14.5 18.9,22.7 12,17.6 5.1,22.7 7.8,14.5 0.8,9.5 9.4,9.5 "
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-miterlimit="10"
-                stroke="currentColor"
-                stroke-width="1.5"
+            <!-- extra tags like favorites -->
+            <div class="tag selected">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
                 fill="none"
-              />
-            </svg>
-            My Favorites
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polygon
+                  class="star"
+                  points="12,1.3 14.6,9.5 23.2,9.5 16.2,14.5 18.9,22.7 12,17.6 5.1,22.7 7.8,14.5 0.8,9.5 9.4,9.5 "
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-miterlimit="10"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  fill="none"
+                />
+              </svg>
+              My Favorites
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div
-      class="toggle_filters_btn"
-      [class.expanded]="isShowingFilters"
-      (click)="toggleFilters()"
-    >
-      <svg
-        width="10"
-        height="16"
-        viewBox="0 0 10 16"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M9.49995 8L1.99995 15.5L0.949951 14.45L7.39995 8L0.949951 1.55L1.99995 0.5L9.49995 8Z"
-          fill="currentColor"
-        />
-      </svg>
-    </div>
-  </div>
-
-  <div class="block_list">
-    <!--
-    <div class="info">
-      <div class="count">{{getBlockDataLength()}} Block{{(getBlockDataLength() == 1) ? '' : 's'}} Available</div>
-      <div class="filter">Filter <div class="filter_setting">Largest</div></div>
-    </div>
-  -->
-
-    <div class="content" #tray>
       <div
-        *ngFor="let block of availableBlocks"
-        dfDroppable
-        [dfDroppableData]="block"
-        class="item"
+        class="toggle_filters_btn"
+        [class.expanded]="isShowingFilters"
+        (click)="toggleFilters()"
       >
-        <div class="preview">
-          <!-- todo: add favorite functionality -->
-          <div class="star_btn is_favorite" *ngIf="false">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <polygon
-                class="star"
-                points="12,1.3 14.6,9.5 23.2,9.5 16.2,14.5 18.9,22.7 12,17.6 5.1,22.7 7.8,14.5 0.8,9.5 9.4,9.5 "
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-miterlimit="10"
-                stroke="currentColor"
-                stroke-width="1.5"
+        <svg
+          width="10"
+          height="16"
+          viewBox="0 0 10 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.49995 8L1.99995 15.5L0.949951 14.45L7.39995 8L0.949951 1.55L1.99995 0.5L9.49995 8Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div class="block_list">
+      <!--
+      <div class="info">
+        <div class="count">{{getBlockDataLength()}} Block{{(getBlockDataLength() == 1) ? '' : 's'}} Available</div>
+        <div class="filter">Filter <div class="filter_setting">Largest</div></div>
+      </div>
+    -->
+
+      <div class="content" #tray>
+        <div
+          *ngFor="let block of availableBlocks"
+          dfDroppable
+          [dfDroppableData]="block"
+          class="item"
+        >
+          <div class="preview">
+            <!-- todo: add favorite functionality -->
+            <div class="star_btn is_favorite" *ngIf="false">
+              <svg
+                viewBox="0 0 24 24"
                 fill="none"
-              />
-            </svg>
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polygon
+                  class="star"
+                  points="12,1.3 14.6,9.5 23.2,9.5 16.2,14.5 18.9,22.7 12,17.6 5.1,22.7 7.8,14.5 0.8,9.5 9.4,9.5 "
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-miterlimit="10"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  fill="none"
+                />
+              </svg>
+            </div>
+
+            <!-- <div class="tags condensed">
+              <div class="tag">High Luminance</div>
+              <div class="tag">Medical</div>
+            </div> -->
+
+            <div class="block_wrapper">
+              <block [block]="block" [blockSet]="blockSet!"></block>
+            </div>
           </div>
 
-          <!-- <div class="tags condensed">
-            <div class="tag">High Luminance</div>
-            <div class="tag">Medical</div>
-          </div> -->
+          <div class="info">
+            <div class="formula">
+              <div
+                *ngIf="
+                  lookupProperty([block], blockSet!, blockSet!.labelProperty)
+                    | chemicalProperty: blockSet!.labelProperty.displayStrategy;
+                  let label
+                "
+                class="formula_label"
+                [title]="label"
+                [innerHTML]="
+                  label.length > 16 ? label.substring(0, 16) + '…' : label
+                "
+              ></div>
 
-          <div class="block_wrapper">
+              <!-- todo: test to see if checkmark should be shown -->
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                *ngIf="false"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M4.2671 1.45486C4.91036 1.4035 5.52102 1.15049 6.0121 0.73186C6.56677 0.259451 7.27153 0 8.0001 0C8.72868 0 9.43344 0.259451 9.9881 0.73186C10.4792 1.15049 11.0898 1.4035 11.7331 1.45486C12.4595 1.51292 13.1415 1.82782 13.6568 2.34313C14.1721 2.85843 14.487 3.54043 14.5451 4.26686C14.5961 4.90986 14.8491 5.52086 15.2681 6.01186C15.7405 6.56652 16 7.27129 16 7.99986C16 8.72843 15.7405 9.4332 15.2681 9.98786C14.8495 10.4789 14.5965 11.0896 14.5451 11.7329C14.487 12.4593 14.1721 13.1413 13.6568 13.6566C13.1415 14.1719 12.4595 14.4868 11.7331 14.5449C11.0898 14.5962 10.4792 14.8492 9.9881 15.2679C9.43344 15.7403 8.72868 15.9997 8.0001 15.9997C7.27153 15.9997 6.56677 15.7403 6.0121 15.2679C5.52102 14.8492 4.91036 14.5962 4.2671 14.5449C3.54067 14.4868 2.85867 14.1719 2.34337 13.6566C1.82807 13.1413 1.51316 12.4593 1.4551 11.7329C1.40375 11.0896 1.15073 10.4789 0.732104 9.98786C0.259695 9.4332 0.000244141 8.72843 0.000244141 7.99986C0.000244141 7.27129 0.259695 6.56652 0.732104 6.01186C1.15073 5.52077 1.40375 4.91012 1.4551 4.26686C1.51316 3.54043 1.82807 2.85843 2.34337 2.34313C2.85867 1.82782 3.54067 1.51292 4.2671 1.45486ZM11.7071 6.70686C11.8893 6.51826 11.9901 6.26566 11.9878 6.00346C11.9855 5.74126 11.8803 5.49045 11.6949 5.30504C11.5095 5.11963 11.2587 5.01446 10.9965 5.01219C10.7343 5.00991 10.4817 5.1107 10.2931 5.29286L7.0001 8.58586L5.7071 7.29286C5.5185 7.1107 5.2659 7.00991 5.0037 7.01219C4.74151 7.01446 4.49069 7.11963 4.30529 7.30504C4.11988 7.49045 4.01471 7.74126 4.01243 8.00346C4.01015 8.26566 4.11095 8.51826 4.2931 8.70686L6.2931 10.7069C6.48063 10.8943 6.73494 10.9996 7.0001 10.9996C7.26527 10.9996 7.51958 10.8943 7.7071 10.7069L11.7071 6.70686Z"
+                  fill="#31509E"
+                />
+              </svg>
+            </div>
+            <div class="weight">
+              {{ blockSet!.primaryProperty.label }}:
+              {{
+                lookupProperty([block], blockSet!, blockSet!.primaryProperty)
+                  | chemicalProperty: blockSet!.primaryProperty.displayStrategy
+              }}
+            </div>
+          </div>
+
+          <div *dfDraggableHelper class="dragging_helper">
             <block [block]="block" [blockSet]="blockSet!"></block>
           </div>
         </div>
-
-        <div class="info">
-          <div class="formula">
-            <div
-              *ngIf="
-                lookupProperty([block], blockSet!, blockSet!.labelProperty)
-                  | chemicalProperty: blockSet!.labelProperty.displayStrategy;
-                let label
-              "
-              class="formula_label"
-              [title]="label"
-              [innerHTML]="
-                label.length > 16 ? label.substring(0, 16) + '…' : label
-              "
-            ></div>
-
-            <!-- todo: test to see if checkmark should be shown -->
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              *ngIf="false"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M4.2671 1.45486C4.91036 1.4035 5.52102 1.15049 6.0121 0.73186C6.56677 0.259451 7.27153 0 8.0001 0C8.72868 0 9.43344 0.259451 9.9881 0.73186C10.4792 1.15049 11.0898 1.4035 11.7331 1.45486C12.4595 1.51292 13.1415 1.82782 13.6568 2.34313C14.1721 2.85843 14.487 3.54043 14.5451 4.26686C14.5961 4.90986 14.8491 5.52086 15.2681 6.01186C15.7405 6.56652 16 7.27129 16 7.99986C16 8.72843 15.7405 9.4332 15.2681 9.98786C14.8495 10.4789 14.5965 11.0896 14.5451 11.7329C14.487 12.4593 14.1721 13.1413 13.6568 13.6566C13.1415 14.1719 12.4595 14.4868 11.7331 14.5449C11.0898 14.5962 10.4792 14.8492 9.9881 15.2679C9.43344 15.7403 8.72868 15.9997 8.0001 15.9997C7.27153 15.9997 6.56677 15.7403 6.0121 15.2679C5.52102 14.8492 4.91036 14.5962 4.2671 14.5449C3.54067 14.4868 2.85867 14.1719 2.34337 13.6566C1.82807 13.1413 1.51316 12.4593 1.4551 11.7329C1.40375 11.0896 1.15073 10.4789 0.732104 9.98786C0.259695 9.4332 0.000244141 8.72843 0.000244141 7.99986C0.000244141 7.27129 0.259695 6.56652 0.732104 6.01186C1.15073 5.52077 1.40375 4.91012 1.4551 4.26686C1.51316 3.54043 1.82807 2.85843 2.34337 2.34313C2.85867 1.82782 3.54067 1.51292 4.2671 1.45486ZM11.7071 6.70686C11.8893 6.51826 11.9901 6.26566 11.9878 6.00346C11.9855 5.74126 11.8803 5.49045 11.6949 5.30504C11.5095 5.11963 11.2587 5.01446 10.9965 5.01219C10.7343 5.00991 10.4817 5.1107 10.2931 5.29286L7.0001 8.58586L5.7071 7.29286C5.5185 7.1107 5.2659 7.00991 5.0037 7.01219C4.74151 7.01446 4.49069 7.11963 4.30529 7.30504C4.11988 7.49045 4.01471 7.74126 4.01243 8.00346C4.01015 8.26566 4.11095 8.51826 4.2931 8.70686L6.2931 10.7069C6.48063 10.8943 6.73494 10.9996 7.0001 10.9996C7.26527 10.9996 7.51958 10.8943 7.7071 10.7069L11.7071 6.70686Z"
-                fill="#31509E"
-              />
-            </svg>
-          </div>
-          <div class="weight">
-            {{ blockSet!.primaryProperty.label }}:
-            {{
-              lookupProperty([block], blockSet!, blockSet!.primaryProperty)
-                | chemicalProperty: blockSet!.primaryProperty.displayStrategy
-            }}
-          </div>
-        </div>
-
-        <div *dfDraggableHelper class="dragging_helper">
-          <block [block]="block" [blockSet]="blockSet!"></block>
-        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
+
+  <ng-container *ngIf="currentTab === 'details'">
+    <dmm-detail-panel></dmm-detail-panel>
+  </ng-container>
 </div>

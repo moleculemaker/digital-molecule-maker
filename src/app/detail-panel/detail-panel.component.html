@@ -1,0 +1,24 @@
+<ng-container *ngIf="blockSet$ | async as blockSet">
+  <ng-container *ngIf="molecule">
+    <div id="molecule-detail" class="details">
+      <dmm-molecule-detail
+        [molecule]="molecule"
+        [blockSet]="blockSet"
+      ></dmm-molecule-detail>
+      <button *ngIf="enableAddToCart" (click)="addMoleculeToMyCart()">
+        Add to Cart
+      </button>
+    </div>
+
+    <div
+      [id]="'block-detail-' + molecule.blockList[0]!.index"
+      class="details"
+      *ngFor="let molecule of moleculesWithSingleBlocks"
+    >
+      <dmm-molecule-detail
+        [molecule]="molecule"
+        [blockSet]="blockSet"
+      ></dmm-molecule-detail>
+    </div>
+  </ng-container>
+</ng-container>
