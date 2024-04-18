@@ -19,6 +19,7 @@ import { WorkspaceService } from '../services/workspace.service';
 import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
 import { applyTargetFilter, lookupProperty } from '../lookup';
 import { BlockSetId } from '../services/block.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -143,7 +144,15 @@ export class AppSidebarComponent implements OnInit {
   moleculeList: Molecule[] = [];
   functionModeEnabled = true;
 
+  currentTab: 'blocks' | 'details' = 'blocks';
+
   constructor(private workspaceService: WorkspaceService) {
+    combineLatest([
+      this.workspaceService.selectedMolecule$,
+      this.workspaceService.selectedBlock$,
+    ]).subscribe(([molecule, block]) => {
+      this.currentTab = molecule || block ? 'details' : 'blocks';
+    });
   }
 
   //********************************************
@@ -334,6 +343,11 @@ export class AppSidebarComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  resetSelection() {
+    this.workspaceService.selectedMolecule$.next(null);
+    this.workspaceService.selectedBlock$.next(null);
   }
 
   lookupProperty = lookupProperty;

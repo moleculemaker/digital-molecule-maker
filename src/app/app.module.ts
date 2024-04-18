@@ -21,7 +21,6 @@ import { SplashComponent } from './splash/splash.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 
 import { OverlayModule } from '@angular/cdk/overlay';
-import { OverlayComponent } from './overlay/overlay.component';
 
 import { DraggableDirective } from './drag-drop-utilities/draggable/draggable.directive';
 import { DraggableHelperDirective } from './drag-drop-utilities/draggable/draggable-helper.directive';
@@ -50,6 +49,8 @@ import { GroupsComponent } from './groups/groups.component';
 import { GroupCartComponent } from './group-cart/group-cart.component';
 import { MoleculeSummaryComponent } from './molecule-summary/molecule-summary.component';
 import { BlockLibraryComponent } from './block-library/block-library.component';
+import { DetailPanelComponent } from './detail-panel/detail-panel.component';
+import { MoleculeDetailComponent } from './molecule-detail/molecule-detail.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -81,7 +82,6 @@ function initializeAppFactory(
     SplashComponent,
     TutorialComponent,
     BlockSvgComponent,
-    OverlayComponent,
     MoleculeSvgComponent,
     ScatterPlotComponent,
     LoginComponent,
@@ -89,6 +89,8 @@ function initializeAppFactory(
     GroupCartComponent,
     MoleculeSummaryComponent,
     BlockLibraryComponent,
+    DetailPanelComponent,
+    MoleculeDetailComponent,
   ],
   imports: [
     BrowserModule,

@@ -48,16 +48,12 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   blockSet!: BlockSet;
 
-  @Input()
-  closeOverlayObservable?: Observable<void>;
-
   @Output()
   deleteBlock = new EventEmitter<number>();
 
   strokeDasharray = '';
   strokeWidth = 5;
 
-  isInfoPanelOpen = false;
   _eventsSubscription?: Subscription;
 
   positionPairs!: ConnectionPositionPair[];
@@ -94,12 +90,6 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.closeOverlayObservable) {
-      this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
-        this.isInfoPanelOpen = false;
-      });
-    }
-
     this.positionPairs = [
       {
         offsetX: -40, //need to convert this numeric approach to a formula based on the width of the overlay
@@ -177,11 +167,7 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onPointerUp() {
-    if (!this.dragging) {
-      if (this.pointerDown) {
-        this.isInfoPanelOpen = !this.isInfoPanelOpen;
-      }
-    } else {
+    if (this.dragging) {
       this.dragging = false;
     }
     this.pointerDown = false;
