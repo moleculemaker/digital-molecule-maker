@@ -91,7 +91,7 @@ export class CartService {
   removeFromPersonalCart(blockSet: BlockSet, molecules: Molecule[]) {
     const { hostname } = this.envService.getEnvConfig();
     return this.http
-      .patch(
+      .put(
         `${hostname}/me/molecules`,
         {
           op: 'delete',
