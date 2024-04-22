@@ -1,8 +1,7 @@
 <div class="header">
-
   <div class="header_block">
     <div class="logo"></div>
-    <div class="logo_label">Molecule<br/>Maker<br/>Lab</div>
+    <div class="logo_label">Molecule<br />Maker<br />Lab</div>
   </div>
 
   <!--
@@ -17,7 +16,10 @@
   </div>
 
   <div class="header_block">
-    <div class="menu-button"  (click)="$event.stopPropagation(); menuOpen = !menuOpen">
+    <div
+      class="menu-button"
+      (click)="$event.stopPropagation(); menuOpen = !menuOpen"
+    >
       {{ (user$ | async)?.name?.[0] | uppercase }}
     </div>
     <!--  <div *ngIf="false" class="code">183782</div>-->
@@ -29,21 +31,36 @@
   --></div>
 </div>
 
-
 <div *ngIf="menuOpen" class="menu">
   <!--  <div>-->
   <!--    Workspace-->
   <!--  </div>-->
-  <div *ngIf="(user$ | async)?.username != GUEST_USER" (click)="goToGroupsPage()">
+  <div
+    *ngIf="(user$ | async)?.username != GUEST_USER"
+    (click)="goToGroupsPage()"
+  >
     My Groups
   </div>
-  <div (click)="goToBlockLibrary()">
-    Block Library
-  </div>
+  <div (click)="goToBlockLibrary()">Block Library</div>
   <!--  <div>-->
   <!--    Settings-->
   <!--  </div>-->
-  <div (click)="logout()">
-    Log Out
-  </div>
+  <div (click)="logout()">Log Out</div>
+</div>
+
+<div style="position: relative; z-index: 5000">
+  <p-dialog
+    [modal]="true"
+    [(visible)]="confirmationModalOpen"
+    [style]="{ width: '424px' }"
+  >
+    <div class="confirmation-modal" >
+      <div class="confirmation-text">
+        Are you sure you want to leave this workspace? Your progress will be
+        lost!
+      </div>
+      <button class="confirm-button" (click)="proceed()">Yes, Continue</button>
+      <button class="cancel-button" (click)="cancel()">Return to workspace</button>
+    </div>
+  </p-dialog>
 </div>

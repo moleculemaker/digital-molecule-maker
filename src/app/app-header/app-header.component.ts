@@ -33,6 +33,30 @@ export class AppHeaderComponent implements OnInit {
     });
   }
 
+  confirmationModalOpen = false;
+
+  pendingAction: (() => void) | null = null;
+
+  private requestMenuAction(action: () => void) {
+    const isWorkspace = this.router.url.endsWith('/build');
+    if (isWorkspace) {
+      this.pendingAction = action;
+      this.confirmationModalOpen = true;
+    } else {
+      action();
+    }
+  }
+
+  proceed() {
+    this.confirmationModalOpen = false;
+    this.pendingAction?.();
+  }
+
+  cancel() {
+    this.confirmationModalOpen = false;
+    this.pendingAction = null;
+  }
+
   private updateTitle(url: string) {
     if (!url.endsWith('/build')) {
       this.title$ = of('');
@@ -65,15 +89,15 @@ export class AppHeaderComponent implements OnInit {
   }
 
   goToGroupsPage() {
-    this.router.navigateByUrl('/groups');
+    this.requestMenuAction(() => this.router.navigateByUrl('/groups'));
   }
 
   goToBlockLibrary() {
-    this.router.navigateByUrl('/library');
+    this.requestMenuAction(() => this.router.navigateByUrl('/library'));
   }
 
   logout() {
-    this.userService.logout();
+    this.requestMenuAction(() => this.userService.logout());
   }
 
   protected readonly GUEST_USER = GUEST_USER;
