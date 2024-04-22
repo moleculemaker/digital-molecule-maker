@@ -225,10 +225,6 @@ export class AppSidebarComponent implements OnInit {
     }
   }
 
-  toggle() {
-    this.workspaceService.toggle();
-  }
-
   private applyFilters() {
     if (this.functionModeEnabled) {
       if (this.blockSet?.id === BlockSetId.ColorWheel) {
