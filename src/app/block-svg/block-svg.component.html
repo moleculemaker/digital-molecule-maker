@@ -88,7 +88,7 @@
     </g>
   </ng-template>
 
-  <g class="delete_block_button" (click)="removeBlock()">
+  <g class="delete_block_button" (click)="$event.stopPropagation(); removeBlock();">
     <circle
       class="outline"
       [attr.cx]="deleteButtonPositionX"
