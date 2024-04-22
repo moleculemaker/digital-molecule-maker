@@ -145,12 +145,16 @@ export class AppBuildComponent implements OnInit {
     });
   }
 
+  scaleBy(factor: number) {
+    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map((val) => val * factor);
+  }
+
   onZoomIn(): void {
-    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map((val) => val * 1.1);
+    this.scaleBy(1.1);
   }
 
   onZoomOut(): void {
-    this.zoomAndPanMatrix = this.zoomAndPanMatrix.map((val) => val * 0.9);
+    this.scaleBy(0.9);
   }
 
   onCenter(): void {
@@ -212,6 +216,80 @@ export class AppBuildComponent implements OnInit {
 
   onPointerLeave() {
     this.hoveredMolecule = undefined;
+  }
+
+  shiftKeyDown = false;
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Shift') this.shiftKeyDown = true;
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(e: KeyboardEvent) {
+    if (e.key === 'Shift') this.shiftKeyDown = false;
+  }
+
+  pointers: PointerEvent[] = [];
+  prevPointerDiff = -1;
+
+  onPointerDown(e: PointerEvent) {
+    if (this.pointers.length < 2) {
+      this.pointers.push(e);
+    }
+    if (this.pointers.length === 1) {
+      this.onPanStart(e);
+    }
+  }
+
+  onPointerMove(e: PointerEvent) {
+    const i = this.pointers.findIndex((ev) => ev.pointerId === e.pointerId);
+    if (i !== -1) this.pointers[i] = e;
+    if (
+      this.pointers.length === 2 ||
+      (this.pointers.length === 1 && this.shiftKeyDown)
+    ) {
+      this.onPinch();
+    } else if (this.pointers.length === 1) {
+      this.onPan(e);
+    }
+  }
+
+  onPointerUp(e: PointerEvent) {
+    const i = this.pointers.findIndex((ev) => ev.pointerId === e.pointerId);
+    if (i !== -1) {
+      this.pointers.splice(i, 1);
+    }
+    if (this.pointers.length < 2) {
+      this.onPinchStop();
+    }
+    if (this.panning) {
+      this.onPanStop(e);
+    }
+  }
+
+  onPinch() {
+    let pointerDiff = 0;
+    if (this.pointers.length === 2) {
+      const [e1, e2] = this.pointers as [PointerEvent, PointerEvent];
+      pointerDiff = Math.sqrt(
+        (e1.clientX - e2.clientX) ** 2 + (e1.clientY - e2.clientY) ** 2,
+      );
+    } else if (this.pointers.length === 1 && this.shiftKeyDown) {
+      const e = this.pointers[0]!;
+      pointerDiff = Math.sqrt(
+        (e.clientX - window.innerWidth / 2) ** 2 +
+          (e.clientY - window.innerHeight / 2) ** 2,
+      );
+    }
+    if (this.prevPointerDiff > 0) {
+      this.scaleBy(1 + (pointerDiff - this.prevPointerDiff) / 30);
+    }
+    this.prevPointerDiff = pointerDiff;
+  }
+
+  onPinchStop() {
+    this.prevPointerDiff = -1;
   }
 
   onPanStart(event: PointerEvent) {

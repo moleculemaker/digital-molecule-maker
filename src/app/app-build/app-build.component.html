@@ -75,9 +75,9 @@
     #workspace
     class="svg_workspace"
     [style.touch-action]="'none'"
-    (pointerdown)="onPanStart($event)"
-    (pointermove)="onPan($event);"
-    (pointerup)="onPanStop($event)"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event);"
+    (pointerup)="onPointerUp($event)"
     (click)="resetSelection()"
   >
     <!-- this outer-level group applies the zoom and pan -->
