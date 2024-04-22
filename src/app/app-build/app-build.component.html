@@ -76,7 +76,7 @@
     class="svg_workspace"
     [style.touch-action]="'none'"
     (pointerdown)="onPanStart($event)"
-    (pointermove)="onPan($event); onMove($event)"
+    (pointermove)="onPan($event);"
     (pointerup)="onPanStop($event)"
     (click)="resetSelection()"
   >
@@ -87,7 +87,6 @@
     >
       <g
         (pointerenter)="onPointerEnter(moleculeId)"
-        (pointerdown)="onMoveStart($event, moleculeId)"
         (pointerleave)="onPointerLeave()"
         *ngFor="let molecule of moleculeList; let moleculeId = index"
         [attr.transform]="
@@ -168,6 +167,9 @@
           </clipPath>
         </defs>
       </svg>
+    </div>
+    <div class="button toggle_button" (click)="toggle()">
+      {{ functionModeEnabled ? "view structure" : "view function" }}
     </div>
   </div>
 </div>
