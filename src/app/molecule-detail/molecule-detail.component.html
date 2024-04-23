@@ -2,9 +2,24 @@
   <div class="carousel">
     <div
       class="carousel-content"
-      [style.transform]="carouselIndex === 1 ? 'translateX(-100%)' : 'none'"
+      [style.transform]="
+        carouselIndex === 1
+          ? 'translateX(-100%)'
+          : carouselIndex === 2
+          ? 'translate(-200%)'
+          : 'none'
+      "
     >
       <div class="carousel-item">
+        <svg
+          *ngIf="hasSvgAndMol2"
+          width="100%"
+          height="100%"
+          [attr.data-src]="svgUrl"
+        ></svg>
+      </div>
+
+      <div class="carousel-item blocks-view">
         <svg viewBox="-300 -150 600 300">
           <g
             [attr.transform]="
@@ -25,15 +40,13 @@
         </svg>
       </div>
 
-      <div
-        #3dmol
-        *ngIf="has3dmolData"
-        class="carousel-item mol-container"
-      ></div>
+      <div class="carousel-item">
+        <div #3dmol *ngIf="hasSvgAndMol2" class="mol-container"></div>
+      </div>
     </div>
     <svg
-      *ngIf="has3dmolData && carouselIndex === 1"
-      (click)="carouselIndex = 0"
+      *ngIf="hasSvgAndMol2 && carouselIndex !== 0"
+      (click)="carouselIndex = carouselIndex - 1"
       id="left-button"
       width="41"
       height="40"
@@ -67,8 +80,8 @@
     </svg>
 
     <svg
-      *ngIf="has3dmolData && carouselIndex === 0"
-      (click)="carouselIndex = 1"
+      *ngIf="hasSvgAndMol2 && carouselIndex !== 2"
+      (click)="carouselIndex = carouselIndex + 1"
       id="right-button"
       width="41"
       height="40"
