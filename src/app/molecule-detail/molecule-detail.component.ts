@@ -32,9 +32,9 @@ export class MoleculeDetailComponent implements OnChanges {
   @Input()
   blockSet!: BlockSet;
 
-  carouselIndex = 0;
+  carouselIndex = 1;
 
-  get has3dmolData() {
+  get hasSvgAndMol2() {
     return (
       this.blockSet.id === BlockSetId.ColorWheel &&
       this.molecule.blockList.length === 3
@@ -56,25 +56,35 @@ export class MoleculeDetailComponent implements OnChanges {
 
   constructor(private cartService: CartService) {}
 
+  get svgMol2Key() {
+    const blockList = this.molecule.blockList;
+    if (blockList.length < 3) return '';
+    const donorId = blockList.find((b) => b.index === 0)!.id;
+    const bridgeId = blockList.find((b) => b.index === 1)!.id;
+    const acceptorId = blockList.find((b) => b.index === 2)!.id;
+    const donorKey = String.fromCharCode(64 + donorId);
+    const acceptorKey = String.fromCharCode(74 + acceptorId);
+    return `${donorKey}_${bridgeId}_${acceptorKey}`;
+  }
+
+  get svgUrl() {
+    return `assets/blocks/10x10x10palette/svg/${this.svgMol2Key}.svg`;
+  }
+
+  get mol2Url() {
+    return `assets/blocks/10x10x10palette/mol2/${this.svgMol2Key}.mol2`;
+  }
+
   ngOnChanges() {
-    if (this.has3dmolData) {
-      const blockList = this.molecule.blockList;
-      const donorId = blockList.find((b) => b.index === 0)!.id;
-      const bridgeId = blockList.find((b) => b.index === 1)!.id;
-      const acceptorId = blockList.find((b) => b.index === 2)!.id;
-      const donorKey = String.fromCharCode(64 + donorId);
-      const acceptorKey = String.fromCharCode(74 + acceptorId);
-      $3Dmol.get(
-        `assets/blocks/10x10x10palette/mol2/${donorKey}_${bridgeId}_${acceptorKey}.mol2`,
-        (data: string) => {
-          if (this.viewer) {
-            this.viewer.addModel(data, 'mol');
-            this.viewer.setStyle({}, { stick: {} });
-            this.viewer.zoomTo();
-            this.viewer.render();
-          }
-        },
-      );
+    if (this.hasSvgAndMol2) {
+      $3Dmol.get(this.mol2Url, (data: string) => {
+        if (this.viewer) {
+          this.viewer.addModel(data, 'mol');
+          this.viewer.setStyle({}, { stick: {} });
+          this.viewer.zoomTo();
+          this.viewer.render();
+        }
+      });
     }
   }
 
