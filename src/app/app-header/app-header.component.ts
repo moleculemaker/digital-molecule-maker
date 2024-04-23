@@ -38,7 +38,8 @@ export class AppHeaderComponent implements OnInit {
   pendingAction: (() => void) | null = null;
 
   private requestMenuAction(action: () => void) {
-    const isWorkspace = this.router.url.endsWith('/build');
+    const isWorkspace =
+      location.pathname !== '/library' && location.pathname !== '/groups';
     if (isWorkspace) {
       this.pendingAction = action;
       this.confirmationModalOpen = true;
