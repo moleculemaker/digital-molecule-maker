@@ -102,5 +102,11 @@ export class MoleculeDetailComponent implements OnChanges {
     return BLOCK_HEIGHT + 2 * BORDER_WIDTH;
   }
 
+  requestFullscreen(event: MouseEvent) {
+    (event.currentTarget as Element)
+      .requestFullscreen()
+      .then(console.log, console.warn);
+  }
+
   protected readonly lookupProperty = lookupProperty;
 }

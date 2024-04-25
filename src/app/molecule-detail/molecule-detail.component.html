@@ -10,7 +10,7 @@
           : 'none'
       "
     >
-      <div class="carousel-item">
+      <div class="carousel-item" (click)="requestFullscreen($event)">
         <svg
           *ngIf="hasSvgAndMol2"
           width="100%"
@@ -40,7 +40,7 @@
         </svg>
       </div>
 
-      <div class="carousel-item">
+      <div class="carousel-item" (click)="requestFullscreen($event)">
         <div #3dmol *ngIf="hasSvgAndMol2" class="mol-container"></div>
       </div>
     </div>
