@@ -51,6 +51,7 @@ import { MoleculeSummaryComponent } from './molecule-summary/molecule-summary.co
 import { BlockLibraryComponent } from './block-library/block-library.component';
 import { DetailPanelComponent } from './detail-panel/detail-panel.component';
 import { MoleculeDetailComponent } from './molecule-detail/molecule-detail.component';
+import { NgOptimizedImage } from '@angular/common';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -113,6 +114,7 @@ function initializeAppFactory(
     MessagesModule,
     DropdownModule,
     TableModule,
+    NgOptimizedImage,
   ],
   providers: [
     {
