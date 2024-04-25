@@ -22,10 +22,10 @@
       padding: 18px;
       display: flex;
       flex-direction: column;
+      align-items: center;
 
       .card-image {
-        height: 198px;
-        background: #DDDDDD;
+        object-fit: contain;
       }
 
       .card-content {
