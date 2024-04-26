@@ -150,8 +150,8 @@ export class AppSidebarComponent implements OnInit {
     combineLatest([
       this.workspaceService.selectedMolecule$,
       this.workspaceService.selectedBlock$,
-    ]).subscribe(([molecule, block]) => {
-      this.currentTab = molecule || block ? 'details' : 'blocks';
+    ]).subscribe(([molecule]) => {
+      this.currentTab = molecule ? 'details' : 'blocks';
     });
   }
 

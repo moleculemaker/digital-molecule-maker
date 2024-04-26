@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Molecule } from '../models';
-import { CartService } from '../services/cart.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { lookupProperty } from '../lookup';
 import { BlockSetId } from '../services/block.service';
+import {WorkspaceService} from "../services/workspace.service";
 
 type ViewMode = 'gallery' | 'list';
 
@@ -21,23 +21,23 @@ export class GroupCartComponent {
   comparisonViewOpen = false;
 
   constructor(
-    private cartService: CartService,
+    private workspaceService: WorkspaceService,
     private location: Location,
     private route: ActivatedRoute,
   ) {
     this.route.paramMap.subscribe((paramMap) => {
       const groupId = Number(paramMap.get('groupId'));
       const blockSetId = paramMap.get('blockSetId') as BlockSetId;
-      this.cartService.reset(groupId, blockSetId);
+      this.workspaceService.reset(groupId, blockSetId);
     });
   }
 
   get groupCart$() {
-    return this.cartService.groupCart$;
+    return this.workspaceService.groupCart$;
   }
 
   get blockSet$() {
-    return this.cartService.blockSet$;
+    return this.workspaceService.blockSet$;
   }
 
   removeFromSelected(molecule: Molecule) {

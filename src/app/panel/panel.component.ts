@@ -28,7 +28,6 @@ import {
 } from './panel.animations';
 import { BlockSet, Molecule } from '../models';
 import { Router } from '@angular/router';
-import { CartService } from '../services/cart.service';
 import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
@@ -83,16 +82,15 @@ export class PanelComponent implements OnInit {
   //********************************************
   constructor(
     private workspaceService: WorkspaceService,
-    private cartService: CartService,
     private router: Router,
   ) {}
 
   get personalCart$() {
-    return this.cartService.personalCart$;
+    return this.workspaceService.personalCart$;
   }
 
   get group$() {
-    return this.cartService.group$;
+    return this.workspaceService.group$;
   }
 
   //********************************************
@@ -183,6 +181,6 @@ export class PanelComponent implements OnInit {
   }
 
   addToGroupCart() {
-    this.cartService.addMyMoleculesToGroupCart();
+    this.workspaceService.addMyMoleculesToGroupCart();
   }
 }

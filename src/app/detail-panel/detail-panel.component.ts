@@ -1,6 +1,5 @@
 import {AfterViewChecked, Component, ElementRef, TrackByFunction} from '@angular/core';
 import { WorkspaceService } from '../services/workspace.service';
-import { CartService } from '../services/cart.service';
 import { lookupProperty } from '../lookup';
 import { Block, Coordinates, Molecule } from '../models';
 import { UserService } from '../services/user.service';
@@ -18,7 +17,6 @@ export class DetailPanelComponent implements AfterViewChecked {
 
   constructor(
     private workspaceService: WorkspaceService,
-    private cartService: CartService,
     private userService: UserService,
     private elRef: ElementRef<Element>,
   ) {
@@ -49,7 +47,7 @@ export class DetailPanelComponent implements AfterViewChecked {
   }
 
   get blockSet$() {
-    return this.cartService.blockSet$;
+    return this.workspaceService.blockSet$;
   }
 
   protected readonly lookupProperty = lookupProperty;
@@ -86,7 +84,7 @@ export class DetailPanelComponent implements AfterViewChecked {
       ),
     );
     if (this.enableAddToCart) {
-      this.cartService.addToPersonalCart(this.blockSet$.value!, this.molecule!);
+      this.workspaceService.addToPersonalCart(this.blockSet$.value!, this.molecule!);
       this.workspaceService.selectedMolecule$.next(null);
       this.workspaceService.selectedBlock$.next(null);
     }
