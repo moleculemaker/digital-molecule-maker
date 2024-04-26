@@ -23,7 +23,6 @@ import { BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
 import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
-import { CartService } from '../services/cart.service';
 import { UserService } from '../services/user.service';
 
 @UntilDestroy()
@@ -56,7 +55,6 @@ export class AppBuildComponent implements OnInit {
   constructor(
     private rigService: RigService,
     private workspaceService: WorkspaceService,
-    private cartService: CartService,
     private userService: UserService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
@@ -64,10 +62,10 @@ export class AppBuildComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap) => {
       const groupId = Number(paramMap.get('groupId'));
       const blockSetId = paramMap.get('blockSetId') as BlockSetId;
-      this.cartService.reset(groupId, blockSetId);
+      this.workspaceService.reset(groupId, blockSetId);
       this.workspaceService.updateMoleculeList([]);
     });
-    this.cartService.blockSet$.subscribe((blockSet) => {
+    this.workspaceService.blockSet$.subscribe((blockSet) => {
       if (blockSet) {
         this.svgScale = getBlockSetScale(blockSet, 70);
       }
@@ -78,7 +76,7 @@ export class AppBuildComponent implements OnInit {
   }
 
   get blockSet() {
-    return this.cartService.blockSet$.value;
+    return this.workspaceService.blockSet$.value;
   }
 
   get isGuest() {
@@ -104,7 +102,7 @@ export class AppBuildComponent implements OnInit {
   }
 
   get personalCart$() {
-    return this.cartService.personalCart$;
+    return this.workspaceService.personalCart$;
   }
 
   //********************************************
@@ -339,7 +337,7 @@ export class AppBuildComponent implements OnInit {
 
   sendBackToWorkspace(molecule: Molecule) {
     this.workspaceService.updateMoleculeList([...this.moleculeList, molecule]);
-    this.cartService.removeFromPersonalCart(this.blockSet!, [molecule]);
+    this.workspaceService.removeFromPersonalCart(this.blockSet!, [molecule]);
   }
 
   resetSelection() {

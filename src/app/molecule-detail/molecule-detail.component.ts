@@ -12,9 +12,9 @@ import {
   BORDER_WIDTH,
 } from '../block-svg/block-svg.component';
 import { BlockSet, Molecule } from '../models';
-import { CartService } from '../services/cart.service';
 import { BlockSetId } from '../services/block.service';
 import '3dmol/build/3Dmol-min.js';
+import {WorkspaceService} from "../services/workspace.service";
 
 declare global {
   const $3Dmol: any;
@@ -54,7 +54,7 @@ export class MoleculeDetailComponent implements OnChanges {
     }
   }
 
-  constructor(private cartService: CartService) {}
+  constructor(private workspaceService: WorkspaceService) {}
 
   get svgMol2Key() {
     const blockList = this.molecule.blockList;
@@ -89,7 +89,7 @@ export class MoleculeDetailComponent implements OnChanges {
   }
 
   get blockSet$() {
-    return this.cartService.blockSet$;
+    return this.workspaceService.blockSet$;
   }
 
   get moleculeWidth() {
