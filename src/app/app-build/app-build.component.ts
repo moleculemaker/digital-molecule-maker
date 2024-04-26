@@ -255,6 +255,7 @@ export class AppBuildComponent implements OnInit {
     }
   }
 
+  @HostListener('document:pointerup', ['$event'])
   onPointerUp(e: PointerEvent) {
     const i = this.pointers.findIndex((ev) => ev.pointerId === e.pointerId);
     if (i !== -1) {
