@@ -13,7 +13,7 @@
     <div
       [id]="'block-detail-' + molecule.blockList[0]!.index"
       class="details"
-      *ngFor="let molecule of moleculesWithSingleBlocks"
+      *ngFor="let molecule of moleculesWithSingleBlocks; trackBy: trackByBlockIndexId"
     >
       <dmm-molecule-detail
         [molecule]="molecule"
