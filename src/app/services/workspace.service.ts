@@ -50,14 +50,14 @@ export class WorkspaceService {
           .subscribe((blockSet) => {
             this.group$.next(group);
             this.blockSet$.next(blockSet);
-            this.fetchPersonalCart(blockSet);
-            this.fetchGroupCart(group, blockSet);
+            this.fetchPersonalCart();
+            this.fetchGroupCart();
           });
       });
     } else if (blockSetId) {
       this.blockService.getBlockSet(blockSetId).subscribe((blockSet) => {
         this.blockSet$.next(blockSet);
-        this.fetchPersonalCart(blockSet);
+        this.fetchPersonalCart();
       });
     }
 
@@ -104,8 +104,11 @@ export class WorkspaceService {
     this.updateMoleculeList(moleculesList);
   }
 
-  fetchPersonalCart(blockSet: BlockSet) {
+  fetchPersonalCart() {
     if (this.userService.isGuest()) return;
+
+    const blockSet = this.blockSet$.value;
+    if (!blockSet) return;
 
     const { hostname } = this.envService.getEnvConfig();
     return this.http
@@ -134,34 +137,15 @@ export class WorkspaceService {
         },
       })
       .subscribe(() => {
-        this.fetchPersonalCart(blockSet);
+        this.fetchPersonalCart();
       });
   }
 
-  removeFromPersonalCart(blockSet: BlockSet, molecules: Molecule[]) {
+  fetchGroupCart() {
     if (this.userService.isGuest()) return;
-
-    const { hostname } = this.envService.getEnvConfig();
-    return this.http
-      .put(
-        `${hostname}/me/molecules`,
-        {
-          op: 'delete',
-          ids: molecules.map((m) => m.id),
-        },
-        {
-          headers: {
-            authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-          },
-        },
-      )
-      .subscribe(() => {
-        this.fetchPersonalCart(blockSet);
-      });
-  }
-
-  fetchGroupCart(group: UserGroup, blockSet: BlockSet) {
-    if (this.userService.isGuest()) return;
+    const group = this.group$.value;
+    const blockSet = this.blockSet$.value;
+    if (!group || !blockSet) return;
 
     const { hostname } = this.envService.getEnvConfig();
     return this.http
@@ -176,18 +160,36 @@ export class WorkspaceService {
       });
   }
 
-  addMyMoleculesToGroupCart() {
+  removeFromPersonalCart(molecule: Molecule) {
     if (this.userService.isGuest()) return;
 
+    const blockSet = this.blockSet$.value;
+    if (!blockSet) return;
+
     const { hostname } = this.envService.getEnvConfig();
+    this.http
+      .delete(`${hostname}/me/molecules/${molecule.id}`, {
+        headers: {
+          authorization: `Bearer ${this.userService.user$.value?.access_token}`,
+        },
+      })
+      .subscribe(() => {
+        this.fetchPersonalCart();
+      });
+  }
+
+  submitMolecules(molecules: Molecule[]) {
+    if (this.userService.isGuest()) return;
+
     const group = this.group$.value;
     const blockSet = this.blockSet$.value;
-    const molecules = this.personalCart$.value;
     if (!group || !blockSet) return;
+
+    const { hostname } = this.envService.getEnvConfig();
     this.http
       .post(
-        `${hostname}/groups/${group.id}/molecules`,
-        molecules.map(toMoleculeDTO(blockSet)),
+        `${hostname}/groups/${group.id}/molecules/submit`,
+        molecules.map((molecule) => molecule.id),
         {
           headers: {
             authorization: `Bearer ${this.userService.user$.value?.access_token}`,
@@ -195,7 +197,32 @@ export class WorkspaceService {
         },
       )
       .subscribe(() => {
-        this.removeFromPersonalCart(blockSet, molecules);
+        this.fetchPersonalCart();
+        this.fetchGroupCart();
+      });
+  }
+
+  retractMolecules(molecules: Molecule[]) {
+    if (this.userService.isGuest()) return;
+
+    const group = this.group$.value;
+    const blockSet = this.blockSet$.value;
+    if (!group || !blockSet) return;
+
+    const { hostname } = this.envService.getEnvConfig();
+    this.http
+      .post(
+        `${hostname}/groups/${group.id}/molecules/retract`,
+        molecules.map((molecule) => molecule.id),
+        {
+          headers: {
+            authorization: `Bearer ${this.userService.user$.value?.access_token}`,
+          },
+        },
+      )
+      .subscribe(() => {
+        this.fetchPersonalCart();
+        this.fetchGroupCart();
       });
   }
 }

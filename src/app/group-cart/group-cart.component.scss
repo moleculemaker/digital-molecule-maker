@@ -20,6 +20,9 @@
       font-size: 14px;
       color: #31509e;
       background: #ffffff;
+      &:hover {
+        background: lighten(#31509e, 50%);
+      }
     }
   }
 

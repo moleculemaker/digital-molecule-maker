@@ -40,6 +40,7 @@ export class UserService {
 
   loginAsGuest() {
     this.setUser({
+      id: -1,
       name: 'Guest',
       username: GUEST_USER,
       access_token: '',

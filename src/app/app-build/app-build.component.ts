@@ -337,7 +337,7 @@ export class AppBuildComponent implements OnInit {
 
   sendBackToWorkspace(molecule: Molecule) {
     this.workspaceService.updateMoleculeList([...this.moleculeList, molecule]);
-    this.workspaceService.removeFromPersonalCart(this.blockSet!, [molecule]);
+    this.workspaceService.removeFromPersonalCart(molecule);
   }
 
   resetSelection() {
