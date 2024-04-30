@@ -46,6 +46,7 @@ export const toMoleculeDTO =
       block_ids: molecule.blockList
         .sort((a, b) => a.index - b.index)
         .map((mol) => mol.id),
+      user_id: molecule.userId
     };
   };
 
@@ -59,6 +60,7 @@ export const fromMoleculeDTO =
       ),
       moleculeDTO.name,
       moleculeDTO.id,
+      moleculeDTO.user_id
     );
   };
 
@@ -93,7 +95,8 @@ export class Molecule {
     public position: Coordinates,
     public blockList: Block[],
     public label = 'NewMolecule',
-    public id: number = -1,
+    public id = -1,
+    public userId = -1
   ) {}
 }
 
@@ -102,9 +105,11 @@ export interface MoleculeDTO {
   name: string;
   block_set_id: string;
   block_ids: number[];
+  user_id: number;
 }
 
 export interface User {
+  id: number;
   name: string;
   username: string;
   access_token: string;

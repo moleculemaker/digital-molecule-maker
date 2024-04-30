@@ -181,6 +181,6 @@ export class PanelComponent implements OnInit {
   }
 
   addToGroupCart() {
-    this.workspaceService.addMyMoleculesToGroupCart();
+    this.workspaceService.submitMolecules(this.personalCart$.value);
   }
 }

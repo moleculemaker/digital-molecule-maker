@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { lookupProperty } from '../lookup';
 import { BlockSetId } from '../services/block.service';
-import {WorkspaceService} from "../services/workspace.service";
+import { WorkspaceService } from '../services/workspace.service';
+import { UserService } from '../services/user.service';
 
 type ViewMode = 'gallery' | 'list';
 
@@ -22,6 +23,7 @@ export class GroupCartComponent {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private userService: UserService,
     private location: Location,
     private route: ActivatedRoute,
   ) {
@@ -38,6 +40,14 @@ export class GroupCartComponent {
 
   get blockSet$() {
     return this.workspaceService.blockSet$;
+  }
+
+  isMyMolecule(molecule: Molecule) {
+    return this.userService.user$.value?.id === molecule.userId;
+  }
+
+  takeBack(molecule: Molecule) {
+    this.workspaceService.retractMolecules([molecule]);
   }
 
   removeFromSelected(molecule: Molecule) {

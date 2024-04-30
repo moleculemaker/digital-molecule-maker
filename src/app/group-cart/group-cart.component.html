@@ -78,7 +78,12 @@
                 "
                 (click)="selected.push(molecule)"
               ></p-button>
-              <!--              <p-button label="View Details"></p-button>-->
+
+              <p-button
+                label="Take Back"
+                *ngIf="isMyMolecule(molecule)"
+                (click)="takeBack(molecule)"
+              ></p-button>
             </div>
           </dmm-molecule-summary>
         </div>
