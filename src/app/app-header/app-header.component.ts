@@ -2,8 +2,10 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { GUEST_USER, UserService } from '../services/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { WorkspaceService } from '../services/workspace.service';
+import { BlockSet } from '../models';
+import { BlockSetId } from '../services/block.service';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +14,7 @@ import { WorkspaceService } from '../services/workspace.service';
 })
 export class AppHeaderComponent implements OnInit {
   title$ = of('');
+  subtitle$ = of('');
 
   menuOpen = false;
 
@@ -60,20 +63,34 @@ export class AppHeaderComponent implements OnInit {
 
   private updateTitle(url: string) {
     if (!url.endsWith('/build')) {
-      this.title$ = of('');
-    } else if (url.startsWith('/library/')) {
-      this.title$ = this.userService.user$.pipe(
-        map((user) =>
-          user
-            ? user.username === GUEST_USER
-              ? 'Guest Workspace'
-              : `${user.name}'s Workspace`
+      this.title$ = of(' ');
+      this.subtitle$ = of(' ')
+    } else {
+      if (url.startsWith('/library/')) {
+        this.title$ = this.userService.user$.pipe(
+          map((user) =>
+            user
+              ? user.username === GUEST_USER
+                ? 'Guest Workspace'
+                : `${user.name}'s Workspace`
+              : '',
+          ),
+        );
+      } else {
+        this.title$ = this.workspaceService.group$.pipe(
+          map((group) => (group ? `${group.creator!.name}'s Classroom` : '')),
+        );
+      }
+
+      this.subtitle$ = this.workspaceService.blockSet$.pipe(
+        filter((blockSet): blockSet is BlockSet => !!blockSet),
+        map((blockSet) =>
+          blockSet.id === BlockSetId.ColorWheel
+            ? 'Color Wheel'
+            : blockSet.id === BlockSetId.OPV
+            ? 'OPV'
             : '',
         ),
-      );
-    } else {
-      this.title$ = this.workspaceService.group$.pipe(
-        map((group) => (group ? `${group.creator!.name}'s Classroom` : '')),
       );
     }
   }

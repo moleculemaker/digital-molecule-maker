@@ -12,7 +12,12 @@
   -->
 
   <div class="header_title">
-    {{ title$ | async | titlecase }}
+    <div class="title">
+      {{ title$ | async | titlecase }}
+    </div>
+    <div class="subtitle">
+      {{ subtitle$ | async }}
+    </div>
   </div>
 
   <div class="header_block">
@@ -42,9 +47,7 @@
     My Groups
   </div>
   <div (click)="goToBlockLibrary()">Block Library</div>
-  <!--  <div>-->
-  <!--    Settings-->
-  <!--  </div>-->
+  <div>Help</div>
   <div (click)="logout()">Log Out</div>
 </div>
 
@@ -54,13 +57,19 @@
     [(visible)]="confirmationModalOpen"
     [style]="{ width: '424px' }"
   >
-    <div class="confirmation-modal" >
+    <div class="confirmation-modal">
       <div class="confirmation-text">
-        Are you sure you want to leave this workspace? Your progress will be
-        lost!
+        Are you sure you want to leave this workspace?
+        {{
+          (user$ | async)?.username == GUEST_USER
+            ? 'All molecules made as "guest" will be lost!'
+            : "Any molecules not saved in your cart will be lost!"
+        }}
       </div>
       <button class="confirm-button" (click)="proceed()">Yes, Continue</button>
-      <button class="cancel-button" (click)="cancel()">Return to workspace</button>
+      <button class="cancel-button" (click)="cancel()">
+        Return to workspace
+      </button>
     </div>
   </p-dialog>
 </div>

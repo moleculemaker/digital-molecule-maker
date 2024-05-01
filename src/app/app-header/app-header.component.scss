@@ -8,8 +8,9 @@
 
 .header {
   display: flex;
+  height: 80px;
   justify-content: flex-start;
-  align-items: stretch;
+  align-items: center;
 
   border: {
     bottom: 1px solid color_variable("header_border");
@@ -21,12 +22,11 @@
   }
 
   > div {
-    display: flex;
-    align-items: center; //flex-end;
-
     padding: $padding * 0.5;
 
     &:first-child {
+      display: flex;
+      align-items: center; //flex-end;
       margin: {
         left: $padding * 0.5;
       }
@@ -40,14 +40,26 @@
   }
 
   .header_title {
+    white-space: pre;
     flex-grow: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    font-family: "Montserrat", sans-serif;
-    font-style: normal;
-    font-weight: 900;
-    font-size: 32px;
+    padding: 8px;
+    gap: 8px;
+
+    .title {
+      font-family: "Montserrat", sans-serif;
+      font-style: normal;
+      font-weight: 900;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+    }
   }
 }
 
@@ -208,9 +220,11 @@ $menu-background: #31509e;
   width: 344px;
   height: 36px;
   background: #dc2525;
+
   &:hover {
     background: darken(#dc2525, 5%);
   }
+
   border-radius: 8px;
   font-family: "Inter", sans-serif;
   font-weight: 700;
@@ -225,9 +239,11 @@ $menu-background: #31509e;
   width: 344px;
   height: 36px;
   background: #ffffff;
+
   &:hover {
     background: darken(#ffffff, 5%);
   }
+
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: 14px;
