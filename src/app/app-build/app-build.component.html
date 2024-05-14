@@ -3,7 +3,7 @@
 <dmm-scatterplot
   *ngIf="blockSet"
   [blockSet]="blockSet"
-  [blockList]="moleculeList[0]?.blockList ?? []"
+  [blockList]="moleculeInWorkspace?.blockList ?? []"
 ></dmm-scatterplot>
 
 <div class="canvas_container" dfDropZone (drop)="dropped($event)">
@@ -85,19 +85,19 @@
       [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'"
     >
       <g
-        (pointerenter)="onPointerEnter(moleculeId)"
+        *ngIf="moleculeInWorkspace"
+        (pointerenter)="onPointerEnter()"
         (pointerleave)="onPointerLeave()"
-        *ngFor="let molecule of moleculeList; let moleculeId = index"
         [attr.transform]="
-          'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'
+          'translate(' + moleculeInWorkspace.position.x + ', ' + moleculeInWorkspace.position.y + ')'
         "
       >
         <g
           dmm-molecule-svg
           [blockSet]="blockSet"
-          [molecule]="molecule"
-          (deleteBlock)="onRemoveBlock(moleculeId, $event)"
-          (deleteMolecule)="onRemoveMolecule(moleculeId)"
+          [molecule]="moleculeInWorkspace"
+          (deleteBlock)="onRemoveBlock($event)"
+          (deleteMolecule)="onRemoveMolecule()"
           [closeOverlayObservable]="closeOverlay.asObservable()"
         ></g>
       </g>

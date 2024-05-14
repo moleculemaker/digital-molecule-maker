@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import {
@@ -42,9 +41,8 @@ export class AppBuildComponent implements OnInit {
 
   zoomAndPanMatrix = [1, 0, 0, 1, 0, 0];
 
-  moleculeList: Molecule[] = [];
-
-  hoveredMolecule?: number = undefined;
+  moleculeInWorkspace: Molecule | null = null;
+  hovered = false;
 
   panning = false;
   private _initialPosition!: { x: number; y: number };
@@ -58,22 +56,7 @@ export class AppBuildComponent implements OnInit {
     private userService: UserService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
-  ) {
-    this.route.paramMap.subscribe((paramMap) => {
-      const groupId = Number(paramMap.get('groupId'));
-      const blockSetId = paramMap.get('blockSetId') as BlockSetId;
-      this.workspaceService.reset(groupId, blockSetId);
-      this.workspaceService.updateMoleculeList([]);
-    });
-    this.workspaceService.blockSet$.subscribe((blockSet) => {
-      if (blockSet) {
-        this.svgScale = getBlockSetScale(blockSet, 70);
-      }
-    });
-    this.workspaceService.functionMode$.subscribe((enabled) => {
-      this.functionModeEnabled = enabled;
-    });
-  }
+  ) {}
 
   get blockSet() {
     return this.workspaceService.blockSet$.value;
@@ -85,14 +68,24 @@ export class AppBuildComponent implements OnInit {
 
   //********************************************
   ngOnInit(): void {
-    this.workspaceService
-      .getMoleculeList()
-      .pipe(
-        untilDestroyed(this),
-        filter((moleculeList) => !!moleculeList),
-      )
-      .subscribe((moleculeList) => {
-        this.moleculeList = moleculeList;
+    this.route.paramMap.subscribe((paramMap) => {
+      const groupId = Number(paramMap.get('groupId'));
+      const blockSetId = paramMap.get('blockSetId') as BlockSetId;
+      this.workspaceService.reset(groupId, blockSetId);
+      this.workspaceService.clear();
+    });
+    this.workspaceService.blockSet$.subscribe((blockSet) => {
+      if (blockSet) {
+        this.svgScale = getBlockSetScale(blockSet, 70);
+      }
+    });
+    this.workspaceService.functionMode$.subscribe((enabled) => {
+      this.functionModeEnabled = enabled;
+    });
+    this.workspaceService.molecule$
+      .pipe(untilDestroyed(this))
+      .subscribe((molecule) => {
+        this.moleculeInWorkspace = molecule;
         this.changeDetector.detectChanges();
       });
   }
@@ -187,33 +180,32 @@ export class AppBuildComponent implements OnInit {
   }
 
   dropped(event: DroppableEvent): void {
-    if (this.hoveredMolecule != undefined) {
-      this.moleculeList[this.hoveredMolecule]!.blockList = this.moleculeList[
-        this.hoveredMolecule
-      ]!.blockList.filter((block) => block.index != event.data.index);
-      this.moleculeList[this.hoveredMolecule]!.blockList.push(event.data);
-    } else if (this.moleculeList.length === 0) {
-      // disable multi-molecule for now
+    if (this.hovered) {
+      this.moleculeInWorkspace!.blockList =
+        this.moleculeInWorkspace!.blockList.filter(
+          (block) => block.index != event.data.index,
+        );
+      this.moleculeInWorkspace!.blockList.push(event.data);
+      this.workspaceService.updateMolecule(this.moleculeInWorkspace);
+    } else if (!this.moleculeInWorkspace) {
       const newBlockList: Block[] = [event.data];
       const pos = this.getPointerPosition(event.nativeEvent);
       const { x, y } = this.invertTransforms(pos.x, pos.y);
       const positionCoordinates = new Coordinates(x, y);
-      const newMolecule = new Molecule(positionCoordinates, newBlockList);
-      this.moleculeList.push(newMolecule);
+      this.workspaceService.updateMolecule(
+        new Molecule(positionCoordinates, newBlockList),
+      );
     }
-    // todo: clean up state management a bit; currently modifying the object in place, passing the
-    // object to the service, and then subscribing to the service for updates
-    this.workspaceService.updateMoleculeList(this.moleculeList);
     this.changeDetector.detectChanges();
     this.closeOverlay.next();
   }
 
-  onPointerEnter(moleculeId: number) {
-    this.hoveredMolecule = moleculeId;
+  onPointerEnter() {
+    this.hovered = true;
   }
 
   onPointerLeave() {
-    this.hoveredMolecule = undefined;
+    this.hovered = false;
   }
 
   shiftKeyDown = false;
@@ -317,14 +309,14 @@ export class AppBuildComponent implements OnInit {
     this.panning = false;
   }
 
-  onRemoveMolecule(moleculeId: number) {
-    this.hoveredMolecule = undefined;
-    this.workspaceService.removeMolecule(moleculeId);
+  onRemoveMolecule() {
+    this.hovered = false;
+    this.workspaceService.clear();
   }
 
-  onRemoveBlock(moleculeId: number, blockIndex: number) {
-    this.hoveredMolecule = undefined;
-    this.workspaceService.removeBlock(moleculeId, blockIndex);
+  onRemoveBlock(blockIndex: number) {
+    this.hovered = false;
+    this.workspaceService.removeBlock(blockIndex);
   }
 
   getPointerPosition(event: PointerEvent) {
@@ -336,7 +328,7 @@ export class AppBuildComponent implements OnInit {
   }
 
   sendBackToWorkspace(molecule: Molecule) {
-    this.workspaceService.updateMoleculeList([...this.moleculeList, molecule]);
+    this.workspaceService.updateMolecule(molecule);
     this.workspaceService.removeFromPersonalCart(molecule);
   }
 

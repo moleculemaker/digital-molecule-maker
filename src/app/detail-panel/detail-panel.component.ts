@@ -1,4 +1,9 @@
-import {AfterViewChecked, Component, ElementRef, TrackByFunction} from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  TrackByFunction,
+} from '@angular/core';
 import { WorkspaceService } from '../services/workspace.service';
 import { lookupProperty } from '../lookup';
 import { Block, Coordinates, Molecule } from '../models';
@@ -33,8 +38,8 @@ export class DetailPanelComponent implements AfterViewChecked {
 
   trackByBlockIndexId: TrackByFunction<Molecule> = (index, molecule) => {
     const block = molecule.blockList[0];
-    return `${block?.index}:${block?.id}`
-  }
+    return `${block?.index}:${block?.id}`;
+  };
 
   get moleculesWithSingleBlocks(): Molecule[] {
     if (!this.molecule) return [];
@@ -78,13 +83,12 @@ export class DetailPanelComponent implements AfterViewChecked {
   }
 
   addMoleculeToMyCart() {
-    this.workspaceService.updateMoleculeList(
-      this.workspaceService.moleculeList$.value.filter(
-        (m) => m !== this.molecule,
-      ),
-    );
+    this.workspaceService.clear();
     if (this.enableAddToCart) {
-      this.workspaceService.addToPersonalCart(this.blockSet$.value!, this.molecule!);
+      this.workspaceService.addToPersonalCart(
+        this.blockSet$.value!,
+        this.molecule!,
+      );
       this.workspaceService.selectedMolecule$.next(null);
       this.workspaceService.selectedBlock$.next(null);
     }

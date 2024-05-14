@@ -1,5 +1,4 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { BlockSize } from '../block/block.component';
 import {
   Block,
   BlockSet,
@@ -71,7 +70,6 @@ export class AppSidebarComponent implements OnInit {
   }
 
   currentToggle = 'build';
-  BlockSize = BlockSize; // for use in template
   blockLevelScale = 1;
 
   filteredBlocks: string[] = [];
@@ -141,7 +139,7 @@ export class AppSidebarComponent implements OnInit {
   isSidebarExpanded = true;
   isShowingFilters = false;
 
-  moleculeList: Molecule[] = [];
+  molecule: Molecule | null = null;
   functionModeEnabled = true;
 
   currentTab: 'blocks' | 'details' = 'blocks';
@@ -161,8 +159,8 @@ export class AppSidebarComponent implements OnInit {
       this.functionModeEnabled = enabled;
       this.applyFilters();
     });
-    this.workspaceService.moleculeList$.subscribe((moleculeList) => {
-      this.moleculeList = moleculeList;
+    this.workspaceService.molecule$.subscribe((molecule) => {
+      this.molecule = molecule;
       this.applyFilters();
     });
 
@@ -287,7 +285,7 @@ export class AppSidebarComponent implements OnInit {
           );
         },
       },
-      this.moleculeList[0]?.blockList ?? [],
+      this.molecule?.blockList ?? [],
       this.blockSet,
     );
   }
@@ -308,7 +306,7 @@ export class AppSidebarComponent implements OnInit {
           );
         },
       },
-      this.moleculeList[0]?.blockList ?? [],
+      this.molecule?.blockList ?? [],
       this.blockSet,
     );
   }
@@ -341,10 +339,10 @@ export class AppSidebarComponent implements OnInit {
     }
   }
 
-  selectFirstMolecule() {
-    const molecules = this.workspaceService.moleculeList$.value;
-    if (molecules[0]) {
-      this.workspaceService.selectedMolecule$.next(molecules[0]);
+  selectMolecule() {
+    const molecule = this.workspaceService.molecule$.value;
+    if (molecule) {
+      this.workspaceService.selectedMolecule$.next(molecule);
       this.workspaceService.selectedBlock$.next(null);
     }
   }
