@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'tutorial',
@@ -10,29 +9,35 @@ export class TutorialComponent implements OnInit {
   currentStep: any | null = null; //if null, the tutorial will not show
   steps: any[] = [];
 
-  //********************************************
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
+  videos = [
+    { title: 'Workspace', id: '1_8elni4dv' },
+    { title: 'Block Tray', id: '1_gchbjezj' },
+    { title: 'Structure-Function', id: '1_g2u2woll' },
+    { title: 'Zoom', id: '1_9qo362mt' },
+    { title: 'Filter', id: '1_z7evpegt' },
+    { title: 'Build and Properties', id: '1_qbzk4ge6' },
+    { title: 'Graph', id: '1_m6hmfn2h' },
+    { title: '2D 3D', id: '1_e5x2eqb2' },
+    { title: 'Add to Cart', id: '1_r966r46v' },
+    { title: 'Help', id: '1_iaztli3e' },
+  ];
 
-  disabled = false;
+  currentVideoIndex = 0;
+  readonly videoCount = 10;
 
   //********************************************
   ngOnInit(): void {
-    if (localStorage.getItem('tutorial_off')) {
-      this.disabled = true;
-    }
-
     this.steps = [
       { id: 'welcome', class: '' },
-      { id: 'workspace', class: '' },
-      { id: 'blocks', class: '' },
+      { id: 'videos', class: 'wide' },
 
-      { id: 'build', class: '' },
-      { id: 'build_002', class: 'wide' },
-      { id: 'build_003', class: 'wide' },
-      { id: 'build_004', class: 'wide' },
+      // { id: 'workspace', class: '' },
+      // { id: 'blocks', class: '' },
+
+      // { id: 'build', class: '' },
+      // { id: 'build_002', class: 'wide' },
+      // { id: 'build_003', class: 'wide' },
+      // { id: 'build_004', class: 'wide' },
 
       { id: 'finish', class: '' },
     ];
@@ -52,7 +57,6 @@ export class TutorialComponent implements OnInit {
   //********************************************
   close() {
     this.currentStep = null;
-    localStorage.setItem('tutorial_off', 'true')
   }
 
   //********************************************
@@ -75,5 +79,21 @@ export class TutorialComponent implements OnInit {
       index <= this.steps.length - 1
         ? this.steps[index + 1]
         : this.steps[this.steps.length - 1];
+  }
+
+  previousVideo() {
+    if (this.currentVideoIndex === 0) {
+      this.previousStep();
+    } else {
+      --this.currentVideoIndex;
+    }
+  }
+
+  nextVideo() {
+    if (this.currentVideoIndex === this.videoCount - 1) {
+      this.nextStep();
+    } else {
+      ++this.currentVideoIndex;
+    }
   }
 }
