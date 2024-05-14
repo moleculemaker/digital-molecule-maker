@@ -28,7 +28,7 @@
 
   <div class="tabs">
     <div class="tab" [class.selected]="currentTab === 'blocks'" (click)="resetSelection()">Blocks</div>
-    <div class="tab" [class.selected]="currentTab === 'details'" (click)="selectFirstMolecule()">Details</div>
+    <div class="tab" [class.selected]="currentTab === 'details'" (click)="selectMolecule()">Details</div>
   </div>
 
   <ng-container *ngIf="currentTab === 'blocks'">

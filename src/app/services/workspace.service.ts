@@ -25,7 +25,7 @@ export class WorkspaceService {
   private _functionMode = false;
   functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
 
-  moleculeList$ = new BehaviorSubject<Molecule[]>([]);
+  molecule$ = new BehaviorSubject<Molecule|null>(null);
   selectedMolecule$ = new BehaviorSubject<Molecule | null>(null);
   selectedBlock$ = new BehaviorSubject<Block | null>(null);
 
@@ -62,7 +62,7 @@ export class WorkspaceService {
     }
 
     this.functionMode$.next(false);
-    this.moleculeList$.next([]);
+    this.molecule$.next(null);
     this.selectedBlock$.next(null);
     this.selectedMolecule$.next(null);
   }
@@ -71,10 +71,9 @@ export class WorkspaceService {
     this.functionMode$.next((this._functionMode = !this._functionMode));
   }
 
-  updateMoleculeList(list: Molecule[]): void {
-    this.moleculeList$.next(list);
+  updateMolecule(molecule: Molecule | null): void {
+    this.molecule$.next(molecule);
     const blockSet = this.blockSet$.value;
-    const molecule = list[0];
     if (blockSet) {
       this.selectedMolecule$.next(
         molecule?.blockList.length === blockSet.moleculeSize ? molecule : null,
@@ -82,26 +81,20 @@ export class WorkspaceService {
     }
   }
 
-  getMoleculeList(): Observable<Molecule[]> {
-    return this.moleculeList$.asObservable();
+  clear() {
+    this.updateMolecule(null);
   }
 
-  removeMolecule(moleculeId: number) {
-    const moleculesList = this.moleculeList$.value;
-    moleculesList.splice(moleculeId, 1);
-    this.updateMoleculeList(moleculesList);
-  }
-
-  removeBlock(moleculeId: number, blockIndex: number) {
-    const moleculesList = this.moleculeList$.value;
-    const molecule = moleculesList[moleculeId]!;
+  removeBlock(blockIndex: number) {
+    const molecule = this.molecule$.value!;
     molecule.blockList = molecule.blockList.filter(
       (block) => block.index !== blockIndex,
     );
     if (!molecule.blockList.length) {
-      moleculesList.splice(moleculeId, 1);
+      this.updateMolecule(null);
+    } else {
+      this.updateMolecule(molecule);
     }
-    this.updateMoleculeList(moleculesList);
   }
 
   fetchPersonalCart() {
