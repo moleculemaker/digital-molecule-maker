@@ -25,6 +25,9 @@
           <div [style.font-weight]="'bold'">
             {{ videos[currentVideoIndex]!.title }}
           </div>
+          <div [style.text-align]="'justify'">
+            {{ videos[currentVideoIndex]!.description }}
+          </div>
         </div>
         <iframe
           style="width: 100%; height: 400px; margin: 10px 0; border: none"
