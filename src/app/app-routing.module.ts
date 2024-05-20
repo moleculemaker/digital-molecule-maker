@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupCartComponent } from './group-cart/group-cart.component';
 import { BlockLibraryComponent } from './block-library/block-library.component';
+import {AdminComponent} from "./admin/admin.component";
 
 const routes: Routes = [
   {
@@ -18,6 +19,15 @@ const routes: Routes = [
     data: {
       promptType: PromptType.None,
     },
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [
+      () => {
+        return inject(UserService).isAdmin();
+      },
+    ],
   },
   {
     path: 'login',

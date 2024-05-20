@@ -38,6 +38,10 @@ export class UserService {
     return this.user$.value?.username === GUEST_USER;
   }
 
+  isAdmin() {
+    return this.user$.value?.id === 0;
+  }
+
   loginAsGuest() {
     this.setUser({
       id: -1,
