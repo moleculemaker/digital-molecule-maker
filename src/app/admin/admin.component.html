@@ -2,11 +2,12 @@
   <p-table [value]="molecules">
     <ng-template pTemplate="header">
       <tr>
-        <th>ID</th>
+        <th>Molecule ID</th>
         <th>Name</th>
+        <th>User ID</th>
+        <th>Group ID</th>
         <th>Block Set ID</th>
         <th>Block IDs</th>
-        <th>User ID</th>
         <th>Actions</th>
       </tr>
     </ng-template>
@@ -14,9 +15,10 @@
       <tr>
         <td>{{ molecule.id }}</td>
         <td>{{ molecule.name }}</td>
+        <td>{{ molecule.user_id }}</td>
+        <td>{{ molecule.group_id }}</td>
         <td>{{ molecule.block_set_id }}</td>
         <td>{{ molecule.block_ids.join("-") }}</td>
-        <td>{{ molecule.user_id }}</td>
         <td>
           <p-button label="Synthesize" (onClick)="synthesize(molecule.id)" />
         </td>
