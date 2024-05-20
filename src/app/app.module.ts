@@ -53,6 +53,7 @@ import { DetailPanelComponent } from './detail-panel/detail-panel.component';
 import { MoleculeDetailComponent } from './molecule-detail/molecule-detail.component';
 import { NgOptimizedImage } from '@angular/common';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { AdminComponent } from './admin/admin.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -94,6 +95,7 @@ function initializeAppFactory(
     DetailPanelComponent,
     MoleculeDetailComponent,
     SafeUrlPipe,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
