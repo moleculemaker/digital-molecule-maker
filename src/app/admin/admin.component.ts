@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     const { hostname } = this.envService.getEnvConfig();
     this.http
-      .get<MoleculeDTO[]>(`${hostname}/synthesize/`, {
+      .get<MoleculeDTO[]>(`${hostname}/synthesis/`, {
         headers: {
           authorization: `Bearer ${this.userService.user$.value?.access_token}`,
         },
@@ -39,7 +39,7 @@ export class AdminComponent implements OnInit {
       { severity: 'info', detail: 'Sending synthesis request...' },
     ];
     this.http
-      .post(`${hostname}/synthesize/${moleculeId}`, null, {
+      .post(`${hostname}/synthesis/${moleculeId}`, null, {
         headers: {
           authorization: `Bearer ${this.userService.user$.value?.access_token}`,
         },
