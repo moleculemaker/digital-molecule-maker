@@ -1,6 +1,6 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -54,6 +54,7 @@ import { MoleculeDetailComponent } from './molecule-detail/molecule-detail.compo
 import { NgOptimizedImage } from '@angular/common';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { AdminComponent } from './admin/admin.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -127,6 +128,11 @@ function initializeAppFactory(
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,
       deps: [TrackingService, EnvironmentService],
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true,
     },
   ],

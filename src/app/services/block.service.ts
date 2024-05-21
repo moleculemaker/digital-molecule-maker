@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { BlockSet } from '../models';
@@ -27,15 +27,8 @@ export class BlockService {
       return of(this.cache.get(blockSetId)!);
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'my-auth-token',
-      }),
-    };
-
     return this.http
-      .get<BlockSet>(this.urls.get(blockSetId)!, httpOptions)
+      .get<BlockSet>(this.urls.get(blockSetId)!)
       .pipe(tap((blocksSet) => this.cache.set(blockSetId, blocksSet)));
   }
 }
