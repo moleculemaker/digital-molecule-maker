@@ -15,12 +15,10 @@ import {
   Coordinates,
   getBlockSetScale,
   Molecule,
-  RigJob,
 } from '../models';
 
 import { BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
-import { RigService } from '../services/rig.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { UserService } from '../services/user.service';
 
@@ -51,7 +49,6 @@ export class AppBuildComponent implements OnInit {
   functionModeEnabled = true;
 
   constructor(
-    private rigService: RigService,
     private workspaceService: WorkspaceService,
     private userService: UserService,
     private changeDetector: ChangeDetectorRef,
@@ -111,29 +108,6 @@ export class AppBuildComponent implements OnInit {
   //********************************************
   toggleSendToLabModal(): void {
     this.isShowingSendToLab = !this.isShowingSendToLab;
-  }
-
-  //********************************************
-  sendToLab(moleculeList: Molecule[]): void {
-    const rigJobs: RigJob[] = [];
-
-    moleculeList.forEach((molecule) => {
-      const rigJob: RigJob = {
-        block_set_id: this.blockSet!.id,
-        block_ids: [
-          molecule.blockList[0]!.id,
-          molecule.blockList[1]!.id,
-          molecule.blockList[2]!.id,
-        ],
-        molecule_name: molecule.label,
-      };
-
-      rigJobs.push(rigJob);
-    });
-
-    this.rigService.submitReactions(rigJobs).subscribe((resp) => {
-      console.log('Submitted molecules in Cart', resp);
-    });
   }
 
   scaleBy(factor: number) {

@@ -46,7 +46,7 @@ export const toMoleculeDTO =
       block_ids: molecule.blockList
         .sort((a, b) => a.index - b.index)
         .map((mol) => mol.id),
-      user_id: molecule.userId
+      user_id: molecule.userId,
     };
   };
 
@@ -60,17 +60,9 @@ export const fromMoleculeDTO =
       ),
       moleculeDTO.name,
       moleculeDTO.id,
-      moleculeDTO.user_id
+      moleculeDTO.user_id,
     );
   };
-
-export interface RigJob {
-  block_set_id: string;
-  block_ids: number[];
-  molecule_name: string;
-  status?: string;
-  user_or_group?: number;
-}
 
 export interface ChemicalPropertyDefinition {
   key: string;
@@ -96,7 +88,7 @@ export class Molecule {
     public blockList: Block[],
     public label = 'NewMolecule',
     public id = -1,
-    public userId = -1
+    public userId = -1,
   ) {}
 }
 
