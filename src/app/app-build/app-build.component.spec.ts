@@ -6,6 +6,7 @@ import { AppBuildComponent } from './app-build.component';
 import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
 import { BlockComponent } from '../block/block.component';
 import { DroppableDirective } from '../drag-drop-utilities/droppable/droppable.directive';
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('AppBuildComponent', () => {
   let component: AppBuildComponent;
@@ -13,7 +14,7 @@ describe('AppBuildComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, HttpClientTestingModule],
+      imports: [BrowserAnimationsModule, HttpClientTestingModule, RouterTestingModule],
       declarations: [
         AppBuildComponent,
         AppSidebarComponent,

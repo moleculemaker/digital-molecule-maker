@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DetailPanelComponent } from './detail-panel.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DetailPanelComponent', () => {
   let component: DetailPanelComponent;
@@ -8,7 +9,8 @@ describe('DetailPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DetailPanelComponent]
+      imports: [HttpClientTestingModule],
+      declarations: [DetailPanelComponent],
     });
     fixture = TestBed.createComponent(DetailPanelComponent);
     component = fixture.componentInstance;

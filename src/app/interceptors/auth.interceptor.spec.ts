@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AuthInterceptor } from './auth.interceptor';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('AuthInterceptorInterceptor', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [
-      AuthInterceptor
-      ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [AuthInterceptor],
+    }),
+  );
 
   it('should be created', () => {
     const interceptor: AuthInterceptor = TestBed.inject(AuthInterceptor);
