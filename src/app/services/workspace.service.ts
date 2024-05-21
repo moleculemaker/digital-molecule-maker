@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import {
   Block,
   BlockSet,
@@ -25,7 +25,7 @@ export class WorkspaceService {
   private _functionMode = false;
   functionMode$ = new BehaviorSubject<boolean>(this._functionMode);
 
-  molecule$ = new BehaviorSubject<Molecule|null>(null);
+  molecule$ = new BehaviorSubject<Molecule | null>(null);
   selectedMolecule$ = new BehaviorSubject<Molecule | null>(null);
   selectedBlock$ = new BehaviorSubject<Block | null>(null);
 
@@ -107,11 +107,6 @@ export class WorkspaceService {
     return this.http
       .get<MoleculeDTO[]>(
         `${hostname}/me/molecules?block_set_id=${blockSet.id}`,
-        {
-          headers: {
-            authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-          },
-        },
       )
       .pipe(map((molecules) => molecules.map(fromMoleculeDTO(blockSet))))
       .subscribe((molecules) => {
@@ -124,11 +119,7 @@ export class WorkspaceService {
 
     const { hostname } = this.envService.getEnvConfig();
     return this.http
-      .post(`${hostname}/me/molecules`, toMoleculeDTO(blockSet)(molecule), {
-        headers: {
-          authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-        },
-      })
+      .post(`${hostname}/me/molecules`, toMoleculeDTO(blockSet)(molecule))
       .subscribe(() => {
         this.fetchPersonalCart();
       });
@@ -142,11 +133,7 @@ export class WorkspaceService {
 
     const { hostname } = this.envService.getEnvConfig();
     return this.http
-      .get<MoleculeDTO[]>(`${hostname}/groups/${group.id}/molecules`, {
-        headers: {
-          authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-        },
-      })
+      .get<MoleculeDTO[]>(`${hostname}/groups/${group.id}/molecules`)
       .pipe(map((molecules) => molecules.map(fromMoleculeDTO(blockSet))))
       .subscribe((molecules) => {
         this.groupCart$.next(molecules);
@@ -161,11 +148,7 @@ export class WorkspaceService {
 
     const { hostname } = this.envService.getEnvConfig();
     this.http
-      .delete(`${hostname}/me/molecules/${molecule.id}`, {
-        headers: {
-          authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-        },
-      })
+      .delete(`${hostname}/me/molecules/${molecule.id}`)
       .subscribe(() => {
         this.fetchPersonalCart();
       });
@@ -183,11 +166,6 @@ export class WorkspaceService {
       .post(
         `${hostname}/groups/${group.id}/molecules/submit`,
         molecules.map((molecule) => molecule.id),
-        {
-          headers: {
-            authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-          },
-        },
       )
       .subscribe(() => {
         this.fetchPersonalCart();
@@ -207,11 +185,6 @@ export class WorkspaceService {
       .post(
         `${hostname}/groups/${group.id}/molecules/retract`,
         molecules.map((molecule) => molecule.id),
-        {
-          headers: {
-            authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-          },
-        },
       )
       .subscribe(() => {
         this.fetchPersonalCart();
