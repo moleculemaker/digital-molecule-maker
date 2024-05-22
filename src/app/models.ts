@@ -36,20 +36,6 @@ export interface BlockSet {
   table: Record<string, LookupTableEntry>;
 }
 
-export const toMoleculeDTO =
-  (blockSet: BlockSet) =>
-  (molecule: Molecule): MoleculeDTO => {
-    return {
-      id: molecule.id,
-      name: molecule.label,
-      block_set_id: blockSet.id,
-      block_ids: molecule.blockList
-        .sort((a, b) => a.index - b.index)
-        .map((mol) => mol.id),
-      user_id: molecule.userId,
-    };
-  };
-
 export const fromMoleculeDTO =
   (blockSet: BlockSet) =>
   (moleculeDTO: MoleculeDTO): Molecule => {
@@ -60,7 +46,7 @@ export const fromMoleculeDTO =
       ),
       moleculeDTO.name,
       moleculeDTO.id,
-      moleculeDTO.user_id,
+      moleculeDTO.created_by.id,
     );
   };
 
@@ -97,7 +83,14 @@ export interface MoleculeDTO {
   name: string;
   block_set_id: string;
   block_ids: number[];
-  user_id: number;
+  created_by: {
+    id: number;
+    name: string;
+    username: string;
+  };
+  submitted_to: {
+    name: string;
+  };
 }
 
 export interface User {

@@ -6,7 +6,6 @@ import {
   fromMoleculeDTO,
   Molecule,
   MoleculeDTO,
-  toMoleculeDTO,
   UserGroup,
 } from '../models';
 import { UserService } from './user.service';
@@ -118,11 +117,16 @@ export class WorkspaceService {
     if (this.userService.isGuest()) return;
 
     const { hostname } = this.envService.getEnvConfig();
-    return this.http
-      .post(`${hostname}/me/molecules`, toMoleculeDTO(blockSet)(molecule))
-      .subscribe(() => {
-        this.fetchPersonalCart();
-      });
+    const update = {
+      name: molecule.label,
+      block_set_id: blockSet.id,
+      block_ids: molecule.blockList
+        .sort((a, b) => a.index - b.index)
+        .map((mol) => mol.id),
+    };
+    return this.http.post(`${hostname}/me/molecules`, update).subscribe(() => {
+      this.fetchPersonalCart();
+    });
   }
 
   fetchGroupCart() {
