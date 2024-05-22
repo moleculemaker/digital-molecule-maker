@@ -4,8 +4,8 @@
       <tr>
         <th>Molecule ID</th>
         <th>Name</th>
-        <th>User ID</th>
-        <th>Group ID</th>
+        <th>User</th>
+        <th>Group</th>
         <th>Block Set ID</th>
         <th>Block IDs</th>
         <th>Actions</th>
@@ -15,8 +15,10 @@
       <tr>
         <td>{{ molecule.id }}</td>
         <td>{{ molecule.name }}</td>
-        <td>{{ molecule.user_id }}</td>
-        <td>{{ molecule.group_id }}</td>
+        <td>
+          {{ molecule.created_by.name }} ({{ molecule.created_by.username }})
+        </td>
+        <td>{{ molecule.submitted_to?.name }}</td>
         <td>{{ molecule.block_set_id }}</td>
         <td>{{ molecule.block_ids.join("-") }}</td>
         <td>
