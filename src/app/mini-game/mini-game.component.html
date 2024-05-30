@@ -15,9 +15,9 @@
         <path [attr.d]="SPath" stroke="#8888ff" stroke-width="4" fill="none" />
         <path
           [attr.d]="absorptionSpectrumPath"
-          stroke="black"
+          stroke="white"
           fill="#000000cc"
-          stroke-width="4"
+          stroke-width="1"
         />
       </svg>
       <p-slider
@@ -37,7 +37,7 @@
     </div>
     <div class="slider">
       <h5>Standard Deviation</h5>
-      <p-slider [(ngModel)]="standardDeviation" [min]="0" [max]="100"></p-slider>
+      <p-slider [(ngModel)]="standardDeviation" [min]="1" [max]="100"></p-slider>
     </div>
   </div>
   <div>
