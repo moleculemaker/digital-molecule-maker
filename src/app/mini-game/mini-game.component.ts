@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { toRGB, X, Y, Z } from './color';
+import { L, M, S, toRGB } from './color';
 
 @Component({
   selector: 'dmm-mini-game',
@@ -15,9 +15,9 @@ export class MiniGameComponent {
   standardDeviation = 20;
 
   rainbow: string[] = [];
-  xPath: string;
-  yPath: string;
-  zPath: string;
+  LPath: string;
+  MPath: string;
+  SPath: string;
 
   constructor() {
     const sigma = 60;
@@ -39,9 +39,9 @@ export class MiniGameComponent {
         )
       );
     };
-    this.xPath = toPath(X);
-    this.yPath = toPath(Y);
-    this.zPath = toPath(Z);
+    this.LPath = toPath(L);
+    this.MPath = toPath(M);
+    this.SPath = toPath(S);
   }
 
   private _dirty = true;
@@ -70,7 +70,9 @@ export class MiniGameComponent {
   private getAbsorptionAt(lambda: number): number {
     return (
       this.maxAbsorption *
-      Math.exp((-0.5 * (lambda - this.lambda) ** 2) / this.standardDeviation ** 2)
+      Math.exp(
+        (-0.5 * (lambda - this.lambda) ** 2) / this.standardDeviation ** 2,
+      )
     );
   }
 

@@ -48,3 +48,15 @@ export function Z(lambda: number): number {
   const t2 = (lambda - 459.0) * (lambda < 459.0 ? 0.0385 : 0.0725);
   return 1.217 * Math.exp(-0.5 * t1 * t1) + 0.681 * Math.exp(-0.5 * t2 * t2);
 }
+
+export function L(lambda: number): number {
+  return 0.389709 * X(lambda) + 0.688981 * Y(lambda) + -0.0786862 * Z(lambda);
+}
+
+export function M(lambda: number): number {
+  return -0.229811 * X(lambda) + 1.18341 * Y(lambda) + 0.0464011 * Z(lambda);
+}
+
+export function S(lambda: number): number {
+  return Z(lambda);
+}
