@@ -20,7 +20,7 @@ export class MiniGameComponent {
   SPath: string;
 
   constructor() {
-    const sigma = 60;
+    const sigma = 50;
     for (let l = this.minWavelength; l <= this.maxWavelength; ++l) {
       const [r, g, b] = toRGB((lambda) =>
         Math.exp((-0.5 * (lambda - l) ** 2) / sigma ** 2),
