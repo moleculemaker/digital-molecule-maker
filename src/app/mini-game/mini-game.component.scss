@@ -1,0 +1,37 @@
+.color-playground {
+  margin: 100px;
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+}
+
+.rainbow {
+  flex: none;
+  width: 500px;
+  $height: 200px;
+  position: relative;
+
+  .layer {
+    display: flex;
+    height: $height;
+
+    .step {
+      width: 1px;
+    }
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.slider {
+  margin: 20px 0;
+}
+
+.result {
+  width: 200px;
+  height: 200px;
+}

@@ -55,6 +55,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { AdminComponent } from './admin/admin.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { MiniGameComponent } from './mini-game/mini-game.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -97,6 +98,7 @@ function initializeAppFactory(
     MoleculeDetailComponent,
     SafeUrlPipe,
     AdminComponent,
+    MiniGameComponent,
   ],
   imports: [
     BrowserModule,
