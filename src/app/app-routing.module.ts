@@ -11,6 +11,7 @@ import { GroupsComponent } from './groups/groups.component';
 import { GroupCartComponent } from './group-cart/group-cart.component';
 import { BlockLibraryComponent } from './block-library/block-library.component';
 import {AdminComponent} from "./admin/admin.component";
+import {MiniGameComponent} from "./mini-game/mini-game.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'signup',
     component: LoginComponent,
+  },
+  {
+    path: 'mini-game',
+    component: MiniGameComponent,
   },
   {
     path: 'library',
