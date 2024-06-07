@@ -51,70 +51,70 @@
       {
         "index": 0,
         "id": 1,
-        "svgUrl": "assets/blocks/10x10x10palette/S1.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S1.svg",
         "width": 124,
         "height": 159
       },
       {
         "index": 0,
         "id": 2,
-        "svgUrl": "assets/blocks/10x10x10palette/S2.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S2.svg",
         "width": 162,
         "height": 225
       },
       {
         "index": 0,
         "id": 3,
-        "svgUrl": "assets/blocks/10x10x10palette/S3.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S3.svg",
         "width": 148,
         "height": 225
       },
       {
         "index": 0,
         "id": 4,
-        "svgUrl": "assets/blocks/10x10x10palette/S4.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S4.svg",
         "width": 184,
         "height": 172
       },
       {
         "index": 0,
         "id": 5,
-        "svgUrl": "assets/blocks/10x10x10palette/S5.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S5.svg",
         "width": 159,
         "height": 193
       },
       {
         "index": 0,
         "id": 6,
-        "svgUrl": "assets/blocks/10x10x10palette/S6.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S6.svg",
         "width": 170,
         "height": 185
       },
       {
         "index": 0,
         "id": 7,
-        "svgUrl": "assets/blocks/10x10x10palette/S7.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S7.svg",
         "width": 135,
         "height": 151
       },
       {
         "index": 0,
         "id": 8,
-        "svgUrl": "assets/blocks/10x10x10palette/S8.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S8.svg",
         "width": 135,
         "height": 160
       },
       {
         "index": 0,
         "id": 9,
-        "svgUrl": "assets/blocks/10x10x10palette/S9.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S9.svg",
         "width": 133,
         "height": 160
       },
       {
         "index": 0,
         "id": 10,
-        "svgUrl": "assets/blocks/10x10x10palette/S10.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/S10.svg",
         "width": 153,
         "height": 197
       }
@@ -123,70 +123,70 @@
       {
         "index": 1,
         "id": 1,
-        "svgUrl": "assets/blocks/10x10x10palette/M1.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M1.svg",
         "width": 144,
         "height": 102
       },
       {
         "index": 1,
         "id": 2,
-        "svgUrl": "assets/blocks/10x10x10palette/M2.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M2.svg",
         "width": 102,
         "height": 114
       },
       {
         "index": 1,
         "id": 3,
-        "svgUrl": "assets/blocks/10x10x10palette/M3.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M3.svg",
         "width": 145,
         "height": 154
       },
       {
         "index": 1,
         "id": 4,
-        "svgUrl": "assets/blocks/10x10x10palette/M4.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M4.svg",
         "width": 145,
         "height": 121
       },
       {
         "index": 1,
         "id": 5,
-        "svgUrl": "assets/blocks/10x10x10palette/M5.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M5.svg",
         "width": 195,
         "height": 85
       },
       {
         "index": 1,
         "id": 6,
-        "svgUrl": "assets/blocks/10x10x10palette/M6.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M6.svg",
         "width": 151,
         "height": 130
       },
       {
         "index": 1,
         "id": 7,
-        "svgUrl": "assets/blocks/10x10x10palette/M7.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M7.svg",
         "width": 195,
         "height": 102
       },
       {
         "index": 1,
         "id": 8,
-        "svgUrl": "assets/blocks/10x10x10palette/M8.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M8.svg",
         "width": 145,
         "height": 125
       },
       {
         "index": 1,
         "id": 9,
-        "svgUrl": "assets/blocks/10x10x10palette/M9.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M9.svg",
         "width": 145,
         "height": 85
       },
       {
         "index": 1,
         "id": 10,
-        "svgUrl": "assets/blocks/10x10x10palette/M10.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/M10.svg",
         "width": 145,
         "height": 121
       }
@@ -195,70 +195,70 @@
       {
         "index": 2,
         "id": 1,
-        "svgUrl": "assets/blocks/10x10x10palette/E1.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E1.svg",
         "width": 163,
         "height": 100
       },
       {
         "index": 2,
         "id": 2,
-        "svgUrl": "assets/blocks/10x10x10palette/E2.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E2.svg",
         "width": 156,
         "height": 108
       },
       {
         "index": 2,
         "id": 3,
-        "svgUrl": "assets/blocks/10x10x10palette/E3.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E3.svg",
         "width": 154,
         "height": 97
       },
       {
         "index": 2,
         "id": 4,
-        "svgUrl": "assets/blocks/10x10x10palette/E4.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E4.svg",
         "width": 106,
         "height": 89
       },
       {
         "index": 2,
         "id": 5,
-        "svgUrl": "assets/blocks/10x10x10palette/E5.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E5.svg",
         "width": 107,
         "height": 89
       },
       {
         "index": 2,
         "id": 6,
-        "svgUrl": "assets/blocks/10x10x10palette/E6.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E6.svg",
         "width": 170,
         "height": 100
       },
       {
         "index": 2,
         "id": 7,
-        "svgUrl": "assets/blocks/10x10x10palette/E7.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E7.svg",
         "width": 117,
         "height": 92
       },
       {
         "index": 2,
         "id": 8,
-        "svgUrl": "assets/blocks/10x10x10palette/E8.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E8.svg",
         "width": 166,
         "height": 98
       },
       {
         "index": 2,
         "id": 9,
-        "svgUrl": "assets/blocks/10x10x10palette/E9.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E9.svg",
         "width": 180,
         "height": 124
       },
       {
         "index": 2,
         "id": 10,
-        "svgUrl": "assets/blocks/10x10x10palette/E10.svg",
+        "svgUrl": "assets/blocks/10x10x10palette/block_svg/E10.svg",
         "width": 152,
         "height": 97
       }

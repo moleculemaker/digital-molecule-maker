@@ -1,0 +1,55 @@
+{
+  "id": "OPV_20230504",
+  "moleculeSize": 3,
+  "labelProperty": {
+    "key": "chemicalFormula",
+    "label": "Chemical Formula",
+    "displayStrategy": "chemicalFormula"
+  },
+  "primaryProperty": {
+    "key": "SO_mean",
+    "label": "Mean Predicted SO",
+    "displayStrategy": "default"
+  },
+  "functionalProperties": [
+    {
+      "key": "SO_mean",
+      "label": "Mean Predicted SO",
+      "displayStrategy": "default"
+    },
+    {
+      "key": "T80_mean",
+      "label": "Mean Predicted T80",
+      "displayStrategy": "default"
+    }
+  ],
+  "firstTierProperties": [
+    {
+      "key": "chemicalFormula",
+      "label": "Chemical Formula",
+      "displayStrategy": "chemicalFormula"
+    },
+    {
+      "key": "SO_mean",
+      "label": "Mean Predicted SO",
+      "displayStrategy": "default"
+    },
+    {
+      "key": "T80_mean",
+      "label": "Mean Predicted T80",
+      "displayStrategy": "default"
+    }
+  ],
+  "secondTierProperties": [
+    {
+      "key": "smiles",
+      "label": "SMILES",
+      "displayStrategy": "default"
+    },
+    {
+      "key": "molecularWeight",
+      "label": "Molecular Weight",
+      "displayStrategy": "default"
+    }
+  ]
+}
