@@ -204,6 +204,10 @@ $sidebar_width: 500px;
         top: $padding * 0.5;
       }
 
+      padding: {
+        bottom: 10px;
+      }
+
       .type {
         cursor: pointer;
         position: relative;
@@ -260,6 +264,7 @@ $sidebar_width: 500px;
 
         &.color_type {
           flex: 1;
+
           .label {
             font-size: 0.6rem;
           }
@@ -282,96 +287,6 @@ $sidebar_width: 500px;
 
       .spacer {
         flex-grow: 1;
-      }
-    }
-
-    .toggle_filters_btn {
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      color: color_variable("interface_faded");
-
-      padding: {
-        top: $padding * 0.5;
-        bottom: $padding * 0.5;
-      }
-
-      &:hover {
-        color: color_variable("button_hover");
-      }
-
-      &.expanded {
-        svg {
-          @include rotate(-90deg);
-        }
-      }
-
-      svg {
-        @include rotate(90deg);
-      }
-    }
-
-    .extra_filters {
-      overflow: hidden;
-
-      .container {
-        padding: {
-          top: $padding;
-        }
-      }
-
-      .tags {
-        .tag {
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: $padding * 0.2;
-
-          background: none;
-          border: 1px solid color_variable("tag_background");
-
-          svg {
-            .star {
-              fill: color_variable("primary");
-              stroke-width: 0px;
-            }
-          }
-
-          &.selected {
-            color: color_variable("background");
-            background: {
-              color: color_variable("interface_selected");
-            }
-
-            border: {
-              color: color_variable("interface_selected");
-            }
-
-            svg {
-              .star {
-                fill: color_variable("background");
-              }
-            }
-
-            &:hover {
-              background: {
-                color: color_variable("button_hover");
-              }
-
-              border: {
-                color: color_variable("button_hover");
-              }
-            }
-          }
-
-          &:hover {
-            background: {
-              color: color_variable("interface_hover");
-            }
-          }
-        }
       }
     }
   }
@@ -571,6 +486,7 @@ $sidebar_width: 500px;
         &.dragging {
           cursor: grabbing;
         }
+
         /*
         &.dragging {
           ::ng-deep .block_container {
@@ -664,6 +580,7 @@ $sidebar_width: 500px;
         }
       }
     }
+
     /*
 
     .info {
@@ -854,6 +771,7 @@ $sidebar_width: 500px;
 .prototype-range-filter {
   width: 100%;
   padding: 0 16px;
+
   h5 {
     margin: 8px 0;
   }
