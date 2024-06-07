@@ -7,13 +7,6 @@ import {
   Molecule,
 } from '../models';
 import Fuse from 'fuse.js';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { WorkspaceService } from '../services/workspace.service';
 import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
 import { applyTargetFilter, lookupProperty } from '../lookup';
@@ -24,16 +17,6 @@ import { combineLatest } from 'rxjs';
   selector: 'app-sidebar',
   templateUrl: './app-sidebar.component.html',
   styleUrls: ['./app-sidebar.component.scss'],
-  animations: [
-    trigger('filtersExpand', [
-      state('collapsed', style({ height: '0px' })),
-      state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
-      ),
-    ]),
-  ],
 })
 export class AppSidebarComponent implements OnInit {
   labelList: string[] = [];
@@ -137,7 +120,6 @@ export class AppSidebarComponent implements OnInit {
   }
 
   isSidebarExpanded = true;
-  isShowingFilters = false;
 
   molecule: Molecule | null = null;
   functionModeEnabled = true;
@@ -172,11 +154,6 @@ export class AppSidebarComponent implements OnInit {
   }
 
   //********************************************
-  onChangeToggle(newToggle: string) {
-    this.currentToggle = newToggle;
-  }
-
-  //********************************************
   getSearchPlaceholder(): string {
     return this.moleculeSearch.length == 0 ? this.searchPlaceholder : '';
   }
@@ -186,12 +163,6 @@ export class AppSidebarComponent implements OnInit {
     this.isSidebarExpanded =
       typeof override != 'undefined' ? override : !this.isSidebarExpanded;
     this.sidebarClasses = this.isSidebarExpanded ? 'expanded' : 'collapsed';
-  }
-
-  //********************************************
-  toggleFilters(override?: boolean) {
-    this.isShowingFilters =
-      typeof override != 'undefined' ? override : !this.isShowingFilters;
   }
 
   //********************************************
