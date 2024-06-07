@@ -119,24 +119,32 @@
 
   <div class="properties">
     <div class="tag" *ngFor="let property of blockSet.firstTierProperties">
-      <div class="label" [innerHtml]="property.label"></div>
-      <div
-        class="value"
-        [innerHtml]="
-          lookupProperty(molecule.blockList, blockSet, property)
-            | chemicalProperty: property.displayStrategy
-        "
-      ></div>
+      <ng-container
+        *ngIf="lookupProperty(molecule.blockList, blockSet, property) !== ''"
+      >
+        <div class="label" [innerHtml]="property.label"></div>
+        <div
+          class="value"
+          [innerHtml]="
+            lookupProperty(molecule.blockList, blockSet, property)
+              | chemicalProperty: property.displayStrategy
+          "
+        ></div>
+      </ng-container>
     </div>
     <div class="tag" *ngFor="let property of blockSet.secondTierProperties">
-      <div class="label" [innerHtml]="property.label"></div>
-      <div
-        class="value"
-        [innerHtml]="
-          lookupProperty(molecule.blockList, blockSet, property)
-            | chemicalProperty: property.displayStrategy
-        "
-      ></div>
+      <ng-container
+        *ngIf="lookupProperty(molecule.blockList, blockSet, property) !== ''"
+      >
+        <div class="label" [innerHtml]="property.label"></div>
+        <div
+          class="value"
+          [innerHtml]="
+            lookupProperty(molecule.blockList, blockSet, property)
+              | chemicalProperty: property.displayStrategy
+          "
+        ></div>
+      </ng-container>
     </div>
   </div>
 </div>

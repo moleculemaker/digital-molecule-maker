@@ -37,6 +37,11 @@
   ],
   "secondTierProperties": [
     {
+      "key": "smiles",
+      "label": "SMILES",
+      "displayStrategy": "default"
+    },
+    {
       "key": "molecularWeight",
       "label": "Molecular Weight",
       "displayStrategy": "default"
