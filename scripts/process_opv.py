@@ -29,8 +29,6 @@ def get_properties(smi_filename):
         smiles = Chem.MolToSmiles(mol)
         molecular_weight = MolWt(mol)
 
-        print(chemical_formula, smiles, molecular_weight)
-
     return {
         'chemicalFormula': chemical_formula,
         'smiles': smiles,
@@ -47,7 +45,7 @@ def generate_blocks():
 
     for i in range(3):
         for j in range(block_count[i]):
-            smi_filename = workdir + f'/SMILES/{smi_prefix[i]}_{j + 1}.smi'
+            smi_filename = workdir + f'/smi/{smi_prefix[i]}_{j + 1}.smi'
             blocks_by_index[i].append({
                 'id': j + 1,
                 'properties': get_properties(smi_filename)
