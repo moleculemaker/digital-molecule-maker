@@ -3,38 +3,64 @@ import json
 import math
 import os
 import statistics
+from typing import List, Dict
 
 import pandas as pd
+from rdkit import Chem
+from rdkit.Chem.Descriptors import MolWt
+from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 
 from utils import get_svg_dimensions, combine_chemical_formulas, combine
 
 workdir = './src/assets/blocks/opv'
 
-with open(os.path.join(workdir, 'blocks.json')) as file:
+with open(os.path.join(workdir, 'block_set.json')) as file:
     block_set = json.load(file)
 
-blocks_by_index = [[None], [None], [None]]
+blocks_by_index: List[List[Dict | None]] = [[None], [None], [None]]
 donor_bridge_id = {}
 dft_predictions = {}
 
 
-def process_blocks():
-    processed_blocks = [[], [], []]
-    for block in block_set['blocks']:
-        blocks_by_index[block['index']].append(block)
+def get_properties(smi_filename):
+    with open(smi_filename) as f:
+        mol = Chem.MolFromSmiles(f.read())
+        chemical_formula = CalcMolFormula(mol)
+        smiles = Chem.MolToSmiles(mol)
+        molecular_weight = MolWt(mol)
 
-        _, _, width, height = get_svg_dimensions(block['svgUrl'])
-        processed_blocks[int(block['index'])].append({
-            'index': block['index'],
-            'id': block['id'],
-            'svgUrl': block['svgUrl'],
-            'width': width,
-            'height': height
-        })
+        print(chemical_formula, smiles, molecular_weight)
 
-    for blocks in processed_blocks:
-        blocks.sort(key=lambda b: b['id'])
-    block_set['blocks'] = processed_blocks
+    return {
+        'chemicalFormula': chemical_formula,
+        'smiles': smiles,
+        'molecularWeight': molecular_weight,
+    }
+
+
+def generate_blocks():
+    block_set['blocks'] = [[], [], []]
+
+    block_count = [3, 7, 100]
+    svg_prefix = ['S', 'M', 'E']
+    smi_prefix = ['D', 'B', 'A']
+
+    for i in range(3):
+        for j in range(block_count[i]):
+            smi_filename = workdir + f'/SMILES/{smi_prefix[i]}_{j + 1}.smi'
+            blocks_by_index[i].append({
+                'id': j + 1,
+                'properties': get_properties(smi_filename)
+            })
+            svg_url = f"assets/blocks/opv/block_svg/{svg_prefix[i]}{j + 1}.svg"
+            _, _, width, height = get_svg_dimensions(svg_url)
+            block_set['blocks'][i].append({
+                'index': i,
+                'id': j + 1,
+                'svgUrl': svg_url,
+                'width': width,
+                'height': height
+            })
 
 
 def load_donor_bridge_id_mapping():
@@ -123,7 +149,7 @@ def resolve_functional_property_ranges():
         prop['max'] = max(all_values)
 
 
-process_blocks()
+generate_blocks()
 load_donor_bridge_id_mapping()
 load_dft_predictions()
 generate_lookup_table()

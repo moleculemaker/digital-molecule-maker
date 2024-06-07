@@ -6,7 +6,7 @@ from utils import get_svg_dimensions, combine_chemical_formulas, combine
 
 workdir = './src/assets/blocks/10x10x10palette'
 
-with open(os.path.join(workdir, 'blocks.json')) as file:
+with open(os.path.join(workdir, 'block_set.json')) as file:
     block_set = json.load(file)
 
 blocks_by_index = [[None], [None], [None]]
