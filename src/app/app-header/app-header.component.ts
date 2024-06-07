@@ -64,7 +64,7 @@ export class AppHeaderComponent implements OnInit {
   private updateTitle(url: string) {
     if (!url.endsWith('/build')) {
       this.title$ = of(' ');
-      this.subtitle$ = of(' ')
+      this.subtitle$ = of(' ');
     } else {
       if (url.startsWith('/library/')) {
         this.title$ = this.userService.user$.pipe(

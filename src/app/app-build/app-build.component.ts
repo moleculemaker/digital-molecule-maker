@@ -3,19 +3,13 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import {
-  Block,
-  Coordinates,
-  getBlockSetScale,
-  Molecule,
-} from '../models';
+import { Block, Coordinates, getBlockSetScale, Molecule } from '../models';
 
 import { BlockSetId } from '../services/block.service';
 import { DroppableEvent } from '../drag-drop-utilities/droppable/droppable.service';
@@ -28,7 +22,7 @@ import { UserService } from '../services/user.service';
   templateUrl: './app-build.component.html',
   styleUrls: ['./app-build.component.scss'],
 })
-export class AppBuildComponent implements OnInit {
+export class AppBuildComponent {
   @ViewChild('workspace') svgWorkspace: ElementRef<SVGGraphicsElement> | null =
     null;
 
@@ -53,18 +47,7 @@ export class AppBuildComponent implements OnInit {
     private userService: UserService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
-  ) {}
-
-  get blockSet() {
-    return this.workspaceService.blockSet$.value;
-  }
-
-  get isGuest() {
-    return this.userService.isGuest();
-  }
-
-  //********************************************
-  ngOnInit(): void {
+  ) {
     this.route.paramMap.subscribe((paramMap) => {
       const groupId = Number(paramMap.get('groupId'));
       const blockSetId = paramMap.get('blockSetId') as BlockSetId;
@@ -83,8 +66,15 @@ export class AppBuildComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe((molecule) => {
         this.moleculeInWorkspace = molecule;
-        this.changeDetector.detectChanges();
       });
+  }
+
+  get blockSet() {
+    return this.workspaceService.blockSet$.value;
+  }
+
+  get isGuest() {
+    return this.userService.isGuest();
   }
 
   toggle() {
