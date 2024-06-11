@@ -25077,9 +25077,9 @@
     },
     "3:0:0": {
       "key": "3:0:0",
-      "chemicalFormula": "C12H11BO2S2",
-      "smiles": "Bc3cc2c(OC)c1sccc1c(OC)c2s3",
-      "molecularWeight": 262.164,
+      "chemicalFormula": "C24H35BO2S2",
+      "smiles": "Bc3cc2c(OC(CC)CCCC)c1sccc1c(OC(CC)CCCC)c2s3",
+      "molecularWeight": 430.4880000000003,
       "SO_mean": 6.438851916113751,
       "SO_stdev": 3.1369138447454623,
       "T80_mean": 9.36568023874375,
