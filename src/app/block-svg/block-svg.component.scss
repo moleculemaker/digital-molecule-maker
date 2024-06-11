@@ -44,16 +44,6 @@
   &:hover {
     cursor: pointer;
 
-    .block_background {
-      fill: color_variable("block_hover");
-      @include transition(none);
-    }
-
-    .block_border {
-      stroke: color_variable("block_hover_border");
-      @include transition(none);
-    }
-
     .delete_block_button {
       display: inline;
     }

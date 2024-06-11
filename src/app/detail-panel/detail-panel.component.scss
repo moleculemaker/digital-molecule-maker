@@ -1,0 +1,31 @@
+@import "../styles/core";
+
+:host {
+  padding: 0 48px 400px;
+  height: 100%;
+  overflow: scroll;
+
+  .details {
+    padding: 36px 0;
+  }
+
+  button {
+    margin-top: 24px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    height: 40px;
+    border: 1px solid #31509e;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
+    cursor: pointer;
+
+    color: #ffffff;
+    background: #31509e;
+
+    &:hover {
+      background: lighten(#31509e, 10%);
+    }
+  }
+}

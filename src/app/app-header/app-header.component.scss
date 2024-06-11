@@ -6,10 +6,11 @@
 
 //**************** css ******************
 
-:host {
+.header {
   display: flex;
+  height: 80px;
   justify-content: flex-start;
-  align-items: stretch;
+  align-items: center;
 
   border: {
     bottom: 1px solid color_variable("header_border");
@@ -21,12 +22,11 @@
   }
 
   > div {
-    display: flex;
-    align-items: center; //flex-end;
-
     padding: $padding * 0.5;
 
     &:first-child {
+      display: flex;
+      align-items: center; //flex-end;
       margin: {
         left: $padding * 0.5;
       }
@@ -39,8 +39,27 @@
     }
   }
 
-  .header_separator {
+  .header_title {
+    white-space: pre;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
+
+    .title {
+      font-family: "Montserrat", sans-serif;
+      font-style: normal;
+      font-weight: 900;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+    }
   }
 }
 
@@ -130,4 +149,112 @@ input[type="text"] {
 
     @include transition(none);
   }
+}
+
+.menu-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 46px;
+  width: 46px;
+  box-sizing: border-box;
+  background: #31509e;
+  border-radius: 32px;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 20px;
+  color: #f8f8f8;
+  cursor: pointer;
+  user-select: none;
+}
+
+$menu-background: #31509e;
+.menu {
+  padding: 8px 0;
+  position: fixed;
+  top: 62px;
+  right: 16px;
+  width: 151px;
+  background: $menu-background;
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  z-index: 5000; // TODO: there must be a better way
+  user-select: none;
+
+  a {
+    display: block;
+    width: 100%;
+    color: unset;
+    text-decoration: unset;
+  }
+
+  & > * {
+    padding: 4px 16px;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #ffffff;
+    cursor: pointer;
+
+    &:hover {
+      background: lighten($menu-background, 5%);
+    }
+
+    &:active {
+      background: darken($menu-background, 5%);
+    }
+  }
+}
+
+.confirmation-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.confirmation-text {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+}
+
+.confirm-button {
+  margin-top: 24px;
+  width: 344px;
+  height: 36px;
+  background: #dc2525;
+
+  &:hover {
+    background: darken(#dc2525, 5%);
+  }
+
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.cancel-button {
+  margin-top: 8px;
+  width: 344px;
+  height: 36px;
+  background: #ffffff;
+
+  &:hover {
+    background: darken(#ffffff, 5%);
+  }
+
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #31509e;
+  border: none;
+  cursor: pointer;
 }

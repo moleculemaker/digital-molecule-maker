@@ -14,6 +14,7 @@ export interface Block {
 
 export interface LookupTableEntry {
   key: string;
+
   [property: string]: number | string;
 }
 
@@ -35,13 +36,19 @@ export interface BlockSet {
   table: Record<string, LookupTableEntry>;
 }
 
-export interface RigJob {
-  block_set_id: string;
-  block_ids: number[];
-  molecule_name: string;
-  status?: string;
-  user_or_group?: number;
-}
+export const fromMoleculeDTO =
+  (blockSet: BlockSet) =>
+  (moleculeDTO: MoleculeDTO): Molecule => {
+    return new Molecule(
+      new Coordinates(100, 100),
+      moleculeDTO.block_ids.map(
+        (id, index) => blockSet.blocks[index]![id - 1]!,
+      ),
+      moleculeDTO.name,
+      moleculeDTO.id,
+      moleculeDTO.created_by.id,
+    );
+  };
 
 export interface ChemicalPropertyDefinition {
   key: string;
@@ -54,6 +61,7 @@ export type ChemicalPropertyDisplayStrategy = 'default' | 'chemicalFormula';
 export class Coordinates {
   x: number;
   y: number;
+
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
@@ -61,19 +69,53 @@ export class Coordinates {
 }
 
 export class Molecule {
-  position: Coordinates;
-  label: string;
-  blockList: Block[];
-  constructor(position: Coordinates, blockList: Block[]) {
-    this.position = position;
-    this.blockList = blockList;
-    this.label = 'NewMolecule';
-  }
+  constructor(
+    public position: Coordinates,
+    public blockList: Block[],
+    public label = 'NewMolecule',
+    public id = -1,
+    public userId = -1,
+  ) {}
+}
+
+export interface MoleculeDTO {
+  id: number;
+  name: string;
+  block_set_id: string;
+  block_ids: number[];
+  created_by: {
+    id: number;
+    name: string;
+    username: string;
+  };
+  submitted_to: {
+    name: string;
+  };
 }
 
 export interface User {
-  surveyCode: string;
-  // later: token(s), etc.
+  id: number;
+  name: string;
+  username: string;
+  access_token: string;
+  surveyCode?: string;
+}
+
+export interface UserGroup {
+  id: number;
+  name: string;
+  join_code: {
+    code: string;
+  };
+  block_set_id: BlockSetId;
+  creator: {
+    id: number;
+    name: string;
+  };
+  members: Array<{
+    id: number;
+    name: string;
+  }>;
 }
 
 export function getBlockSetScale(blockSet: BlockSet, target: number): number {

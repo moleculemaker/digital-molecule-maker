@@ -1,5 +1,4 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { BlockSize } from '../block/block.component';
 import {
   Block,
   BlockSet,
@@ -19,6 +18,7 @@ import { WorkspaceService } from '../services/workspace.service';
 import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
 import { applyTargetFilter, lookupProperty } from '../lookup';
 import { BlockSetId } from '../services/block.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -70,7 +70,6 @@ export class AppSidebarComponent implements OnInit {
   }
 
   currentToggle = 'build';
-  BlockSize = BlockSize; // for use in template
   blockLevelScale = 1;
 
   filteredBlocks: string[] = [];
@@ -140,22 +139,31 @@ export class AppSidebarComponent implements OnInit {
   isSidebarExpanded = true;
   isShowingFilters = false;
 
-  moleculeList: Molecule[] = [];
+  molecule: Molecule | null = null;
   functionModeEnabled = true;
 
+  currentTab: 'blocks' | 'details' = 'blocks';
+
   constructor(private workspaceService: WorkspaceService) {
-    this.workspaceService.functionMode$.subscribe((enabled) => {
-      this.functionModeEnabled = enabled;
-      this.applyFilters();
-    });
-    this.workspaceService.moleculeList$.subscribe((moleculeList) => {
-      this.moleculeList = moleculeList;
-      this.applyFilters();
+    combineLatest([
+      this.workspaceService.selectedMolecule$,
+      this.workspaceService.selectedBlock$,
+    ]).subscribe(([molecule]) => {
+      this.currentTab = molecule ? 'details' : 'blocks';
     });
   }
 
   //********************************************
   ngOnInit(): void {
+    this.workspaceService.functionMode$.subscribe((enabled) => {
+      this.functionModeEnabled = enabled;
+      this.applyFilters();
+    });
+    this.workspaceService.molecule$.subscribe((molecule) => {
+      this.molecule = molecule;
+      this.applyFilters();
+    });
+
     this.xAxis = this.blockSet.functionalProperties[0]!;
     this.yAxis = this.blockSet.functionalProperties[1]!;
     this._xRange = [this.xAxis.min, this.xAxis.max];
@@ -213,10 +221,6 @@ export class AppSidebarComponent implements OnInit {
     } else {
       this.colorFilter = [...this.colorFilter, type];
     }
-  }
-
-  toggle() {
-    this.workspaceService.toggle();
   }
 
   private applyFilters() {
@@ -281,7 +285,7 @@ export class AppSidebarComponent implements OnInit {
           );
         },
       },
-      this.moleculeList[0]?.blockList ?? [],
+      this.molecule?.blockList ?? [],
       this.blockSet,
     );
   }
@@ -302,7 +306,7 @@ export class AppSidebarComponent implements OnInit {
           );
         },
       },
-      this.moleculeList[0]?.blockList ?? [],
+      this.molecule?.blockList ?? [],
       this.blockSet,
     );
   }
@@ -333,6 +337,19 @@ export class AppSidebarComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  selectMolecule() {
+    const molecule = this.workspaceService.molecule$.value;
+    if (molecule) {
+      this.workspaceService.selectedMolecule$.next(molecule);
+      this.workspaceService.selectedBlock$.next(null);
+    }
+  }
+
+  resetSelection() {
+    this.workspaceService.selectedMolecule$.next(null);
+    this.workspaceService.selectedBlock$.next(null);
   }
 
   lookupProperty = lookupProperty;

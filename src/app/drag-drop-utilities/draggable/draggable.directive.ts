@@ -26,8 +26,8 @@ export class DraggableDirective implements OnDestroy {
   @HostBinding('class.dragging')
   dragging = false;
 
-  @HostBinding('attr.touch-action')
-  touchAction = 'none';
+  @HostBinding('style.touch-action')
+  touchAction = 'pan-y';
 
   @ContentChild(DraggableHelperDirective) helper?: DraggableHelperDirective;
 
@@ -49,6 +49,13 @@ export class DraggableDirective implements OnDestroy {
     if (this.disabled) return;
 
     event.stopPropagation();
+
+    // Must cancel implicit pointer capture on touchscreens
+    // See: https://www.w3.org/TR/pointerevents/#implicit-pointer-capture
+    const el=  event.target as Element;
+    if (el.hasPointerCapture(event.pointerId)) {
+      el.releasePointerCapture(event.pointerId);
+    }
 
     if (!this.helper) {
       throw new Error('Drag helper not defined');
@@ -75,6 +82,7 @@ export class DraggableDirective implements OnDestroy {
     }
   }
 
+  @HostListener('document:pointercancel', ['$event'])
   @HostListener('document:pointerup', ['$event'])
   onPointerUp(event: PointerEvent) {
     clearTimeout(this._timeout);

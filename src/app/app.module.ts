@@ -1,6 +1,6 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,7 +21,6 @@ import { SplashComponent } from './splash/splash.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 
 import { OverlayModule } from '@angular/cdk/overlay';
-import { OverlayComponent } from './overlay/overlay.component';
 
 import { DraggableDirective } from './drag-drop-utilities/draggable/draggable.directive';
 import { DraggableHelperDirective } from './drag-drop-utilities/draggable/draggable-helper.directive';
@@ -33,10 +32,30 @@ import { MoleculeSvgComponent } from './molecule-svg/molecule-svg.component';
 import { ScatterPlotComponent } from './scatterplot/scatter-plot.component';
 
 import { SliderModule } from 'primeng/slider';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
+import { DialogModule } from 'primeng/dialog';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { MessagesModule } from 'primeng/messages';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
 import { TrackingService } from './services/tracking.service';
 import { EnvironmentService } from './services/environment.service';
 import { ChemicalPropertyPipe } from './pipes/chemical-property.pipe';
+import { LoginComponent } from './login/login.component';
+import { GroupsComponent } from './groups/groups.component';
+import { GroupCartComponent } from './group-cart/group-cart.component';
+import { MoleculeSummaryComponent } from './molecule-summary/molecule-summary.component';
+import { BlockLibraryComponent } from './block-library/block-library.component';
+import { DetailPanelComponent } from './detail-panel/detail-panel.component';
+import { MoleculeDetailComponent } from './molecule-detail/molecule-detail.component';
+import { NgOptimizedImage } from '@angular/common';
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { AdminComponent } from './admin/admin.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { MiniGameComponent } from './mini-game/mini-game.component';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -68,9 +87,18 @@ function initializeAppFactory(
     SplashComponent,
     TutorialComponent,
     BlockSvgComponent,
-    OverlayComponent,
     MoleculeSvgComponent,
     ScatterPlotComponent,
+    LoginComponent,
+    GroupsComponent,
+    GroupCartComponent,
+    MoleculeSummaryComponent,
+    BlockLibraryComponent,
+    DetailPanelComponent,
+    MoleculeDetailComponent,
+    SafeUrlPipe,
+    AdminComponent,
+    MiniGameComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +113,15 @@ function initializeAppFactory(
     DragDropModule,
     OverlayModule,
     SliderModule,
+    InputTextModule,
+    ButtonModule,
+    PasswordModule,
+    DialogModule,
+    RadioButtonModule,
+    MessagesModule,
+    DropdownModule,
+    TableModule,
+    NgOptimizedImage,
   ],
   providers: [
     {
@@ -93,6 +130,11 @@ function initializeAppFactory(
       provide: APP_INITIALIZER,
       useFactory: initializeAppFactory,
       deps: [TrackingService, EnvironmentService],
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true,
     },
   ],
