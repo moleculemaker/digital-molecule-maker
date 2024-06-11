@@ -3,38 +3,47 @@ import json
 import math
 import os
 import statistics
+from typing import List
 
 import pandas as pd
+from rdkit.Chem import MolFromSmiles
+from rdkit.Chem.Descriptors import MolWt
+from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 
-from utils import get_svg_dimensions, combine_chemical_formulas, combine
+from utils import get_svg_dimensions, naive_combine
 
 workdir = './src/assets/blocks/opv'
 
-with open(os.path.join(workdir, 'blocks.json')) as file:
+with open(os.path.join(workdir, 'block_set.json')) as file:
     block_set = json.load(file)
 
-blocks_by_index = [[None], [None], [None]]
 donor_bridge_id = {}
 dft_predictions = {}
 
 
-def process_blocks():
-    processed_blocks = [[], [], []]
-    for block in block_set['blocks']:
-        blocks_by_index[block['index']].append(block)
+def read_smiles(smi_filename):
+    with open(smi_filename) as f:
+        smiles = f.read().strip()
+    return smiles
 
-        _, _, width, height = get_svg_dimensions(block['svgUrl'])
-        processed_blocks[int(block['index'])].append({
-            'index': block['index'],
-            'id': block['id'],
-            'svgUrl': block['svgUrl'],
-            'width': width,
-            'height': height
-        })
 
-    for blocks in processed_blocks:
-        blocks.sort(key=lambda b: b['id'])
-    block_set['blocks'] = processed_blocks
+def generate_blocks():
+    block_set['blocks'] = [[], [], []]
+
+    block_count = [3, 7, 100]
+    svg_prefix = ['S', 'M', 'E']
+
+    for i in range(3):
+        for j in range(block_count[i]):
+            svg_url = f"assets/blocks/opv/block_svg/{svg_prefix[i]}{j + 1}.svg"
+            _, _, width, height = get_svg_dimensions(svg_url)
+            block_set['blocks'][i].append({
+                'index': i,
+                'id': j + 1,
+                'svgUrl': svg_url,
+                'width': width,
+                'height': height
+            })
 
 
 def load_donor_bridge_id_mapping():
@@ -76,9 +85,9 @@ def get_statistical_predictions(donor_id, bridge_id, acceptor_id):
     For any vacant position, either leave it empty or pick an available block,
     E.g. If the user hasn't chosen a bridge, then try B0 (no bridge), B1, B2, ..., etc.
     """
-    d_choices = [donor_id] if donor_id else range(len(blocks_by_index[0]) + 1)
-    b_choices = [bridge_id] if bridge_id else range(len(blocks_by_index[1]) + 1)
-    a_choices = [acceptor_id] if acceptor_id else range(len(blocks_by_index[2]) + 1)
+    d_choices = [donor_id] if donor_id else range(3 + 1)
+    b_choices = [bridge_id] if bridge_id else range(7 + 1)
+    a_choices = [acceptor_id] if acceptor_id else range(100 + 1)
 
     so_predictions = []
     t80_predictions = []
@@ -100,17 +109,42 @@ def get_statistical_predictions(donor_id, bridge_id, acceptor_id):
 def generate_lookup_table():
     block_set['table'] = {}
 
-    for donor, bridge, acceptor in itertools.product(*blocks_by_index):
-        d_id = donor['id'] if donor else 0
-        b_id = bridge['id'] if bridge else 0
-        a_id = acceptor['id'] if acceptor else 0
+    smi_index = {'0_0_0': ''}
+
+    for d_id in range(3):
+        key = f'{d_id + 1}_0_0'
+        filename = workdir + f'/smi/{key}.smi'
+        smi_index[key] = read_smiles(filename)
+
+    for b_id in range(7):
+        key = f'0_{b_id + 1}_0'
+        filename = workdir + f'/smi/{key}.smi'
+        smi_index[key] = read_smiles(filename)
+
+    for a_id in range(100):
+        key = f'0_0_{a_id + 1}'
+        filename = workdir + f'/smi/{key}.smi'
+        smi_index[key] = read_smiles(filename)
+
+    for d_id, b_id, a_id in itertools.product(range(3 + 1), range(7 + 1), range(100 + 1)):
         key = f'{d_id}:{b_id}:{a_id}'
+
+        all_smiles = [smi_index[key] for key in [f'{d_id}_0_0', f'0_{b_id}_0', f'0_0_{a_id}']]
+
+        smi_filename = workdir + f'/smi/{d_id}_{b_id}_{a_id}.smi'
+        if not os.path.isfile(smi_filename):
+            print(f'{smi_filename} does not exist')
+            smiles = ''
+        else:
+            smiles = read_smiles(smi_filename)
+
+        mol = MolFromSmiles(smiles)
 
         block_set['table'][key] = {
             'key': key,
-            'chemicalFormula': combine_chemical_formulas(donor, bridge, acceptor),
-            'smiles': combine('smiles', '')(donor, bridge, acceptor),
-            'molecularWeight': combine('molecularWeight', 0)(donor, bridge, acceptor),
+            'chemicalFormula': CalcMolFormula(mol),
+            'smiles': smiles,
+            'molecularWeight': MolWt(mol) if smiles else MolWt(naive_combine(all_smiles)),
             **get_statistical_predictions(d_id, b_id, a_id)
         }
 
@@ -123,7 +157,7 @@ def resolve_functional_property_ranges():
         prop['max'] = max(all_values)
 
 
-process_blocks()
+generate_blocks()
 load_donor_bridge_id_mapping()
 load_dft_predictions()
 generate_lookup_table()

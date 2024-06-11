@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -7,27 +6,21 @@ import {
   Output,
 } from '@angular/core';
 import {
-  state,
   trigger,
   transition,
-  style,
-  animate,
   AnimationEvent,
   useAnimation,
 } from '@angular/animations';
 
 import {
-  blurIn,
-  blurOut,
   bounceIn,
   bounceOut,
   slideIn,
   slideOut,
-  slideInReverse,
-  slideOutReverse,
 } from './panel.animations';
 import { BlockSet, Molecule } from '../models';
-import { lookupProperty } from '../lookup';
+import { Router } from '@angular/router';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: 'panel',
@@ -35,34 +28,17 @@ import { lookupProperty } from '../lookup';
   styleUrls: ['./panel.component.scss'],
   animations: [
     //unable to animation rgba backgroundColor and backdropFilter using angular...moved that animation to normal css
-
     trigger('panelAnimation', [
-      state('increasing', style({})),
-      state('decreasing', style({})),
-
-      transition('void => increasing', [useAnimation(slideIn)]),
-      transition('void => decreasing', [useAnimation(slideInReverse)]),
-      transition('increasing => void', [useAnimation(slideOut)]),
-      transition('decreasing => void', [useAnimation(slideOutReverse)]),
+      transition(':enter', [useAnimation(slideIn)]),
+      transition(':leave', [useAnimation(slideOut)]),
     ]),
     trigger('panelCloseButtonAnimation', [
       transition(':enter', [useAnimation(bounceIn)]),
       transition(':leave', [useAnimation(bounceOut)]),
     ]),
-    /*
-//example if you want to pass params... can delete here as needed
-      transition(':enter', [useAnimation(slideIn, { //void => *
-        params: {
-          time: '400ms',
-        }}
-      )]),
-*/
   ],
 })
 export class PanelComponent implements OnInit {
-  @Input()
-  cartMoleculeList: Molecule[] = [];
-
   @Input()
   blockSet?: BlockSet;
 
@@ -70,76 +46,39 @@ export class PanelComponent implements OnInit {
   onClose = new EventEmitter();
 
   @Output()
-  onSubmit = new EventEmitter<Molecule[]>();
-
-  @Output()
-  onSendBackToWorkspace = new EventEmitter<string>();
+  onSendBackToWorkspace = new EventEmitter<Molecule>();
 
   isPanelActive = true;
 
-  isIncreasing = true; //flag to determine if the steps are increasing or decreasing
-  step = 0;
   maxSteps = 5;
 
-  moleculeNamePlaceholder = 'Molecule Name';
-
   //********************************************
-  constructor() {}
+  constructor(
+    private workspaceService: WorkspaceService,
+    private router: Router,
+  ) {}
+
+  get personalCart$() {
+    return this.workspaceService.personalCart$;
+  }
+
+  get group$() {
+    return this.workspaceService.group$;
+  }
 
   //********************************************
   ngOnInit(): void {
-    this.openFirstPanel();
+    this.openPanel();
   }
 
   //********************************************
-  ngAfterViewInit() {}
-
-  //********************************************
-  nextStep() {
-    if (this.step >= this.maxSteps) {
-      return;
-    }
-
-    this.isIncreasing = true;
-
-    //wrap in a timeout so is_increasing actually changes before the animation is called
-    setTimeout(() => {
-      this.step++;
-    }, 0);
-  }
-
-  //********************************************
-  previousStep() {
-    if (this.step <= 0) {
-      return;
-    }
-
-    this.isIncreasing = false;
-
-    //wrap in a timeout so is_increasing actually changes before the animation is called
-    setTimeout(() => {
-      this.step--;
-    }, 0);
-  }
-
-  //********************************************
-  openFirstPanel() {
+  openPanel() {
     this.isPanelActive = true;
-
-    this.step = 0;
-    this.nextStep();
   }
 
   //********************************************
-  closeAll() {
+  closePanel() {
     this.isPanelActive = false;
-
-    this.isIncreasing = false; //to make the panels slide off the screen
-
-    //wrap in a timeout so is_increasing actually changes before the animation is called
-    setTimeout(() => {
-      this.step = 0;
-    }, 0);
   }
 
   //********************************************
@@ -150,21 +89,18 @@ export class PanelComponent implements OnInit {
     }
   }
 
-  canSubmitMolecule(): boolean {
-    return true;
-    // const workingName = this.moleculeName?.trim() || '';
-    // return workingName.length > 0;
+  sendBackToWorkspace(molecule: Molecule) {
+    this.onSendBackToWorkspace.emit(molecule);
   }
 
-  submitMolecules(): void {
-    this.onSubmit.emit(this.cartMoleculeList);
-    // for now, use the second panel as the success message
-    this.nextStep();
+  viewGroupCart() {
+    const group = this.group$.value;
+    if (group) {
+      this.router.navigateByUrl(`/groups/${group.id}/cart`);
+    }
   }
 
-  sendBackToWorkspace(moleculeId: number) {
-    this.onSendBackToWorkspace.emit(moleculeId.toString());
+  addToGroupCart() {
+    this.workspaceService.submitMolecules(this.personalCart$.value);
   }
-
-  getPredictedProperty = lookupProperty;
 }

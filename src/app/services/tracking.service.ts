@@ -87,9 +87,9 @@ export class TrackingService {
 
   trackCloseCart(): void {}
 
-  trackMouseEnter(): void {}
+  trackPointerEnter(): void {}
 
-  trackMouseLeave(): void {}
+  trackPointerLeave(): void {}
 
   /*
   trackClick(target): void {
@@ -104,9 +104,9 @@ export class TrackingService {
 
 /** Prajakt's original request
  * All mouse activity-related frequency and coordinate-data
-More specifically; 
+More specifically;
 	Number of clicks
-	Position of clicks (if possible, tagged with the Area of Interest - e.g. 
+	Position of clicks (if possible, tagged with the Area of Interest - e.g.
 workspace, Molecule/block, tab catalogue, )
 	Sequence of clicks (if possible, logged Area-of-interest-wise, for instance, to determine transitions across the different UI elements)
 Drag and drop actions

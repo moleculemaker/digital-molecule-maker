@@ -1,5 +1,4 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { BlockSize } from '../block/block.component';
 import {
   Block,
   BlockSet,
@@ -8,32 +7,16 @@ import {
   Molecule,
 } from '../models';
 import Fuse from 'fuse.js';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { WorkspaceService } from '../services/workspace.service';
 import { ColorKeyT, LambdaMaxRangeForColor } from '../utils/colors';
 import { applyTargetFilter, lookupProperty } from '../lookup';
 import { BlockSetId } from '../services/block.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './app-sidebar.component.html',
   styleUrls: ['./app-sidebar.component.scss'],
-  animations: [
-    trigger('filtersExpand', [
-      state('collapsed', style({ height: '0px' })),
-      state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
-      ),
-    ]),
-  ],
 })
 export class AppSidebarComponent implements OnInit {
   labelList: string[] = [];
@@ -70,7 +53,6 @@ export class AppSidebarComponent implements OnInit {
   }
 
   currentToggle = 'build';
-  BlockSize = BlockSize; // for use in template
   blockLevelScale = 1;
 
   filteredBlocks: string[] = [];
@@ -138,34 +120,37 @@ export class AppSidebarComponent implements OnInit {
   }
 
   isSidebarExpanded = true;
-  isShowingFilters = false;
 
-  moleculeList: Molecule[] = [];
+  molecule: Molecule | null = null;
   functionModeEnabled = true;
 
+  currentTab: 'blocks' | 'details' = 'blocks';
+
   constructor(private workspaceService: WorkspaceService) {
-    this.workspaceService.functionMode$.subscribe((enabled) => {
-      this.functionModeEnabled = enabled;
-      this.applyFilters();
-    });
-    this.workspaceService.moleculeList$.subscribe((moleculeList) => {
-      this.moleculeList = moleculeList;
-      this.applyFilters();
+    combineLatest([
+      this.workspaceService.selectedMolecule$,
+      this.workspaceService.selectedBlock$,
+    ]).subscribe(([molecule]) => {
+      this.currentTab = molecule ? 'details' : 'blocks';
     });
   }
 
   //********************************************
   ngOnInit(): void {
+    this.workspaceService.functionMode$.subscribe((enabled) => {
+      this.functionModeEnabled = enabled;
+      this.applyFilters();
+    });
+    this.workspaceService.molecule$.subscribe((molecule) => {
+      this.molecule = molecule;
+      this.applyFilters();
+    });
+
     this.xAxis = this.blockSet.functionalProperties[0]!;
     this.yAxis = this.blockSet.functionalProperties[1]!;
     this._xRange = [this.xAxis.min, this.xAxis.max];
     this._yRange = [this.yAxis.min, this.yAxis.max];
     this.applyFilters();
-  }
-
-  //********************************************
-  onChangeToggle(newToggle: string) {
-    this.currentToggle = newToggle;
   }
 
   //********************************************
@@ -178,12 +163,6 @@ export class AppSidebarComponent implements OnInit {
     this.isSidebarExpanded =
       typeof override != 'undefined' ? override : !this.isSidebarExpanded;
     this.sidebarClasses = this.isSidebarExpanded ? 'expanded' : 'collapsed';
-  }
-
-  //********************************************
-  toggleFilters(override?: boolean) {
-    this.isShowingFilters =
-      typeof override != 'undefined' ? override : !this.isShowingFilters;
   }
 
   //********************************************
@@ -213,10 +192,6 @@ export class AppSidebarComponent implements OnInit {
     } else {
       this.colorFilter = [...this.colorFilter, type];
     }
-  }
-
-  toggle() {
-    this.workspaceService.toggle();
   }
 
   private applyFilters() {
@@ -281,7 +256,7 @@ export class AppSidebarComponent implements OnInit {
           );
         },
       },
-      this.moleculeList[0]?.blockList ?? [],
+      this.molecule?.blockList ?? [],
       this.blockSet,
     );
   }
@@ -302,7 +277,7 @@ export class AppSidebarComponent implements OnInit {
           );
         },
       },
-      this.moleculeList[0]?.blockList ?? [],
+      this.molecule?.blockList ?? [],
       this.blockSet,
     );
   }
@@ -333,6 +308,19 @@ export class AppSidebarComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  selectMolecule() {
+    const molecule = this.workspaceService.molecule$.value;
+    if (molecule) {
+      this.workspaceService.selectedMolecule$.next(molecule);
+      this.workspaceService.selectedBlock$.next(null);
+    }
+  }
+
+  resetSelection() {
+    this.workspaceService.selectedMolecule$.next(null);
+    this.workspaceService.selectedBlock$.next(null);
   }
 
   lookupProperty = lookupProperty;
