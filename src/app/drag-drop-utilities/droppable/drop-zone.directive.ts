@@ -67,7 +67,6 @@ export class DropZoneDirective implements OnInit, OnDestroy {
 
   @HostListener('pointerleave')
   onPointerLeave() {
-    // console.log('pointer leave');
     this.over = false;
     clearTimeout(this._timer);
     this.dragLeave.emit();

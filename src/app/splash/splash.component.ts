@@ -27,8 +27,8 @@ export class SplashComponent implements OnInit {
   @ViewChild('blueLeftEye') blueLeftEye: ElementRef | null = null;
   @ViewChild('blueRightEye') blueRightEye: ElementRef | null = null;
 
-  @HostListener('document:mousemove', ['$event']) onMouseMove(e: MouseEvent) {
-    this.mouseMove(e);
+  @HostListener('document:pointermove', ['$event']) onPointerMove(e: PointerEvent) {
+    this.pointerMove(e);
   }
 
   promptType$: Observable<PromptType>;
@@ -52,18 +52,18 @@ export class SplashComponent implements OnInit {
   }
 
   //********************************************
-  mouseMove(e: MouseEvent) {
+  pointerMove(e: PointerEvent) {
     const eyeOffset = -135;
 
     if (this.blueLeftEye) {
       const rect = this.blueLeftEye.nativeElement.getBoundingClientRect();
 
-      const mouse = {
+      const pointer = {
         x: rect.left + rect.width / 2 - e.clientX,
         y: rect.top + rect.height / 2 - e.clientY,
       };
 
-      const rotation = (Math.atan2(mouse.x, mouse.y) * 180) / Math.PI;
+      const rotation = (Math.atan2(pointer.x, pointer.y) * 180) / Math.PI;
 
       this.blueLeftEye.nativeElement.style.setProperty(
         '--deg',
@@ -74,12 +74,12 @@ export class SplashComponent implements OnInit {
     if (this.blueRightEye) {
       const rect = this.blueRightEye.nativeElement.getBoundingClientRect();
 
-      const mouse = {
+      const pointer = {
         x: rect.left + rect.width / 2 - e.clientX,
         y: rect.top + rect.height / 2 - e.clientY,
       };
 
-      const rotation = (Math.atan2(mouse.x, mouse.y) * 180) / Math.PI;
+      const rotation = (Math.atan2(pointer.x, pointer.y) * 180) / Math.PI;
 
       this.blueRightEye.nativeElement.style.setProperty(
         '--deg',
@@ -92,12 +92,12 @@ export class SplashComponent implements OnInit {
 
   onEnterCode(code: string): void {
     // TODO: validate code and display any error messages in template
-    this.userService.setUser({ surveyCode: code.trim() });
-    this.navigateToBuild(true);
+    // this.userService.setUser({ surveyCode: code.trim() });
+    this.navigateToLogin(true);
   }
 
-  navigateToBuild(code = false): void {
-    this.router.navigate(['build'], { queryParams: { code } });
+  navigateToLogin(code = false): void {
+    this.router.navigate(['login']);
   }
 
   // accessor to allow using the PromptType enum in the template

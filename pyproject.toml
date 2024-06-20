@@ -9,6 +9,7 @@ python = "^3.12"
 pandas = "^2.2.1"
 openpyxl = "^3.1.2"
 numpy = "^1.26.4"
+rdkit = "^2023.9.6"
 
 
 [build-system]

@@ -3,7 +3,7 @@
 <dmm-scatterplot
   *ngIf="blockSet"
   [blockSet]="blockSet"
-  [blockList]="moleculeList[0]?.blockList ?? []"
+  [blockList]="moleculeInWorkspace?.blockList ?? []"
 ></dmm-scatterplot>
 
 <div class="canvas_container" dfDropZone (drop)="dropped($event)">
@@ -37,7 +37,7 @@
       </svg>
     </div>
 
-    <div class="button button_cart" (click)="toggleCartPanel()">
+    <div class="button button_cart" *ngIf="!isGuest" (click)="toggleCartPanel()">
       <svg
         width="20"
         height="18"
@@ -51,17 +51,15 @@
         />
       </svg>
 
-      My Molecule Cart ({{ this.cartMoleculeList.length }})
+      My Molecule Cart ({{ (personalCart$ | async)?.length }})
     </div>
   </div>
 
   <panel
     *ngIf="isShowingCart && blockSet"
-    [cartMoleculeList]="cartMoleculeList"
     [blockSet]="blockSet"
     (onClose)="onPanelClose()"
-    (onSubmit)="sendToLab($event)"
-    (onSendBackToWorkspace)="addToWorkSpace($event)"
+    (onSendBackToWorkspace)="sendBackToWorkspace($event)"
   ></panel>
 
   <div class="canvas_send_to_lab" [class.active]="isShowingSendToLab">
@@ -75,9 +73,10 @@
   <svg
     #workspace
     class="svg_workspace"
-    (mousedown)="onPanStart($event)"
-    (mousemove)="onPan($event); onMove($event)"
-    (mouseup)="onPanStop($event)"
+    [style.touch-action]="'none'"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event);"
+    (click)="resetSelection()"
   >
     <!-- this outer-level group applies the zoom and pan -->
     <g
@@ -85,21 +84,19 @@
       [attr.transform]="'matrix(' + zoomAndPanMatrix.join(' ') + ')'"
     >
       <g
-        (mouseenter)="onMouseEnter(moleculeId)"
-        (mousedown)="onMoveStart($event, moleculeId)"
-        (mouseleave)="onMouseLeave()"
-        *ngFor="let molecule of moleculeList; let moleculeId = index"
+        *ngIf="moleculeInWorkspace"
+        (pointerenter)="onPointerEnter()"
+        (pointerleave)="onPointerLeave()"
         [attr.transform]="
-          'translate(' + molecule.position.x + ', ' + molecule.position.y + ')'
+          'translate(' + moleculeInWorkspace.position.x + ', ' + moleculeInWorkspace.position.y + ')'
         "
       >
         <g
           dmm-molecule-svg
           [blockSet]="blockSet"
-          [molecule]="molecule"
-          (deleteBlock)="onRemoveBlock(moleculeId, $event)"
-          (deleteMolecule)="onRemoveMolecule(moleculeId)"
-          (addToCart)="addMoleculeToCart(moleculeId)"
+          [molecule]="moleculeInWorkspace"
+          (deleteBlock)="onRemoveBlock($event)"
+          (deleteMolecule)="onRemoveMolecule()"
           [closeOverlayObservable]="closeOverlay.asObservable()"
         ></g>
       </g>
@@ -169,7 +166,8 @@
         </defs>
       </svg>
     </div>
+    <div class="button toggle_button" (click)="toggle()">
+      {{ functionModeEnabled ? "view structure" : "view function" }}
+    </div>
   </div>
 </div>
-
-<tutorial></tutorial>

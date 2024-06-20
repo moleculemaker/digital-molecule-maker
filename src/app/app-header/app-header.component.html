@@ -1,23 +1,77 @@
-<div class="header_block">
-  <div class="logo"></div>
-  <div class="logo_label">Molecule<br />Maker<br />Lab</div>
-</div>
+<div class="header">
+  <div class="header_block">
+    <div class="logo"></div>
+    <div class="logo_label">Molecule<br />Maker<br />Lab</div>
+  </div>
 
-<!--
-<div class="header_block">
-  <input type="text" placeholder="Project Name" />
-  <div class="button">Save</div>
-</div>
--->
-
-<div class="header_separator"></div>
-
-<div class="header_block">
-  <div *ngIf="false" class="code">183782</div>
-
-  <div class="button" (click)="onShowTutorial()">Tutorial</div>
-  <div class="button">Logout</div>
   <!--
-  <div class="button">Sign In</div>
-  <div class="button">Exit</div>
---></div>
+  <div class="header_block">
+    <input type="text" placeholder="Project Name" />
+    <div class="button">Save</div>
+  </div>
+  -->
+
+  <div class="header_title">
+    <div class="title">
+      {{ title$ | async | titlecase }}
+    </div>
+    <div class="subtitle">
+      {{ subtitle$ | async }}
+    </div>
+  </div>
+
+  <div class="header_block">
+    <div
+      class="menu-button"
+      (click)="$event.stopPropagation(); menuOpen = !menuOpen"
+    >
+      {{ (user$ | async)?.name?.[0] | uppercase }}
+    </div>
+    <!--  <div *ngIf="false" class="code">183782</div>-->
+    <!--  <div class="button" (click)="onShowTutorial()">Tutorial</div>-->
+    <!--  <div class="button" (click)="logout()">Logout</div>-->
+    <!--
+    <div class="button">Sign In</div>
+    <div class="button">Exit</div>
+  --></div>
+</div>
+
+<div *ngIf="menuOpen" class="menu">
+  <!--  <div>-->
+  <!--    Workspace-->
+  <!--  </div>-->
+  <div
+    *ngIf="(user$ | async)?.username != GUEST_USER"
+    (click)="goToGroupsPage()"
+  >
+    My Groups
+  </div>
+  <div (click)="goToBlockLibrary()">Block Library</div>
+  <div>
+    <a href="https://moleculemaker.org/dmm-help/">Help</a>
+  </div>
+  <div (click)="logout()">Log Out</div>
+</div>
+
+<div style="position: relative; z-index: 5000">
+  <p-dialog
+    [modal]="true"
+    [(visible)]="confirmationModalOpen"
+    [style]="{ width: '424px' }"
+  >
+    <div class="confirmation-modal">
+      <div class="confirmation-text">
+        Are you sure you want to leave this workspace?
+        {{
+          (user$ | async)?.username == GUEST_USER
+            ? 'All molecules made as "guest" will be lost!'
+            : "Any molecules not saved in your cart will be lost!"
+        }}
+      </div>
+      <button class="confirm-button" (click)="proceed()">Yes, Continue</button>
+      <button class="cancel-button" (click)="cancel()">
+        Return to workspace
+      </button>
+    </div>
+  </p-dialog>
+</div>

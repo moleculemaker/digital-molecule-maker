@@ -1,0 +1,51 @@
+<div style="padding: 50px">
+  <div class="container">
+    <div>
+      <div class="stack">
+        <div #3dmol1 class="mol-container"></div>
+        <svg class="mol-svg" [innerHTML]="svg1 | bypassSanitizer"></svg>
+      </div>
+      <p-dropdown
+        [style]="{ width: '100%' }"
+        [options]="smiles1Options"
+        [(ngModel)]="smiles1"
+        (onChange)="update1()"
+      />
+    </div>
+    <div>
+      <div class="stack">
+        <div #3dmol2 class="mol-container"></div>
+        <svg class="mol-svg" [innerHTML]="svg2 | bypassSanitizer"></svg>
+      </div>
+      <p-dropdown
+        [style]="{ width: '100%' }"
+        [options]="smiles2Options"
+        [(ngModel)]="smiles2"
+        (onChange)="update2()"
+      />
+    </div>
+    <div>
+      <div class="stack">
+        <div #3dmol3 class="mol-container"></div>
+        <svg class="mol-svg" [innerHTML]="svg3 | bypassSanitizer"></svg>
+      </div>
+      <p-dropdown
+        [style]="{ width: '100%' }"
+        [options]="smiles3Options"
+        [(ngModel)]="smiles3"
+        (onChange)="update3()"
+      />
+    </div>
+  </div>
+  <h4>
+    {{ smiles }}
+  </h4>
+  <div class="stack" style="margin-top: 60px; width: 800px; gap: 20px">
+    <div #3dmol class="final-mol-container"></div>
+    <svg
+      class="final-mol-svg"
+      viewBox="0 0 200 200"
+      [innerHTML]="svg | bypassSanitizer"
+    ></svg>
+  </div>
+</div>

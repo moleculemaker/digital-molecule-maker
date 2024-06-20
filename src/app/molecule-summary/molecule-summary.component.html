@@ -1,0 +1,103 @@
+<div
+  class="molecule"
+>
+  <!--  <inplace class="molecule_name">-->
+  <!--    <ng-template #display>-->
+  <!--      <div class="label">-->
+  <!--        &lt;!&ndash;              <span *ngIf="moleculeName && moleculeName!.trim().length > 0">{{moleculeName}}</span>&ndash;&gt;-->
+  <!--        {{ molecule.label }}-->
+
+  <!--        &lt;!&ndash;              <span class="placeholder" *ngIf="!moleculeName || moleculeName!.trim().length == 0">(Click to edit {{moleculeNamePlaceholder}})</span>&ndash;&gt;-->
+
+  <!--        <div class="icon_inline">-->
+  <!--          <svg-->
+  <!--            version="1.1"-->
+  <!--            id="Layer_1"-->
+  <!--            xmlns="http://www.w3.org/2000/svg"-->
+  <!--            xmlns:xlink="http://www.w3.org/1999/xlink"-->
+  <!--            x="0px"-->
+  <!--            y="0px"-->
+  <!--            viewBox="0 0 32 32"-->
+  <!--            style="enable-background: new 0 0 32 32"-->
+  <!--            xml:space="preserve"-->
+  <!--          >-->
+  <!--            <path-->
+  <!--              d="M30.1,5l1.3-1.4c0.7-0.8,0.8-1.9,0.1-2.7L31,0.4c-0.6-0.7-1.8-0.5-2.6,0.2L27,2L30.1,5z"-->
+  <!--              fill="#3A3A3A"-->
+  <!--            />-->
+  <!--            <path-->
+  <!--              d="M5.7,32h17.9c3.5,0,5.5-2,5.5-5.7v-16l-4.5,4.5v10.9c0,1.2-0.6,1.8-1.6,1.8H6.3c-1.2,0-1.8-0.5-1.8-1.8V9.2-->
+  <!--                  c0-1.2,0.6-1.8,1.8-1.8h11l4.5-4.5H5.7C2.1,2.9,0,4.9,0,8.6v17.7C0,30,2.1,32,5.7,32z"-->
+  <!--              fill="#3A3A3A"-->
+  <!--            />-->
+  <!--            <path-->
+  <!--              d="M12.2,20.7l3.6-1.4L29,6.1l-3-3L12.7,16.3l-1.4,3.5C11.1,20.4,11.7,20.9,12.2,20.7z"-->
+  <!--              fill="#3A3A3A"-->
+  <!--            />-->
+  <!--                </svg>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </ng-template>-->
+
+  <!--    <ng-template #content>-->
+  <!--      <input-->
+  <!--        type="text"-->
+  <!--        [(ngModel)]="molecule.label"-->
+  <!--        [placeholder]="moleculeNamePlaceholder"-->
+  <!--      />-->
+  <!--    </ng-template>-->
+  <!--  </inplace>-->
+
+  <div class="molecule_name">
+    <div class="label">
+      {{ molecule.label }}
+    </div>
+  </div>
+
+  <div class="molecule_content" [class.vertical]="vertical">
+    <!-- todo: add molecule preview here -->
+    <div class="preview">
+      <svg viewBox="-15 0 600 200">
+        <g
+          dmm-molecule-svg
+          [molecule]="molecule"
+          [blockSet]="blockSet"
+          [interactive]="false"
+        ></g>
+      </svg>
+    </div>
+
+    <div *ngIf="blockSet" class="info">
+      <div class="chemical_formula">
+        <div class="label">{{ blockSet.labelProperty.label }}</div>
+        <div
+          class="value"
+          [innerHtml]="
+                  getPredictedProperty(
+                    molecule.blockList,
+                    blockSet,
+                    blockSet.labelProperty
+                  ) | chemicalProperty: blockSet.labelProperty.displayStrategy
+                "
+        ></div>
+      </div>
+
+      <div class="weight">
+        <div class="label">{{ blockSet.primaryProperty.label }}</div>
+        <div
+          class="value"
+          [innerHtml]="
+                  getPredictedProperty(
+                    molecule.blockList,
+                    blockSet,
+                    blockSet.primaryProperty
+                  ) | chemicalProperty: blockSet.primaryProperty.displayStrategy
+                "
+        ></div>
+      </div>
+
+      <ng-content select="[action]"></ng-content>
+
+    </div>
+  </div>
+</div>
