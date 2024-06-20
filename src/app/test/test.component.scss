@@ -1,0 +1,40 @@
+.mol-container {
+  height: 200px;
+  position: relative;
+}
+
+.final-mol-container {
+  height: 400px;
+  width: 400px;
+  position: relative;
+}
+
+.mol-svg {
+  width: 200px;
+  height: 200px;
+}
+
+.final-mol-svg {
+  width: 400px;
+  height: 400px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  > div {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  > div, svg {
+    flex: 1;
+    min-width: 0;
+  }
+}

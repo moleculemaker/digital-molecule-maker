@@ -10,8 +10,9 @@ import { LoginComponent } from './login/login.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupCartComponent } from './group-cart/group-cart.component';
 import { BlockLibraryComponent } from './block-library/block-library.component';
-import {AdminComponent} from "./admin/admin.component";
-import {MiniGameComponent} from "./mini-game/mini-game.component";
+import { AdminComponent } from './admin/admin.component';
+import { MiniGameComponent } from './mini-game/mini-game.component';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
     data: {
       promptType: PromptType.None,
     },
+  },
+  {
+    path: 'test',
+    component: TestComponent,
   },
   {
     path: 'admin',

@@ -56,6 +56,8 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { AdminComponent } from './admin/admin.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MiniGameComponent } from './mini-game/mini-game.component';
+import { TestComponent } from './test/test.component';
+import { BypassSanitizerPipe } from './pipes/bypass-sanitizer.pipe';
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -99,6 +101,8 @@ function initializeAppFactory(
     SafeUrlPipe,
     AdminComponent,
     MiniGameComponent,
+    TestComponent,
+    BypassSanitizerPipe,
   ],
   imports: [
     BrowserModule,
