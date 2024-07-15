@@ -11,30 +11,13 @@ $edit_name_height: 20px;
   cursor: pointer;
 
   &:hover {
-    .outside_border {
-      fill: color_variable("molecule_hover_fill");
-
-      stroke: color_variable("molecule_hover_border");
-    }
-
     .delete_molecule_button {
       display: inline;
     }
   }
 
-  &.selected {
-    .outside_border {
-      fill: color_variable("molecule_selected_fill");
-
-      stroke: color_variable("molecule_selected_border");
-    }
-  }
-
   .outside_border {
-    fill: color_variable("molecule_background");
     fill-opacity: 0.4;
-
-    stroke: color_variable("molecule_border");
     stroke-width: 1;
   }
 

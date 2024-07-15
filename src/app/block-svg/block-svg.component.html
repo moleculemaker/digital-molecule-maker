@@ -1,16 +1,13 @@
 <svg:g
-  cdkOverlayOrigin
-  #trigger="cdkOverlayOrigin"
+  xmlns:svg="http://www.w3.org/2000/svg"
   class="block_container"
   [class]="['block_' + blockType]"
-  [class.selected]="isInfoPanelOpen"
-  [class.not_selected]="!isInfoPanelOpen && false"
   [class.dashes]="isAddBlock()"
-  (mouseover)="onMouseOver($event)"
-  (mouseout)="onMouseOut($event)"
-  (mousedown)="onMouseDown()"
-  (mousemove)="onMouseMove()"
-  (mouseup)="onMouseUp()"
+  (pointerover)="onPointerOver($event)"
+  (pointerout)="onPointerOut($event)"
+  (pointerdown)="onPointerDown()"
+  (pointermove)="onPointerMove()"
+  (pointerup)="onPointerUp()"
 >
   <ng-template [ngIf]="functionModeEnabled">
     <g *ngIf="blockSet.id === 'ColorWheel_20230504'">
@@ -91,7 +88,7 @@
     </g>
   </ng-template>
 
-  <g class="delete_block_button" (click)="removeBlock()">
+  <g class="delete_block_button" (click)="$event.stopPropagation(); removeBlock();">
     <circle
       class="outline"
       [attr.cx]="deleteButtonPositionX"
@@ -118,24 +115,3 @@
     </g>
   </g>
 </svg:g>
-
-<ng-template
-  cdkConnectedOverlay
-  [cdkConnectedOverlayOrigin]="trigger"
-  [cdkConnectedOverlayOpen]="isInfoPanelOpen"
-  [cdkConnectedOverlayPositions]="positionPairs"
->
-  <dmm-overlay
-    *ngIf="block && blockSet"
-    [block]="block"
-    [blockSet]="blockSet"
-    [tags]="[]"
-    (close)="isInfoPanelOpen = !isInfoPanelOpen"
-  >
-    <ng-template let-overlay #templateAdditionalProperties>
-      <!-- <p>testing that this will show up</p> -->
-    </ng-template>
-
-    <ng-template let-overlay #templateFooter> </ng-template>
-  </dmm-overlay>
-</ng-template>

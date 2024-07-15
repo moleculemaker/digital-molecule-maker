@@ -1,0 +1,150 @@
+<div class="details">
+  <div class="carousel">
+    <div
+      class="carousel-content"
+      [style.transform]="
+        carouselIndex === 1
+          ? 'translateX(-100%)'
+          : carouselIndex === 2
+          ? 'translate(-200%)'
+          : 'none'
+      "
+    >
+      <div class="carousel-item" (click)="requestFullscreen($event)">
+        <svg
+          *ngIf="hasSvgAndMol2"
+          width="100%"
+          height="100%"
+          [attr.data-src]="svgUrl"
+        ></svg>
+      </div>
+
+      <div class="carousel-item blocks-view">
+        <svg viewBox="-300 -150 600 300" width="100%" height="100%">
+          <g
+            [attr.transform]="
+              'translate(' +
+              -moleculeWidth / 2 +
+              ',' +
+              -moleculeHeight / 2 +
+              ')'
+            "
+          >
+            <g
+              dmm-molecule-svg
+              [molecule]="molecule"
+              [blockSet]="blockSet"
+              [interactive]="false"
+            ></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="carousel-item" (click)="requestFullscreen($event)">
+        <div #3dmol *ngIf="hasSvgAndMol2" class="mol-container"></div>
+      </div>
+    </div>
+    <svg
+      *ngIf="hasSvgAndMol2 && carouselIndex !== 0"
+      (click)="carouselIndex = carouselIndex - 1"
+      id="left-button"
+      width="41"
+      height="40"
+      viewBox="0 0 41 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="0.828125"
+        y="0.5"
+        width="39"
+        height="39"
+        rx="19.5"
+        fill="white"
+      />
+      <rect
+        x="0.828125"
+        y="0.5"
+        width="39"
+        height="39"
+        rx="19.5"
+        stroke="#DEDEDE"
+      />
+      <path
+        d="M22.3281 25L17.3281 20L22.3281 15"
+        stroke="black"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+
+    <svg
+      *ngIf="hasSvgAndMol2 && carouselIndex !== 2"
+      (click)="carouselIndex = carouselIndex + 1"
+      id="right-button"
+      width="41"
+      height="40"
+      viewBox="0 0 41 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="-0.5"
+        y="0.5"
+        width="39"
+        height="39"
+        rx="19.5"
+        transform="matrix(-1 0 0 1 39.3281 0)"
+        fill="white"
+      />
+      <rect
+        x="-0.5"
+        y="0.5"
+        width="39"
+        height="39"
+        rx="19.5"
+        transform="matrix(-1 0 0 1 39.3281 0)"
+        stroke="#DEDEDE"
+      />
+      <path
+        d="M18.3281 25L23.3281 20L18.3281 15"
+        stroke="black"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </div>
+
+  <div class="properties">
+    <div class="tag" *ngFor="let property of blockSet.firstTierProperties">
+      <ng-container
+        *ngIf="lookupProperty(molecule.blockList, blockSet, property) !== ''"
+      >
+        <div class="label" [innerHtml]="property.label"></div>
+        <div
+          class="value"
+          [innerHtml]="
+            lookupProperty(molecule.blockList, blockSet, property)
+              | chemicalProperty: property.displayStrategy
+          "
+        ></div>
+      </ng-container>
+    </div>
+    <div class="tag" *ngFor="let property of blockSet.secondTierProperties">
+      <ng-container
+        *ngIf="lookupProperty(molecule.blockList, blockSet, property) !== ''"
+      >
+        <div class="label" [innerHtml]="property.label"></div>
+        <div
+          class="value"
+          [innerHtml]="
+            lookupProperty(molecule.blockList, blockSet, property)
+              | chemicalProperty: property.displayStrategy
+          "
+        ></div>
+      </ng-container>
+    </div>
+  </div>
+</div>

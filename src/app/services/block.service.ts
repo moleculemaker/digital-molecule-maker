@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
-import { Block, BlockSet } from '../models';
+import { Observable, of } from 'rxjs';
+import { BlockSet } from '../models';
+import { tap } from 'rxjs/operators';
 
 export enum BlockSetId {
   ColorWheel = 'ColorWheel_20230504',
@@ -17,16 +18,17 @@ export class BlockService {
     [BlockSetId.OPV, 'assets/blocks/opv/data.json'],
   ]);
 
+  private cache = new Map<BlockSetId, BlockSet>();
+
   constructor(private http: HttpClient) {}
 
   getBlockSet(blockSetId: BlockSetId): Observable<BlockSet> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'my-auth-token',
-      }),
-    };
+    if (this.cache.has(blockSetId)) {
+      return of(this.cache.get(blockSetId)!);
+    }
 
-    return this.http.get<BlockSet>(this.urls.get(blockSetId)!, httpOptions);
+    return this.http
+      .get<BlockSet>(this.urls.get(blockSetId)!)
+      .pipe(tap((blocksSet) => this.cache.set(blockSetId, blocksSet)));
   }
 }

@@ -13,7 +13,7 @@ $panel_width_wide: 460px; //320px * 2;
 @include keyframes(blur_in) {
   to {
     background: {
-      color: rgba(#ccc, 0.8);
+      color: rgba(217, 217, 217, 0.5);
     }
 
     backdrop-filter: blur(4px);
@@ -23,7 +23,7 @@ $panel_width_wide: 460px; //320px * 2;
 @include keyframes(blur_out) {
   from {
     background: {
-      color: rgba(#ccc, 0.8);
+      color: rgba(217, 217, 217, 0.5);
     }
 
     backdrop-filter: blur(4px);
@@ -62,10 +62,6 @@ $panel_width_wide: 460px; //320px * 2;
     .panel {
       width: $panel_width_wide;
     }
-
-    .close_btn {
-      right: $panel_width_wide;
-    }
   }
 
   .close_btn {
@@ -76,29 +72,22 @@ $panel_width_wide: 460px; //320px * 2;
     align-items: center;
 
     position: absolute;
-    right: $panel_width;
+    right: $padding;
     top: $padding;
-    z-index: get_index(panel) + 10;
 
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 
-    margin: {
-      right: 70px; //offset to avoid the panels
+    circle {
+      fill: #D9D9D9;
     }
-
-    background: {
-      color: color_variable("background");
-    }
-
-    padding: $padding;
 
     @include border-radius(50%);
     @include box-sizing(border-box);
 
     &:hover {
-      background: {
-        color: color_variable("button_hover");
+      circle {
+        fill: lighten(#D9D9D9, 10%);
       }
     }
   }
@@ -109,7 +98,9 @@ $panel_width_wide: 460px; //320px * 2;
   right: 0px;
   top: 0px;
   bottom: 0px;
-  z-index: get_index(panel) + 10;
+  z-index: get_index(panel);
+  display: flex;
+  flex-direction: column;
 
   overflow: {
     y: auto;
@@ -117,8 +108,8 @@ $panel_width_wide: 460px; //320px * 2;
 
   height: calc(100% - #{$padding * 3});
 
-  margin: $padding * 0.5;
-  padding: ($padding * 0.75) ($padding * 1.5);
+  margin: 32px;
+  padding: 20px 16px;
 
   color: color_variable("panel_text");
   background: {
@@ -150,27 +141,21 @@ $panel_width_wide: 460px; //320px * 2;
   }
 
   .panel_title {
-    padding: ($padding * 1.5) (0px);
-
-    font: {
-      family: $font_family_header;
-      size: 200%;
-    }
+    margin-left: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
   }
 
   .molecules {
+    flex: 1;
+    overflow: scroll;
+    margin: {
+      top: 18px;
+    }
+
     .molecule {
-      padding: $padding * 0.5;
-
-      border: 1px solid color_variable("interface_border");
-
-      @include border-radius($interface_radius * 0.5);
-
-      & + .molecule {
-        margin: {
-          top: $padding * 0.5;
-        }
-      }
+      margin: 24px 0;
     }
 
     .molecule_content {
@@ -361,14 +346,19 @@ $panel_width_wide: 460px; //320px * 2;
     }
 
     &.outline_button {
-      color: color_variable("button_border");
+      box-sizing: border-box;
+      width: 222px;
+      height: 40px;
+      border: 1px solid #31509E;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #31509E;
 
-      border: 1px solid color_variable("button_border");
-
-      @include transition(
-        #{color 0.2s easing($ease-in),
-        background-color 0.2s easing($ease-in)}
-      );
+      &:hover {
+        background: lighten(#31509E, 50%);
+      }
     }
 
     &:not(.outline_button) {
@@ -378,29 +368,13 @@ $panel_width_wide: 460px; //320px * 2;
       }
 
       @include transition(
-        #{color 0.2s easing($ease-in),
-        background-color 0.2s easing($ease-in)}
+          #{color 0.2s easing($ease-in),
+          background-color 0.2s easing($ease-in)}
       );
     }
 
     &:not([disabled]) {
       cursor: pointer;
-
-      &.outline_button {
-        &:hover {
-          color: color_variable("background");
-
-          background: {
-            color: color_variable("button_hover");
-          }
-
-          border: {
-            color: color_variable("button_hover");
-          }
-
-          @include transition(none);
-        }
-      }
 
       &:not(.outline_button) {
         &:hover {
@@ -487,6 +461,7 @@ $panel_width_wide: 460px; //320px * 2;
     pointer-events: none;
     background-color: color_variable("interface_button");
   }
+
   /*
   .button_group {
     display: flex;
@@ -575,4 +550,53 @@ $panel_width_wide: 460px; //320px * 2;
     }
   }
 */
+}
+
+:host {
+  .group-cart-buttons {
+    padding-top: 32px;
+    display: flex;
+    gap: 24px;
+
+
+    ::ng-deep button {
+      display: block;
+      height: 36px;
+      width: 100%;
+      border: none;
+      box-shadow: none;
+      border-radius: 8px;
+      font-weight: 700;
+      //font-size: 14px;
+      padding: 0;
+      font-family: 'Inter';
+    }
+
+    .secondary-button {
+      flex: 1;
+
+      ::ng-deep button {
+        color: #31509E;
+        background: #FFFFFF;
+        border: 1px solid #31509E;
+
+        &:active {
+          background: darken(#FFFFFF, 10%);
+        }
+      }
+    }
+
+    .primary-button {
+      flex: 1;
+
+      ::ng-deep button {
+        color: #FFFFFF;
+        background: #31509E;
+
+        &:active {
+          background: darken(#31509E, 10%);
+        }
+      }
+    }
+  }
 }

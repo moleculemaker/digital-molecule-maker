@@ -257,3 +257,39 @@ $analyze_panel_width: 420px;
     }
   }
 }
+
+.toggle_button {
+  user-select: none;
+  width: 150px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+
+  min: {
+    width: 36px;
+    height: 36px;
+  }
+
+  background: {
+    color: color_variable("button_background");
+  }
+
+  padding: ($padding * 0.5);
+
+  border: 1px solid color_variable("interface_border");
+
+  @include box-sizing(border-box);
+  @include border-radius($border_radius);
+  @include transition(#{background-color 0.2s easing($ease-in)});
+
+  cursor: pointer;
+
+  &:hover {
+    color: color_variable("background");
+    background: {
+      color: color_variable("button_hover");
+    }
+
+    @include transition(none);
+  }
+}

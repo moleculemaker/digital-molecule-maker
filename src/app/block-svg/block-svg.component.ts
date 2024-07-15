@@ -48,16 +48,12 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   blockSet!: BlockSet;
 
-  @Input()
-  closeOverlayObservable?: Observable<void>;
-
   @Output()
   deleteBlock = new EventEmitter<number>();
 
   strokeDasharray = '';
   strokeWidth = 5;
 
-  isInfoPanelOpen = false;
   _eventsSubscription?: Subscription;
 
   positionPairs!: ConnectionPositionPair[];
@@ -94,12 +90,6 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.closeOverlayObservable) {
-      this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
-        this.isInfoPanelOpen = false;
-      });
-    }
-
     this.positionPairs = [
       {
         offsetX: -40, //need to convert this numeric approach to a formula based on the width of the overlay
@@ -155,36 +145,32 @@ export class BlockSvgComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private mouseDown = false;
+  private pointerDown = false;
   private dragging = false;
 
-  onMouseOver(e: MouseEvent) {
+  onPointerOver(e: PointerEvent) {
     e.stopPropagation();
   }
 
-  onMouseOut(e: MouseEvent) {
+  onPointerOut(e: PointerEvent) {
     e.stopPropagation();
   }
 
-  onMouseDown() {
-    this.mouseDown = true;
+  onPointerDown() {
+    this.pointerDown = true;
   }
 
-  onMouseMove() {
-    if (this.mouseDown) {
+  onPointerMove() {
+    if (this.pointerDown) {
       this.dragging = true;
     }
   }
 
-  onMouseUp() {
-    if (!this.dragging) {
-      if (this.mouseDown) {
-        this.isInfoPanelOpen = !this.isInfoPanelOpen;
-      }
-    } else {
+  onPointerUp() {
+    if (this.dragging) {
       this.dragging = false;
     }
-    this.mouseDown = false;
+    this.pointerDown = false;
   }
 
   get textColor() {
