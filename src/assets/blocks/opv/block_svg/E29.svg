@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 122.84999999999997 57.07000000000005" style="background-color: #ffffff00" version="1.1">
+<g transform="matrix(1 0 0 1 -3.500000000000057 -3.1900000000000013)">
+<text x="0" y="0" stroke="none" transform="matrix(0.1 0 0 0.1 66.8146 21.19)" font-style="normal" font-weight="bold" font-size="200px" font-family="Arial">
+S</text>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 5549.11,4735.36 L 5544.35,4730.6 L 5545.4,4723.95 L 5816.29,4635.89 L 5820,4647.31 L 5549.11,4735.36 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 5459.7,5010.6 L 5450.99,4998.6 L 5537.29,4732.89 L 5544.35,4730.6 L 5549.11,4735.36 L 5459.7,5010.6 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 5423.37,4954.6 L 5411.96,4950.89 L 5477.68,4748.56 L 5489.09,4752.27 L 5423.37,4954.6 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 5162.99,5010.6 L 5171.7,4998.6 L 5450.99,4998.6 L 5459.7,5010.6 L 5162.99,5010.6 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 5073.58,4735.36 L 5078.35,4730.6 L 5085.4,4732.89 L 5171.7,4998.6 L 5162.99,5010.6 L 5073.58,4735.36 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 5133.6,4752.27 L 5145.01,4748.56 L 5210.73,4950.89 L 5199.32,4954.6 L 5133.6,4752.27 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 4802.49,4647.31 L 4806.2,4635.89 L 5077.29,4723.95 L 5078.35,4730.6 L 5073.58,4735.36 L 4802.49,4647.31 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 5222.86,4618.24 L 5229.91,4627.95 L 5085.4,4732.89 L 5078.35,4730.6 L 5077.29,4723.95 L 5222.86,4618.24 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 5392.99,4628.11 L 5400.04,4618.4 L 5545.4,4723.95 L 5544.35,4730.6 L 5537.29,4732.89 L 5392.99,4628.11 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -457.65 -442.8)" d="M 4631.5,4639.5 A 144,144 0 1 0 4919.5,4639.5A 144,144 0 1 0 4631.5,4639.5Z " class="connection_in" stroke-width="18px"/>
+</g>
+</svg>
