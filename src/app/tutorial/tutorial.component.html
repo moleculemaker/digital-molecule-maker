@@ -18,6 +18,33 @@
       </div>
     </ng-container>
 
+    <!-- videos -->
+    <ng-container *ngIf="currentStep.id == 'videos'">
+      <div class="content">
+        <div class="center">
+          <div [style.font-weight]="'bold'">
+            {{ videos[currentVideoIndex]!.title }}
+          </div>
+          <div [style.text-align]="'justify'">
+            {{ videos[currentVideoIndex]!.description }}
+          </div>
+        </div>
+        <iframe
+          style="width: 100%; height: 400px; margin: 10px 0; border: none"
+          [attr.src]="
+            'https://mediaspace.illinois.edu/embed/secure/iframe/entryId/' +
+              videos[currentVideoIndex]!.id +
+              '/uiConfId/26261741/st/0' | safeUrl
+          "
+          allow="autoplay *; fullscreen *; encrypted-media *"
+        ></iframe>
+      </div>
+      <div class="controls">
+        <button class="button_outline" (click)="previousVideo()">Back</button>
+        <button (click)="nextVideo()">Next</button>
+      </div>
+    </ng-container>
+
     <!-- workspace -->
     <ng-container *ngIf="currentStep.id == 'workspace'">
       <div class="content">

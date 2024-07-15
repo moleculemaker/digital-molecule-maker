@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PanelComponent } from './panel.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('PanelComponent', () => {
   let component: PanelComponent;
@@ -10,7 +11,7 @@ describe('PanelComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PanelComponent],
-      imports: [BrowserAnimationsModule],
+      imports: [BrowserAnimationsModule, HttpClientTestingModule],
     }).compileComponents();
   });
 

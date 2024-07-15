@@ -1,0 +1,58 @@
+<div class="title">Choose a block set</div>
+<div class="cards">
+  <div class="card">
+    <img
+      class="card-image"
+      ngSrc="assets/images/OPV.png"
+      alt="Color Wheel"
+      [width]="400"
+      [height]="225"
+      priority
+    />
+    <div class="card-content">
+      <div class="card-title">OPV Set</div>
+      <div class="summary">
+        The OPV (Organic Photovoltaic) block set is designed to harness the
+        power of sunlight in a sustainable and efficient manner. The molecules
+        created with these blocks can be integrated in thin and flexible solar
+        cells, providing a renewable energy source for various applications not
+        possible with traditional silicon cells.
+      </div>
+      <button
+        class="card-button"
+        (click)="goToPersonalWorkspace(BlockSetId.OPV)"
+      >
+        Explore
+      </button>
+    </div>
+  </div>
+  <div class="card">
+    <img
+      class="card-image"
+      ngSrc="assets/images/Color_Wheel.png"
+      alt="Color Wheel"
+      [width]="400"
+      [height]="225"
+      priority
+    />
+    <div class="card-content">
+      <div class="card-title">Color Wheel Set</div>
+      <div class="summary">
+        The Color Wheel Block Set is a unique and innovative tool that combines
+        the principles of color theory with the concept of lambda max, the
+        wavelength at which a substance absorbs light most strongly. Each block
+        in the set is designed to represent a different lambda max value,
+        allowing users to explore how different wavelengths of light interact
+        with colors.
+      </div>
+      <button
+        class="card-button"
+        (click)="goToPersonalWorkspace(BlockSetId.ColorWheel)"
+      >
+        Explore
+      </button>
+    </div>
+  </div>
+</div>
+
+<tutorial></tutorial>

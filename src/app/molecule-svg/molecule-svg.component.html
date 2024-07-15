@@ -1,27 +1,47 @@
 <svg:g
   class="molecule"
   xmlns:svg="http://www.w3.org/2000/svg"
-  (mouseenter)="onMouseEnter()"
-  (mouseleave)="onMouseLeave()"
-  (mouseover)="onMouseOver($event)"
-  (mouseout)="onMouseOut($event)"
-  (mousedown)="onMouseDown()"
-  (mousemove)="onMouseMove()"
-  (mouseup)="onMouseUp()"
-  [class.selected]="isInfoPanelOpen"
+  (pointerenter)="onPointerEnter()"
+  (pointerleave)="onPointerLeave()"
+  (pointerover)="onPointerOver($event)"
+  (pointerout)="onPointerOut($event)"
+  (pointerdown)="onPointerDown()"
+  (pointermove)="onPointerMove()"
+  (pointerup)="onPointerUp()"
   [class.non_interactive]="!interactive"
 >
+  <ng-container *ngIf="selectedBlock">
+    <g
+      class="blocks"
+      *ngFor="let block of molecule?.blockList"
+      (click)="$event.stopPropagation(); selectBlock(block)"
+    >
+      <g
+        *ngIf="block !== selectedBlock"
+        dmm-block-svg
+        [block]="block"
+        [molecule]="molecule"
+        [blockSet]="blockSet"
+        (deleteBlock)="onRemoveBlock($event)"
+      ></g>
+    </g>
+  </ng-container>
+
   <rect
     class="outside_border"
+    [style.display]="interactive ? 'block' : 'none'"
     cdkOverlayOrigin
     #trigger="cdkOverlayOrigin"
     [style.width.px]="moleculeWidth"
     [style.height.px]="moleculeHeight"
+    [style.fill]="selected ? '#D9E2F9' : '#F8F8F8'"
+    [style.stroke]="selected ? '#6C88CF' : '#959595'"
     rx="10"
   ></rect>
+
   <g
     class="name"
-    *ngIf="!isEditNamePanelOpen"
+    *ngIf="interactive && !isEditNamePanelOpen"
     (click)="showEditName()"
     transform="translate(-5, -15)"
   >
@@ -54,14 +74,18 @@
     <text x="20" y="10">{{ molecule.label }}</text>
   </g>
 
-  <g class="blocks" *ngFor="let block of molecule?.blockList">
+  <g
+    class="blocks"
+    *ngFor="let block of molecule?.blockList"
+    [style.opacity]="!selectedBlock || selectedBlock === block ? 1 : 0"
+    (click)="$event.stopPropagation(); selectBlock(block)"
+  >
     <g
       dmm-block-svg
       [block]="block"
       [molecule]="molecule"
       [blockSet]="blockSet"
       (deleteBlock)="onRemoveBlock($event)"
-      [closeOverlayObservable]="closeOverlayObservable"
     ></g>
   </g>
 
@@ -91,31 +115,6 @@
   </g>
 </svg:g>
 
-<!-- info panel -->
-<ng-template
-  cdkConnectedOverlay
-  [cdkConnectedOverlayOrigin]="trigger"
-  [cdkConnectedOverlayOpen]="isInfoPanelOpen"
-  [cdkConnectedOverlayPositions]="positionPairs"
->
-  <dmm-overlay
-    *ngIf="blockSet && molecule"
-    [molecule]="molecule"
-    [blockSet]="blockSet"
-    [tags]="[]"
-    [enableAddToCart]="molecule.blockList.length == 3"
-    (close)="isInfoPanelOpen = !isInfoPanelOpen"
-    (addToCart)="addMoleculeToCart()"
-  >
-    <!--
-      <ng-template let-overlay #templateAdditionalProperties>
-      </ng-template>
-      -->
-
-    <ng-template let-overlay #templateFooter> </ng-template>
-  </dmm-overlay>
-</ng-template>
-
 <!-- edit name panel -->
 <ng-template
   cdkConnectedOverlay
@@ -127,11 +126,11 @@
     <input
       type="text"
       #nameInput
-      (keyup.enter)="onEnterInput($event, nameInput.value)"
+      (keyup)="onEnterInput($event, nameInput.value)"
       placeholder="Enter Molecule Name"
     />
-    <div class="button" (click)="updateMoleculeLabel(nameInput.value)">
-      Update
-    </div>
+    <!--    <div class="button" (click)="updateMoleculeLabel(nameInput.value)">-->
+    <!--      Update-->
+    <!--    </div>-->
   </div>
 </ng-template>

@@ -98,15 +98,6 @@ export class BlockComponent implements OnInit {
     this.hovered = false;
   }
 
-  // @HostListener('mouseover')
-  // onHover() {
-  //   this.flipped = true;
-  // }
-  // @HostListener('mouseout')
-  // onHoverEnd() {
-  //   this.flipped = false;
-  // }
-
   //********************************************
   ngOnInit(): void {
     this.imageWidth = this.block.width;

@@ -1,0 +1,37 @@
+<div class="main">
+  <p-table [value]="molecules">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Molecule ID</th>
+        <th>Name</th>
+        <th>User</th>
+        <th>Group</th>
+        <th>Block Set ID</th>
+        <th>Block IDs</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-molecule>
+      <tr>
+        <td>{{ molecule.id }}</td>
+        <td>{{ molecule.name }}</td>
+        <td>
+          {{ molecule.created_by.name }} ({{ molecule.created_by.username }})
+        </td>
+        <td>{{ molecule.submitted_to?.name }}</td>
+        <td>{{ molecule.block_set_id }}</td>
+        <td>{{ molecule.block_ids.join("-") }}</td>
+        <td>
+          <p-button label="Synthesize" (onClick)="synthesize(molecule.id)" />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <div class="toast">
+    <p-messages
+      [(value)]="messages"
+      [enableService]="false"
+      [closable]="true"
+    ></p-messages>
+  </div>
+</div>

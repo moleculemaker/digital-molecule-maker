@@ -1,0 +1,252 @@
+:host {
+  height: 100%;
+  overflow: scroll;
+  display: block;
+
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+
+    & > * {
+      flex: auto;
+    }
+
+    & ::ng-deep button {
+      border: 1px solid #31509e;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #31509e;
+      background: #ffffff;
+      &:hover {
+        background: lighten(#31509e, 50%);
+      }
+    }
+  }
+
+  .main {
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: 64px 116px 76px;
+    position: relative;
+
+    .title {
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    .molecules {
+      margin-top: 48px;
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 48px;
+      row-gap: 48px;
+
+      &.shrunk {
+        width: 50%;
+      }
+
+      .molecule {
+        width: 530px;
+      }
+    }
+
+    .return-button {
+      margin-top: 156px;
+      font-weight: 700;
+      font-size: 24px;
+      display: flex;
+      justify-content: flex-end;
+
+      ::ng-deep button {
+        width: 388px;
+        height: 85px;
+        background: #31509e;
+        border: 1px solid #31509e;
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-style: normal;
+        color: #ffffff;
+      }
+    }
+  }
+
+  .control_bar {
+    height: 56px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    margin: {
+      top: 36px;
+      bottom: 48px;
+    }
+
+    ::ng-deep .p-dropdown {
+      border-radius: 24px;
+    }
+
+    .search {
+      box-sizing: border-box;
+      flex: 1;
+      background: #f8f8f8;
+      border: 1px solid #959595;
+      border-radius: 16px;
+      display: flex;
+      align-items: stretch;
+
+      .icon {
+        margin: 18px;
+        flex: none;
+      }
+
+      input {
+        flex: 1;
+        margin-right: 10px;
+        background: none;
+        border: none;
+        outline: none;
+        font-family: "Inter", sans-serif;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .dropdown_content {
+    width: 180px;
+    height: 30px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .comparison {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .compared_molecules {
+      align-self: center;
+      flex: auto;
+      display: flex;
+      height: 100%;
+      align-items: stretch;
+      gap: 72px;
+      margin-top: 48px;
+
+      .molecule {
+        width: 380px;
+        flex: none;
+        border: 1px solid #dedede;
+        border-radius: 16px;
+        padding: 32px;
+      }
+
+      ::ng-deep .molecule {
+        height: 100%;
+      }
+    }
+  }
+
+  .selection_panel {
+    position: fixed;
+    width: 564px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: 32px;
+    background: #ffffff;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    transform: translateX(150%);
+    transition: all 0.2s;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    &.show {
+      transform: none;
+    }
+
+    .panel_title {
+      margin-left: 10px;
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    .molecules {
+      flex: auto;
+      overflow: scroll;
+      margin: 32px 0;
+
+      .molecule {
+        margin: 20px 0;
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    gap: 24px;
+
+    ::ng-deep button {
+      display: block;
+      height: 36px;
+      width: 100%;
+      border: none;
+      box-shadow: none;
+      border-radius: 8px;
+      font-weight: 700;
+      //font-size: 14px;
+      padding: 0;
+      font-family: "Inter", sans-serif;
+    }
+
+    .secondary-button {
+      flex: 1;
+
+      ::ng-deep button {
+        color: #31509e;
+        background: #ffffff;
+        border: 1px solid #31509e;
+
+        &:hover {
+          background: lighten(#31509e, 50%);
+        }
+
+        &:active {
+          background: darken(#ffffff, 10%);
+        }
+      }
+    }
+
+    .primary-button {
+      flex: 1;
+
+      ::ng-deep button {
+        color: #ffffff;
+        background: #31509e;
+
+        &:hover {
+          background: lighten(#31509e, 10%);
+        }
+
+        &:active {
+          background: darken(#31509e, 10%);
+        }
+      }
+    }
+  }
+}
+
+.close_button {
+  position: absolute;
+  right: 24px;
+  top: 20px;
+  cursor: pointer;
+}
