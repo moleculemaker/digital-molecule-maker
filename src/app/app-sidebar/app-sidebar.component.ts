@@ -119,8 +119,6 @@ export class AppSidebarComponent implements OnInit {
     this.applyFilters();
   }
 
-  isSidebarExpanded = true;
-
   molecule: Molecule | null = null;
   functionModeEnabled = true;
 
@@ -156,13 +154,6 @@ export class AppSidebarComponent implements OnInit {
   //********************************************
   getSearchPlaceholder(): string {
     return this.moleculeSearch.length == 0 ? this.searchPlaceholder : '';
-  }
-
-  //********************************************
-  toggleSidebar(override?: boolean) {
-    this.isSidebarExpanded =
-      typeof override != 'undefined' ? override : !this.isSidebarExpanded;
-    this.sidebarClasses = this.isSidebarExpanded ? 'expanded' : 'collapsed';
   }
 
   //********************************************

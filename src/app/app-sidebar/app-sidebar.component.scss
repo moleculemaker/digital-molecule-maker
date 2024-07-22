@@ -47,12 +47,6 @@ $sidebar_width: 500px;
     .sidebar_container {
       @include translate(-$sidebar_width, 0%);
     }
-
-    .sidebar_toggle {
-      svg {
-        @include rotate(180deg);
-      }
-    }
   }
 }
 
@@ -83,45 +77,6 @@ $sidebar_width: 500px;
 
     background: {
       color: color_variable("interface_border");
-    }
-  }
-
-  .sidebar_toggle {
-    cursor: pointer;
-
-    position: absolute;
-    left: 100%;
-    top: $padding;
-    z-index: get_index(interface);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    min: {
-      height: 5rem;
-    }
-
-    background: {
-      color: color_variable("background");
-    }
-
-    margin: {
-      left: 4px; //don't cover up the border
-    }
-    padding: ($padding * 0.5) ($padding * 0.65);
-
-    border: 1px solid color_variable("interface_border");
-    border: {
-      left: 0px;
-    }
-
-    @include border-right-radius($border_radius * 2);
-
-    &:hover {
-      background: {
-        color: color_variable("interface_hover");
-      }
     }
   }
 

@@ -1,31 +1,4 @@
 <div class="sidebar_container">
-  <!-- todo: change to data driven toggle structure -->
-  <!--
-  <div class="toggle"
-    [class.select_0]="currentToggle == 'build'"
-    [class.select_1]="currentToggle == 'preset'"
-  >
-    <div class="button" [class.selected]="currentToggle == 'build'" (click)="onChangeToggle('build')">Build your own</div>
-    <div class="button" [class.selected]="currentToggle == 'preset'" (click)="onChangeToggle('preset')">Presets</div>
-  </div>
-  -->
-  <div class="sidebar_toggle" (click)="toggleSidebar()">
-    <svg
-      width="9"
-      height="27"
-      viewBox="0 0 9 27"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M7.44795 26.3975C7.21084 26.5163 6.93625 26.536 6.68458 26.4524C6.43291 26.3687 6.22477 26.1886 6.10595 25.9515L0.10595 13.9515C0.0362665 13.8124 -1.69969e-05 13.659 -1.69833e-05 13.5035C-1.69697e-05 13.3479 0.0362665 13.1945 0.10595 13.0555L6.10595 1.05546C6.16416 0.937015 6.24524 0.831266 6.34451 0.744308C6.44379 0.65735 6.55929 0.590902 6.68437 0.548796C6.80945 0.506689 6.94162 0.489757 7.07327 0.498976C7.20492 0.508194 7.33345 0.543381 7.45143 0.602507C7.56942 0.661632 7.67454 0.743526 7.76073 0.843472C7.84691 0.943417 7.91246 1.05943 7.9536 1.18483C7.99474 1.31023 8.01064 1.44253 8.00041 1.57411C7.99017 1.70568 7.95399 1.83393 7.89395 1.95146L2.11995 13.5035L7.89395 25.0555C8.01276 25.2926 8.03251 25.5672 7.94887 25.8188C7.86523 26.0705 7.68505 26.2786 7.44795 26.3975Z"
-        fill="currentColor"
-      />
-    </svg>
-  </div>
-
   <div class="tabs">
     <div
       class="tab"
