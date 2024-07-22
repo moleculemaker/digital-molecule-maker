@@ -437,6 +437,20 @@ $sidebar_width: 500px;
         y: scroll;
       }
 
+      &::-webkit-scrollbar {
+        --webkit-appearance: none;
+        width: 16px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #eeeeee;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
       padding: {
         top: $padding;
         right: $padding * 0.5;
