@@ -32,7 +32,7 @@ export class MoleculeDetailComponent implements OnChanges {
   @Input()
   blockSet!: BlockSet;
 
-  carouselIndex = 1;
+  carouselIndex = 0;
 
   get hasSvgAndMol2() {
     return (
