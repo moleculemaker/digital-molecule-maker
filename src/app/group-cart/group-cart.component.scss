@@ -60,10 +60,10 @@
       font-size: 24px;
       display: flex;
       justify-content: flex-end;
+      position: sticky;
+      bottom: 76px;
 
       ::ng-deep button {
-        width: 388px;
-        height: 85px;
         background: #31509e;
         border: 1px solid #31509e;
         border-radius: 8px;
