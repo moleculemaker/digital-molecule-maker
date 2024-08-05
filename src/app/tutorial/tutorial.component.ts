@@ -1,13 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'tutorial',
   templateUrl: './tutorial.component.html',
   styleUrls: ['./tutorial.component.scss'],
 })
-export class TutorialComponent implements OnInit {
-  currentStep: any | null = null; //if null, the tutorial will not show
-  steps: any[] = [];
+export class TutorialComponent {
+  steps = [
+    { id: 'welcome', class: '' },
+    { id: 'videos', class: 'wide' },
+
+    // { id: 'workspace', class: '' },
+    // { id: 'blocks', class: '' },
+
+    // { id: 'build', class: '' },
+    // { id: 'build_002', class: 'wide' },
+    // { id: 'build_003', class: 'wide' },
+    // { id: 'build_004', class: 'wide' },
+
+    { id: 'finish', class: '' },
+  ];
 
   videos = [
     {
@@ -71,63 +83,36 @@ export class TutorialComponent implements OnInit {
     },
   ];
 
+  index = 0;
+
+  get currentStep() {
+    return this.steps[this.index]!;
+  }
+
   currentVideoIndex = 0;
   readonly videoCount = 10;
 
-  //********************************************
-  ngOnInit(): void {
-    this.steps = [
-      { id: 'welcome', class: '' },
-      { id: 'videos', class: 'wide' },
+  @Input()
+  completed!: boolean;
 
-      // { id: 'workspace', class: '' },
-      // { id: 'blocks', class: '' },
+  @Output()
+  onClose = new EventEmitter<void>();
 
-      // { id: 'build', class: '' },
-      // { id: 'build_002', class: 'wide' },
-      // { id: 'build_003', class: 'wide' },
-      // { id: 'build_004', class: 'wide' },
-
-      { id: 'finish', class: '' },
-    ];
-
-    //start tutorial right away?
-    this.start();
-  }
-
-  //********************************************
-  ngAfterViewInit() {}
-
-  //********************************************
-  start() {
-    this.currentStep = this.steps[0];
-  }
-
-  //********************************************
   close() {
-    this.currentStep = null;
+    this.index = 0;
+    this.onClose.emit();
   }
 
-  //********************************************
-  getCurrentStepIndex() {
-    return this.steps.findIndex((item, index) => {
-      return item == this.currentStep;
-    });
-  }
-
-  //********************************************
   previousStep() {
-    let index = this.getCurrentStepIndex();
-    this.currentStep = index > 0 ? this.steps[index - 1] : 0;
+    if (this.index > 0) {
+      this.index--;
+    }
   }
 
-  //********************************************
   nextStep() {
-    let index = this.getCurrentStepIndex();
-    this.currentStep =
-      index <= this.steps.length - 1
-        ? this.steps[index + 1]
-        : this.steps[this.steps.length - 1];
+    if (this.index < this.steps.length - 1) {
+      this.index++;
+    }
   }
 
   previousVideo() {

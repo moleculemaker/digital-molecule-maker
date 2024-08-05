@@ -23,6 +23,24 @@ export class AppHeaderComponent implements OnInit {
     this.menuOpen = false;
   }
 
+  tutorialCompletedLocalStorageKey = 'dmm-tutorial-completed';
+  _tutorialCompleted = Boolean(
+    localStorage.getItem(this.tutorialCompletedLocalStorageKey),
+  );
+
+  get tutorialCompleted() {
+    return this._tutorialCompleted;
+  }
+
+  set tutorialCompleted(completed: boolean) {
+    this._tutorialCompleted = completed;
+    if (completed) {
+      localStorage.setItem(this.tutorialCompletedLocalStorageKey, '1');
+    } else {
+      localStorage.removeItem(this.tutorialCompletedLocalStorageKey);
+    }
+  }
+
   constructor(
     private userService: UserService,
     private workspaceService: WorkspaceService,

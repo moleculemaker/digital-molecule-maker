@@ -1,4 +1,8 @@
 :host {
+  display: block;
+  height: 100%;
+  overflow-y: scroll;
+
   .title {
     margin: 32px;
     text-align: center;

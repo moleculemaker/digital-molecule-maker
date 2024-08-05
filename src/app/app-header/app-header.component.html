@@ -47,6 +47,7 @@
     My Groups
   </div>
   <div (click)="goToBlockLibrary()">Block Library</div>
+  <div (click)="this.tutorialCompleted = false">Tutorial</div>
   <div>
     <a href="https://moleculemaker.org/dmm-help/">Help</a>
   </div>
@@ -75,3 +76,5 @@
     </div>
   </p-dialog>
 </div>
+
+<tutorial [completed]="tutorialCompleted" (onClose)="tutorialCompleted = true"></tutorial>
