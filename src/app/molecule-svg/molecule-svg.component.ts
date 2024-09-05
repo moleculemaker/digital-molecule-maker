@@ -192,4 +192,22 @@ export class MoleculeSvgComponent implements OnInit {
       this.molecule!.label = newMoleculeName;
     }
   }
+
+  get displacementScale() {
+    if (this.blockSet.id === 'ColorWheel_20230504') return 0;
+
+    const property = this.blockSet.functionalProperties.find(
+      (p) => p.key === 'T80_mean',
+    )!;
+
+    const value = +lookupProperty(
+      this.molecule.blockList,
+      this.blockSet,
+      property,
+    );
+
+    return (property.max - value) / (property.max - property.min) * 100;
+  }
+
+  protected readonly lookupProperty = lookupProperty;
 }

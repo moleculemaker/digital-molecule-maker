@@ -10,6 +10,18 @@
   (pointerup)="onPointerUp()"
   [class.non_interactive]="!interactive"
 >
+  <defs>
+    <filter id="molecule-filter">
+      <feTurbulence
+        result="TURBULENCE"
+        type="fractalNoise"
+        baseFrequency="0.5"
+        numOctaves="3"
+        seed="1"
+      />
+      <feDisplacementMap in="SourceGraphic" in2="TURBULENCE" [attr.scale]="displacementScale" />
+    </filter>
+  </defs>
   <ng-container *ngIf="selectedBlock">
     <g
       class="blocks"

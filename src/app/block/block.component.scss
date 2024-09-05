@@ -55,6 +55,10 @@ $block_icon_height: 36px;
 
 //**************** css ******************
 
+.filtered{
+  filter: url(#filter);
+}
+
 :host {
   display: block;
 }

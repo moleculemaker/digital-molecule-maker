@@ -1,6 +1,10 @@
 //**************** custom mixins ******************
 @import "../styles/core";
 
+.filtered{
+  filter: url(#molecule-filter);
+}
+
 @mixin block_style($name) {
   &.block_#{$name} {
     &.not_selected:not(:hover) {

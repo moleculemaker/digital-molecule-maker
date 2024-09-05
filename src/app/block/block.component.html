@@ -78,6 +78,7 @@
       "
     >
       <path
+        class="filtered"
         [attr.d]="drawBlock()"
         [attr.fill]="fillColor"
         [attr.opacity]="hovered ? 0.2 : 1"
@@ -134,7 +135,24 @@
         (blockHeight + this.padding.y)
       "
     >
+      <defs>
+        <filter id="filter">
+          <feTurbulence
+            result="TURBULENCE"
+            type="fractalNoise"
+            baseFrequency="0.5"
+            numOctaves="3"
+            seed="1"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="TURBULENCE"
+            [attr.scale]="displacementScale"
+          />
+        </filter>
+      </defs>
       <path
+        class="filtered"
         [attr.d]="drawBlock()"
         [attr.fill]="fillColor"
         [attr.opacity]="hovered ? 0.2 : 1"
