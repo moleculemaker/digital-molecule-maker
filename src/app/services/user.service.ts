@@ -84,7 +84,7 @@ export class UserService {
     return this.http.post<{
       expires_in: number;
       code: string;
-    }>(`${hostname}/auth/generate-code`, {
+    }>(`${hostname}/groups/generate-code`, {
       expires_in: 24 * 60 * 60,
     });
   }
