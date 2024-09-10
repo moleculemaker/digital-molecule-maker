@@ -49,7 +49,7 @@ export class TutorialComponent implements OnInit {
       id: '1_m6hmfn2h',
       title: 'Graph',
       description:
-        'When you start making block choices, the graph will update with how many molecules are still possible.',
+        'When you start making block choices, the graph will update to show the molecules that are still possible.',
     },
     {
       id: '1_e5x2eqb2',
