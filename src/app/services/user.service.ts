@@ -82,10 +82,10 @@ export class UserService {
   generateCode() {
     const { hostname } = this.envService.getEnvConfig();
     return this.http.post<{
-      expires_in: number;
+      expires_in_seconds: number;
       code: string;
     }>(`${hostname}/groups/generate-code`, {
-      expires_in: 24 * 60 * 60,
+      expires_in_seconds: 60 * 60 * 24 * 30,
     });
   }
 
