@@ -23,11 +23,7 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     const { hostname } = this.envService.getEnvConfig();
     this.http
-      .get<MoleculeDTO[]>(`${hostname}/synthesis/`, {
-        headers: {
-          authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-        },
-      })
+      .get<MoleculeDTO[]>(`${hostname}/synthesis/`)
       .subscribe((molecules) => {
         this.molecules = molecules;
       });
@@ -38,21 +34,15 @@ export class AdminComponent implements OnInit {
     this.messages = [
       { severity: 'info', detail: 'Sending synthesis request...' },
     ];
-    this.http
-      .post(`${hostname}/synthesis/${moleculeId}`, null, {
-        headers: {
-          authorization: `Bearer ${this.userService.user$.value?.access_token}`,
-        },
-      })
-      .subscribe(
-        () => {
-          this.messages = [
-            { severity: 'success', detail: 'Synthesis request accepted!' },
-          ];
-        },
-        (error: HttpErrorResponse) => {
-          this.messages = [{ severity: 'error', detail: error.error.detail }];
-        },
-      );
+    this.http.post(`${hostname}/synthesis/${moleculeId}`, null).subscribe(
+      () => {
+        this.messages = [
+          { severity: 'success', detail: 'Synthesis request accepted!' },
+        ];
+      },
+      (error: HttpErrorResponse) => {
+        this.messages = [{ severity: 'error', detail: error.error.detail }];
+      },
+    );
   }
 }
