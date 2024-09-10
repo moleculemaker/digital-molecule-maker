@@ -26,7 +26,7 @@ export class TutorialComponent implements OnInit {
       id: '1_g2u2woll',
       title: 'Structure-Function',
       description:
-        'Can can change the block information from structure to function view at any time. Click on an individual block to switch between function and structure modes',
+        'You can change the block information from structure to function view at any time. Click on an individual block to switch between function and structure modes.',
     },
     {
       id: '1_9qo362mt',
@@ -37,7 +37,7 @@ export class TutorialComponent implements OnInit {
     {
       id: '1_z7evpegt',
       title: 'Filter',
-      description: 'Filter by block type using tags',
+      description: 'Filter by block type using tags.',
     },
     {
       id: '1_qbzk4ge6',
