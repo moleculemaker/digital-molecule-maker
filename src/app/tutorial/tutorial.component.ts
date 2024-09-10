@@ -79,15 +79,6 @@ export class TutorialComponent implements OnInit {
     this.steps = [
       { id: 'welcome', class: '' },
       { id: 'videos', class: 'wide' },
-
-      // { id: 'workspace', class: '' },
-      // { id: 'blocks', class: '' },
-
-      // { id: 'build', class: '' },
-      // { id: 'build_002', class: 'wide' },
-      // { id: 'build_003', class: 'wide' },
-      // { id: 'build_004', class: 'wide' },
-
       { id: 'finish', class: '' },
     ];
 
