@@ -4,13 +4,6 @@
     <div class="logo_label">Molecule<br />Maker<br />Lab</div>
   </div>
 
-  <!--
-  <div class="header_block">
-    <input type="text" placeholder="Project Name" />
-    <div class="button">Save</div>
-  </div>
-  -->
-
   <div class="header_title">
     <div class="title">
       {{ title$ | async | titlecase }}
@@ -27,13 +20,7 @@
     >
       {{ (user$ | async)?.name?.[0] | uppercase }}
     </div>
-    <!--  <div *ngIf="false" class="code">183782</div>-->
-    <!--  <div class="button" (click)="onShowTutorial()">Tutorial</div>-->
-    <!--  <div class="button" (click)="logout()">Logout</div>-->
-    <!--
-    <div class="button">Sign In</div>
-    <div class="button">Exit</div>
-  --></div>
+  </div>
 </div>
 
 <div *ngIf="menuOpen" class="menu">
