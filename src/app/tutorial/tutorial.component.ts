@@ -32,7 +32,7 @@ export class TutorialComponent implements OnInit {
       id: '1_9qo362mt',
       title: 'Zoom',
       description:
-        'You can Zoom your in-process molecule, or click to reset to default view.',
+        'You can zoom your in-process molecule, or click to reset to default view.',
     },
     {
       id: '1_z7evpegt',
@@ -43,7 +43,7 @@ export class TutorialComponent implements OnInit {
       id: '1_qbzk4ge6',
       title: 'Build and Properties',
       description:
-        "Now that you know where everything in the DMM is, let’s show you how to build your first molecule! Click (our touch) and drag a molecule onto the worksapce to get started. When you complete a molecule you will see a summary of it's properties on the left.",
+        "Now that you know where everything in the DMM is, let’s show you how to build your first molecule! Click (or touch) and drag a molecule onto the worksapce to get started. When you complete a molecule you will see a summary of its properties on the left.",
     },
     {
       id: '1_m6hmfn2h',
