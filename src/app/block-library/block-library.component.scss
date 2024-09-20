@@ -1,0 +1,74 @@
+:host {
+  .title {
+    margin: 32px;
+    text-align: center;
+    font-family: 'Inter';
+    font-weight: 500;
+    font-size: 30px;
+  }
+
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 36px;
+    gap: 36px;
+
+    .card {
+      width: 493px;
+      height: 524px;
+      border: 1px solid #DEDEDE;
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .card-image {
+        object-fit: contain;
+      }
+
+      .card-content {
+        margin-top: 12px;
+        flex: auto;
+        display: flex;
+        flex-direction: column;
+
+        .card-title {
+          font-family: 'Inter';
+          font-weight: 700;
+          font-size: 20px;
+          color: #31509E;
+        }
+
+        .summary {
+          margin-top: 4px;
+          flex: auto;
+        }
+
+        $button_color: #31509E;
+
+        .card-button {
+          width: 128px;
+          height: 40px;
+          background: $button_color;
+          border: 1px solid $button_color;
+          border-radius: 8px;
+          font-family: 'Inter';
+          font-weight: 700;
+          font-size: 14px;
+          color: #FFFFFF;
+          cursor: pointer;
+
+          &:hover {
+            background: lighten($button_color, 10%);
+          }
+
+          &:active {
+            background: darken($button_color, 10%);
+          }
+        }
+      }
+    }
+  }
+}

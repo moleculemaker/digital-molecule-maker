@@ -1,0 +1,55 @@
+<div
+  class="molecule"
+>
+  <div class="molecule_name">
+    <div class="label">
+      {{ molecule.label }}
+    </div>
+  </div>
+
+  <div class="molecule_content" [class.vertical]="vertical">
+    <div class="preview">
+      <svg viewBox="-15 0 600 200">
+        <g
+          dmm-molecule-svg
+          [molecule]="molecule"
+          [blockSet]="blockSet"
+          [interactive]="false"
+        ></g>
+      </svg>
+    </div>
+
+    <div *ngIf="blockSet" class="info">
+      <div class="chemical_formula">
+        <div class="label">{{ blockSet.labelProperty.label }}</div>
+        <div
+          class="value"
+          [innerHtml]="
+                  getPredictedProperty(
+                    molecule.blockList,
+                    blockSet,
+                    blockSet.labelProperty
+                  ) | chemicalProperty: blockSet.labelProperty.displayStrategy
+                "
+        ></div>
+      </div>
+
+      <div class="weight">
+        <div class="label">{{ blockSet.primaryProperty.label }}</div>
+        <div
+          class="value"
+          [innerHtml]="
+                  getPredictedProperty(
+                    molecule.blockList,
+                    blockSet,
+                    blockSet.primaryProperty
+                  ) | chemicalProperty: blockSet.primaryProperty.displayStrategy
+                "
+        ></div>
+      </div>
+
+      <ng-content select="[action]"></ng-content>
+
+    </div>
+  </div>
+</div>

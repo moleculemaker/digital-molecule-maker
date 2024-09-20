@@ -18,83 +18,30 @@
       </div>
     </ng-container>
 
-    <!-- workspace -->
-    <ng-container *ngIf="currentStep.id == 'workspace'">
-      <div class="content">
-        <h3>The Workspace</h3>
-        This is the <strong>workspace</strong>, a sandbox where you can design
-        the molecules you want!
-      </div>
-      <div class="controls">
-        <button class="button_outline" (click)="previousStep()">Back</button>
-        <button (click)="nextStep()">Next</button>
-      </div>
-    </ng-container>
-
-    <!-- blocks -->
-    <ng-container *ngIf="currentStep.id == 'blocks'">
-      <div class="content">
-        <h3>The Block Tray</h3>
-        This is the <strong>block tray</strong>, an area that stores Lego-like
-        molecule blocks. You will use them to build your molecules.
-      </div>
-      <div class="controls">
-        <button class="button_outline" (click)="previousStep()">Back</button>
-        <button (click)="nextStep()">Next</button>
-      </div>
-    </ng-container>
-
-    <!-- build -->
-    <ng-container *ngIf="currentStep.id == 'build'">
-      <div class="content">
-        <h3>Building a Molecule</h3>
-        Now that you know where everything in the DMM is, let’s show you how to
-        build your <strong>first molecule!</strong>
-      </div>
-      <div class="controls">
-        <button class="button_outline" (click)="previousStep()">Back</button>
-        <button (click)="nextStep()">Next</button>
-      </div>
-    </ng-container>
-
-    <!-- build 002 -->
-    <ng-container *ngIf="currentStep.id == 'build_002'">
+    <!-- videos -->
+    <ng-container *ngIf="currentStep.id == 'videos'">
       <div class="content">
         <div class="center">
-          Filter by block type using <strong>tags</strong>
+          <div [style.font-weight]="'bold'">
+            {{ videos[currentVideoIndex]!.title }}
+          </div>
+          <div [style.text-align]="'justify'">
+            {{ videos[currentVideoIndex]!.description }}
+          </div>
         </div>
-        <!-- todo: change this to the animated gif -->
-        <img src="assets/tutorial/build_002.png" />
+        <iframe
+          style="width: 100%; height: 400px; margin: 10px 0; border: none"
+          [attr.src]="
+            'https://mediaspace.illinois.edu/embed/secure/iframe/entryId/' +
+              videos[currentVideoIndex]!.id +
+              '/uiConfId/26261741/st/0' | safeUrl
+          "
+          allow="autoplay *; fullscreen *; encrypted-media *"
+        ></iframe>
       </div>
       <div class="controls">
-        <button class="button_outline" (click)="previousStep()">Back</button>
-        <button (click)="nextStep()">Next</button>
-      </div>
-    </ng-container>
-
-    <!-- build 003 -->
-    <ng-container *ngIf="currentStep.id == 'build_003'">
-      <div class="content">
-        <div class="center">Hover on block to view additional properties</div>
-        <!-- todo: change this to the animated gif -->
-        <img src="assets/tutorial/build_003.png" />
-      </div>
-      <div class="controls">
-        <button class="button_outline" (click)="previousStep()">Back</button>
-        <button (click)="nextStep()">Next</button>
-      </div>
-    </ng-container>
-
-    <!-- build 004 -->
-    <ng-container *ngIf="currentStep.id == 'build_004'">
-      <div class="content">
-        <div class="center">Drag and drop blocks into the workspace.</div>
-        <!-- todo: change this to the animated gif -->
-        <img src="assets/tutorial/build_004.png" />
-      </div>
-      <div class="controls">
-        <button class="button_outline" (click)="previousStep()">Back</button>
-        <button (click)="nextStep()">Next</button>
+        <button class="button_outline" (click)="previousVideo()">Back</button>
+        <button (click)="nextVideo()">Next</button>
       </div>
     </ng-container>
 

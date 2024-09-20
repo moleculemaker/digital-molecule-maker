@@ -12,15 +12,17 @@ import {
   OnChanges,
   AfterViewChecked,
   AfterViewInit,
+  HostListener,
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { BlockSet, Molecule } from '../models';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { Block, BlockSet, Molecule } from '../models';
 import {
   BLOCK_HEIGHT,
   BLOCK_WIDTH,
   BORDER_WIDTH,
 } from '../block-svg/block-svg.component';
 import { lookupProperty } from '../lookup';
+import { WorkspaceService } from '../services/workspace.service';
 
 @Component({
   selector: '[dmm-molecule-svg]',
@@ -43,20 +45,34 @@ export class MoleculeSvgComponent implements OnInit {
   @Output()
   deleteBlock = new EventEmitter<number>();
 
-  @Output()
-  addToCart = new EventEmitter();
-
-  isInfoPanelOpen = false;
   isEditNamePanelOpen = false;
 
   _eventsSubscription?: Subscription;
   positionPairs!: ConnectionPositionPair[];
   positionEditName!: ConnectionPositionPair[];
 
+  selected = false;
+  selectedBlock: Block | null = null;
+
   @Input()
   molecule!: Molecule;
 
-  constructor(private changeDetector: ChangeDetectorRef) {}
+  constructor(
+    private workspaceService: WorkspaceService,
+    private changeDetector: ChangeDetectorRef,
+  ) {
+    combineLatest([
+      this.workspaceService.selectedMolecule$,
+      this.workspaceService.selectedBlock$,
+    ]).subscribe(([molecule, block]) => {
+      this.selected = this.molecule === molecule;
+      if (this.selected) {
+        this.selectedBlock = block;
+      } else {
+        this.selectedBlock = null;
+      }
+    });
+  }
 
   get moleculeWidth() {
     return this.blockSet.moleculeSize * BLOCK_WIDTH + 2 * BORDER_WIDTH;
@@ -66,11 +82,22 @@ export class MoleculeSvgComponent implements OnInit {
     return BLOCK_HEIGHT + 2 * BORDER_WIDTH;
   }
 
+  @HostListener('click', ['$event'])
+  selectMolecule(event: MouseEvent) {
+    event.stopPropagation();
+    this.workspaceService.selectedBlock$.next(null);
+    this.workspaceService.selectedMolecule$.next(this.molecule);
+  }
+
+  selectBlock(block: Block) {
+    this.workspaceService.selectedMolecule$.next(this.molecule);
+    this.workspaceService.selectedBlock$.next(block);
+  }
+
   ngOnInit(): void {
     this.changeDetector.detectChanges();
     if (this.closeOverlayObservable) {
       this._eventsSubscription = this.closeOverlayObservable.subscribe(() => {
-        this.isInfoPanelOpen = false;
         this.isEditNamePanelOpen = false;
       });
     }
@@ -102,46 +129,42 @@ export class MoleculeSvgComponent implements OnInit {
     if (this._eventsSubscription) this._eventsSubscription.unsubscribe();
   }
 
-  onMouseEnter() {
+  onPointerEnter() {
     //todo: eventually, we will try to support hover (instead of click) to show the overlay panel. note that the molecule AND individual blocks will show slightly different information (see designs). when we make this change, the overlay panel will need to have the position adjusted so the mouse can stay on the svg the entire time (or determine if we need to adjust the template completely (simple show/hide of a div instead of the cdkOverlay since it's positioned at the base of the DOM structure)
     //  this.isInfoPanelOpen = true;
   }
 
-  onMouseLeave() {
+  onPointerLeave() {
     //  this.isInfoPanelOpen = false;
   }
 
-  private mouseInside = false;
-  private mouseDown = false;
+  private pointerInside = false;
+  private pointerDown = false;
   private dragging = false;
 
-  onMouseOver(e: MouseEvent) {
-    this.mouseInside = true;
+  onPointerOver(e: PointerEvent) {
+    this.pointerInside = true;
   }
 
-  onMouseOut(e: MouseEvent) {
-    this.mouseInside = false;
+  onPointerOut(e: PointerEvent) {
+    this.pointerInside = false;
   }
 
-  onMouseDown() {
-    this.mouseDown = true;
+  onPointerDown() {
+    this.pointerDown = true;
   }
 
-  onMouseMove() {
-    if (this.mouseDown) {
+  onPointerMove() {
+    if (this.pointerDown) {
       this.dragging = true;
     }
   }
 
-  onMouseUp() {
-    if (!this.dragging) {
-      if (this.mouseDown && this.mouseInside) {
-        this.isInfoPanelOpen = !this.isInfoPanelOpen;
-      }
-    } else {
+  onPointerUp() {
+    if (this.dragging) {
       this.dragging = false;
     }
-    this.mouseDown = false;
+    this.pointerDown = false;
   }
 
   showEditName() {
@@ -158,20 +181,15 @@ export class MoleculeSvgComponent implements OnInit {
 
   onEnterInput(event: Event, newMoleculeName: string) {
     const keyboardEvent = event as KeyboardEvent;
-    if (keyboardEvent.key === 'Enter') {
-      this.updateMoleculeLabel(newMoleculeName);
-    }
+    // if (keyboardEvent.key === 'Enter') {
+    this.updateMoleculeLabel(newMoleculeName);
+    // }
   }
 
   updateMoleculeLabel(newMoleculeName: string) {
-    this.isEditNamePanelOpen = false;
     const trimmedName = newMoleculeName.trim();
     if (trimmedName.length > 0) {
       this.molecule!.label = newMoleculeName;
     }
-  }
-
-  addMoleculeToCart() {
-    this.addToCart.emit();
   }
 }
