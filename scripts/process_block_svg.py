@@ -5,6 +5,7 @@ from xml.dom.minidom import parse, Text, Element
 
 import numpy as np
 
+# workdir = "./src/assets/blocks/opv"
 workdir = "./src/assets/blocks/chem-437"
 
 
@@ -48,7 +49,7 @@ def get_arc_bbox(
             (rx**2 * ry**2 - rx**2 * y1_**2 - ry**2 * x1_**2)
             / (
                 rx**2 * y1_**2 + ry**2 * x1_**2
-            ), # this could become negative, probably due to rounding error
+            ),  # this could become negative, probably due to rounding error
         )
     )
     if large_arc_flag == sweep_flag:
