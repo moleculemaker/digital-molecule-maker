@@ -17,6 +17,8 @@ from utils.svg import get_svg_dimensions
 donor_bridge_id = {}
 dft_predictions = {}
 
+input_filepath = "/Users/wenqihe2/Documents/projects/dmm/data/Thrust4Data_DFT.xlsx"
+
 
 def read_smiles(smi_filename):
     with open(smi_filename) as f:
@@ -32,9 +34,7 @@ def generate_blocks(data):
 
     for i in range(3):
         for j in range(block_count[i]):
-            svg_url = (
-                f"assets/blocks/{config.block_set_id}/block_svg/{svg_prefix[i]}{j + 1}.svg"
-            )
+            svg_url = f"assets/blocks/{config.block_set_id}/block_svg/{svg_prefix[i]}{j + 1}.svg"
             _, _, width, height = get_svg_dimensions(svg_url)
             data["blocks"][i].append(
                 {
@@ -49,7 +49,7 @@ def generate_blocks(data):
 
 def load_donor_bridge_id_mapping():
     df = pd.read_excel(
-        "./Thrust4Data_DFT.xlsx",
+        input_filepath,
         "DB to D-B mapping",
         header=1,
         usecols=["DB number", "D1", "B1", "D2", "B2"],
@@ -63,7 +63,7 @@ def load_donor_bridge_id_mapping():
 
 def load_dft_predictions():
     df = pd.read_excel(
-        "./Thrust4Data_DFT.xlsx",
+        input_filepath,
         "Molec Props DB-A Unique",
         usecols=["DBA_Name", "Predicted SO", "Predicted_T80"],
     )

@@ -31,7 +31,8 @@ def rename_block_svg_urls():
         with open(block_set_filepath, "w") as f:
             json.dump(data, f, indent=2)
 
-def resolve_functional_property_ranges(block_set):
+
+def compute_statistics(block_set):
     for prop in block_set["functionalProperties"]:
         all_values = [
             entry[prop["key"]]

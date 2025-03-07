@@ -1,7 +1,3 @@
-"""
-This script only needs to be run once
-"""
-
 import itertools
 import os
 

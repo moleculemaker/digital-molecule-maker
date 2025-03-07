@@ -121,7 +121,7 @@ def process_products(df):
         )
 
 
-def generate_lookup_table():
+def generate_block_set():
     df = pd.read_excel(input_filepath, sheet_name=None)
 
     process_blocks(df["Blocks"])

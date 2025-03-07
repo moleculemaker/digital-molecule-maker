@@ -1,6 +1,7 @@
 import itertools
 import json
 import os
+
 from rdkit.Chem.Descriptors import MolWt
 from rdkit.Chem import CanonSmiles, MolFromSmiles
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
@@ -85,7 +86,7 @@ def generate_lookup_table(data):
         }
 
 
-def gen_lookup():
+def generate_block_set():
     with open(os.path.join(config.workdir, "block_set.json")) as file:
         data = json.load(file)
 

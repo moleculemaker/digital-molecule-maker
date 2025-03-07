@@ -8,12 +8,21 @@ class BlockSet(Enum):
     Chem437 = "Chem_437"
 
 
-def get_workdir(block_set):
-    return path.abspath(
-        path.join(path.dirname(__file__), "../src/assets/blocks", block_set.value)
-    )
+class Config:
+    block_set = BlockSet.ColorWheel
+    src_dir = path.join(path.dirname(__file__), "../src")
+
+    @property
+    def block_set_id(self):
+        return self.block_set.value
+
+    @property
+    def workdir(self):
+        return path.abspath(
+            path.join(
+                path.dirname(__file__), "../src/assets/blocks", self.block_set.value
+            )
+        )
 
 
-BLOCK_SET = BlockSet.Chem437
-
-WORKDIR = get_workdir(BLOCK_SET)
+config = Config()
