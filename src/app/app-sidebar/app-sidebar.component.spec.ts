@@ -6,7 +6,7 @@ import { BlockComponent } from '../block/block.component';
 import { DroppableDirective } from '../drag-drop-utilities/droppable/droppable.directive';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import * as colorWheelBlockSet from '../../assets/blocks/10x10x10palette/data.json';
+import * as colorWheelBlockSet from '../../assets/blocks/ColorWheel_20230504/data.json';
 import { BlockSet } from '../models';
 import {ChemicalPropertyPipe} from "../pipes/chemical-property.pipe";
 

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 96.44480000000001 86.53000044678267" style="background-color: #ffffff00" version="1.1">
+<g transform="matrix(1 0 0 1 -2.8552000000000035 -2.769999553217332)">
+<text x="0" y="0" stroke="none" transform="matrix(0.1 0 0 0.1 23.0885 87.3)" font-style="normal" font-weight="bold" font-size="200px" font-family="Arial">
+N</text>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 461.552,1054.54 L 449.552,1061.46 L 449.552,767.536 L 461.552,774.464 L 461.552,1054.54 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 513.212,1028.17 L 501.212,1028.17 L 501.212,800.826 L 513.212,800.826 L 513.212,1028.17 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 606.887,1138.45 L 600.887,1148.84 L 449.552,1061.46 L 461.552,1054.54 L 606.887,1138.45 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 946.651,1054.54 L 958.65,1061.46 L 806.241,1149.46 L 800.241,1139.07 L 946.651,1054.54 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 897.991,1022.98 L 903.99,1033.37 L 780.411,1104.72 L 774.411,1094.33 L 897.991,1022.98 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 946.651,774.464 L 952.65,771 L 958.65,774.464 L 958.65,1061.46 L 946.651,1054.54 L 946.651,774.464 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 704.101,634.428 L 704.101,620.572 L 952.65,764.072 L 952.65,771 L 946.651,774.464 L 704.101,634.428 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 701.101,692.348 L 707.101,681.956 L 903.99,795.63 L 897.991,806.022 L 701.101,692.348 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 461.552,774.464 L 449.552,767.536 L 704.101,620.572 L 704.101,634.428 L 461.552,774.464 Z "/>
+<text x="0" y="0" stroke="none" transform="matrix(0.1 0 0 0.1 76.1284 29.9)" font-style="normal" font-weight="bold" font-size="200px" font-family="Arial">
+*</text>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 1154.79,647.366 L 1160.79,657.759 L 958.65,774.464 L 952.65,771 L 952.65,764.072 L 1154.79,647.366 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 1028.4,627.5 A 172.8,172.8 0 1 0 1374,627.5A 172.8,172.8 0 1 0 1028.4,627.5Z " stroke-width="18px" class="connection_in"/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -40.1 -40.7)" d="M 1028.4,627.5 A 172.8,172.8 0 1 0 1374,627.5A 172.8,172.8 0 1 0 1028.4,627.5Z " stroke-width="18px" class="connection_out"/>
+</g>
+</svg>

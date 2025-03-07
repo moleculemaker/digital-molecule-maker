@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 152.72299999999998 81.29990000000001" style="background-color: #ffffff00" version="1.1">
+<g transform="matrix(1 0 0 1 -2.835000000000001 -3.4000999999999983)">
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 845.681,1191.04 L 851.681,1194.5 L 851.681,1201.43 L 605.266,1343.7 L 599.266,1333.3 L 845.681,1191.04 Z "/>
+<text x="0" y="0" stroke="none" transform="matrix(0.1 0 0 0.1 34.8464 35.8001)" font-style="normal" font-weight="bold" font-size="200px" font-family="Arial">
+N</text>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 1101.1,1331.57 L 1101.1,1345.43 L 851.681,1201.43 L 851.681,1194.5 L 857.681,1191.04 L 1101.1,1331.57 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 1104.1,1273.44 L 1098.1,1283.84 L 900.521,1169.77 L 906.521,1159.38 L 1104.1,1273.44 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 1344.51,1191.04 L 1356.51,1197.97 L 1101.1,1345.43 L 1101.1,1331.57 L 1344.51,1191.04 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 1344.51,909.965 L 1350.51,906.501 L 1356.51,909.965 L 1356.51,1197.97 L 1344.51,1191.04 L 1344.51,909.965 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 1292.67,936.431 L 1304.67,936.431 L 1304.67,1164.57 L 1292.67,1164.57 L 1292.67,936.431 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 1101.1,769.429 L 1101.1,755.573 L 1350.51,899.573 L 1350.51,906.501 L 1344.51,909.965 L 1101.1,769.429 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 953.82,854.459 L 947.82,844.067 L 1101.1,755.573 L 1101.1,769.429 L 953.82,854.459 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 979.74,899.354 L 973.74,888.962 L 1098.1,817.165 L 1104.1,827.557 L 979.74,899.354 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 857.681,1191.04 L 851.681,1194.5 L 845.681,1191.04 L 845.681,1012.17 L 857.681,1012.17 L 857.681,1191.04 Z "/>
+<text x="0" y="0" stroke="none" transform="matrix(0.1 0 0 0.1 109.671 21.4001)" font-style="normal" font-weight="bold" font-size="200px" font-family="Arial">
+CH</text>
+<text x="0" y="0" stroke="none" transform="matrix(0.1 0 0 0.1 138.558 25.7001)" font-style="normal" font-weight="bold" font-size="150px" font-family="Arial">
+3</text>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 1509.63,807.707 L 1515.63,818.099 L 1356.51,909.965 L 1350.51,906.501 L 1350.51,899.573 L 1509.63,807.707 Z "/>
+<path stroke="none" transform="matrix(0.1 0 0 0.1 -43.1 -62.7)" d="M 479.35,1310 A 144,144 0 1 0 767.35,1310A 144,144 0 1 0 479.35,1310Z " stroke-width="18px" class="connection_in"/>
+</g>
+</svg>

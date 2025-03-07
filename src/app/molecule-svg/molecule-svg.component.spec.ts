@@ -4,7 +4,7 @@ import { MoleculeSvgComponent } from './molecule-svg.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OverlayModule } from '@angular/cdk/overlay';
 
-import * as colorWheelBlockSet from '../../assets/blocks/10x10x10palette/data.json';
+import * as colorWheelBlockSet from '../../assets/blocks/ColorWheel_20230504/data.json';
 import {BlockSet, Coordinates, Molecule} from '../models';
 
 describe('MoleculeSvgComponent', () => {

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScatterPlotComponent } from './scatter-plot.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import * as colorWheelBlockSet from '../../assets/blocks/10x10x10palette/data.json';
+import * as colorWheelBlockSet from '../../assets/blocks/ColorWheel_20230504/data.json';
 import {BlockSet} from "../models";
 
 describe('ScatterplotComponent', () => {
