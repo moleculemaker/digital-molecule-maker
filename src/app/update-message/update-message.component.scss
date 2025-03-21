@@ -1,0 +1,56 @@
+.updates-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: #1C1C1C;
+    color: #fff;
+    text-align: center;
+
+    .updates-container {
+        width: 1000px;
+    }
+
+    h1 {
+        font-size: 5rem;
+        margin-bottom: 10px;
+        font-family: Montserrat;
+        font-weight: 400;
+        line-height: 100%;
+        letter-spacing: 0%;
+        text-align: center;
+    }
+
+    p {
+        font-size: 2.5rem;
+        margin: 10px 0;
+        font-family: Montserrat;
+        font-weight: 400;
+        line-height: 120%;
+        letter-spacing: 0%;
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .try-old-dmm {
+        font-family: Montserrat;
+        font-weight: 400;
+        font-size: 2rem;
+        line-height: 100%;
+        letter-spacing: 6%;
+        text-align: center;
+        vertical-align: middle;
+
+        display: inline-block;
+        background: #1C1C1C;
+        color: #fff;
+        border: 5px solid #D9D9D9;
+        padding: 8px 40px;
+        border-radius: 15px;
+        cursor: pointer;
+        margin-top: 100px;
+        text-decoration: none;
+    }
+}
