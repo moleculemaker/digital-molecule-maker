@@ -44,7 +44,14 @@ export class SplashComponent implements OnInit {
   }
 
   //********************************************
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const redirected = sessionStorage.getItem('redirected');
+
+    if (!redirected) {
+      sessionStorage.setItem('redirected', 'true');
+      this.router.navigate(['/updates']);
+    }
+  }
 
   //********************************************
   ngAfterViewInit() {
