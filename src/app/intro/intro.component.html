@@ -1,0 +1,107 @@
+<div class="intro-screen">
+    <a *ngIf="currentStep > 0" (click)="goBack()" class="go-back">Go back</a>
+    <div class="intro-container">
+        <div *ngIf="currentStep == 0" class="role-selection">
+            <h1>Digital Molecule Maker</h1>
+            <p>I am a...</p>
+            <div class="buttons-container">
+                <a (click)="selectRole('student')" class="button">Student</a>
+                <a (click)="selectRole('educator')" class="button">Educator</a>
+                <a (click)="selectRole('researcher')" class="button">Researcher</a>
+            </div>
+            <a href="/" class="direct-link">Just take me to the tool!</a>
+        </div>
+
+        <div *ngIf="currentStep == 1 && selectedRole === 'student'" class="student-selection">
+            <h1>What challenge do you want to tackle?</h1>
+            <div class="buttons-container">
+                <div>
+                    <a class="challenge-button" class="button">I want to explore how color works</a>
+                    <div class="difficulty beginner">Beginner</div>
+                </div>
+
+                <div>
+                    <a class="challenge-button" class="button">I want to optimize solar panels</a>
+                    <div class="difficulty intermediate">Intermediate</div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="currentStep == 1 && selectedRole === 'educator'" class="educator-selection">
+            <h1>DMM in the classroom</h1>
+            <p>Our curriculum experts have prepared a series of modules to bring hands-on molecule-making to your class.
+            </p>
+            <p>Each module includes a complete lesson plan and a powerpoint presentation.</p>
+            <div class="buttons-container">
+                <div class="button educator-module">
+                    <img src="../../assets/images/color-perception.svg" alt="Color Perception">
+
+                    <div>
+                        <h2>Color Perception</h2>
+                        <div class="time"><img src="../../assets/images/clock.svg" alt="Time" />45-65 mins</div>
+                        <div class="grades">
+                            <span class="grade k6">K-6</span>
+                            <span class="grade g712">7-12</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button educator-module">
+                    <img src="../../assets/images/ai-chemistry.svg" alt="AI and Chemistry">
+                    <div>
+                        <h2>AI and Chemistry</h2>
+                        <div class="time"><img src="../../assets/images/clock.svg" alt="Time" />40-60 mins</div>
+                        <div class="grades">
+                            <span class="grade k6">K-6</span>
+                            <span class="grade g712">7-12</span>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="button educator-module">
+                    <img src="../../assets/images/global-issues.svg" alt="Global Issues">
+                    <div>
+                        <h2>Addressing Global Issues</h2>
+                        <div class="time"><img src="../../assets/images/clock.svg" alt="Time" />90 mins</div>
+                        <div class="grades">
+                            <span class="grade g712">7-12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="currentStep == 1 && selectedRole === 'researcher'" class="researcher-selection">
+            <h1>Partner with us</h1>
+            <p>The Molecule Maker Lab Institute (MMLI) is looking for researchers to partner with in our mission of democratizing molecule-making.</p>
+            <div class="buttons-container">
+                <div class="button" (mouseenter)="showChemicalSpace = true" (mouseleave)="showChemicalSpace = false">
+                    <div *ngIf="showChemicalSpace == false">
+                        <img src="../../assets/images/explore-space.png" alt="Explore Space">
+                        <h3>Explore a Known Chemical Space</h3>
+                    </div>
+                    
+                    <div *ngIf="showChemicalSpace == true" class="hover-space">
+                        <p>If your research involves compiling and analyzing a <b>known chemical space</b>, uploading your blocks to the DMM can enable students and citizen scientists to explore it and make their own discoveries inspired by your work.</p>
+                        <div class="current-project">Current projects</div>
+                    </div>
+                </div>
+
+
+
+                <div class="button" (mouseenter)="showBuildingBlock = true" (mouseleave)="showBuildingBlock = false">
+                    <div *ngIf="!showBuildingBlock">
+                        <img src="../../assets/images/expand-block.png" alt="Expand Block">
+                        <h3>Expand on a Building Block</h3>
+                    </div>
+
+                    <div *ngIf="showBuildingBlock" class="hover-space">
+                        <p>If your research involves <b>searching for new combinations of molecules</b>, uploading your blocks to the DMM can help you explore possibilities and make predictions about molecules before synthesizing them.</p>
+                        <div class="current-project">Current projects</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

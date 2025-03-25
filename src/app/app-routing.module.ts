@@ -13,6 +13,7 @@ import { BlockLibraryComponent } from './block-library/block-library.component';
 import {AdminComponent} from "./admin/admin.component";
 import {MiniGameComponent} from "./mini-game/mini-game.component";
 import { UpdateMessageComponent } from "./update-message/update-message.component";
+import { IntroComponent } from './intro/intro.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: 'updates',
     component: UpdateMessageComponent
+  },
+  {
+    path: 'intro',
+    component: IntroComponent
   },
   {
     path: 'admin',

@@ -57,6 +57,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MiniGameComponent } from './mini-game/mini-game.component';
 import { UpdateMessageComponent } from "./update-message/update-message.component";
+import { IntroComponent } from "./intro/intro.component";
 
 // The arguments to this function are injected based on the `deps` field next to `useFactory`
 function initializeAppFactory(
@@ -100,7 +101,8 @@ function initializeAppFactory(
     SafeUrlPipe,
     AdminComponent,
     MiniGameComponent,
-    UpdateMessageComponent
+    UpdateMessageComponent,
+    IntroComponent
   ],
   imports: [
     BrowserModule,
