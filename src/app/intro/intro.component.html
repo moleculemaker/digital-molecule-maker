@@ -18,14 +18,14 @@
             <h1>What challenge do you want to tackle?</h1>
             <div class="buttons-container">
                 <div>
-                    <a class="challenge-button button" href="/library/ColorWheel_20230504/build">I want to explore how
-                        color works</a>
+                    <a class="challenge-button button" href="/library/ColorWheel_20230504/build?from=intro">I want to
+                        explore howcolor works</a>
                     <div class="difficulty beginner">Beginner</div>
                 </div>
 
                 <div>
-                    <a class="challenge-button button" href="/library/OPV_20230504/build">I want to optimize solar
-                        panels</a>
+                    <a class="challenge-button button" href="/library/OPV_20230504/build?from=intro">I want to optimize
+                        solarpanels</a>
                     <div class="difficulty intermediate">Intermediate</div>
                 </div>
             </div>
@@ -33,10 +33,11 @@
 
         <div *ngIf="currentStep == 1 && selectedRole === 'teacher'" class="teacher-selection">
             <h1>DMM in the classroom</h1>
-            <div class="tagline">Our curriculum experts have prepared a series of modules to bring hands-on molecule-making to your class.</div>
+            <div class="tagline">Our curriculum experts have prepared a series of modules to bring hands-on
+                molecule-making to your class.</div>
             <div class="tagline">Each module includes a complete lesson plan and a powerpoint presentation.</div>
             <div class="buttons-container">
-                <div class="button teacher-module">
+                <div class="button teacher-module" (click)="selectActivity('colorPerception')">
                     <img src="../../assets/images/color-perception.svg" alt="Color Perception">
 
                     <div>
@@ -49,7 +50,7 @@
                     </div>
                 </div>
 
-                <div class="button teacher-module">
+                <div class="button teacher-module" (click)="selectActivity('AIChemistry')">
                     <img src="../../assets/images/ai-chemistry.svg" alt="AI and Chemistry">
                     <div>
                         <h2>AI and Chemistry</h2>
@@ -62,7 +63,7 @@
 
 
                 </div>
-                <div class="button teacher-module">
+                <div class="button teacher-module" (click)="selectActivity('globalIssues')">
                     <img src="../../assets/images/global-issues.svg" alt="Global Issues">
                     <div>
                         <h2>Addressing Global Issues</h2>
@@ -108,7 +109,8 @@
                     </div>
 
                     <div *ngIf="showBuildingBlock" class="hover-space">
-                        <p>If your research involves <b>searching for new combinations of molecules</b>, uploading your blocks
+                        <p>If your research involves <b>searching for new combinations of molecules</b>, uploading your
+                            blocks
                             to the DMM can help accelerate your progress—exploring more possibilities and making
                             predictions to identify the promising candidates before synthesis.</p>
                         <div class="current-project">Current projects</div>
@@ -116,5 +118,91 @@
                 </div>
             </div>
         </div>
+
+        <div *ngIf="currentStep == 2 && selectedActivity == 'colorPerception'" class="teacher-activity">
+            <div class="activity-header">
+                <div class="activity-title">
+                    <h1>Color Perception</h1>
+                    <p>In this unit, students explore how color is perceived, classified, and understood both by humans
+                        and machines. Through hands-on activities, they investigate the biological, chemical, and
+                        computational processes behind color perception and classification.</p>
+                </div>
+                <div class="activity-info">
+                    <div class="grades">
+                        <span class="grade k6">K-6</span>
+                        <span class="grade g712">7-12</span>
+                    </div>
+                    <div class="time"><img src="../../assets/images/clock.svg" alt="Time" width="80px"
+                            height="80px" />45-65 minutes</div>
+                </div>
+            </div>
+            <div class="key-activities">
+                <p>Key Activities:</p>
+                <div class="activities">
+                    <button class="activity-btn">Color chip sorting</button>
+                    <button class="activity-btn">Phenolphthalein Demo</button>
+                    <button class="activity-btn">Yellow That Isn't (Yellow)</button>
+                    <button class="activity-btn">Teaching a Machine to Classify Colors</button>
+                </div>
+            </div>
+            <div class="run-activity">Run this activity in your classroom</div>
+        </div>
+
+        <div *ngIf="currentStep == 2 && selectedActivity == 'AIChemistry'" class="teacher-activity">
+            <div class="activity-header">
+                <div class="activity-title">
+                    <h1>AI and Chemistry</h1>
+                    <p>In this lesson, students explore the connection between molecular structure, color, and
+                        function using AI tools like the Digital Molecule Maker. They investigate how molecules absorb
+                        and reflect light, how this property can be manipulated for real-world applications, and how AI
+                        can assist in molecular design.</p>
+                </div>
+                <div class="activity-info">
+                    <div class="grades">
+                        <span class="grade k6">K-6</span>
+                        <span class="grade g712">7-12</span>
+                    </div>
+                    <div class="time"><img src="../../assets/images/clock.svg" alt="Time" width="80px"
+                            height="80px" />40-60 minutes</div>
+                </div>
+            </div>
+            <div class="key-activities">
+                <p>Key Activities:</p>
+                <div class="activities">
+                    <button class="activity-btn">Introduction to Natural Dyes</button>
+                    <button class="activity-btn">Solving Problems Through Molecular Synthesis</button>
+                    <button class="activity-btn">Using the Digital Molecule Maker</button>
+                </div>
+            </div>
+            <div class="run-activity">Run this activity in your classroom</div>
+        </div>
+        <div *ngIf="currentStep == 2 && selectedActivity == 'globalIssues'" class="teacher-activity">
+            <div class="activity-header">
+                <div class="activity-title">
+                    <h1>Addressing Global Issues</h1>
+                    <p>In this lesson, students explore how organic photovoltaics (OPVs) can expand the possibilities of
+                        solar energy, comparing them to traditional silicon-based solar cells. They also examine
+                        decision-making strategies in scientific research and apply their findings through hands-on
+                        experimentation with organic solar cells.</p>
+                </div>
+                <div class="activity-info">
+                    <div class="grades">
+                        <span class="grade g712">7-12</span>
+                    </div>
+                    <div class="time"><img src="../../assets/images/clock.svg" alt="Time" width="80px"
+                            height="80px" />90 minutes</div>
+                </div>
+            </div>
+            <div class="key-activities">
+                <p>Key Activities:</p>
+                <div class="activities">
+                    <button class="activity-btn">Solar Cell Basics and the Case for OPVs</button>
+                    <button class="activity-btn">Stay and Switch: Exploring Possibilities</button>
+                    <button class="activity-btn">Creating OPVs with Fruit and Vegetable Juices</button>
+                </div>
+            </div>
+            <div class="run-activity">Run this activity in your classroom</div>
+        </div>
+
     </div>
 </div>

@@ -2,6 +2,14 @@ $button-border: #D9D9D9;
 $beginner-color: #3ADB31;
 $intermediate-color: #DBCD31;
 
+.k6 {
+    background: $beginner-color;
+}
+
+.g712 {
+    background: $intermediate-color;
+}
+
 .intro-screen {
     display: flex;
     justify-content: center;
@@ -28,6 +36,7 @@ $intermediate-color: #DBCD31;
         cursor: pointer;
         margin-bottom: 20px;
         display: inline-block;
+        text-align: left;
 
         &:hover {
             color: lighten($button-border, 20%);
@@ -183,14 +192,6 @@ $intermediate-color: #DBCD31;
                     padding: 5px 25px;
                     border-radius: 5px;
                 }
-
-                .k6 {
-                    background: $beginner-color;
-                }
-
-                .g712 {
-                    background: $intermediate-color;
-                }
             }
 
             &:hover {
@@ -230,7 +231,7 @@ $intermediate-color: #DBCD31;
 
             .hover-space {
                 padding: 0;
-                
+
                 p {
                     margin: 0;
                     font-size: 1.5rem;
@@ -243,11 +244,88 @@ $intermediate-color: #DBCD31;
 
                     background-color: #1c1c1c;
                     font-size: 1.5rem;
-                    color:#fff;
+                    color: #fff;
                     font-weight: 700;
                     border-radius: 10px;
                 }
             }
+        }
+    }
+
+    .teacher-activity {
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+
+            .activity-title {
+                width: 70%;
+
+                h1 {
+                    margin: 0;
+                    text-align: left;
+                    font-size: 3.5rem;
+                }
+
+                p {
+                    font-size: 1.5rem;
+                    line-height: 1.6rem;
+                    text-align: left;
+                }
+            }
+
+            .activity-info {
+                .grades {
+                    display: flex;
+                    gap: 15px;
+
+                    span {
+                        padding: 20px;
+                        color: #000;
+                        font-size: 2rem;
+                    }
+                }
+
+                .time {
+                    display: flex;
+                    align-items: center;
+                    margin-top: 50px;
+                    width: 200px;
+                    gap: 10px;
+                    line-height: 1.8rem;
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        .key-activities {
+
+            p {
+                text-align: left;
+            }
+            .activities {
+                display: flex;
+
+                .activity-btn {
+                    flex: 1;
+                    font-family: Montserrat;
+                    background-color: #1e1e1e;
+                    color: white;
+                    border: 4px solid $button-border;
+                    padding: 30px;
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        .run-activity {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            font-size: 1.5rem;
+            border: 4px solid $button-border;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
         }
     }
 }

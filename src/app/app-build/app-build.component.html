@@ -1,3 +1,21 @@
+
+<div class="intro_screen" *ngIf="showIntro">
+  <div class="intro_container">
+    <div><a href="/intro" class="go-back">Go back</a></div>
+    <div *ngIf="blockSet?.id == 'ColorWheel_20230504'">
+      <p>This is the <b>color wheel</b> block set</p>
+      <p>Experiment with different combinations of molecules to see what colors they produce</p>  
+    </div>
+    <div *ngIf="blockSet?.id == 'OPV_20230504'">
+      
+      <p>This is the <b>organic photovoltaics (OPV)</b> block set</p>
+      <p>Experiment with different combinations of molecules to see what spectral overlap and T80 values they produce</p>  
+    </div>
+    <div class="get-started" (click)="showIntro = false">Get started</div>
+    <a href="/" class="learn-more">Learn more about the MMLI</a>
+  </div>
+</div>
+
 <app-sidebar *ngIf="blockSet" [blockSet]="blockSet"></app-sidebar>
 
 <dmm-scatterplot

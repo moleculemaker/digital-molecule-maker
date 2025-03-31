@@ -10,10 +10,16 @@ export class IntroComponent {
     selectedRole: string | null = null;
     showChemicalSpace: boolean = false;
     showBuildingBlock: boolean = false;
+    selectedActivity: string | null = null;
 
     selectRole(role: string) {
         this.currentStep = 1;
         this.selectedRole = role;
+    }
+
+    selectActivity(activity: string) {
+        this.currentStep = 2;
+        this.selectedActivity = activity;
     }
 
     goBack() {
