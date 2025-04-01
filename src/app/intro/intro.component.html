@@ -19,13 +19,13 @@
             <div class="buttons-container">
                 <div>
                     <a class="challenge-button button" href="/library/ColorWheel_20230504/build?from=intro">I want to
-                        explore howcolor works</a>
+                        explore how color works</a>
                     <div class="difficulty beginner">Beginner</div>
                 </div>
 
                 <div>
                     <a class="challenge-button button" href="/library/OPV_20230504/build?from=intro">I want to optimize
-                        solarpanels</a>
+                        solar panels</a>
                     <div class="difficulty intermediate">Intermediate</div>
                 </div>
             </div>
@@ -96,7 +96,7 @@
                             your
                             blocks to DMM can transform it into a powerful resource—empowering students, scientists, and
                             citizens to uncover new insights and drive discoveries inspired by your work.</p>
-                        <div class="current-project">Current projects</div>
+                        <!-- <div class="current-project">Current projects</div> -->
                     </div>
                 </div>
 
@@ -113,95 +113,119 @@
                             blocks
                             to the DMM can help accelerate your progress—exploring more possibilities and making
                             predictions to identify the promising candidates before synthesis.</p>
-                        <div class="current-project">Current projects</div>
+                        <!-- <div class="current-project">Current projects</div> -->
                     </div>
                 </div>
             </div>
+
+            <a class="direct-link" href="https://moleculemaker.org/contact-us/">Partner with us</a>
         </div>
 
-        <div *ngIf="currentStep == 2 && selectedActivity == 'colorPerception'" class="teacher-activity">
-            <div class="activity-header">
-                <div class="activity-title">
-                    <h1>Color Perception</h1>
-                    <p>In this unit, students explore how color is perceived, classified, and understood both by humans
-                        and machines. Through hands-on activities, they investigate the biological, chemical, and
-                        computational processes behind color perception and classification.</p>
-                </div>
-                <div class="activity-info">
-                    <div class="grades">
-                        <span class="grade k6">K-6</span>
-                        <span class="grade g712">7-12</span>
+        <div *ngIf="currentStep == 2" class="teacher-activity">
+            <div *ngIf="selectedActivity == 'colorPerception'">
+                <div class="activity-header">
+                    <div class="activity-title">
+                        <h1>Color Perception</h1>
+                        <p>In this unit, students explore how color is perceived, classified, and understood both by
+                            humans
+                            and machines. Through hands-on activities, they investigate the biological, chemical, and
+                            computational processes behind color perception and classification.</p>
                     </div>
-                    <div class="time"><img src="../../assets/images/clock.svg" alt="Time" width="80px"
-                            height="80px" />45-65 minutes</div>
+                    <div class="activity-info">
+                        <div class="grades">
+                            <span class="grade k6">K-6</span>
+                            <span class="grade g712">7-12</span>
+                        </div>
+                        <div class="time">
+                            <img src="../../assets/images/clock.svg" alt="Time" width="80px" height="80px" />
+                            <span>45-65 minutes</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="key-activities">
-                <p>Key Activities:</p>
-                <div class="activities">
-                    <button class="activity-btn">Color chip sorting</button>
-                    <button class="activity-btn">Phenolphthalein Demo</button>
-                    <button class="activity-btn">Yellow That Isn't (Yellow)</button>
-                    <button class="activity-btn">Teaching a Machine to Classify Colors</button>
+                <div class="key-activities">
+                    <p>Key Activities:</p>
+                    <div class="activities">
+                        <div class="activity-tooltip" *ngIf="showToolTipIdx != null" [style]="toolTipStyle">{{ toolTipText }}</div>
+                        <button class="activity-btn" (mouseenter)="showToolTip(0, 0)" (mouseleave)="hideToolTip()">Color chip sorting</button>
+                        <button class="activity-btn" (mouseenter)="showToolTip(0, 1)" (mouseleave)="hideToolTip()">Phenolphthalein Demo</button>
+                        <button class="activity-btn" (mouseenter)="showToolTip(0, 2)" (mouseleave)="hideToolTip()">Yellow That Isn't (Yellow)</button>
+                        <button class="activity-btn" (mouseenter)="showToolTip(0, 3)" (mouseleave)="hideToolTip()">Teaching a Machine to Classify Colors</button>
+                    </div>
                 </div>
+                <a class="run-activity"
+                    href="https://drive.google.com/drive/folders/1bad1F4bZWkMPdojIsDUtqe4QjVuEKA2P?usp=sharing"
+                    target="_blank">Run this activity in your classroom</a>
             </div>
-            <div class="run-activity">Run this activity in your classroom</div>
-        </div>
 
-        <div *ngIf="currentStep == 2 && selectedActivity == 'AIChemistry'" class="teacher-activity">
-            <div class="activity-header">
-                <div class="activity-title">
-                    <h1>AI and Chemistry</h1>
-                    <p>In this lesson, students explore the connection between molecular structure, color, and
-                        function using AI tools like the Digital Molecule Maker. They investigate how molecules absorb
-                        and reflect light, how this property can be manipulated for real-world applications, and how AI
-                        can assist in molecular design.</p>
-                </div>
-                <div class="activity-info">
-                    <div class="grades">
-                        <span class="grade k6">K-6</span>
-                        <span class="grade g712">7-12</span>
+            <div *ngIf="selectedActivity == 'AIChemistry'">
+                <div class="activity-header">
+                    <div class="activity-title">
+                        <h1>AI and Chemistry</h1>
+                        <p>In this lesson, students explore the connection between molecular structure, color, and
+                            function using AI tools like the Digital Molecule Maker. They investigate how molecules
+                            absorb
+                            and reflect light, how this property can be manipulated for real-world applications, and how
+                            AI
+                            can assist in molecular design.</p>
                     </div>
-                    <div class="time"><img src="../../assets/images/clock.svg" alt="Time" width="80px"
-                            height="80px" />40-60 minutes</div>
-                </div>
-            </div>
-            <div class="key-activities">
-                <p>Key Activities:</p>
-                <div class="activities">
-                    <button class="activity-btn">Introduction to Natural Dyes</button>
-                    <button class="activity-btn">Solving Problems Through Molecular Synthesis</button>
-                    <button class="activity-btn">Using the Digital Molecule Maker</button>
-                </div>
-            </div>
-            <div class="run-activity">Run this activity in your classroom</div>
-        </div>
-        <div *ngIf="currentStep == 2 && selectedActivity == 'globalIssues'" class="teacher-activity">
-            <div class="activity-header">
-                <div class="activity-title">
-                    <h1>Addressing Global Issues</h1>
-                    <p>In this lesson, students explore how organic photovoltaics (OPVs) can expand the possibilities of
-                        solar energy, comparing them to traditional silicon-based solar cells. They also examine
-                        decision-making strategies in scientific research and apply their findings through hands-on
-                        experimentation with organic solar cells.</p>
-                </div>
-                <div class="activity-info">
-                    <div class="grades">
-                        <span class="grade g712">7-12</span>
+                    <div class="activity-info">
+                        <div class="grades">
+                            <span class="grade k6">K-6</span>
+                            <span class="grade g712">7-12</span>
+                        </div>
+                        <div class="time">
+                            <img src="../../assets/images/clock.svg" alt="Time" width="80px" height="80px" />
+                            <span>40-60 minutes</span>
+                        </div>
                     </div>
-                    <div class="time"><img src="../../assets/images/clock.svg" alt="Time" width="80px"
-                            height="80px" />90 minutes</div>
                 </div>
-            </div>
-            <div class="key-activities">
-                <p>Key Activities:</p>
-                <div class="activities">
-                    <button class="activity-btn">Solar Cell Basics and the Case for OPVs</button>
-                    <button class="activity-btn">Stay and Switch: Exploring Possibilities</button>
-                    <button class="activity-btn">Creating OPVs with Fruit and Vegetable Juices</button>
+                <div class="key-activities">
+                    <p>Key Activities:</p>
+                    <div class="activities">
+                        <div class="activity-tooltip" *ngIf="showToolTipIdx != null" [style]="toolTipStyle">{{ toolTipText }}</div>
+                        <button class="activity-btn" (mouseenter)="showToolTip(1, 0)" (mouseleave)="hideToolTip()">Introduction to Natural Dyes</button>
+                        <button class="activity-btn" (mouseenter)="showToolTip(1, 1)" (mouseleave)="hideToolTip()">Solving Problems Through Molecular Synthesis</button>
+                        <button class="activity-btn" (mouseenter)="showToolTip(1, 2)" (mouseleave)="hideToolTip()">Using the Digital Molecule Maker</button>
+                    </div>
                 </div>
+                <a class="run-activity"
+                    href="https://drive.google.com/drive/folders/1uN4XW9N8OKtjXbY-s0Vb8jaTFRQ-RcS8?usp=sharing"
+                    target="_blank">Run this activity in your classroom</a>
             </div>
-            <div class="run-activity">Run this activity in your classroom</div>
+
+            <div *ngIf="selectedActivity == 'globalIssues'">
+                <div class="activity-header">
+                    <div class="activity-title">
+                        <h1>Addressing Global Issues</h1>
+                        <p>In this lesson, students explore how organic photovoltaics (OPVs) can expand the
+                            possibilities of
+                            solar energy, comparing them to traditional silicon-based solar cells. They also examine
+                            decision-making strategies in scientific research and apply their findings through hands-on
+                            experimentation with organic solar cells.</p>
+                    </div>
+                    <div class="activity-info">
+                        <div class="grades">
+                            <span class="grade g712">7-12</span>
+                        </div>
+                        <div class="time">
+                            <img src="../../assets/images/clock.svg" alt="Time" width="80px" height="80px" />
+                            <span>90 minutes</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="key-activities">
+                    <p>Key Activities:</p>
+                    <div class="activities">
+                        <div class="activity-tooltip" *ngIf="showToolTipIdx != null" [style]="toolTipStyle">{{ toolTipText }}</div>
+                        <button class="activity-btn" (mouseenter)="showToolTip(2, 0)" (mouseleave)="hideToolTip()">Solar Cell Basics and the Case for OPVs</button>
+                        <button class="activity-btn" (mouseenter)="showToolTip(2, 1)" (mouseleave)="hideToolTip()">Stay and Switch: Exploring Possibilities</button>
+                        <button class="activity-btn" (mouseenter)="showToolTip(2, 2)" (mouseleave)="hideToolTip()">Creating OPVs with Fruit and Vegetable Juices</button>
+                    </div>
+                </div>
+                <a class="run-activity"
+                    href="https://drive.google.com/drive/folders/1zn8UxRpM7WQj7MA2FufMC5p77Tp3O_ws?usp=sharing"
+                    target="_blank">Run this activity in your classroom</a>
+            </div>
         </div>
 
     </div>

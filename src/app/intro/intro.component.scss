@@ -299,11 +299,27 @@ $intermediate-color: #DBCD31;
 
         .key-activities {
 
+            .activity-tooltip {
+                position: absolute;
+                top: -50px;
+                height: 50px;
+                padding: 10px;
+                background: $button-border;
+                color: #1a1a1a;
+                font-size: 18px;
+                line-height: 18px;
+                text-align: center;
+                width: 90%;
+            }
+
             p {
                 text-align: left;
             }
+
             .activities {
+                position: relative;
                 display: flex;
+                margin-bottom: 100px;
 
                 .activity-btn {
                     flex: 1;
@@ -313,7 +329,15 @@ $intermediate-color: #DBCD31;
                     border: 4px solid $button-border;
                     padding: 30px;
                     font-size: 1.5rem;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: $button-border;
+                        color: #1a1a1a;
+                    }
                 }
+
+
             }
         }
 
@@ -326,6 +350,14 @@ $intermediate-color: #DBCD31;
             border-radius: 10px;
             font-weight: 700;
             cursor: pointer;
+            color: #fff;
+            text-decoration: none;
+
+            &:hover {
+                background: $button-border;
+                color: #1a1a1a;
+            }
         }
+
     }
 }
