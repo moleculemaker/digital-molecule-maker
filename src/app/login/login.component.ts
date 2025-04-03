@@ -48,7 +48,7 @@ export class LoginComponent {
       .subscribe(
         (user) => {
           this.userService.setUser(user);
-          this.router.navigateByUrl('/library/Chem_437/build');
+          this.router.navigateByUrl('/library');
         },
         (res: HttpErrorResponse) => {
           this.errorMessages = [
