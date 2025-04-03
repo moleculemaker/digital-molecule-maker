@@ -49,7 +49,7 @@ const routes: Routes = [
   },
   {
     path: 'library',
-    redirectTo: 'library/Chem_437/build'
+    redirectTo: 'library/Chem_437/build',
     canActivate: [
       () => {
         return inject(UserService).isLoggedIn();
