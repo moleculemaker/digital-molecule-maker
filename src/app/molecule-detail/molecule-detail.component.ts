@@ -14,7 +14,7 @@ import {
 import { BlockSet, Molecule } from '../models';
 import { BlockSetId } from '../services/block.service';
 import '3dmol/build/3Dmol-min.js';
-import {WorkspaceService} from "../services/workspace.service";
+import { WorkspaceService } from '../services/workspace.service';
 
 declare global {
   const $3Dmol: any;
@@ -36,7 +36,6 @@ export class MoleculeDetailComponent implements OnChanges {
 
   get hasSvgAndMol2() {
     return (
-      this.blockSet.id === BlockSetId.ColorWheel &&
       this.molecule.blockList.length === 3
     );
   }
@@ -62,17 +61,15 @@ export class MoleculeDetailComponent implements OnChanges {
     const donorId = blockList.find((b) => b.index === 0)!.id;
     const bridgeId = blockList.find((b) => b.index === 1)!.id;
     const acceptorId = blockList.find((b) => b.index === 2)!.id;
-    const donorKey = String.fromCharCode(64 + donorId);
-    const acceptorKey = String.fromCharCode(74 + acceptorId);
-    return `${donorKey}_${bridgeId}_${acceptorKey}`;
+    return `${donorId}_${bridgeId}_${acceptorId}`;
   }
 
   get svgUrl() {
-    return `assets/blocks/10x10x10palette/svg/${this.svgMol2Key}.svg`;
+    return `assets/blocks/${this.blockSet.id}/svg/${this.svgMol2Key}.svg`;
   }
 
   get mol2Url() {
-    return `assets/blocks/10x10x10palette/mol2/${this.svgMol2Key}.mol2`;
+    return `assets/blocks/${this.blockSet.id}/mol2/${this.svgMol2Key}.mol2`;
   }
 
   ngOnChanges() {
