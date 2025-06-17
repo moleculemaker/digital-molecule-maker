@@ -42,6 +42,8 @@ export class AppBuildComponent {
 
   functionModeEnabled = true;
 
+  showIntro = false;
+
   constructor(
     private workspaceService: WorkspaceService,
     private userService: UserService,
@@ -54,6 +56,12 @@ export class AppBuildComponent {
       this.workspaceService.reset(groupId, blockSetId);
       this.workspaceService.clear();
     });
+    this.route.queryParamMap.subscribe(params => {
+      const from = params.get('from');
+      if (from == 'intro') {        
+        this.showIntro = true;
+      }
+    })
     this.workspaceService.blockSet$.subscribe((blockSet) => {
       if (blockSet) {
         this.svgScale = getBlockSetScale(blockSet, 70);

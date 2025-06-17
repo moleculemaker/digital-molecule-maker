@@ -20,7 +20,7 @@ export class AppComponent {
     this.showHeader$ = this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       map(
-        (event) => !['/', '/activity', '/updates'].includes((event as NavigationEnd).url),
+        (event) => !['/', '/activity', '/updates', '/intro'].includes((event as NavigationEnd).url),
       ),
     );
   }
