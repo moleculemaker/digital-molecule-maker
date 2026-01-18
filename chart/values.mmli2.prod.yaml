@@ -1,11 +1,8 @@
 ingress:
-  hostname: dmm.frontend.mmli2.ncsa.illinois.edu
-  
-  # MIGRATION: eventually enable prod redirect
-  #hostname: dmm.platform.moleculemaker.org
-  #extraHosts:
-  #- dmm.frontend.mmli2.ncsa.illinois.edu
-  #- dmm.moleculemaker.org
+  hostname: dmm.platform.moleculemaker.org
+  extraHosts:
+  - dmm.frontend.mmli2.ncsa.illinois.edu
+  - dmm.moleculemaker.org
   tls: true
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
