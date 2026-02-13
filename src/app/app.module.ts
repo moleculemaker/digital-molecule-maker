@@ -112,7 +112,7 @@ function initializeAppFactory(
     AppRoutingModule,
     NgxMatomoTrackerModule.forRoot({
       siteId: 2,
-      trackerUrl: 'https://matomo.mmli1.ncsa.illinois.edu/',
+      trackerUrl: 'https://matomo.mmli2.ncsa.illinois.edu/',
     }),
     DragDropModule,
     OverlayModule,
