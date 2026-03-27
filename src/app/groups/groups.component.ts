@@ -20,7 +20,7 @@ export class GroupsComponent {
   joinCode = ''
 
   newGroupName: string = '';
-  availableBlockSets = [BlockSetId.ColorWheel, BlockSetId.OPV];
+  availableBlockSets = [BlockSetId.ColorWheel, BlockSetId.OPV, BlockSetId.Chem437];
   newGroupBlockSetId: BlockSetId = BlockSetId.ColorWheel;
 
   _joinCodePopupVisible = false;
