@@ -6,10 +6,11 @@ class BlockSet(Enum):
     ColorWheel = "ColorWheel_20230504"
     OPV = "OPV_20230504"
     Chem437 = "Chem_437"
+    Samys12 = "Samys12"
 
 
 class Config:
-    block_set = BlockSet.ColorWheel
+    block_set = BlockSet.Samys12
     src_dir = path.join(path.dirname(__file__), "../src")
 
     @property

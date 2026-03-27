@@ -9,19 +9,69 @@ from typing import List, Tuple
 from xml.dom.minidom import parse, Text, Element
 
 import numpy as np
+from pathlib import Path  # <-- added
 
-from config import config
+# Try to use the project's config; if not importable, fall back.
+try:
+    # If svg.py lives in a package alongside a config module
+    from config import config  # your project-local config object
+except Exception:
+    # Fallback: derive src_dir/workdir from this file's location
+    # Assuming svg.py is under .../scripts/<package>/utils/svg.py
+    class _FallbackConfig:
+        # project root is two levels up from scripts/<package>/...
+        PROJECT_ROOT = Path(__file__).resolve().parents[2]
+        SRC_DIR = PROJECT_ROOT / "src"
 
+        # Default block set (only used if config isn't importable)
+        block_set_id = "Samys12"
+
+        @property
+        def src_dir(self) -> str:
+            return str(self.SRC_DIR)
+
+        @property
+        def workdir(self) -> str:
+            return str(self.SRC_DIR / "assets" / "blocks" / self.block_set_id)
+
+    config = _FallbackConfig()
+
+def process_path(node: Element, parent_transform=np.identity(3)):
+    if "fill" in node.attributes:
+        node.removeAttribute("fill")
+
+    transform = parse_transform(node)
+    points = parse_path(node)
+    return [parent_transform @ transform @ (p[0], p[1], 1) for p in points]
 
 def get_svg_dimensions(url: str):
-    dom = parse(os.path.join(config.src_dir, url))
-    svg_el = dom.getElementsByTagName("svg")[0]
-    return [np.ceil(float(v)) for v in svg_el.getAttribute("viewBox").split(" ")]
+    """
+    Resolve `url` (e.g., 'assets/blocks/<BlockSet>/block_svg/S1.svg') against the project's src_dir
+    and return the viewBox as [x, y, width, height] (ceil'd).
+    """
+    # handle accidental leading "/" so we don't ignore src_dir
+    joined = os.path.join(config.src_dir, url.lstrip("/"))
+    if not os.path.isfile(joined):
+        raise FileNotFoundError(
+            f"SVG not found.\n  src_dir={config.src_dir}\n  url={url}\n  resolved={joined}"
+        )
 
+    dom = parse(joined)
+    svg_el = dom.getElementsByTagName("svg")[0]
+    viewbox = svg_el.getAttribute("viewBox")
+    if viewbox:
+        return [np.ceil(float(v)) for v in viewbox.split()]
+
+    # Fallback: if no viewBox, try width/height attributes
+    w = svg_el.getAttribute("width")
+    h = svg_el.getAttribute("height")
+    if w and h:
+        return [0.0, 0.0, np.ceil(float(w)), np.ceil(float(h))]
+
+    raise ValueError(f"No viewBox/width/height in: {joined}")
 
 def tokenize(expression: str) -> List[str]:
     return re.findall(r"[+-]?(?:\d*\.\d+|\d+)|[A-Za-z]+", expression)
-
 
 def parse_transform(node: Element) -> np.array:
     if "transform" not in node.attributes:
@@ -33,7 +83,6 @@ def parse_transform(node: Element) -> np.array:
 
     a, b, c, d, tx, ty = [float(n) for n in tokens[1:]]
     return np.array([[a, c, tx], [b, d, ty], [0, 0, 1]])
-
 
 def get_arc_bbox(
     x1: float,
@@ -49,7 +98,6 @@ def get_arc_bbox(
     """
     See: https://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
     """
-
     x1_ = (np.cos(theta) * (x1 - x2)) / 2 + (np.sin(theta) * (y1 - y2)) / 2
     y1_ = (-np.sin(theta) * (x1 - x2)) / 2 + (np.cos(theta) * (y1 - y2)) / 2
 
@@ -57,9 +105,7 @@ def get_arc_bbox(
         max(
             0,
             (rx**2 * ry**2 - rx**2 * y1_**2 - ry**2 * x1_**2)
-            / (
-                rx**2 * y1_**2 + ry**2 * x1_**2
-            ),  # this could become negative, probably due to rounding error
+            / (rx**2 * y1_**2 + ry**2 * x1_**2),
         )
     )
     if large_arc_flag == sweep_flag:
@@ -75,7 +121,8 @@ def get_arc_bbox(
         sign = 1 if ux * vy - uy * vx > 0 else -1
         return (
             np.arccos(
-                (ux * vx + uy * vy) / (np.sqrt(ux**2 + uy**2) * np.sqrt(vx**2 + vy**2))
+                (ux * vx + uy * vy)
+                / (np.sqrt(ux**2 + uy**2) * np.sqrt(vx**2 + vy**2))
             )
             * sign
         )
@@ -89,13 +136,11 @@ def get_arc_bbox(
         delta -= 2 * np.pi
     end_angle = start_angle + delta
 
-    counterclockwise = not sweep_flag
+    # counterclockwise flag is unused below, but kept for parity with your original code
+    # counterclockwise = not sweep_flag
 
     r = max(rx, ry)
-
-    # the bounding box of the circumcircle of the (entire) ellipse
     return [(cx - r, cy - r), (cx - r, cy + r), (cx + r, cy - r), (cx + r, cy + r)]
-
 
 def parse_path(node: Element) -> List[Tuple[float, float]]:
     if "d" not in node.attributes:
@@ -105,15 +150,15 @@ def parse_path(node: Element) -> List[Tuple[float, float]]:
     tokens = tokenize(node.getAttribute("d"))
 
     while tokens:
-        if tokens[0] == "M" or tokens[0] == "L":
+        if tokens[0] in ("M", "L"):
             i = 1
-            while not tokens[i].isalpha():
+            while i < len(tokens) and not tokens[i].isalpha():
                 points.append((float(tokens[i]), float(tokens[i + 1])))
                 i += 2
             tokens = tokens[i:]
         elif tokens[0] == "A":
             i = 1
-            while not tokens[i].isalpha():
+            while i < len(tokens) and not tokens[i].isalpha():
                 rx, ry, theta, large_arc_flag, sweep_flag, x2, y2 = [
                     float(n) for n in tokens[i : i + 7]
                 ]
@@ -139,16 +184,6 @@ def parse_path(node: Element) -> List[Tuple[float, float]]:
 
     return points
 
-
-def process_path(node: Element, parent_transform=np.identity(3)):
-    if "fill" in node.attributes:
-        node.removeAttribute("fill")
-
-    transform = parse_transform(node)
-    points = parse_path(node)
-    return [parent_transform @ transform @ (p[0], p[1], 1) for p in points]
-
-
 def process_text(node: Element, parent_transform=np.identity(3)):
     if "fill" in node.attributes:
         node.removeAttribute("fill")
@@ -159,12 +194,11 @@ def process_text(node: Element, parent_transform=np.identity(3)):
             text += child.wholeText
 
     font_size = node.getAttribute("font-size")
-
     if font_size.endswith("px"):
         font_size = font_size[:-2]
     font_size = float(font_size) if font_size else 100
 
-    # estimate text dimensions using font size (TODO: this is not accurate at all)
+    # crude text bounding box estimate
     h = font_size * 0.8
     w = font_size * 0.5 * len(text)
 
@@ -172,15 +206,11 @@ def process_text(node: Element, parent_transform=np.identity(3)):
     y = float(node.getAttribute("y"))
 
     points = [(x, y - h), (x + w, y - h), (x + w, y), (x, y)]
-
     transform = parse_transform(node)
-
     return [parent_transform @ transform @ (p[0], p[1], 1) for p in points]
-
 
 def process_group(group: Element, parent_transform=np.identity(3)):
     all_points = []
-
     transform = parent_transform @ parse_transform(group)
 
     for node in group.childNodes:
@@ -196,17 +226,13 @@ def process_group(group: Element, parent_transform=np.identity(3)):
 
     return all_points
 
-
 def get_svg_bbox(node: Element):
     all_points = process_group(node)
-
     min_x = np.min([p[0] / p[2] for p in all_points])
     max_x = np.max([p[0] / p[2] for p in all_points])
     min_y = np.min([p[1] / p[2] for p in all_points])
     max_y = np.max([p[1] / p[2] for p in all_points])
-
     return min_x, min_y, max_x - min_x, max_y - min_y
-
 
 def add_class_names(group: Element, class_names: List[str]):
     for node in group.childNodes:
@@ -219,7 +245,6 @@ def add_class_names(group: Element, class_names: List[str]):
                     node.setAttribute("stroke-width", "18px")
                     node.setAttribute("class", class_names[0])
                     class_names.pop(0)
-
 
 def process_svg(filename, class_names):
     xml = parse(filename)
@@ -253,7 +278,8 @@ def process_svg(filename, class_names):
         svg.writexml(out_file)
         print(f"saved to {filename}")
 
-
 def process_block_svgs():
-    for filepath in glob.glob(os.path.join(config.workdir, "block_svg", "*.svg")):
+    # uses config.workdir to find the current block set's SVGs
+    block_svg_dir = os.path.join(config.workdir, "block_svg")
+    for filepath in glob.glob(os.path.join(block_svg_dir, "*.svg")):
         process_svg(filepath, ["connection_in", "connection_out"])

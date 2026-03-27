@@ -1,0 +1,651 @@
+{
+  "id": "Samys12",
+  "moleculeSize": 3,
+  "labelProperty": {
+    "key": "chemicalFormula",
+    "label": "Chemical Formula",
+    "displayStrategy": "chemicalFormula"
+  },
+  "primaryProperty": {
+    "key": "TPSA",
+    "label": "Total Polar Surface Area",
+    "displayStrategy": "default"
+  },
+  "functionalProperties": [
+    {
+      "key": "TPSA",
+      "label": "Total Polar Surface Area",
+      "displayStrategy": "default",
+      "min": 61.47,
+      "max": 112.71
+    },
+    {
+      "key": "cLogP",
+      "label": "Calculated Partition Coefficient",
+      "displayStrategy": "default",
+      "min": -0.04,
+      "max": 4.62
+    }
+  ],
+  "firstTierProperties": [
+    {
+      "key": "chemicalFormula",
+      "label": "Chemical Formula",
+      "displayStrategy": "chemicalFormula"
+    },
+    {
+      "key": "TPSA",
+      "label": "Total Polar Surface Area",
+      "displayStrategy": "default"
+    }
+  ],
+  "secondTierProperties": [
+    {
+      "key": "smiles",
+      "label": "SMILES",
+      "displayStrategy": "default"
+    },
+    {
+      "key": "molecularWeight",
+      "label": "Molecular Weight",
+      "displayStrategy": "default"
+    }
+  ],
+  "blocks": [
+    [
+      {
+        "index": 0,
+        "id": 1,
+        "svgUrl": "assets/blocks/Samys12/block_svg/S1.svg",
+        "width": 103.0,
+        "height": 48.0
+      },
+      {
+        "index": 0,
+        "id": 2,
+        "svgUrl": "assets/blocks/Samys12/block_svg/S2.svg",
+        "width": 114.0,
+        "height": 64.0
+      },
+      {
+        "index": 0,
+        "id": 3,
+        "svgUrl": "assets/blocks/Samys12/block_svg/S3.svg",
+        "width": 80.0,
+        "height": 44.0
+      },
+      {
+        "index": 0,
+        "id": 4,
+        "svgUrl": "assets/blocks/Samys12/block_svg/S4.svg",
+        "width": 89.0,
+        "height": 47.0
+      },
+      {
+        "index": 0,
+        "id": 5,
+        "svgUrl": "assets/blocks/Samys12/block_svg/S5.svg",
+        "width": 89.0,
+        "height": 47.0
+      },
+      {
+        "index": 0,
+        "id": 6,
+        "svgUrl": "assets/blocks/Samys12/block_svg/S6.svg",
+        "width": 136.0,
+        "height": 50.0
+      },
+      {
+        "index": 0,
+        "id": 7,
+        "svgUrl": "assets/blocks/Samys12/block_svg/S7.svg",
+        "width": 87.0,
+        "height": 73.0
+      },
+      {
+        "index": 0,
+        "id": 8,
+        "svgUrl": "assets/blocks/Samys12/block_svg/S8.svg",
+        "width": 91.0,
+        "height": 52.0
+      }
+    ],
+    [
+      {
+        "index": 1,
+        "id": 1,
+        "svgUrl": "assets/blocks/Samys12/block_svg/M1.svg",
+        "width": 74.0,
+        "height": 53.0
+      },
+      {
+        "index": 1,
+        "id": 2,
+        "svgUrl": "assets/blocks/Samys12/block_svg/M2.svg",
+        "width": 72.0,
+        "height": 51.0
+      },
+      {
+        "index": 1,
+        "id": 3,
+        "svgUrl": "assets/blocks/Samys12/block_svg/M3.svg",
+        "width": 84.0,
+        "height": 55.0
+      },
+      {
+        "index": 1,
+        "id": 4,
+        "svgUrl": "assets/blocks/Samys12/block_svg/M4.svg",
+        "width": 84.0,
+        "height": 47.0
+      },
+      {
+        "index": 1,
+        "id": 5,
+        "svgUrl": "assets/blocks/Samys12/block_svg/M5.svg",
+        "width": 72.0,
+        "height": 57.0
+      },
+      {
+        "index": 1,
+        "id": 6,
+        "svgUrl": "assets/blocks/Samys12/block_svg/M6.svg",
+        "width": 84.0,
+        "height": 47.0
+      },
+      {
+        "index": 1,
+        "id": 7,
+        "svgUrl": "assets/blocks/Samys12/block_svg/M7.svg",
+        "width": 55.0,
+        "height": 67.0
+      },
+      {
+        "index": 1,
+        "id": 8,
+        "svgUrl": "assets/blocks/Samys12/block_svg/M8.svg",
+        "width": 97.0,
+        "height": 51.0
+      }
+    ],
+    [
+      {
+        "index": 2,
+        "id": 1,
+        "svgUrl": "assets/blocks/Samys12/block_svg/E1.svg",
+        "width": 116.0,
+        "height": 72.0
+      },
+      {
+        "index": 2,
+        "id": 1,
+        "svgUrl": "assets/blocks/Samys12/block_svg/E1.svg",
+        "width": 116.0,
+        "height": 72.0
+      },
+      {
+        "index": 2,
+        "id": 3,
+        "svgUrl": "assets/blocks/Samys12/block_svg/E3.svg",
+        "width": 136.0,
+        "height": 67.0
+      },
+      {
+        "index": 2,
+        "id": 4,
+        "svgUrl": "assets/blocks/Samys12/block_svg/E4.svg",
+        "width": 136.0,
+        "height": 63.0
+      },
+      {
+        "index": 2,
+        "id": 5,
+        "svgUrl": "assets/blocks/Samys12/block_svg/E5.svg",
+        "width": 73.0,
+        "height": 113.0
+      }
+    ]
+  ],
+  "table": {
+    "1:0:0": {
+      "key": "1:0:0",
+      "smiles": "C1(OC2=CC=CC=C2)=CC=CC=C1",
+      "chemicalFormula": "C12H10O",
+      "molecularWeight": 170.21,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "2:0:0": {
+      "key": "2:0:0",
+      "smiles": "C1(OCC2=CC=CC=C2)=CC=CC=C1",
+      "chemicalFormula": "C13H12O",
+      "molecularWeight": 184.24,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "3:0:0": {
+      "key": "3:0:0",
+      "smiles": "C12=C(C=CC=C2)C=CC=C1",
+      "chemicalFormula": "C10H8",
+      "molecularWeight": 128.17,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "4:0:0": {
+      "key": "4:0:0",
+      "smiles": "NC1CC(C=CC=C2)=C2CC1",
+      "chemicalFormula": "C10H13N",
+      "molecularWeight": 147.22,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "5:0:0": {
+      "key": "5:0:0",
+      "smiles": "NC1=CC(CCCC2)=C2C=C1",
+      "chemicalFormula": "C10H13N",
+      "molecularWeight": 147.22,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "6:0:0": {
+      "key": "6:0:0",
+      "smiles": "NC1=CC=C(OCCN2CCCC2)C=C1",
+      "chemicalFormula": "C12H18N2O",
+      "molecularWeight": 206.29,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "7:0:0": {
+      "key": "7:0:0",
+      "smiles": "CC1=NC(C(F)=CC=C2)=C2N1C(C)C",
+      "chemicalFormula": "C11H13FN2",
+      "molecularWeight": 192.24,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "8:0:0": {
+      "key": "8:0:0",
+      "smiles": "CC1=C(C(F)(F)F)C=C(N)C=C1",
+      "chemicalFormula": "C8H8F3N",
+      "molecularWeight": 175.15,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:1:0": {
+      "key": "0:1:0",
+      "smiles": "C1=CC=CC=C1",
+      "chemicalFormula": "C6H6",
+      "molecularWeight": 78.11,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:2:0": {
+      "key": "0:2:0",
+      "smiles": "C1=CN=CC=C1",
+      "chemicalFormula": "C5H5N",
+      "molecularWeight": 79.1,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:3:0": {
+      "key": "0:3:0",
+      "smiles": "NC1=CC=CC=C1",
+      "chemicalFormula": "C6H7N",
+      "molecularWeight": 93.13,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:4:0": {
+      "key": "0:4:0",
+      "smiles": "NC1=CC=CC=C1",
+      "chemicalFormula": "C6H7N",
+      "molecularWeight": 93.13,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:5:0": {
+      "key": "0:5:0",
+      "smiles": "CC1=CC=CC=C1",
+      "chemicalFormula": "C7H8",
+      "molecularWeight": 92.14,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:6:0": {
+      "key": "0:6:0",
+      "smiles": "NC1=CC=C(C)C=C1",
+      "chemicalFormula": "C7H9N",
+      "molecularWeight": 107.16,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:7:0": {
+      "key": "0:7:0",
+      "smiles": "C1=CC=CC=C1OC",
+      "chemicalFormula": "C7H8O",
+      "molecularWeight": 108.14,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:8:0": {
+      "key": "0:8:0",
+      "smiles": "C1=CC=C(CN)C=C1",
+      "chemicalFormula": "C7H9N",
+      "molecularWeight": 107.16,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:0:1": {
+      "key": "0:0:1",
+      "smiles": "O=C(NC1=O)CC[C@H]1N(C2=O)C(C3=C2C=CC=C3)=O",
+      "chemicalFormula": "C13H10N2O4",
+      "molecularWeight": 258.23,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:0:3": {
+      "key": "0:0:3",
+      "smiles": "O=C(N1)CC[C@H](N(C2)C(C3=C2C(F)=CC=C3)=O)C1=O",
+      "chemicalFormula": "C13H11FN2O3",
+      "molecularWeight": 262.24,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:0:4": {
+      "key": "0:0:4",
+      "smiles": "O=C1CC[C@@H](N2C(C3=C(C2=O)C=CC=C3)=O)C(N1)=O",
+      "chemicalFormula": "C13H10N2O4",
+      "molecularWeight": 258.23,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "0:0:5": {
+      "key": "0:0:5",
+      "smiles": "CN1C(N([C@@H]2CCC(NC2=O)=O)C3=CC=CC=C31)=O",
+      "chemicalFormula": "C13H13N3O3",
+      "molecularWeight": 259.27,
+      "TPSA": 0.0,
+      "cLogP": 0.0
+    },
+    "1:1:1": {
+      "key": "1:1:1",
+      "smiles": "FC1=NC=C(NC2=NC=CC(C3=CC=CN=C3)=N2)N=C1",
+      "chemicalFormula": "C13H9FN6",
+      "molecularWeight": 268.26,
+      "TPSA": 73.83,
+      "cLogP": 0.91
+    },
+    "1:1:2": {
+      "key": "1:1:2",
+      "smiles": "O=C(OCC)C1=CC2=CC(NC3=NC=CC(C4=CC=CN=C4)=N3)=CN=C2S1",
+      "chemicalFormula": "C19H15N5O2S",
+      "molecularWeight": 377.42,
+      "TPSA": 87.77,
+      "cLogP": 3.37
+    },
+    "1:1:3": {
+      "key": "1:1:3",
+      "smiles": "CN(C)C1=CC=C(NC2=NC=CC(C3=CC=CN=C3)=N2)N=N1",
+      "chemicalFormula": "C15H15N7",
+      "molecularWeight": 293.33,
+      "TPSA": 77.07,
+      "cLogP": 1.61
+    },
+    "1:1:4": {
+      "key": "1:1:4",
+      "smiles": "FC(C=CC=C1)=C1N2C=C(NC3=NC=CC(C4=CC=CN=C4)=N3)C=N2",
+      "chemicalFormula": "C18H13FN6",
+      "molecularWeight": 332.37,
+      "TPSA": 64.71,
+      "cLogP": 3.38
+    },
+    "1:1:5": {
+      "key": "1:1:5",
+      "smiles": "CC1=NN(C2OCCCC2)C(C([H])=O)=C1NC3=NC=CC(C4=CC=CN=C4)=N3",
+      "chemicalFormula": "C19H20N6O2",
+      "molecularWeight": 364.41,
+      "TPSA": 91.01,
+      "cLogP": 1.68
+    },
+    "1:1:6": {
+      "key": "1:1:6",
+      "smiles": "FC1=CC2=C(C=CN=C2)C=C1NC3=NC=CC(C4=CC=CN=C4)=N3",
+      "chemicalFormula": "C18H12FN5",
+      "molecularWeight": 317.33,
+      "TPSA": 61.47,
+      "cLogP": 2.98
+    },
+    "1:1:7": {
+      "key": "1:1:7",
+      "smiles": "CC1=CSC(NC2=NC=CC(C3=CC=CN=C3)=N2)=N1",
+      "chemicalFormula": "C13H11N5S",
+      "molecularWeight": 269.33,
+      "TPSA": 61.47,
+      "cLogP": 2.01
+    },
+    "1:1:8": {
+      "key": "1:1:8",
+      "smiles": "O=C(OC(C)(C)C)N(CC1)CCC1N2N=CC(NC3=NC=CC(C4=CC=CN=C4)=N3)=C2",
+      "chemicalFormula": "C22H27N7O2",
+      "molecularWeight": 421.51,
+      "TPSA": 94.25,
+      "cLogP": 2.76
+    },
+    "1:1:9": {
+      "key": "1:1:9",
+      "smiles": "O=C(OCC)C1C2N=C(NC3=NC=CC(C4=CC=CN=C4)=N3)SC2CCC1",
+      "chemicalFormula": "C19H21N5O2S",
+      "molecularWeight": 383.7,
+      "TPSA": 87.77,
+      "cLogP": 0.62
+    },
+    "1:1:10": {
+      "key": "1:1:10",
+      "smiles": "CN(C)C1=NC(OCC2=CC=CC=C2)=C(NC3=NC=CC(C4=CC=CN=C4)=N3)C=N1",
+      "chemicalFormula": "C22H21N7O",
+      "molecularWeight": 399.46,
+      "TPSA": 86.3,
+      "cLogP": 3.96
+    },
+    "1:1:11": {
+      "key": "1:1:11",
+      "smiles": "CC1=CC(NC2=NC=CC(C3=CC=CN=C3)=N2)=CN4C=NN=C14",
+      "chemicalFormula": "C16H13N7",
+      "molecularWeight": 303.33,
+      "TPSA": 77.07,
+      "cLogP": 1.7
+    },
+    "1:1:12": {
+      "key": "1:1:12",
+      "smiles": "CC1=CC=C(NC2=NC=CC(C3=CC=CN=C3)=N2)N=C1",
+      "chemicalFormula": "C15H13N5",
+      "molecularWeight": 263.3,
+      "TPSA": 61.47,
+      "cLogP": 2.17
+    },
+    "1:1:13": {
+      "key": "1:1:13",
+      "smiles": "N#CC1=CC(NC2=NC=CC(C3=CC=CN=C3)=N2)=CS1",
+      "chemicalFormula": "C14H9N5S",
+      "molecularWeight": 279.3,
+      "TPSA": 72.9,
+      "cLogP": 2.25
+    },
+    "1:1:14": {
+      "key": "1:1:14",
+      "smiles": "O=C(O)C1=CC=NC2=C(NC3=NC=CC(C4=CC=CN=C4)=N3)C=CC=C21",
+      "chemicalFormula": "C19H13N5O2",
+      "molecularWeight": 343.35,
+      "TPSA": 98.77,
+      "cLogP": 3.12
+    },
+    "1:1:15": {
+      "key": "1:1:15",
+      "smiles": "O=C(C)C1=C(F)C=C(NC2=NC=CC(C3=CC=CN=C3)=N2)C=C1",
+      "chemicalFormula": "C17H13FN4O",
+      "molecularWeight": 308.32,
+      "TPSA": 66.18,
+      "cLogP": 2.28
+    },
+    "1:1:16": {
+      "key": "1:1:16",
+      "smiles": "O=C1NC=NN2C=C(NC3=NC=CC(C4=CC=CN=C4)=N3)C=C21",
+      "chemicalFormula": "C15H11N7O",
+      "molecularWeight": 305.3,
+      "TPSA": 93.81,
+      "cLogP": -0.04
+    },
+    "1:1:17": {
+      "key": "1:1:17",
+      "smiles": "O=C(CC)C1=CC=C(NC2=NC=CC(C3=CC=CN=C3)=N2)S1",
+      "chemicalFormula": "C16H14N4O5",
+      "molecularWeight": 310.38,
+      "TPSA": 66.18,
+      "cLogP": 2.81
+    },
+    "1:1:18": {
+      "key": "1:1:18",
+      "smiles": "OC(C1=C(NC2=NC=CC(C3=CC=CN=C3)=N2)OC=C1)=O",
+      "chemicalFormula": "C14H10N4O3",
+      "molecularWeight": 282.26,
+      "TPSA": 95.64,
+      "cLogP": 2.64
+    },
+    "1:1:19": {
+      "key": "1:1:19",
+      "smiles": "O=C(NC=C1)C2=C1SC(NC3=NC=CC(C4=CC=CN=C4)=N3)=C2",
+      "chemicalFormula": "C16H11N5OS",
+      "molecularWeight": 321.36,
+      "TPSA": 78.21,
+      "cLogP": 1.79
+    },
+    "1:1:20": {
+      "key": "1:1:20",
+      "smiles": "C1(NC2=NC=CC(C3=CC=CN=C3)=N2)=C(OCCOCC4=CC=CC=C4)C=CC=C1",
+      "chemicalFormula": "C24H22N4O2",
+      "molecularWeight": 398.47,
+      "TPSA": 67.57,
+      "cLogP": 4.62
+    },
+    "1:1:21": {
+      "key": "1:1:21",
+      "smiles": "C1(NC2=NC=CC(C3=CC=CN=C3)=N2)=CN=C(N4CCCC4)S1",
+      "chemicalFormula": "C16H16N6S",
+      "molecularWeight": 324.41,
+      "TPSA": 64.71,
+      "cLogP": 2.39
+    },
+    "1:1:22": {
+      "key": "1:1:22",
+      "smiles": "CN1C2=C(C=NC=N2)C(NC3=NC=CC(C4=CC=CN=C4)=N3)=C1",
+      "chemicalFormula": "C16H13N7",
+      "molecularWeight": 303.33,
+      "TPSA": 77.07,
+      "cLogP": 1.36
+    },
+    "1:1:23": {
+      "key": "1:1:23",
+      "smiles": "O=C(C=C(C(O)=O)O1)C2=C1C=CC(NC3=NC=CC(C4=CC=CN=C4)=N3)=C2",
+      "chemicalFormula": "C19H12N4O4",
+      "molecularWeight": 360.33,
+      "TPSA": 112.71,
+      "cLogP": 2.14
+    },
+    "1:1:24": {
+      "key": "1:1:24",
+      "smiles": "C1(NC2=NC=CC(C3=CC=CN=C3)=N2)=CC4=NSN=C4C=C1",
+      "chemicalFormula": "C15H10N6S",
+      "molecularWeight": 306.35,
+      "TPSA": 73.83,
+      "cLogP": 3.03
+    },
+    "1:1:25": {
+      "key": "1:1:25",
+      "smiles": "CN(C=N1)C2=C1C=CC(NC3=NC=CC(C4=CC=CN=C4)=N3)=C2",
+      "chemicalFormula": "C17H14N6",
+      "molecularWeight": 302.34,
+      "TPSA": 64.71,
+      "cLogP": 2.52
+    },
+    "1:1:26": {
+      "key": "1:1:26",
+      "smiles": "O=C(O1)C=CC2=C1C=CC(NC3=NC=CC(C4=CC=CN=C4)=N3)=C2",
+      "chemicalFormula": "C18H12N4O2",
+      "molecularWeight": 316.32,
+      "TPSA": 75.41,
+      "cLogP": 2.42
+    },
+    "1:1:27": {
+      "key": "1:1:27",
+      "smiles": "C1(NC2=NC=CC(C3=CC=CN=C3)=N2)=C(C=CC=C4)C4=CN=C1",
+      "chemicalFormula": "C18H13N5",
+      "molecularWeight": 299.34,
+      "TPSA": 61.47,
+      "cLogP": 2.84
+    },
+    "1:1:28": {
+      "key": "1:1:28",
+      "smiles": "COC1=CN=C(NC2=NC=CC(C3=CC=CN=C3)=N2)N=C1",
+      "chemicalFormula": "C14H12N6O",
+      "molecularWeight": 280.29,
+      "TPSA": 83.06,
+      "cLogP": 1.2
+    },
+    "1:1:29": {
+      "key": "1:1:29",
+      "smiles": "C1(NC2=NC=CC(C3=CC=CN=C3)=N2)=CC=CN=N1",
+      "chemicalFormula": "C13H10N6",
+      "molecularWeight": 250.27,
+      "TPSA": 73.83,
+      "cLogP": 0.63
+    },
+    "1:1:30": {
+      "key": "1:1:30",
+      "smiles": "CN(C1=C(NC2=O)C=C(NC3=NC=CC(C4=CC=CN=C4)=N3)C=C1)C2=O",
+      "chemicalFormula": "C18H14N6O2",
+      "molecularWeight": 346.35,
+      "TPSA": 98.52,
+      "cLogP": 1.71
+    },
+    "1:1:31": {
+      "key": "1:1:31",
+      "smiles": "CN1N=NC2=C1C=C(F)C(NC3=NC=CC(C4=CC=CN=C4)=N3)=C2",
+      "chemicalFormula": "C16H12FN7",
+      "molecularWeight": 321.32,
+      "TPSA": 77.07,
+      "cLogP": 2.2
+    },
+    "1:1:32": {
+      "key": "1:1:32",
+      "smiles": "O=C(N1)NC2=C1C=CC(NC3=NC=CC(C4=CC=CN=C4)=N3)=C2",
+      "chemicalFormula": "C16H12N6O",
+      "molecularWeight": 304.31,
+      "TPSA": 90.24,
+      "cLogP": 2.05
+    },
+    "1:1:33": {
+      "key": "1:1:33",
+      "smiles": "OC(C1=C(O2)C=C(NC3=NC=CC(C4=CC=CN=C4)=N3)C=C1)=CC2=O",
+      "chemicalFormula": "C18H12N4O3",
+      "molecularWeight": 332.32,
+      "TPSA": 95.64,
+      "cLogP": 2.83
+    },
+    "1:1:34": {
+      "key": "1:1:34",
+      "smiles": "O=S(N1C=C(NC2=NC=CC(C3=CC=CN=C3)=N2)N=C1)(C4=CC=CC=C4)=O",
+      "chemicalFormula": "C18H14N6O2S",
+      "molecularWeight": 378.41,
+      "TPSA": 98.85,
+      "cLogP": 2.39
+    },
+    "1:1:35": {
+      "key": "1:1:35",
+      "smiles": "CN1C(NC2=NC=CC(C3=CC=CN=C3)=N2)=NC=C1C([H])=O",
+      "chemicalFormula": "C14H12N6O",
+      "molecularWeight": 280.29,
+      "TPSA": 81.78,
+      "cLogP": 0.77
+    }
+  }
+}

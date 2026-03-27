@@ -8,6 +8,7 @@ export enum BlockSetId {
   ColorWheel = 'ColorWheel_20230504',
   OPV = 'OPV_20230504',
   Chem437 = 'Chem_437',
+  Samys12 = 'Samys12'
 }
 
 @Injectable({
@@ -18,6 +19,7 @@ export class BlockService {
     [BlockSetId.ColorWheel, 'assets/blocks/ColorWheel_20230504/data.json'],
     [BlockSetId.OPV, 'assets/blocks/OPV_20230504/data.json'],
     [BlockSetId.Chem437, 'assets/blocks/Chem_437/data.json'],
+    [BlockSetId.Samys12, 'assets/blocks/Samys12/data.json']
   ]);
 
   private cache = new Map<BlockSetId, BlockSet>();
