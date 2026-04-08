@@ -1,5 +1,5 @@
 ingress:
-  hostname: dmm.frontend.staging.mmli1.ncsa.illinois.edu
+  hostname: dmm.frontend.staging.mmli2.ncsa.illinois.edu
   tls: true
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
@@ -7,5 +7,5 @@ ingress:
     traefik.ingress.kubernetes.io/router.tls: "true"
 
 config:
-  hostname: "https://dmm.fastapi.staging.mmli1.ncsa.illinois.edu"
+  hostname: "https://dmm.fastapi.staging.mmli2.ncsa.illinois.edu"
 
