@@ -18,6 +18,10 @@ spec:
       containers:
         - name: dmm-frontend
           image: {{ .Values.controller.image }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "5"]
           env:
             - name: JOB_MANAGER_API_HOSTNAME
               valueFrom:
